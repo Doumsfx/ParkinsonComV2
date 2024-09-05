@@ -63,8 +63,8 @@ class _MyHomePageState extends State<MyHomePage> {
     "RELAX": false,
     "BACK ARROW": false,
   };
-  TextEditingController _controller = TextEditingController();
-  ScrollController _scrollController = ScrollController();
+  final TextEditingController _controller = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -73,23 +73,23 @@ class _MyHomePageState extends State<MyHomePage> {
     /*
     // Add listener to scroll automatically
     _controller.addListener(() {
-      // Scroll tout en bas dès que le texte change
-      if(_controller.selection.start == _controller.text.length){
-        print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        print(_controller.selection.extentOffset);
+      // Vérifie si le curseur est à la fin du texte
+      if (_controller.selection.extentOffset == _controller.text.length) {
+        print(_controller.selection.extent);
         print(_controller.text.length);
-        print(_controller.text);
-        _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+        _scrollController.jumpTo(_scrollController.position.maxScrollExtent,);
       }
-    });
-
-    _scrollController.addListener(() {
-      print(_scrollController.offset);
     });
     */
 
 
+    /*
+    _scrollController.addListener(() {
+      print(_scrollController.offset);
+    });
+    */
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -206,7 +206,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               MediaQuery.of(context).size.width * 0.03,
                               0,
                               0,
-                              MediaQuery.of(context).size.height * 0.03,
+                              MediaQuery.of(context).size.height * 0.03
                             ),
                             child: Container(
                               decoration: BoxDecoration(
@@ -217,17 +217,23 @@ class _MyHomePageState extends State<MyHomePage> {
                               ),
                               child: Row(
                                 children: [
-                                  // Constraints of size with SizedBox
+                                  // TextField
                                   SizedBox(
                                     width: MediaQuery.of(context).size.width * 0.73,
-                                    height: MediaQuery.of(context).size.width * 0.5, // PAS SUR
+                                    height: MediaQuery.of(context).size.width * 0.5,
 
-                                    child: Scrollbar(
+                                    child: RawScrollbar(
+                                      thumbColor: Colors.blue,
                                       controller: _scrollController,
-                                      thickness: 40,
-                                      thumbVisibility: true,
                                       trackVisibility: true,
+                                      thumbVisibility: true,
+                                      thickness: 10,
                                       radius: Radius.circular(20),
+
+                                      trackColor: Color.fromRGBO(66, 89, 109, 1),
+                                      crossAxisMargin: 5,
+                                      mainAxisMargin: 5,
+                                      trackRadius: Radius.circular(20),
 
                                       child: TextField(
                                         scrollController: _scrollController,
@@ -245,6 +251,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                         controller: _controller,
                                         readOnly: true,
                                         showCursor: true,
+
                                         onTap: () {
                                           setState(() {
                                             dialogPageState.value = true;
@@ -252,7 +259,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                           print("TOUCHEEEEEEEEEEEEEEE");
                                         },
 
-                                        // Permet d'enlever la selection, mais lorsqu'on l'enlève la scrollbar ne fonctionne plus
                                         enableInteractiveSelection: true,
 
                                         minLines: MediaQuery.of(context).size.height > 600 ? 3 : 2,
@@ -306,7 +312,11 @@ class _MyHomePageState extends State<MyHomePage> {
                                       ),
                                     ),
                                   ),
-                                  SizedBox(width: MediaQuery.of(context).size.width * 0.01), // Espace entre le TextFormField et l'image
+
+                                  // Spacing between the TextField and the image
+                                  SizedBox(width: MediaQuery.of(context).size.width * 0.01),
+
+                                  // Erase and TTS
                                   Column(
                                     children: [
                                       SizedBox(
@@ -314,7 +324,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       ),
                                       AnimatedScale(
                                         scale: _buttonAnimations["ERASE"]! ? 1.1 : 1.0,
-                                        duration: Duration(milliseconds: 100),
+                                        duration: const Duration(milliseconds: 100),
                                         curve: Curves.bounceIn,
                                         child: GestureDetector(
                                           // Gestion des animations de touches
@@ -343,10 +353,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                           ),
                                         ),
                                       ),
-                                      Expanded(child: SizedBox()), // Espacement au milieu
+                                      const Expanded(child: SizedBox()), // Espacement au milieu
                                       AnimatedScale(
                                         scale: _buttonAnimations["TTS"]! ? 1.1 : 1.0,
-                                        duration: Duration(milliseconds: 100),
+                                        duration: const Duration(milliseconds: 100),
                                         curve: Curves.bounceIn,
                                         child: GestureDetector(
                                           // Gestion des animations de touches
@@ -406,7 +416,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               onTap: () {
                                 _scrollController.animateTo(
                                   _scrollController.offset - 50,
-                                  duration: Duration(milliseconds: 500),
+                                  duration: const Duration(milliseconds: 500),
                                   curve: Curves.easeIn,
                                 );
                               },
@@ -414,7 +424,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               onLongPress: () {
                                 _scrollController.animateTo(
                                   _scrollController.position.minScrollExtent,
-                                  duration: Duration(milliseconds: 1),
+                                  duration: const Duration(milliseconds: 1),
                                   curve: Curves.easeIn,
                                 );
                               },
@@ -444,7 +454,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * 0.01),
-                                  color: Color.fromRGBO(101, 72, 254, 1),
+                                  color: const Color.fromRGBO(101, 72, 254, 1),
                                 ),
 
                                 child: Transform.rotate(
@@ -470,20 +480,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               color: Color.fromRGBO(66, 89, 109, 1), // Grey
                             ),
 
-                            /*
-                          child: Scrollbar(
-                            controller: _scrollController,
-                            thumbVisibility: true,
-                            trackVisibility: true,
-                            interactive: true,
-                            thickness: MediaQuery.of(context).size.height * 0.025,
-                            radius: Radius.circular(MediaQuery.of(context).size.width * 0.02),
-                            child: SingleChildScrollView(
-                              controller: _scrollController,
-                              scrollDirection: Axis.vertical,
-                            ),
-                          ),
-                          */
+                            // CODE POTENTIEL D'UNE SCROLLBAR
 
                           ),
                           AnimatedScale(
@@ -495,7 +492,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               onTap: () {
                                 _scrollController.animateTo(
                                   _scrollController.offset + 50,
-                                  duration: Duration(milliseconds: 500),
+                                  duration: const Duration(milliseconds: 500),
                                   curve: Curves.easeIn,
                                 );
                               },
@@ -503,7 +500,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               onLongPress: () {
                                 _scrollController.animateTo(
                                   _scrollController.position.maxScrollExtent,
-                                  duration: Duration(milliseconds: 1),
+                                  duration: const Duration(milliseconds: 1),
                                   curve: Curves.easeIn,
                                 );
                               },
@@ -533,7 +530,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * 0.01),
-                                  color: Color.fromRGBO(101, 72, 254, 1),
+                                  color: const Color.fromRGBO(101, 72, 254, 1),
                                 ),
 
                                 child: Transform.rotate(
@@ -574,7 +571,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   onTap: () {
                                     _scrollController.animateTo(
                                       _scrollController.offset - 50,
-                                      duration: Duration(milliseconds: 500),
+                                      duration: const Duration(milliseconds: 500),
                                       curve: Curves.easeIn,
                                     );
                                   },
@@ -582,7 +579,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   onLongPress: () {
                                     _scrollController.animateTo(
                                       _scrollController.position.minScrollExtent,
-                                      duration: Duration(milliseconds: 1),
+                                      duration: const Duration(milliseconds: 1),
                                       curve: Curves.easeIn,
                                     );
                                   },
@@ -612,7 +609,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * 0.01),
-                                      color: Color.fromRGBO(101, 72, 254, 1),
+                                      color: const Color.fromRGBO(101, 72, 254, 1),
                                     ),
 
                                     child: Transform.rotate(
@@ -635,7 +632,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * 0.02),
                                   //color: Colors.black,
-                                  color: Color.fromRGBO(66, 89, 109, 1), // Grey
+                                  color: const Color.fromRGBO(66, 89, 109, 1), // Grey
                                 ),
 
                                 /*
@@ -663,7 +660,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   onTap: () {
                                     _scrollController.animateTo(
                                       _scrollController.offset + 50,
-                                      duration: Duration(milliseconds: 500),
+                                      duration: const Duration(milliseconds: 500),
                                       curve: Curves.easeIn,
                                     );
                                   },
@@ -671,7 +668,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   onLongPress: () {
                                     _scrollController.animateTo(
                                       _scrollController.position.maxScrollExtent,
-                                      duration: Duration(milliseconds: 1),
+                                      duration: const Duration(milliseconds: 1),
                                       curve: Curves.easeIn,
                                     );
                                   },
@@ -701,7 +698,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * 0.01),
-                                      color: Color.fromRGBO(101, 72, 254, 1),
+                                      color: const Color.fromRGBO(101, 72, 254, 1),
                                     ),
 
                                     child: Transform.rotate(
@@ -817,7 +814,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   height: MediaQuery.of(context).size.width * 0.060,
                                   width: MediaQuery.of(context).size.width * 0.060,
                                   padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.01),
-                                  decoration: BoxDecoration(
+                                  decoration: const BoxDecoration(
                                     color: Color.fromRGBO(160, 208, 86, 1),
                                     shape: BoxShape.circle,
                                   ),
@@ -838,102 +835,106 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
 
 
-                // Keyboard
-                if (value) Expanded(child: CustomKeyboard(controller: _controller, textPredictions: true,)) else Column(
-                  children: [
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.02,),
-                    Row(
-                      children: [
-                        AnimatedScale(
-                          scale: _buttonAnimations["SAVE"] == true ? 1.1 : 1.0,
-                          duration: const Duration(milliseconds: 100),
-                          curve: Curves.bounceOut,
-                          child: GestureDetector(
-                            onTapDown: (_) {
-                              setState(() {
-                                _buttonAnimations["SAVE"] = true;
-                              });
-                            },
-                            onTapUp: (_) {
-                              setState(() {
-                                _buttonAnimations["SAVE"] = false;
-                              });
-                              // CODE DU BOUTON
-                              print("SAVEEEEEEEEE");
-                            },
-                            onTapCancel: () {
-                              setState(() {
-                                _buttonAnimations["SAVE"] = false;
-                              });
-                            },
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(60)),
-                                color: const Color.fromRGBO(255, 183, 34, 1),
-                              ),
-                              padding: EdgeInsets.fromLTRB(
-                                  MediaQuery.of(context).size.width * 0.02,
-                                  MediaQuery.of(context).size.width * 0.015,
-                                  MediaQuery.of(context).size.width * 0.02,
-                                  MediaQuery.of(context).size.width * 0.015),
+                // Second part
+                value
+                  // Keyboard
+                  ? Expanded(child: CustomKeyboard(controller: _controller, textPredictions: true,))
+                  // Buttons
+                  : Column(
+                    children: [
+                      SizedBox(height: MediaQuery.of(context).size.height * 0.02,),
+                      Row(
+                        children: [
+                          AnimatedScale(
+                            scale: _buttonAnimations["SAVE"] == true ? 1.1 : 1.0,
+                            duration: const Duration(milliseconds: 100),
+                            curve: Curves.bounceOut,
+                            child: GestureDetector(
+                              onTapDown: (_) {
+                                setState(() {
+                                  _buttonAnimations["SAVE"] = true;
+                                });
+                              },
+                              onTapUp: (_) {
+                                setState(() {
+                                  _buttonAnimations["SAVE"] = false;
+                                });
+                                // CODE DU BOUTON
+                                print("SAVEEEEEEEEE");
+                              },
+                              onTapCancel: () {
+                                setState(() {
+                                  _buttonAnimations["SAVE"] = false;
+                                });
+                              },
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular(60)),
+                                  color: Color.fromRGBO(255, 183, 34, 1),
+                                ),
+                                padding: EdgeInsets.fromLTRB(
+                                    MediaQuery.of(context).size.width * 0.02,
+                                    MediaQuery.of(context).size.width * 0.015,
+                                    MediaQuery.of(context).size.width * 0.02,
+                                    MediaQuery.of(context).size.width * 0.015),
 
-                              margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.05, 0, 0, 0),
+                                margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.05, 0, 0, 0),
 
-                              child: Text(
-                                langFR
-                                    ? "Enregistrer nouveau"
-                                    : "   Nieuw opslaan   ",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
+                                child: Text(
+                                  langFR
+                                      ? "Enregistrer nouveau"
+                                      : "   Nieuw opslaan   ",
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                        Expanded(
-                          child: SizedBox(),
-                        ),
-                        AnimatedScale(
-                          scale: _buttonAnimations["SEND"] == true ? 1.1 : 1.0,
-                          duration: const Duration(milliseconds: 100),
-                          curve: Curves.bounceOut,
-                          child: GestureDetector(
-                            onTapDown: (_) {
-                              setState(() {
-                                _buttonAnimations["SEND"] = true;
-                              });
-                            },
-                            onTapUp: (_) {
-                              setState(() {
-                                _buttonAnimations["SEND"] = false;
-                              });
-                              // CODE DU BOUTON
-                              print("SENDDDDDDDDDDD");
-                            },
-                            onTapCancel: () {
-                              setState(() {
-                                _buttonAnimations["SEND"] = false;
-                              });
-                            },
-                            child: Container(
-                              margin: EdgeInsets.fromLTRB(0, 0, MediaQuery.of(context).size.width * 0.08, 0),
-                              child: CustomShape(
-                                image: "assets/enveloppe.png",
-                                text: langFR
-                                    ? "Envoyer à un contact"
-                                    : "Stuur naar een contact",
-                                scale:  MediaQuery.of(context).size.width * 0.0013,
-                                backgroundColor: Color.fromRGBO(12, 178, 255, 1),
-                                textColor: Colors.white,
+                          const Expanded(
+                            child: SizedBox(),
+                          ),
+                          AnimatedScale(
+                            scale: _buttonAnimations["SEND"] == true ? 1.1 : 1.0,
+                            duration: const Duration(milliseconds: 100),
+                            curve: Curves.bounceOut,
+                            child: GestureDetector(
+                              onTapDown: (_) {
+                                setState(() {
+                                  _buttonAnimations["SEND"] = true;
+                                });
+                              },
+                              onTapUp: (_) {
+                                setState(() {
+                                  _buttonAnimations["SEND"] = false;
+                                });
+                                // CODE DU BOUTON
+                                print("SENDDDDDDDDDDD");
+                              },
+                              onTapCancel: () {
+                                setState(() {
+                                  _buttonAnimations["SEND"] = false;
+                                });
+                              },
+                              child: Container(
+                                margin: EdgeInsets.fromLTRB(0, 0, MediaQuery.of(context).size.width * 0.08, 0),
+                                child: CustomShape(
+                                  image: "assets/enveloppe.png",
+                                  text: langFR
+                                      ? "Envoyer à un contact"
+                                      : "Stuur naar een contact",
+                                  scale:  MediaQuery.of(context).size.width * 0.0013,
+                                  backgroundColor: const Color.fromRGBO(12, 178, 255, 1),
+                                  textColor: Colors.white,
+                                ),
                               ),
                             ),
                           ),
-                        ),
 
-                      ],
-                    ),
+                        ],
+                      ),
                   ],
                 ),
               ],
