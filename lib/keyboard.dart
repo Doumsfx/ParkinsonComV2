@@ -3,14 +3,24 @@
 // ParkinsonCom
 
 import 'package:flutter/material.dart';
+import 'package:parkinson_com_v2/models/prediction.dart';
 import 'package:parkinson_com_v2/variables.dart';
 import 'package:virtual_keyboard_custom_layout/virtual_keyboard_custom_layout.dart';
+
 
 class CustomKeyboard extends StatefulWidget {
   final TextEditingController controller;
   final bool textPredictions;
+  late final PredictionsHandler? predictionsHandler;
 
-  const CustomKeyboard({super.key, required this.controller, required this.textPredictions});
+
+  CustomKeyboard({super.key, required this.controller, required this.textPredictions}) {
+    if(textPredictions) {
+      predictionsHandler = PredictionsHandler(controller: controller, isFR: langFR);
+    }
+  }
+
+
 
   @override
   _CustomKeyboardState createState() => _CustomKeyboardState();
@@ -49,6 +59,8 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
       }
     }
   }
+
+
 
   // Utility function to get the keyboard configuration
   List<List<String>> _getKeyboardConfig(bool maj, bool modeAccent, bool azerty) {
@@ -239,6 +251,7 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
               color: widget.textPredictions
                   ? const Color.fromRGBO(87, 138, 227, 1) // Blue
                   : const Color.fromRGBO(69, 73, 76, 1), // Light Grey
+              //TODO PREDICTIONS
               // child -> code alexis pour les predictions
             ),
 
