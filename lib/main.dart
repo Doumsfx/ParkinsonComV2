@@ -1,6 +1,6 @@
 // Dialog Page
 // Code by Alexis Pagnon and Sanchez Adam
-// ParkinsonCom
+// ParkinsonCom V2
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

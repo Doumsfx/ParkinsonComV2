@@ -1,6 +1,6 @@
 // CustomShape Widget
 // Code by Alexis Pagnon and Sanchez Adam
-// ParkinsonCom
+// ParkinsonCom V2
 
 import 'package:flutter/material.dart';
 

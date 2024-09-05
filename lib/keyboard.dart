@@ -1,6 +1,6 @@
 // CustomKeyboard Widget
 // Code by Alexis Pagnon and Sanchez Adam
-// ParkinsonCom
+// ParkinsonCom V2
 
 import 'package:flutter/material.dart';
 import 'package:parkinson_com_v2/variables.dart';
