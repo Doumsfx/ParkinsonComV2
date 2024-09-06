@@ -1034,11 +1034,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 // Second part
                 value
                     // Keyboard
-                    ? Expanded(
-                        child: CustomKeyboard(
-                        controller: _controller,
-                        textPredictions: true,
-                      ))
+                    ? Expanded(child: customKeyboard)
                     // Buttons
                     : Column(
                         children: [
