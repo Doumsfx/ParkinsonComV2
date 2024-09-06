@@ -9,6 +9,7 @@ import 'package:parkinson_com_v2/keyboard.dart';
 import 'package:parkinson_com_v2/variables.dart';
 
 import 'models/database/dialog.dart';
+import 'models/database/theme.dart';
 
 void main() {
   // We put the game in full screen mode
@@ -1060,18 +1061,109 @@ class _MyHomePageState extends State<MyHomePage> {
                                       _buttonAnimations["SAVE"] = true;
                                     });
                                   },
-                                  onTapUp: (_) {
+                                  onTapUp: (_) async {
                                     setState(() {
                                       _buttonAnimations["SAVE"] = false;
                                     });
                                     // BUTTON CODE
                                     print("SAVEEEEEEEEE");
                                     //TODO Save the dialog in the database
-                                    databaseManager.insertDialog(DialogObject(
-                                      sentence: _controller.text,
-                                      language: langFR ? "fr" : "nl",
-                                      id_theme: 1,
-                                    ));
+
+                                    //Retrieve the list of the themes for the actual language
+                                    List<ThemeObject> themesList =
+                                        await databaseManager
+                                            .retrieveThemesFromLanguage(
+                                                langFR ? 'fr' : 'nl');
+                                    ThemeObject? selectedTheme = themesList[0];
+                                    //Popup for choosing a theme
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        // Use StatefulBuilder to manage the state inside the dialog
+                                        return StatefulBuilder(
+                                          builder: (context, setState) {
+                                            return Dialog(
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(
+                                                    16.0), // Optional padding for aesthetics
+                                                child: Column(
+                                                  mainAxisSize: MainAxisSize
+                                                      .min, // Ensures the dialog is as small as needed
+                                                  children: [
+                                                    // Title for theme selection
+                                                    Text(langFR
+                                                        ? 'Veuillez choisir un thème pour ce dialogue:'
+                                                        : 'Kies een onderwerp voor deze dialoog:'),
+
+                                                    // Dropdown menu for themes
+                                                    DropdownButton<ThemeObject>(
+                                                      value: selectedTheme,
+                                                      onChanged: (ThemeObject?
+                                                          newValue) {
+                                                        setState(() {
+                                                          selectedTheme =
+                                                              newValue; // Update the selected theme
+                                                        });
+                                                      },
+                                                      items: themesList.map(
+                                                          (ThemeObject theme) {
+                                                        return DropdownMenuItem<
+                                                            ThemeObject>(
+                                                          value: theme,
+                                                          child:
+                                                              Text(theme.title),
+                                                        );
+                                                      }).toList(),
+                                                    ),
+
+                                                    //Buttons to cancel and validate
+                                                    Row(
+                                                      children: [
+                                                        //Cancel button
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          child: Text(langFR
+                                                              ? "Annuler"
+                                                              : "Annuleren"),
+                                                        ),
+                                                        //Validate button
+                                                        TextButton(
+                                                          onPressed: () async {
+                                                            //TODO insertion dialogue
+
+                                                            await databaseManager.insertDialog(DialogObject(
+                                                              sentence: _controller.text,
+                                                              language: langFR ? "fr" : "nl",
+                                                              id_theme: selectedTheme!.id_theme,
+                                                            ));
+
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          child: Text(langFR
+                                                              ? "Valider"
+                                                              : "Bevestigen"),
+                                                        ),
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      },
+                                    ).then((value) {
+                                      if (value != null) {
+                                        setState(() {
+                                          selectedTheme =
+                                              value; // Update the main widget with the selected theme
+                                        });
+                                      }
+                                    });
                                   },
                                   onTapCancel: () {
                                     setState(() {
