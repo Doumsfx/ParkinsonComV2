@@ -69,14 +69,12 @@ class PredictionsHandler {
   void _onTextChanged() {
     //Debouncing, avoid to be triggered twice
     if (_debounce?.isActive ?? false) _debounce?.cancel();
-    //TODO retirer les await et async
-    _debounce = Timer(const Duration(milliseconds: 400), () async { //Duration can be changed
+    _debounce = Timer(const Duration(milliseconds: 400), () { //Duration can be changed
       if (isFR) {
-        await predictFR(controller.text); //FR
+        predictFR(controller.text); //FR
       } else {
-        await predictNL(controller.text); //NL
+        predictNL(controller.text); //NL
       }
-      print(suggestedWordsList);
     });
   }
 

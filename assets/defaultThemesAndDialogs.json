@@ -1,0 +1,200 @@
+{
+    "fr": {
+        "Dialogue sans thème": [],
+        "Santé": [
+            "Vous présentez également la maladie de Parkinson, comme moi ?",
+            "Comment vivez-vous cela au quotidien ?",
+            "Quel impact la maladie a-t-elle sur votre vie sociale ?",
+            "Est-ce qu’il y a des choses qui vous aident au quotidien ? Cela pourrait m’être utile également.",
+            "Quel accompagnement médical et paramédical avez-vous ?",
+            "Est-ce que je peux avoir votre numéro de téléphone ou votre adresse email pour continuer à discuter avec vous ?",
+            "J’avais besoin de vous voir aujourd’hui car je voulais vous parler de mon état actuel.",
+            "Je me sens mieux.",
+            "Je me sens moins bien.",
+            "J'ai plus de symptômes que la dernière fois que l’on s’est vus",
+            "J'ai moins de symptômes que la dernière fois que l’on s’est vus",
+            "Quand pouvons-nous nous revoir ?",
+            "Pourriez-vous me noter notre prochain rendez-vous par écrit ?",
+            "J'ai la maladie de Parkinson. Mes problèmes principaux sont la raideur, la lenteur et la douleur.",
+            "Cette nuit, j'ai plutôt bien dormi, je suis allé(e) faire pipi deux fois mais je me suis vite rendormi(e). Je ne ressens pratiquement aucune douleur, le score est de 7 sur 10 pour mon bien-être.",
+            "Il m'est encore difficile de combler le délai entre les prises de médicaments ; je pense qu'un ajustement des médicaments est nécessaire.",
+            "Je n’arrive plus très bien à marcher. Parfois, je ne peux parcourir que 100 m et j'ai déjà mal à la jambe gauche.",
+            "Les médicaments que je prends se trouvent ici sur ma tablette, sous la rubrique rappels.",
+            "Tenez compte de mes rendez-vous de kiné et de mes visites chez le médecin avant de programmer une activité svp.",
+            "Saviez-vous que vous trouverez toujours des informations fiables et actuelles sur la maladie de Parkinson sur WWW.PARKINSONLIGA.BE et MEDINET.TV ?"
+        ],
+        "Loisirs": [
+            "Ça me ferait plaisir de faire cette sortie avec toi.",
+            "Quel jour et à quelle heure pourrions-nous y aller ?",
+            "Pourrais-tu passer me chercher pour que nous y allions ensemble ?"
+        ],
+        "Besoins": [
+            "Peux-tu passer un peu de temps avec moi ?",
+            "J’ai besoin de te parler.",
+            "J’aimerais que tu me racontes ta journée.",
+            "Je m’ennuie un peu, que pourrait-on faire comme activité ?",
+            "Qu'est ce qu'on pourrait faire ?"
+        ],
+        "Établir le contact": [
+            "Désolé(e), pouvez-vous m'aider s'il vous plaît ? J'ai la maladie de Parkinson et je dois prendre des médicaments de toute urgence. Mais je n'arrive pas à les retirer de mon sac. Pouvez-vous m'aider s'il vous plaît ? Dans mon sac se trouve un étui noir contenant des médicaments dans une boîte à compartiments : Pouvez-vous me donner les pilules dans le premier compartiment avec un verre d'eau ?",
+            "Bonjour, pouvez-vous m'aider s'il vous plaît ? Je me sens un peu étourdi(e). Probablement une baisse de tension, cela peut souvent arriver en cas de Parkinson. Puis-je m'asseoir sur une chaise ? Si je peux me reposer un peu et prendre mes médicaments, je pourrai repartir après.",
+            "Bonjour, pouvez-vous m'aider s'il vous plaît ? Je me sens un peu étourdi(e). Puis-je m'asseoir sur une chaise ? Si je peux me reposer un peu et prendre un peu de sel supplémentaire, ça ira ; je n’ai pas mes médicaments, pouvez-vous me fournir un snack salé (chips, noix, biscuits apéritifs…) ? Je vous paierai pour cela.",
+            "Bonjour, J'ai la maladie de Parkinson et je peux difficilement me déplacer en ce moment. C'est un symptôme secondaire de la maladie. Me tirer par le bras ne m'aide pas à avancer. Balancez-vous avec moi d’avant en arrière, mettez un pied en travers devant l'un de mes pieds. Comptez 1, 2 à chaque fois jusqu'à ce que je parvienne à enjamber votre pied et à avancer.",
+            "Bonjour, puis-je vous demander quelque chose ? J'ai la maladie de Parkinson et ça ne va pas bien pour le moment. Je voudrais rentrer chez moi. Pouvez-vous prévenir mon mari s'il vous plaît ? Vous trouverez son numéro sur mon portable sous la référence Papa. Merci."
+        ],
+        "Activités du soir": [
+            "Que prépares-tu à dîner aujourd'hui ?",
+            "Pour ce soir, j’ai envie de",
+            "J'aimerais manger ce soir à 20 heures, ainsi tout pourra être rangé à l'heure où commence mon programme télévisé préféré.",
+            "Je n'ai pas très faim. Tu me prépares juste un yaourt pour ce soir s’il te plaît ?",
+            "Peux-tu enregistrer (nom du programme télévisé) …… pour moi s’il te plaît, comme ça je pourrai regarder plus tard. Merci.",
+            "Tu joues avec moi (aux cartes, à un jeu de société…) …… ce soir ?",
+            "Tu viens ce soir (cet après-midi) pour jouer ensemble une partie de Rummikub ?",
+            "Quand pourrons-nous rejouer aux cartes ? Tu t’arranges avec les autres et tu me tiens au courant ? ",
+            "Puis-je dîner avant que l’infirmière vienne à .... heures ?",
+            "Peux-tu poser le pack thermique sur mon/mes (dos, cou, épaules) .... s’il te plaît, une fois que je me serai changé(e) ? Ça va soulager la douleur.",
+            "Veux-tu mettre mes médicaments et une bouteille d'eau à portée de main pour cette nuit s’il te plaît ?"
+        ],
+        "Prise de rendez-vous - Déplacement": [
+            "J’aimerais prendre le train pour ... Veux-tu venir avec moi en tant qu’accompagnateur ? J'emmène le fauteuil roulant, donc on devra demander de l'assistance dans les gares. Veux-tu vérifier avec le planificateur d’itinéraire quel train nous prenons à l'aller et au retour et réserver l'assistance auprès de la SNCF s'il te plaît ? Il faut composez le 36 35 puis tapez #45 ou dire « service » puis « Accès Plus ». C'est ouvert de 8h00 à 20h00, 7 jours sur 7.",
+            "J’ai rendez-vous cette semaine chez le/l’ (neurologue, dentiste, kinésithérapeute, orthophoniste, opticien,...) ... le ... Je ne peux pas y aller, parce que je suis malade. Peux-tu l’annuler pour moi et fixer un nouveau rendez-vous s’il te plaît ? Pour plus d'informations, consulte le SMS de rappel sur mon téléphone portable.",
+            "J’ai rendez-vous cette semaine chez le (pédicure, coiffeur….) ... le ... Je ne peux pas y aller, parce que je suis malade. Peux-tu l’annuler pour moi et fixer un nouveau rendez-vous s'il te plaît ?"
+        ],
+        "Météo et Actualités": [
+            "Peux-tu m’apporter (le journal, le magazine…) ... quand tu viens s'il te plaît ?",
+            "Tu sais quel temps il va faire aujourd'hui ? Que disent les prévisions météo ?",
+            "S'il fait froid aujourd'hui, je vais mettre un pull supplémentaire. Veux-tu régler le thermostat du chauffage à 20 degrés s’il te plaît ?",
+            "Avant de sortir, je dois mettre de la crème solaire. Veux-tu m’en mettre s’il te plaît ?",
+            "Il pleut tellement qu'on va rester à l'intérieur aujourd'hui. Je déteste ça.",
+            "Il va geler cette nuit, il me faudra une couverture supplémentaire sur mon lit.",
+            "Il a gelé cette nuit, est-ce que ça glisse ? Ont-ils déjà salé les routes ?",
+            "Il va faire très chaud aujourd'hui, laisse les stores baissés.",
+            "Je voudrais regarder le programme (le journal de midi, nom d’un autre programme) ... tout à l'heure. Peux-tu configurer cela s'il te plaît ?"
+        ],
+        "Enfant - Famille - Amis": [
+            "Quand as-tu eu des nouvelles de (nom d’un enfant, d'un petit-enfant, d’une personne de la famille, d’un ami) ... Avaient-ils des nouvelles ?",
+            "Ça fait encore longtemps que (nom d’un enfant, d'un petit-enfant, d’une personne de la famille, d’un ami) ... n'est pas venu(e). Veux-tu inviter ... s'il te plaît ?",
+            "Comment ça se passe au travail ?",
+            "Comment ça va à l'école ?",
+            "Comment s'est passé le voyage ?",
+            "Quand pars-tu en voyage ? Où vas-tu maintenant ?",
+            "Envie de boire un café ensemble ?",
+            "Veux-tu m’accompagner au concert de .... ?",
+            "Veux-tu qu’on aille se promener ?"
+        ],
+        "Télévision": [
+            "Peux-tu allumer la (radio, télé) s’il te plaît ?",
+            "Peux-tu enregistrer la série à venir (nom du programme télévisé) ... s’il te plaît ?"
+        ],
+        "Vacances et voyages" : [
+            "La brochure de voyage de Samana est arrivée. On va voir si on y trouve quelque chose ?",
+            "Quels sont nos choix ? Où, quand, en bus ? Quelle est la température là-bas ? Quelle aide pouvons-nous y demander ?"
+        ],
+        "Comment est-ce que je me sens" : [
+            "J'ai la maladie de Parkinson. Mes problèmes principaux sont la raideur, la lenteur et la douleur.",
+            "Cette nuit, j'ai plutôt bien dormi, je suis allé(e) faire pipi deux fois mais je me suis vite rendormi(e). Je ne ressens pratiquement aucune douleur, le score est de 7 sur 10 pour mon bien-être.",
+            "Il m'est encore difficile de rester bien jusqu'à la prise de médicaments suivante ; je pense qu'un ajustement des médicaments est nécessaire.",
+            "Je n’arrive plus très bien à marcher. Parfois, je ne peux parcourir que 100 m et j'ai déjà mal à la jambe gauche."
+        ]
+
+    },
+    "nl": {
+        "Dialoog zonder onderwerp" : [],
+        "Gezondheid": [
+            "Hebt u ook Parkinson, net als ik?",
+            "Hoe gaat u daar dagelijks mee om?",
+            "Welke invloed heeft de ziekte op uw sociale leven?",
+            "Zijn er dingen die u helpen in het dagelijks leven? Dat kan voor mij ook nuttig zijn.",
+            "Welke medische en paramedische begeleiding heeft u?",
+            "Kan ik uw telefoonnummer of e-mailadres krijgen zodat we contact kunnen houden?",
+            "Ik moest je vandaag zien omdat ik met je wilde praten over mijn huidige toestand.",
+            "Ik voel me beter.",
+            "Ik voel me minder goed.",
+            "Ik heb meer symptomen dan de laatste keer dat we elkaar zagen.",
+            "Ik heb minder symptomen dan de laatste keer dat we elkaar zagen.",
+            "Wanneer kunnen we elkaar weer ontmoeten?",
+            "Kunt u onze volgende afspraak voor mij opschrijven?",
+            "Ik heb de ziekte van Parkinson. Mijn belangrijkste problemen zijn stijfheid, traagheid en pijn.",
+            "Ik heb vannacht redelijk goed geslapen, ik ben twee keer naar het toilet gegaan maar ik ben snel weer in slaap gevallen. Ik heb bijna geen pijn, mijn welzijnsscore is 7 op 10.",
+            "Ik heb nog steeds moeite om het tijdsinterval tussen de medicatie-inname te overbruggen; ik denk dat er een aanpassing van de medicatie nodig is.",
+            "Ik kan niet meer goed lopen. Soms kan ik maar 100 meter afleggen en heb ik al pijn in mijn linkerbeen.",
+            "De medicijnen die ik neem, staan hier op mijn tablet onder de rubriek herinneringen.",
+            "Houd rekening met mijn fysiotherapieafspraken en doktersbezoeken voordat u een activiteit plant, alstublieft.",
+            "Wist u dat u altijd betrouwbare en actuele informatie over de ziekte van Parkinson kunt vinden op WWW.PARKINSONLIGA.BE en MEDINET.TV?"
+        ],
+        "Hobby's": [
+            "Ik zou het leuk vinden om deze uitstap met jou te maken.",
+            "Welke dag en welk tijdstip zouden we kunnen gaan?",
+            "Kun je me komen ophalen zodat we samen kunnen gaan?"
+        ],
+        "Behoeften": [
+            "Kun je wat tijd met me doorbrengen?",
+            "Ik moet met je praten.",
+            "Ik wil graag dat je me vertelt over je dag.",
+            "Ik verveel me een beetje, wat zouden we kunnen doen als activiteit?",
+            "Wat kunnen we doen?"
+        ],
+        "Contact leggen": [
+            "Sorry, kunt u me alstublieft helpen? Ik heb de ziekte van Parkinson en ik moet dringend mijn medicijnen innemen. Maar ik kan ze niet uit mijn tas krijgen. Kunt u me alstublieft helpen? In mijn tas zit een zwarte etui met medicijnen in een compartimentendoosje: Kunt u me de pillen uit het eerste compartiment geven met een glas water?",
+            "Hallo, kunt u me alstublieft helpen? Ik voel me een beetje duizelig. Waarschijnlijk een bloeddrukdaling, dat kan vaak voorkomen bij Parkinson. Mag ik even zitten op een stoel? Als ik even kan rusten en mijn medicijnen kan innemen, kan ik daarna weer verder.",
+            "Hallo, kunt u me alstublieft helpen? Ik voel me een beetje duizelig. Mag ik even zitten op een stoel? Als ik even kan rusten en wat extra zout kan nemen, komt het wel goed; ik heb mijn medicijnen niet bij me, kunt u me een zoute snack geven (chips, noten, borrelhapjes...)? Ik zal u ervoor betalen.",
+            "Hallo, ik heb de ziekte van Parkinson en ik kan me op dit moment moeilijk verplaatsen. Dit is een secundair symptoom van de ziekte. Me aan mijn arm trekken helpt me niet vooruit. Schommel met me van voor naar achteren, zet een voet dwars voor een van mijn voeten. Tel 1, 2 telkens totdat ik over uw voet heen kan stappen en verder kan gaan.",
+            "Hallo, mag ik u iets vragen? Ik heb de ziekte van Parkinson en het gaat momenteel niet goed. Ik wil graag naar huis. Kunt u mijn man waarschuwen, alstublieft? U vindt zijn nummer op mijn telefoon onder de naam Papa. Bedankt."
+        ],
+        "Avondactiviteiten": [
+            "Wat maak je vandaag voor het avondeten?",
+            "Vanavond heb ik zin in",
+            "Ik wil vanavond om 20.00 uur eten, zodat alles opgeruimd is tegen de tijd dat mijn favoriete televisieprogramma begint.",
+            "Ik heb niet veel honger. Maak je gewoon een yoghurt voor vanavond, alsjeblieft?",
+            "Kun je (naam tv-programma) voor me opnemen zodat ik het later kan bekijken? Bedankt.",
+            "Wil je vanavond (kaarten, een bordspel...) met me spelen?",
+            "Kom je vanavond (vanmiddag) om samen een potje Rummikub te spelen?",
+            "Wanneer kunnen we weer kaarten? Regel het maar met de anderen en laat het me weten.",
+            "Mag ik eten voordat de verpleegkundige komt om .... uur?",
+            "Kun je de warmtepack op mijn (rug, nek, schouders) leggen, alstublieft, zodra ik me heb omgekleed? Dat zal de pijn verlichten.",
+            "Wil je mijn medicijnen en een fles water binnen handbereik leggen voor vannacht, alstublieft?"
+        ],
+        "Afspraken maken verplaatsing": [
+            "Ik wil graag de trein nemen naar ... Wil je met me meegaan als begeleider? Ik neem de rolstoel mee, dus we moeten om assistentie vragen op de stations. Wil je met de routeplanner kijken welke trein we heen en terug nemen en assistentie reserveren bij de NMBS, alstublieft? Bel dan naar 02/528 28 28 of stuur een e-mail naar assistance@b-rail.be. Ze zijn geopend van 7:00 tot 21:30, 7 dagen per week.",
+            "Ik heb deze week een afspraak bij de (neuroloog, tandarts, fysiotherapeut, logopedist, opticien...) ... op ... Ik kan niet gaan omdat ik ziek ben. Kun je de afspraak voor me annuleren en een nieuwe afspraak maken, alstublieft? Raadpleeg voor meer informatie de herinnerings-SMS op mijn mobiele telefoon.",
+            "Ik heb deze week een afspraak bij de (pedicure, kapper...) ... op ... Ik kan niet gaan omdat ik ziek ben. Kun je de afspraak voor me annuleren en een nieuwe afspraak maken, alstublieft?"
+        ],
+        "Het weer en het nieuws - Actualiteit": [
+            "Kun je me (de krant, het tijdschrift...) meenemen als je komt, alstublieft?",
+            "Weet je wat voor weer het vandaag wordt? Wat zeggen de weersvoorspellingen?",
+            "Als het vandaag koud is, trek ik een extra trui aan. Wil je de thermostaat op 20 graden zetten, alstublieft?",
+            "Voordat ik naar buiten ga, moet ik zonnebrandcrème aanbrengen. Wil je dat voor me doen, alstublieft?",
+            "Het regent zo hard dat we vandaag binnen blijven. Ik heb er een hekel aan.",
+            "Het gaat vannacht vriezen, ik heb een extra deken nodig op mijn bed.",
+            "Het heeft vannacht gevroren, is het glad? Hebben ze de wegen al gestrooid?",
+            "Het wordt vandaag erg warm, laat de zonwering omlaag.",
+            "Ik wil straks het programma (het middagjournaal, naam ander programma) kijken. Kun je dat instellen, alstublieft?"
+        ],
+        "Kinderen – Kleinkinderen – Familie - Vrienden": [
+            "Wanneer heb je voor het laatst iets gehoord van (naam van een kind, kleinkind, familielid, vriend) ... Hadden ze nieuws?",
+            "Het is alweer lang geleden dat (naam van een kind, kleinkind, familielid, vriend) ... is langsgekomen. Wil je ze uitnodigen, alstublieft?",
+            "Hoe gaat het op je werk?",
+            "Hoe gaat het op school?",
+            "Hoe was de reis?",
+            "Wanneer ga je op reis? Waar ga je nu heen?",
+            "Zin om samen koffie te drinken?",
+            "Wil je met me meegaan naar het concert van ....?",
+            "Wil je samen een wandeling maken?"
+        ],
+        "TV": [
+            "Kun je de (radio, tv) aanzetten, alstublieft?",
+            "Kun je de komende serie (naam tv-programma) ... opnemen, alstublieft?"
+        ],
+        "Vakantie en reizen" : [
+            "De reisbrochure van Samana is binnen; Zullen we eens kijken of  we er iets in vinden?",
+            "wat zijn onze keuzes? Waar, wanneer, met de bus ? Hoe warm is het daar dan? Welke hulp kunnen we er vragen?"
+        ],
+        "Hoe voel ik me?" : [
+            "Ik heb de ziekte van Parkinson. Mijn voornaamste problemen hierbij zijn stijf zijn traag zijn, en  pijn.",
+            "Deze nacht heb ik redelijk goed geslapen, Ik ben twee maal gaan plassen maar sliep snel terug in. Ik voel nauwelijks pijn. de score is 7 op 10 voor mijn welbevinden.",
+            "De tijd tussen de medicaties kan ik nog moeilijk overbruggen; Ik denk dat aanpassing nodig is van de medicatie.",
+            "Het stappen gaat niet meer zo goed. Soms kan ik maar 100 m stappen zetten en ik krijg reeds pijn in mijn linker been."
+        ]
+
+    }
+}

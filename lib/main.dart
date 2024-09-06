@@ -8,10 +8,15 @@ import 'package:parkinson_com_v2/customShape.dart';
 import 'package:parkinson_com_v2/keyboard.dart';
 import 'package:parkinson_com_v2/variables.dart';
 
+import 'models/database/dialog.dart';
+
 void main() {
   // We put the game in full screen mode
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+
+  //First initialization of the database manager when launching the app
+  databaseManager.initDB();
 
   // We ensure that the phone preserve the landscape mode
   SystemChrome.setPreferredOrientations([
@@ -39,7 +44,6 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
-
   final String title;
 
   @override
@@ -1062,6 +1066,12 @@ class _MyHomePageState extends State<MyHomePage> {
                                     });
                                     // BUTTON CODE
                                     print("SAVEEEEEEEEE");
+                                    //TODO Save the dialog in the database
+                                    databaseManager.insertDialog(DialogObject(
+                                      sentence: _controller.text,
+                                      language: langFR ? "fr" : "nl",
+                                      id_theme: 1,
+                                    ));
                                   },
                                   onTapCancel: () {
                                     setState(() {
