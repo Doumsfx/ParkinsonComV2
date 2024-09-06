@@ -1,6 +1,6 @@
 // Dialog Page
 // Code by Alexis Pagnon and Sanchez Adam
-// ParkinsonCom
+// ParkinsonCom V2
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -60,8 +60,8 @@ class _MyHomePageState extends State<MyHomePage> {
     "RELAX": false,
     "BACK ARROW": false,
   };
-  TextEditingController _controller = TextEditingController();
-  ScrollController _scrollController = ScrollController();
+  final TextEditingController _controller = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
   late CustomKeyboard customKeyboard;
 
   @override
@@ -72,16 +72,16 @@ class _MyHomePageState extends State<MyHomePage> {
     /*
     // Add listener to scroll automatically
     _controller.addListener(() {
-      // Scroll tout en bas dès que le texte change
-      if(_controller.selection.start == _controller.text.length){
-        print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        print(_controller.selection.extentOffset);
+      // Vérifie si le curseur est à la fin du texte
+      if (_controller.selection.extentOffset == _controller.text.length) {
+        print(_controller.selection.extent);
         print(_controller.text.length);
-        print(_controller.text);
-        _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+        _scrollController.jumpTo(_scrollController.position.maxScrollExtent,);
       }
     });
+    */
 
+    /*
     _scrollController.addListener(() {
       print(_scrollController.offset);
     });
@@ -215,11 +215,10 @@ class _MyHomePageState extends State<MyHomePage> {
                               : MediaQuery.of(context).size.width * 0.85,
                           child: Padding(
                             padding: EdgeInsets.fromLTRB(
-                              MediaQuery.of(context).size.width * 0.03,
-                              0,
-                              0,
-                              MediaQuery.of(context).size.height * 0.03,
-                            ),
+                                MediaQuery.of(context).size.width * 0.03,
+                                0,
+                                0,
+                                MediaQuery.of(context).size.height * 0.03),
                             child: Container(
                               decoration: BoxDecoration(
                                 color: Colors.white,
@@ -231,19 +230,24 @@ class _MyHomePageState extends State<MyHomePage> {
                               ),
                               child: Row(
                                 children: [
-                                  // Constraints of size with SizedBox
+                                  // TextField
                                   SizedBox(
                                     width: MediaQuery.of(context).size.width *
                                         0.73,
-                                    height: MediaQuery.of(context).size.width *
-                                        0.5, // PAS SUR
-
-                                    child: Scrollbar(
+                                    height:
+                                        MediaQuery.of(context).size.width * 0.5,
+                                    child: RawScrollbar(
+                                      thumbColor: Colors.blue,
                                       controller: _scrollController,
-                                      thickness: 40,
-                                      thumbVisibility: true,
                                       trackVisibility: true,
-                                      radius: Radius.circular(20),
+                                      thumbVisibility: true,
+                                      thickness: 10,
+                                      radius: const Radius.circular(20),
+                                      trackColor:
+                                          const Color.fromRGBO(66, 89, 109, 1),
+                                      crossAxisMargin: 5,
+                                      mainAxisMargin: 5,
+                                      trackRadius: const Radius.circular(20),
                                       child: TextField(
                                         scrollController: _scrollController,
                                         scrollPhysics:
@@ -277,10 +281,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                           });
                                           print("TOUCHEEEEEEEEEEEEEEE");
                                         },
-
-                                        // Permet d'enlever la selection, mais lorsqu'on l'enlève la scrollbar ne fonctionne plus
                                         enableInteractiveSelection: true,
-
                                         minLines:
                                             MediaQuery.of(context).size.height >
                                                     600
@@ -351,9 +352,13 @@ class _MyHomePageState extends State<MyHomePage> {
                                       ),
                                     ),
                                   ),
+
+                                  // Spacing between the TextField and the image
                                   SizedBox(
                                       width: MediaQuery.of(context).size.width *
-                                          0.01), // Espace entre le TextFormField et l'image
+                                          0.01),
+
+                                  // Erase and TTS
                                   Column(
                                     children: [
                                       SizedBox(
@@ -368,7 +373,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                         duration: Duration(milliseconds: 100),
                                         curve: Curves.bounceIn,
                                         child: GestureDetector(
-                                          // Gestion des animations de touches
+                                          // Animation management
                                           onTapDown: (_) {
                                             setState(() {
                                               _buttonAnimations["ERASE"] = true;
@@ -402,9 +407,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                           ),
                                         ),
                                       ),
-                                      Expanded(
-                                          child:
-                                              SizedBox()), // Espacement au milieu
+
+                                      // Space between
+                                      const Expanded(child: SizedBox()),
+
                                       AnimatedScale(
                                         scale: _buttonAnimations["TTS"]!
                                             ? 1.1
@@ -412,7 +418,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                         duration: Duration(milliseconds: 100),
                                         curve: Curves.bounceIn,
                                         child: GestureDetector(
-                                          // Gestion des animations de touches
+                                          // Animation management
                                           onTapDown: (_) {
                                             setState(() {
                                               _buttonAnimations["TTS"] = true;
@@ -421,7 +427,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                           onTapUp: (_) {
                                             setState(() {
                                               _buttonAnimations["TTS"] = false;
-                                              // code du TTS
+                                              // TODO code du TTS
+                                              // Je pense que le mieux est de faire une fonction que l'on appelle juste ici
                                             });
                                           },
                                           onTapCancel: () {
@@ -470,11 +477,12 @@ class _MyHomePageState extends State<MyHomePage> {
                                   duration: const Duration(milliseconds: 100),
                                   curve: Curves.bounceOut,
                                   child: GestureDetector(
-                                    // Gestion des animations de touches
+                                    // Animation management
                                     onTap: () {
                                       _scrollController.animateTo(
                                         _scrollController.offset - 50,
-                                        duration: Duration(milliseconds: 500),
+                                        duration:
+                                            const Duration(milliseconds: 500),
                                         curve: Curves.easeIn,
                                       );
                                     },
@@ -483,7 +491,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                       _scrollController.animateTo(
                                         _scrollController
                                             .position.minScrollExtent,
-                                        duration: Duration(milliseconds: 1),
+                                        duration:
+                                            const Duration(milliseconds: 1),
                                         curve: Curves.easeIn,
                                       );
                                     },
@@ -524,7 +533,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                         borderRadius: BorderRadius.circular(
                                             MediaQuery.of(context).size.width *
                                                 0.01),
-                                        color: Color.fromRGBO(101, 72, 254, 1),
+                                        color: const Color.fromRGBO(
+                                            101, 72, 254, 1),
                                       ),
                                       child: Transform.rotate(
                                         angle: 1.5708,
@@ -554,24 +564,11 @@ class _MyHomePageState extends State<MyHomePage> {
                                         MediaQuery.of(context).size.width *
                                             0.02),
                                     //color: Colors.black,
-                                    color:
-                                        Color.fromRGBO(66, 89, 109, 1), // Grey
+                                    color: const Color.fromRGBO(
+                                        66, 89, 109, 1), // Grey
                                   ),
 
-                                  /*
-                          child: Scrollbar(
-                            controller: _scrollController,
-                            thumbVisibility: true,
-                            trackVisibility: true,
-                            interactive: true,
-                            thickness: MediaQuery.of(context).size.height * 0.025,
-                            radius: Radius.circular(MediaQuery.of(context).size.width * 0.02),
-                            child: SingleChildScrollView(
-                              controller: _scrollController,
-                              scrollDirection: Axis.vertical,
-                            ),
-                          ),
-                          */
+                                  // CODE POTENTIEL D'UNE SCROLLBAR
                                 ),
                                 AnimatedScale(
                                   scale: _buttonAnimations["BOT ARROW"]!
@@ -580,11 +577,12 @@ class _MyHomePageState extends State<MyHomePage> {
                                   duration: const Duration(milliseconds: 100),
                                   curve: Curves.bounceOut,
                                   child: GestureDetector(
-                                    // Gestion des animations de touches
+                                    // Animation management
                                     onTap: () {
                                       _scrollController.animateTo(
                                         _scrollController.offset + 50,
-                                        duration: Duration(milliseconds: 500),
+                                        duration:
+                                            const Duration(milliseconds: 500),
                                         curve: Curves.easeIn,
                                       );
                                     },
@@ -593,7 +591,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                       _scrollController.animateTo(
                                         _scrollController
                                             .position.maxScrollExtent,
-                                        duration: Duration(milliseconds: 1),
+                                        duration:
+                                            const Duration(milliseconds: 1),
                                         curve: Curves.easeIn,
                                       );
                                     },
@@ -633,7 +632,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                         borderRadius: BorderRadius.circular(
                                             MediaQuery.of(context).size.width *
                                                 0.01),
-                                        color: Color.fromRGBO(101, 72, 254, 1),
+                                        color: const Color.fromRGBO(
+                                            101, 72, 254, 1),
                                       ),
                                       child: Transform.rotate(
                                         angle: -1.5708,
@@ -655,7 +655,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         : Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // Scroll wigets
+                              // Scroll widgets
                               Container(
                                 margin: EdgeInsets.fromLTRB(
                                     MediaQuery.of(context).size.width * 0.01,
@@ -674,12 +674,12 @@ class _MyHomePageState extends State<MyHomePage> {
                                           const Duration(milliseconds: 100),
                                       curve: Curves.bounceOut,
                                       child: GestureDetector(
-                                        // Gestion des animations de touches
+                                        // Animation management
                                         onTap: () {
                                           _scrollController.animateTo(
                                             _scrollController.offset - 50,
-                                            duration:
-                                                Duration(milliseconds: 500),
+                                            duration: const Duration(
+                                                milliseconds: 500),
                                             curve: Curves.easeIn,
                                           );
                                         },
@@ -688,7 +688,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                           _scrollController.animateTo(
                                             _scrollController
                                                 .position.minScrollExtent,
-                                            duration: Duration(milliseconds: 1),
+                                            duration:
+                                                const Duration(milliseconds: 1),
                                             curve: Curves.easeIn,
                                           );
                                         },
@@ -740,8 +741,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                                         .size
                                                         .width *
                                                     0.01),
-                                            color:
-                                                Color.fromRGBO(101, 72, 254, 1),
+                                            color: const Color.fromRGBO(
+                                                101, 72, 254, 1),
                                           ),
                                           child: Transform.rotate(
                                             angle: 1.5708,
@@ -773,24 +774,24 @@ class _MyHomePageState extends State<MyHomePage> {
                                             MediaQuery.of(context).size.width *
                                                 0.02),
                                         //color: Colors.black,
-                                        color: Color.fromRGBO(
+                                        color: const Color.fromRGBO(
                                             66, 89, 109, 1), // Grey
                                       ),
 
                                       /*
-                          child: Scrollbar(
-                            controller: _scrollController,
-                            thumbVisibility: true,
-                            trackVisibility: true,
-                            interactive: true,
-                            thickness: MediaQuery.of(context).size.height * 0.025,
-                            radius: Radius.circular(MediaQuery.of(context).size.width * 0.02),
-                            child: SingleChildScrollView(
-                              controller: _scrollController,
-                              scrollDirection: Axis.vertical,
-                            ),
-                          ),
-                          */
+                                child: Scrollbar(
+                                  controller: _scrollController,
+                                  thumbVisibility: true,
+                                  trackVisibility: true,
+                                  interactive: true,
+                                  thickness: MediaQuery.of(context).size.height * 0.025,
+                                  radius: Radius.circular(MediaQuery.of(context).size.width * 0.02),
+                                  child: SingleChildScrollView(
+                                    controller: _scrollController,
+                                    scrollDirection: Axis.vertical,
+                                  ),
+                                ),
+                                */
                                     ),
                                     AnimatedScale(
                                       scale: _buttonAnimations["BOT ARROW"]!
@@ -800,12 +801,12 @@ class _MyHomePageState extends State<MyHomePage> {
                                           const Duration(milliseconds: 100),
                                       curve: Curves.bounceOut,
                                       child: GestureDetector(
-                                        // Gestion des animations de touches
+                                        // Animation management
                                         onTap: () {
                                           _scrollController.animateTo(
                                             _scrollController.offset + 50,
-                                            duration:
-                                                Duration(milliseconds: 500),
+                                            duration: const Duration(
+                                                milliseconds: 500),
                                             curve: Curves.easeIn,
                                           );
                                         },
@@ -814,7 +815,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                           _scrollController.animateTo(
                                             _scrollController
                                                 .position.maxScrollExtent,
-                                            duration: Duration(milliseconds: 1),
+                                            duration:
+                                                const Duration(milliseconds: 1),
                                             curve: Curves.easeIn,
                                           );
                                         },
@@ -863,8 +865,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                                         .size
                                                         .width *
                                                     0.01),
-                                            color:
-                                                Color.fromRGBO(101, 72, 254, 1),
+                                            color: const Color.fromRGBO(
+                                                101, 72, 254, 1),
                                           ),
                                           child: Transform.rotate(
                                             angle: -1.5708,
@@ -893,6 +895,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     duration: const Duration(milliseconds: 100),
                                     curve: Curves.bounceOut,
                                     child: GestureDetector(
+                                      // Animation management
                                       onTapDown: (_) {
                                         setState(() {
                                           _buttonAnimations["HELP"] = true;
@@ -902,7 +905,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                         setState(() {
                                           _buttonAnimations["HELP"] = false;
                                         });
-                                        // CODE DU BOUTON
+                                        // BUTTON CODE
                                         print("HELLLLLLLLLLP");
                                       },
                                       onTapCancel: () {
@@ -910,6 +913,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                           _buttonAnimations["HELP"] = false;
                                         });
                                       },
+
                                       child: Container(
                                         margin: EdgeInsets.fromLTRB(
                                             0,
@@ -947,7 +951,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                         setState(() {
                                           _buttonAnimations["HOME"] = false;
                                         });
-                                        // CODE DU BOUTON
+                                        // BUTTON CODE
                                         print("HOMEEEEEEEEEEEEEEEEE");
                                       },
                                       onTapCancel: () {
@@ -991,7 +995,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                         setState(() {
                                           _buttonAnimations["RELAX"] = false;
                                         });
-                                        // CODE DU BOUTON
+                                        // BUTTON CODE
                                         print("RELAAAAAAAAAX");
                                       },
                                       onTapCancel: () {
@@ -1009,7 +1013,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                         padding: EdgeInsets.all(
                                             MediaQuery.of(context).size.width *
                                                 0.01),
-                                        decoration: BoxDecoration(
+                                        decoration: const BoxDecoration(
                                           color:
                                               Color.fromRGBO(160, 208, 86, 1),
                                           shape: BoxShape.circle,
@@ -1027,119 +1031,134 @@ class _MyHomePageState extends State<MyHomePage> {
                   ],
                 ),
 
-                // Keyboard
-                if (value)
-                  Expanded(child: customKeyboard)
-                else
-                  Column(
-                    children: [
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.02,
-                      ),
-                      Row(
+                // Second part
+                value
+                    // Keyboard
+                    ? Expanded(
+                        child: CustomKeyboard(
+                        controller: _controller,
+                        textPredictions: true,
+                      ))
+                    // Buttons
+                    : Column(
                         children: [
-                          AnimatedScale(
-                            scale:
-                                _buttonAnimations["SAVE"] == true ? 1.1 : 1.0,
-                            duration: const Duration(milliseconds: 100),
-                            curve: Curves.bounceOut,
-                            child: GestureDetector(
-                              onTapDown: (_) {
-                                setState(() {
-                                  _buttonAnimations["SAVE"] = true;
-                                });
-                              },
-                              onTapUp: (_) {
-                                setState(() {
-                                  _buttonAnimations["SAVE"] = false;
-                                });
-                                // CODE DU BOUTON
-                                print("SAVEEEEEEEEE");
-                              },
-                              onTapCancel: () {
-                                setState(() {
-                                  _buttonAnimations["SAVE"] = false;
-                                });
-                              },
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(60)),
-                                  color: const Color.fromRGBO(255, 183, 34, 1),
-                                ),
-                                padding: EdgeInsets.fromLTRB(
-                                    MediaQuery.of(context).size.width * 0.02,
-                                    MediaQuery.of(context).size.width * 0.015,
-                                    MediaQuery.of(context).size.width * 0.02,
-                                    MediaQuery.of(context).size.width * 0.015),
-                                margin: EdgeInsets.fromLTRB(
-                                    MediaQuery.of(context).size.width * 0.05,
-                                    0,
-                                    0,
-                                    0),
-                                child: Text(
-                                  langFR
-                                      ? "Enregistrer nouveau"
-                                      : "   Nieuw opslaan   ",
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.02,
+                          ),
+                          Row(
+                            children: [
+                              AnimatedScale(
+                                scale: _buttonAnimations["SAVE"] == true
+                                    ? 1.1
+                                    : 1.0,
+                                duration: const Duration(milliseconds: 100),
+                                curve: Curves.bounceOut,
+                                child: GestureDetector(
+                                  // Animation management
+                                  onTapDown: (_) {
+                                    setState(() {
+                                      _buttonAnimations["SAVE"] = true;
+                                    });
+                                  },
+                                  onTapUp: (_) {
+                                    setState(() {
+                                      _buttonAnimations["SAVE"] = false;
+                                    });
+                                    // BUTTON CODE
+                                    print("SAVEEEEEEEEE");
+                                  },
+                                  onTapCancel: () {
+                                    setState(() {
+                                      _buttonAnimations["SAVE"] = false;
+                                    });
+                                  },
+                                  child: Container(
+                                    decoration: const BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(60)),
+                                      color: Color.fromRGBO(255, 183, 34, 1),
+                                    ),
+                                    padding: EdgeInsets.fromLTRB(
+                                        MediaQuery.of(context).size.width *
+                                            0.02,
+                                        MediaQuery.of(context).size.width *
+                                            0.015,
+                                        MediaQuery.of(context).size.width *
+                                            0.02,
+                                        MediaQuery.of(context).size.width *
+                                            0.015),
+                                    margin: EdgeInsets.fromLTRB(
+                                        MediaQuery.of(context).size.width *
+                                            0.05,
+                                        0,
+                                        0,
+                                        0),
+                                    child: Text(
+                                      langFR
+                                          ? "Enregistrer nouveau"
+                                          : "   Nieuw opslaan   ",
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ),
-                          const Expanded(
-                            child: SizedBox(),
-                          ),
-                          AnimatedScale(
-                            scale:
-                                _buttonAnimations["SEND"] == true ? 1.1 : 1.0,
-                            duration: const Duration(milliseconds: 100),
-                            curve: Curves.bounceOut,
-                            child: GestureDetector(
-                              onTapDown: (_) {
-                                setState(() {
-                                  _buttonAnimations["SEND"] = true;
-                                });
-                              },
-                              onTapUp: (_) {
-                                setState(() {
-                                  _buttonAnimations["SEND"] = false;
-                                });
-                                // CODE DU BOUTON
-                                print("SENDDDDDDDDDDD");
-                              },
-                              onTapCancel: () {
-                                setState(() {
-                                  _buttonAnimations["SEND"] = false;
-                                });
-                              },
-                              child: Container(
-                                margin: EdgeInsets.fromLTRB(
-                                    0,
-                                    0,
-                                    MediaQuery.of(context).size.width * 0.08,
-                                    0),
-                                child: CustomShape(
-                                  image: "assets/enveloppe.png",
-                                  text: langFR
-                                      ? "Envoyer à un contact"
-                                      : "Stuur naar een contact",
-                                  scale: MediaQuery.of(context).size.width *
-                                      0.0013,
-                                  backgroundColor:
-                                      Color.fromRGBO(12, 178, 255, 1),
-                                  textColor: Colors.white,
+                              const Expanded(
+                                child: SizedBox(),
+                              ),
+                              AnimatedScale(
+                                scale: _buttonAnimations["SEND"] == true
+                                    ? 1.1
+                                    : 1.0,
+                                duration: const Duration(milliseconds: 100),
+                                curve: Curves.bounceOut,
+                                child: GestureDetector(
+                                  // Animation management
+                                  onTapDown: (_) {
+                                    setState(() {
+                                      _buttonAnimations["SEND"] = true;
+                                    });
+                                  },
+                                  onTapUp: (_) {
+                                    setState(() {
+                                      _buttonAnimations["SEND"] = false;
+                                    });
+                                    // BUTTON CODE
+                                    print("SENDDDDDDDDDDD");
+                                  },
+                                  onTapCancel: () {
+                                    setState(() {
+                                      _buttonAnimations["SEND"] = false;
+                                    });
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.fromLTRB(
+                                        0,
+                                        0,
+                                        MediaQuery.of(context).size.width *
+                                            0.08,
+                                        0),
+                                    child: CustomShape(
+                                      image: "assets/enveloppe.png",
+                                      text: langFR
+                                          ? "Envoyer à un contact"
+                                          : "Stuur naar een contact",
+                                      scale: MediaQuery.of(context).size.width *
+                                          0.0013,
+                                      backgroundColor:
+                                          const Color.fromRGBO(12, 178, 255, 1),
+                                      textColor: Colors.white,
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
+                            ],
                           ),
                         ],
                       ),
-                    ],
-                  ),
               ],
             );
           }),

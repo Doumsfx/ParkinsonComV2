@@ -1,6 +1,6 @@
 // CustomKeyboard Widget
 // Code by Alexis Pagnon and Sanchez Adam
-// ParkinsonCom
+// ParkinsonCom V2
 
 import 'package:flutter/material.dart';
 import 'package:parkinson_com_v2/models/prediction.dart';
@@ -110,8 +110,6 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
   // Function that manages actions based on keys pressed
   void _onKeyPress(String? keyText) {
     print('Key pressed: $keyText');
-    print('Height: ${MediaQuery.of(context).size.height}');
-    print('Width: ${MediaQuery.of(context).size.width}');
 
     // If it's the first key
     if (_firstKey && keyText != "MAJ" && keyText != "VALIDATE") {
@@ -343,8 +341,8 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
                       type: VirtualKeyboardType.Custom,
                       keys: _keyboard,
                       builder: (context, key) {
-                        // On définit la taille des touches ainsi que la taille de police
-                        Size tailleTouche = key.text == "ESPACE"
+                        // We define the size of the keys as well as the font size
+                        Size keySize = key.text == "ESPACE"
                             ? Size(MediaQuery.of(context).size.width / 2.2,
                                 MediaQuery.of(context).size.height / 11)
                             : key.text == "?123" || key.text == "ABC"
@@ -353,7 +351,7 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
                                 : Size(MediaQuery.of(context).size.width / 13,
                                     MediaQuery.of(context).size.height / 11);
 
-                        double tailleFont =
+                        double fontSize =
                             key.text == "?123" || key.text == "ABC" ? 17 : 20;
 
                         Color couleurFond = key.text == "MAJ" ||
@@ -401,11 +399,12 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
                                     borderRadius: BorderRadius.circular(8.0),
                                   ),
                                   backgroundColor: couleurFond,
-                                  fixedSize: tailleTouche,
+                                  fixedSize: keySize,
                                   minimumSize: const Size(0, 0),
                                   alignment: Alignment.center,
-                                  tapTargetSize: MaterialTapTargetSize
-                                      .shrinkWrap, // Permet de définir la taille de clique seulement sur le bouton
+                                  // Allows you to define the click size only on the button
+                                  tapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
                                 ),
                                 onPressed: () {
                                   _onKeyPress(key.text);
@@ -425,7 +424,7 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
                                             ? "-"
                                             : key.text.toString(),
                                         style: TextStyle(
-                                          fontSize: tailleFont,
+                                          fontSize: fontSize,
                                           color: Colors.white,
                                           fontWeight: FontWeight.w600,
                                         ),
@@ -493,6 +492,7 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
                         duration: const Duration(milliseconds: 100),
                         curve: Curves.bounceOut,
                         child: GestureDetector(
+                          // Animation management
                           onTapDown: (_) {
                             setState(() {
                               _buttonAnimations["BACKSPACE"] = true;
@@ -535,6 +535,7 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
                         duration: const Duration(milliseconds: 100),
                         curve: Curves.bounceOut,
                         child: GestureDetector(
+                          // Animation management
                           onTapDown: (_) {
                             setState(() {
                               _buttonAnimations["VALIDATE"] = true;
