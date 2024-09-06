@@ -16,12 +16,13 @@ class CustomShape extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(
-      clipBehavior: Clip.none, // Permet au cercle de dépasser les limites du Stack
-      alignment: Alignment.centerLeft, // Alignement à gauche du texte
+      // Allows the circle to exceed the limits of the Stack
+      clipBehavior: Clip.none,
+      alignment: Alignment.centerLeft,
       children: [
         Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(60)),
+            borderRadius: const BorderRadius.all(Radius.circular(60)),
             color: backgroundColor,
           ),
           padding: EdgeInsets.fromLTRB(10 * scale, 10 * scale, 50 * scale, 10 * scale),
@@ -35,7 +36,7 @@ class CustomShape extends StatelessWidget {
           ),
         ),
         Positioned(
-          right: -30 * scale, // Ajuste cette valeur pour contrôler la position du cercle
+          right: -30 * scale,
           child: Container(
             width: 80 * scale,
             height: 80 * scale,

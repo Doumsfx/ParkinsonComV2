@@ -141,7 +141,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       setState(() {
                                         _buttonAnimations["BACK ARROW"] = false;
                                       });
-                                      // CODE DU BOUTON
+                                      // BUTTON CODE
                                       print("BACK ARROWWWWWWWWWW");
                                     },
                                     onTapCancel: () {
@@ -228,12 +228,12 @@ class _MyHomePageState extends State<MyHomePage> {
                                       trackVisibility: true,
                                       thumbVisibility: true,
                                       thickness: 10,
-                                      radius: Radius.circular(20),
+                                      radius: const Radius.circular(20),
 
-                                      trackColor: Color.fromRGBO(66, 89, 109, 1),
+                                      trackColor: const Color.fromRGBO(66, 89, 109, 1),
                                       crossAxisMargin: 5,
                                       mainAxisMargin: 5,
-                                      trackRadius: Radius.circular(20),
+                                      trackRadius: const Radius.circular(20),
 
                                       child: TextField(
                                         scrollController: _scrollController,
@@ -327,7 +327,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                         duration: const Duration(milliseconds: 100),
                                         curve: Curves.bounceIn,
                                         child: GestureDetector(
-                                          // Gestion des animations de touches
+                                          // Animation management
                                           onTapDown: (_) {
                                             setState(() {
                                               _buttonAnimations["ERASE"] = true;
@@ -353,13 +353,16 @@ class _MyHomePageState extends State<MyHomePage> {
                                           ),
                                         ),
                                       ),
-                                      const Expanded(child: SizedBox()), // Espacement au milieu
+
+                                      // Space between
+                                      const Expanded(child: SizedBox()),
+
                                       AnimatedScale(
                                         scale: _buttonAnimations["TTS"]! ? 1.1 : 1.0,
                                         duration: const Duration(milliseconds: 100),
                                         curve: Curves.bounceIn,
                                         child: GestureDetector(
-                                          // Gestion des animations de touches
+                                          // Animation management
                                           onTapDown: (_) {
                                             setState(() {
                                               _buttonAnimations["TTS"] = true;
@@ -368,7 +371,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                           onTapUp: (_) {
                                             setState(() {
                                               _buttonAnimations["TTS"] = false;
-                                              // code du TTS
+                                              // TODO code du TTS
+                                              // Je pense que le mieux est de faire une fonction que l'on appelle juste ici
                                             });
 
                                           },
@@ -412,7 +416,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             duration: const Duration(milliseconds: 100),
                             curve: Curves.bounceOut,
                             child: GestureDetector(
-                              // Gestion des animations de touches
+                              // Animation management
                               onTap: () {
                                 _scrollController.animateTo(
                                   _scrollController.offset - 50,
@@ -477,7 +481,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * 0.02),
                               //color: Colors.black,
-                              color: Color.fromRGBO(66, 89, 109, 1), // Grey
+                              color: const Color.fromRGBO(66, 89, 109, 1), // Grey
                             ),
 
                             // CODE POTENTIEL D'UNE SCROLLBAR
@@ -488,7 +492,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             duration: const Duration(milliseconds: 100),
                             curve: Curves.bounceOut,
                             child: GestureDetector(
-                              // Gestion des animations de touches
+                              // Animation management
                               onTap: () {
                                 _scrollController.animateTo(
                                   _scrollController.offset + 50,
@@ -551,7 +555,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         : Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Scroll wigets
+                        // Scroll widgets
                         Container(
                           margin: EdgeInsets.fromLTRB(
                               MediaQuery.of(context).size.width * 0.01,
@@ -567,7 +571,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 duration: const Duration(milliseconds: 100),
                                 curve: Curves.bounceOut,
                                 child: GestureDetector(
-                                  // Gestion des animations de touches
+                                  // Animation management
                                   onTap: () {
                                     _scrollController.animateTo(
                                       _scrollController.offset - 50,
@@ -636,19 +640,19 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ),
 
                                 /*
-                          child: Scrollbar(
-                            controller: _scrollController,
-                            thumbVisibility: true,
-                            trackVisibility: true,
-                            interactive: true,
-                            thickness: MediaQuery.of(context).size.height * 0.025,
-                            radius: Radius.circular(MediaQuery.of(context).size.width * 0.02),
-                            child: SingleChildScrollView(
-                              controller: _scrollController,
-                              scrollDirection: Axis.vertical,
-                            ),
-                          ),
-                          */
+                                child: Scrollbar(
+                                  controller: _scrollController,
+                                  thumbVisibility: true,
+                                  trackVisibility: true,
+                                  interactive: true,
+                                  thickness: MediaQuery.of(context).size.height * 0.025,
+                                  radius: Radius.circular(MediaQuery.of(context).size.width * 0.02),
+                                  child: SingleChildScrollView(
+                                    controller: _scrollController,
+                                    scrollDirection: Axis.vertical,
+                                  ),
+                                ),
+                                */
 
                               ),
                               AnimatedScale(
@@ -656,7 +660,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 duration: const Duration(milliseconds: 100),
                                 curve: Curves.bounceOut,
                                 child: GestureDetector(
-                                  // Gestion des animations de touches
+                                  // Animation management
                                   onTap: () {
                                     _scrollController.animateTo(
                                       _scrollController.offset + 50,
@@ -726,6 +730,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               duration: const Duration(milliseconds: 100),
                               curve: Curves.bounceOut,
                               child: GestureDetector(
+                                // Animation management
                                 onTapDown: (_) {
                                   setState(() {
                                     _buttonAnimations["HELP"] = true;
@@ -735,7 +740,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   setState(() {
                                     _buttonAnimations["HELP"] = false;
                                   });
-                                  // CODE DU BOUTON
+                                  // BUTTON CODE
                                   print("HELLLLLLLLLLP");
                                 },
                                 onTapCancel: () {
@@ -768,7 +773,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   setState(() {
                                     _buttonAnimations["HOME"] = false;
                                   });
-                                  // CODE DU BOUTON
+                                  // BUTTON CODE
                                   print("HOMEEEEEEEEEEEEEEEEE");
                                 },
                                 onTapCancel: () {
@@ -801,7 +806,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   setState(() {
                                     _buttonAnimations["RELAX"] = false;
                                   });
-                                  // CODE DU BOUTON
+                                  // BUTTON CODE
                                   print("RELAAAAAAAAAX");
                                 },
                                 onTapCancel: () {
@@ -850,6 +855,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           duration: const Duration(milliseconds: 100),
                           curve: Curves.bounceOut,
                           child: GestureDetector(
+                            // Animation management
                             onTapDown: (_) {
                               setState(() {
                                 _buttonAnimations["SAVE"] = true;
@@ -859,7 +865,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               setState(() {
                                 _buttonAnimations["SAVE"] = false;
                               });
-                              // CODE DU BOUTON
+                              // BUTTON CODE
                               print("SAVEEEEEEEEE");
                             },
                             onTapCancel: () {
@@ -901,6 +907,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           duration: const Duration(milliseconds: 100),
                           curve: Curves.bounceOut,
                           child: GestureDetector(
+                            // Animation management
                             onTapDown: (_) {
                               setState(() {
                                 _buttonAnimations["SEND"] = true;
@@ -910,7 +917,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               setState(() {
                                 _buttonAnimations["SEND"] = false;
                               });
-                              // CODE DU BOUTON
+                              // BUTTON CODE
                               print("SENDDDDDDDDDDD");
                             },
                             onTapCancel: () {
