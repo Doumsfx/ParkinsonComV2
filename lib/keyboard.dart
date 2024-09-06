@@ -49,8 +49,6 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
     "WORD 4": 1,
   };
 
-
-
   @override
   void initState() {
     super.initState();
@@ -306,20 +304,30 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
                                           title: Text(nonEmptyValues[index],
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: MediaQuery.of(context).size.height * 0.02 * _wordScales["WORD $index"]!,
-
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w800,
+                                                fontSize: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.02 *
+                                                    _wordScales["WORD $index"]!,
                                               )),
                                           onTap: () => {
                                             setState(() {
-                                              widget.predictionsHandler!.completeSentence(widget.controller.text, nonEmptyValues[index]);
+                                              widget.predictionsHandler!
+                                                  .completeSentence(
+                                                      widget.controller.text,
+                                                      nonEmptyValues[index]);
+                                              widget
+                                                  .predictionsHandler!
+                                                  .suggestedWordsList
+                                                  .value = List.empty();
                                               _firstKey = false;
                                               _maj = false;
-                                              _keyboard = _getKeyboardConfig(_maj, _modeAccent, azerty);
+                                              _keyboard = _getKeyboardConfig(
+                                                  _maj, _modeAccent, azerty);
                                             })
                                           },
-
                                         ),
                                       ),
                                     ),
@@ -355,16 +363,28 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
                                       title: Text(nonEmptyValues[index],
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: MediaQuery.of(context).size.height * 0.02 * _wordScales["WORD 4"]!,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w800,
+                                            fontSize: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.02 *
+                                                _wordScales["WORD 4"]!,
                                           )),
                                       onTap: () => {
                                         setState(() {
-                                          widget.predictionsHandler!.completeSentence(widget.controller.text, nonEmptyValues[index]);
+                                          widget.predictionsHandler!
+                                              .completeSentence(
+                                                  widget.controller.text,
+                                                  nonEmptyValues[index]);
+                                          widget
+                                              .predictionsHandler!
+                                              .suggestedWordsList
+                                              .value = List.empty();
                                           _firstKey = false;
                                           _maj = false;
-                                          _keyboard = _getKeyboardConfig(_maj, _modeAccent, azerty);
+                                          _keyboard = _getKeyboardConfig(
+                                              _maj, _modeAccent, azerty);
                                         })
                                       },
                                     ),
@@ -374,10 +394,8 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
                             },
                           ),
                         );
-                      },
-                    )
+                      })
                   : const SizedBox(), // No prediction
-
             ),
 
             // Keyboard
