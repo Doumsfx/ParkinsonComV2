@@ -12,13 +12,13 @@ import 'dico.dart';
 class PredictionsHandler {
   final TextEditingController controller;
   bool isFR;
-  late List<String> suggestedWordsList;
+  late ValueNotifier<List<String>> suggestedWordsList;
   late Dico _dictionnary;
 
   Timer? _debounce; //This will prevent the the predictions request to trigger twice (because of the controller and event listener)
 
   PredictionsHandler({required this.controller, this.isFR = true}) {
-    suggestedWordsList = List<String>.empty();
+    suggestedWordsList = ValueNotifier(List<String>.empty());
     controller.addListener(_onTextChanged);
     //Initialization with empty query for the starting words
     if (isFR) {
@@ -111,7 +111,7 @@ class PredictionsHandler {
         wordList.add(sugges["text"]);
       }
       //Update the suggestedWordsList with the new words
-      suggestedWordsList = wordList;
+      suggestedWordsList.value =  wordList;
     } else {
       throw Exception('Failed to load Json data');
     }
@@ -197,7 +197,7 @@ class PredictionsHandler {
       }
     }
     //Final predictions list
-    suggestedWordsList = results;
+    suggestedWordsList.value = results;
   }
 
   ///Sort [nodeList] which is a list of predicted sentences and return a list of word that can follow our [sentence]
