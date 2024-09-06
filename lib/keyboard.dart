@@ -41,6 +41,15 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
     "BACKSPACE": false,
     "VALIDATE": false,
   };
+  final Map<String, double> _wordScales = {
+    "WORD 0": 1,
+    "WORD 1": 1,
+    "WORD 2": 1,
+    "WORD 3": 1,
+    "WORD 4": 1,
+  };
+
+
 
   @override
   void initState() {
@@ -249,10 +258,10 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
               color: widget.textPredictions
                   ? const Color.fromRGBO(87, 138, 227, 1) // Blue
                   : const Color.fromRGBO(69, 73, 76, 1), // Light Grey
-              //Display of predictions
+              // Display of predictions
               child: widget.textPredictions
                   ? ValueListenableBuilder(
-                      //Refresh when the suggested words list is modified
+                      // Refresh when the suggested words list is modified
                       valueListenable:
                           widget.predictionsHandler!.suggestedWordsList,
                       builder: (BuildContext context, List<String> value,
@@ -260,6 +269,7 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
                         List<String> nonEmptyValues =
                             value.where((word) => word.isNotEmpty).toList();
                         int nbValues = nonEmptyValues.length;
+
                         return SizedBox(
                           height: MediaQuery.of(context).size.height * 0.077,
                           child: ListView.builder(
@@ -270,22 +280,47 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
                                 return Row(
                                   children: [
                                     SizedBox(
-                                      //16 is the size of the VerticalDivider
+                                      // 16 is the size of the VerticalDivider
                                       width: MediaQuery.sizeOf(context).width /
                                               nbValues -
                                           16,
-                                      child: ListTile(
-                                        title: Text(nonEmptyValues[index],
-                                            textAlign: TextAlign.center,
-                                            style: const TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold)),
-                                        onTap: () => {
-                                          widget.predictionsHandler!
-                                              .completeSentence(
-                                                  widget.controller.text,
-                                                  nonEmptyValues[index])
+
+                                      child: GestureDetector(
+                                        // Animation management
+                                        onTapDown: (_) {
+                                          setState(() {
+                                            _wordScales["WORD $index"] = 1.1;
+                                          });
                                         },
+                                        onTapUp: (_) {
+                                          setState(() {
+                                            _wordScales["WORD $index"] = 1.0;
+                                          });
+                                        },
+                                        onTapCancel: () {
+                                          setState(() {
+                                            _wordScales["WORD $index"] = 1.0;
+                                          });
+                                        },
+                                        child: ListTile(
+                                          title: Text(nonEmptyValues[index],
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: MediaQuery.of(context).size.height * 0.02 * _wordScales["WORD $index"]!,
+
+                                              )),
+                                          onTap: () => {
+                                            setState(() {
+                                              widget.predictionsHandler!.completeSentence(widget.controller.text, nonEmptyValues[index]);
+                                              _firstKey = false;
+                                              _maj = false;
+                                              _keyboard = _getKeyboardConfig(_maj, _modeAccent, azerty);
+                                            })
+                                          },
+
+                                        ),
                                       ),
                                     ),
                                     const VerticalDivider(
@@ -299,18 +334,40 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
                                 return SizedBox(
                                   width: MediaQuery.sizeOf(context).width /
                                       nbValues,
-                                  child: ListTile(
-                                    title: Text(nonEmptyValues[index],
-                                        textAlign: TextAlign.center,
-                                        style: const TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold)),
-                                    onTap: () => {
-                                      widget.predictionsHandler!
-                                          .completeSentence(
-                                              widget.controller.text,
-                                              nonEmptyValues[index])
+                                  child: GestureDetector(
+                                    // Animation management
+                                    onTapDown: (_) {
+                                      setState(() {
+                                        _wordScales["WORD 4"] = 1.1;
+                                      });
                                     },
+                                    onTapUp: (_) {
+                                      setState(() {
+                                        _wordScales["WORD 4"] = 1.0;
+                                      });
+                                    },
+                                    onTapCancel: () {
+                                      setState(() {
+                                        _wordScales["WORD 4"] = 1.0;
+                                      });
+                                    },
+                                    child: ListTile(
+                                      title: Text(nonEmptyValues[index],
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: MediaQuery.of(context).size.height * 0.02 * _wordScales["WORD 4"]!,
+                                          )),
+                                      onTap: () => {
+                                        setState(() {
+                                          widget.predictionsHandler!.completeSentence(widget.controller.text, nonEmptyValues[index]);
+                                          _firstKey = false;
+                                          _maj = false;
+                                          _keyboard = _getKeyboardConfig(_maj, _modeAccent, azerty);
+                                        })
+                                      },
+                                    ),
                                   ),
                                 );
                               }
@@ -320,7 +377,7 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
                       },
                     )
                   : const SizedBox(), // No prediction
-              // child -> code alexis pour les predictions
+
             ),
 
             // Keyboard
