@@ -4,8 +4,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:parkinson_com_v2/customShape.dart';
 import 'package:parkinson_com_v2/keyboard.dart';
+import 'package:parkinson_com_v2/listDialogsPage.dart';
 import 'package:parkinson_com_v2/variables.dart';
 
 import 'models/database/dialog.dart';
@@ -154,8 +156,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                               _buttonAnimations["BACK ARROW"] =
                                                   false;
                                             });
-                                            // CODE DU BOUTON
-                                            print("BACK ARROWWWWWWWWWW");
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(builder: (context) => ListDialogsPage()),
+                                            );
                                           },
                                           onTapCancel: () {
                                             setState(() {
@@ -182,7 +186,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 langFR
                                     ? 'Rédiger un dialogue'
                                     : 'Een dialoog schrijven',
-                                style: const TextStyle(
+                                style: GoogleFonts.josefinSans(
                                   fontSize: 25,
                                   fontWeight: FontWeight.w500,
                                   color: Colors.white,

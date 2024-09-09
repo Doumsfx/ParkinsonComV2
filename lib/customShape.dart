@@ -40,9 +40,9 @@ class CustomShape extends StatelessWidget {
           child: Container(
             width: 80 * scale,
             height: 80 * scale,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Color.fromRGBO(12, 178, 255, 1),
+              color: backgroundColor,
             ),
             child: Padding(
               padding: EdgeInsets.all(15 * scale),
