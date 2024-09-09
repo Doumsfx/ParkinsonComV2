@@ -1067,7 +1067,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                     });
                                     // BUTTON CODE
                                     print("SAVEEEEEEEEE");
-                                    //TODO Save the dialog in the database
 
                                     //Retrieve the list of the themes for the actual language
                                     List<ThemeObject> themesList =
@@ -1076,13 +1075,23 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 langFR ? 'fr' : 'nl');
                                     ThemeObject? selectedTheme = themesList[0];
                                     //Popup for choosing a theme
+                                    //TODO Popup choisir un theme
                                     showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
                                         // Use StatefulBuilder to manage the state inside the dialog
                                         return StatefulBuilder(
                                           builder: (context, setState) {
+                                            double screenHeight =
+                                                MediaQuery.of(context)
+                                                    .size
+                                                    .height;
+                                            double screenWidth =
+                                                MediaQuery.of(context)
+                                                    .size
+                                                    .width;
                                             return Dialog(
+                                              backgroundColor: Colors.black87,
                                               child: Padding(
                                                 padding: const EdgeInsets.all(
                                                     16.0), // Optional padding for aesthetics
@@ -1091,61 +1100,174 @@ class _MyHomePageState extends State<MyHomePage> {
                                                       .min, // Ensures the dialog is as small as needed
                                                   children: [
                                                     // Title for theme selection
-                                                    Text(langFR
-                                                        ? 'Veuillez choisir un thème pour ce dialogue:'
-                                                        : 'Kies een onderwerp voor deze dialoog:'),
-
-                                                    // Dropdown menu for themes
-                                                    DropdownButton<ThemeObject>(
-                                                      value: selectedTheme,
-                                                      onChanged: (ThemeObject?
-                                                          newValue) {
-                                                        setState(() {
-                                                          selectedTheme =
-                                                              newValue; // Update the selected theme
-                                                        });
-                                                      },
-                                                      items: themesList.map(
-                                                          (ThemeObject theme) {
-                                                        return DropdownMenuItem<
-                                                            ThemeObject>(
-                                                          value: theme,
-                                                          child:
-                                                              Text(theme.title),
-                                                        );
-                                                      }).toList(),
+                                                    Text(
+                                                      langFR
+                                                          ? 'Veuillez choisir un thème pour ce dialogue:'
+                                                          : 'Kies een onderwerp voor deze dialoog:',
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize:
+                                                              screenHeight *
+                                                                  0.03,
+                                                          fontWeight:
+                                                              FontWeight.bold),
                                                     ),
-
+                                                    SizedBox(
+                                                        height: screenHeight *
+                                                            0.12),
+                                                    // Dropdown menu for themes
+                                                    Container(
+                                                      color: Colors.amber,
+                                                      //Hide the default underline of the DropdownButton
+                                                      child:
+                                                          DropdownButtonHideUnderline(
+                                                        child: DropdownButton<
+                                                            ThemeObject>(
+                                                          value: selectedTheme,
+                                                          menuMaxHeight:
+                                                              screenHeight *
+                                                                  0.35,
+                                                          style: TextStyle(
+                                                            color: const Color
+                                                                .fromRGBO(
+                                                                65, 65, 65, 1),
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize:
+                                                                screenHeight *
+                                                                    0.025,
+                                                          ),
+                                                          onChanged:
+                                                              (ThemeObject?
+                                                                  newValue) {
+                                                            setState(() {
+                                                              selectedTheme =
+                                                                  newValue; // Update the selected theme
+                                                            });
+                                                          },
+                                                          items: themesList.map(
+                                                              (ThemeObject
+                                                                  theme) {
+                                                            return DropdownMenuItem<
+                                                                ThemeObject>(
+                                                              value: theme,
+                                                              child: Text(
+                                                                theme.title,
+                                                              ),
+                                                            );
+                                                          }).toList(),
+                                                          dropdownColor:
+                                                              Colors.amber,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                        height:
+                                                            screenHeight * 0.2),
                                                     //Buttons to cancel and validate
                                                     Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
                                                       children: [
                                                         //Cancel button
-                                                        TextButton(
-                                                          onPressed: () {
+                                                        GestureDetector(
+                                                          onTapUp: (_) {
                                                             Navigator.pop(
                                                                 context);
                                                           },
-                                                          child: Text(langFR
-                                                              ? "Annuler"
-                                                              : "Annuleren"),
+                                                          child: Container(
+                                                            decoration:
+                                                                const BoxDecoration(
+                                                              borderRadius: BorderRadius
+                                                                  .all(Radius
+                                                                      .circular(
+                                                                          60)),
+                                                              color: Colors.red,
+                                                            ),
+                                                            padding: EdgeInsets
+                                                                .fromLTRB(
+                                                                    screenWidth *
+                                                                        0.1,
+                                                                    8.0,
+                                                                    screenWidth *
+                                                                        0.1,
+                                                                    8.0),
+                                                            child: Text(
+                                                              langFR
+                                                                  ? "Annuler"
+                                                                  : "Annuleren",
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                fontSize:
+                                                                    screenHeight *
+                                                                        0.025,
+                                                              ),
+                                                            ),
+                                                          ),
                                                         ),
+                                                        //Blank space between the buttons
+                                                        SizedBox(
+                                                            width: screenWidth *
+                                                                0.15),
                                                         //Validate button
-                                                        TextButton(
-                                                          onPressed: () async {
-                                                            //TODO insertion dialogue
-
-                                                            await databaseManager.insertDialog(DialogObject(
-                                                              sentence: _controller.text,
-                                                              language: langFR ? "fr" : "nl",
-                                                              id_theme: selectedTheme!.id_theme,
+                                                        GestureDetector(
+                                                          onTapUp: (_) async {
+                                                            await databaseManager
+                                                                .insertDialog(
+                                                                    DialogObject(
+                                                              sentence:
+                                                                  _controller
+                                                                      .text,
+                                                              language: langFR
+                                                                  ? "fr"
+                                                                  : "nl",
+                                                              id_theme:
+                                                                  selectedTheme!
+                                                                      .id_theme,
                                                             ));
 
                                                             Navigator.pop(
                                                                 context);
                                                           },
-                                                          child: Text(langFR
-                                                              ? "Valider"
-                                                              : "Bevestigen"),
+                                                          child: Container(
+                                                            decoration:
+                                                                const BoxDecoration(
+                                                              borderRadius: BorderRadius
+                                                                  .all(Radius
+                                                                      .circular(
+                                                                          60)),
+                                                              color: Colors
+                                                                  .lightGreen,
+                                                            ),
+                                                            padding: EdgeInsets
+                                                                .fromLTRB(
+                                                                    screenWidth *
+                                                                        0.1,
+                                                                    8.0,
+                                                                    screenWidth *
+                                                                        0.1,
+                                                                    8.0),
+                                                            child: Text(
+                                                              langFR
+                                                                  ? "Valider"
+                                                                  : "Bevestigen",
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                fontSize:
+                                                                    screenHeight *
+                                                                        0.025,
+                                                              ),
+                                                            ),
+                                                          ),
                                                         ),
                                                       ],
                                                     )
