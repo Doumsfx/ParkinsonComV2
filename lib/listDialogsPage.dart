@@ -10,6 +10,7 @@ import 'package:parkinson_com_v2/variables.dart';
 
 import 'models/database/dialog.dart';
 import 'models/database/theme.dart';
+import 'package:parkinson_com_v2/models/database/databasemanager.dart';
 
 class ListDialogsPage extends StatefulWidget {
   const ListDialogsPage({super.key});
@@ -29,6 +30,18 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
     "HOME": false,
     "RELAX": false,
   };
+
+  late Future<List<DialogObject>> listDialogs;
+
+
+  @override
+  void initState(){
+    // Initialisation of our table of scales
+
+
+    listDialogs = databaseManager.retrieveDialogsFromLanguage(langFR ?"fr" : "nl");
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +147,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                             _buttonAnimations["THEMES"] = true;
                                           });
                                         },
-                                        onTapUp: (_) async {
+                                        onTapUp: (_) {
                                           setState(() {
                                             _buttonAnimations["THEMES"] = false;
                                           });
@@ -143,7 +156,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                         },
                                         onTapCancel: () {
                                           setState(() {
-                                            _buttonAnimations["NEW DIALOG"] = false;
+                                            _buttonAnimations["THEMES"] = false;
                                           });
                                         },
                                         child: Container(
@@ -405,8 +418,87 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
 
 
 
-                // New Dialog Button
-                Expanded(child: Container(color: Colors.blue)),
+                // List of dialogs
+                Expanded(
+                    child: FutureBuilder(
+                        future: databaseManager.retrieveDialogsFromLanguage(langFR ?"fr" : "nl"),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<List<DialogObject>> snapshot) {
+                          if (snapshot.hasData) {
+
+                            final List<bool> _dialogsAnimations = List.filled(snapshot.data!.length, false);
+                            //print(_dialogsAnimations);
+
+                            return Expanded(
+                              child: ListView.builder(
+                                  itemCount: snapshot.data?.length,
+                                  itemBuilder: (context, index) {
+                                    return AnimatedScale(
+                                      scale: _dialogsAnimations[index] == true
+                                          ? 1.1
+                                          : 1.0,
+                                      duration: const Duration(milliseconds: 100),
+                                      curve: Curves.bounceOut,
+                                      child: GestureDetector(
+                                        // Animation management
+                                        onTapDown: (_) {
+                                          setState(() {
+                                            _dialogsAnimations[index] = true;
+                                            print(_dialogsAnimations[index]);
+                                            print(index);
+
+                                          });
+                                        },
+                                        onTapUp: (_) {
+                                          setState(() {
+                                            _dialogsAnimations[index] = false;
+                                          });
+                                          // BUTTON CODE
+
+                                        },
+                                        onTapCancel: () {
+                                          setState(() {
+                                            _dialogsAnimations[index] = false;
+                                          });
+                                        },
+                                        child: Container(
+                                          margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.025, 0, 0, MediaQuery.of(context).size.height * 0.02),
+                                          width: MediaQuery.of(context).size.width * 0.5,
+                                          decoration: const BoxDecoration(
+                                            borderRadius:
+                                            BorderRadius.all(Radius.circular(60)),
+                                            color: Colors.white,
+                                          ),
+                                          padding: EdgeInsets.fromLTRB(
+                                              MediaQuery.of(context).size.width *
+                                                  0.04,
+                                              MediaQuery.of(context).size.width *
+                                                  0.015,
+                                              MediaQuery.of(context).size.width *
+                                                  0.02,
+                                              MediaQuery.of(context).size.width *
+                                                  0.015),
+                                          child: Text(
+                                            snapshot.data![index].sentence,
+                                            style: const TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18,
+
+                                            ),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                            );
+                          } else {
+                            return const Text("Aucun Theme");
+                          }
+                        }),
+                    ),
               ],
             );
           }),
