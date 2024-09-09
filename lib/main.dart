@@ -2,6 +2,7 @@
 // Code by Alexis Pagnon and Sanchez Adam
 // ParkinsonCom V2
 
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:parkinson_com_v2/customShape.dart';
@@ -1113,20 +1114,26 @@ class _MyHomePageState extends State<MyHomePage> {
                                                               FontWeight.bold),
                                                     ),
                                                     SizedBox(
-                                                        height: screenHeight *
-                                                            0.12),
+                                                        height:
+                                                            screenHeight * 0.1),
                                                     // Dropdown menu for themes
                                                     Container(
                                                       color: Colors.amber,
-                                                      //Hide the default underline of the DropdownButton
                                                       child:
                                                           DropdownButtonHideUnderline(
-                                                        child: DropdownButton<
+                                                        child: DropdownButton2<
                                                             ThemeObject>(
                                                           value: selectedTheme,
-                                                          menuMaxHeight:
-                                                              screenHeight *
-                                                                  0.35,
+                                                          dropdownStyleData:
+                                                              DropdownStyleData(
+                                                            maxHeight:
+                                                                screenHeight *
+                                                                    0.35,
+                                                            decoration:
+                                                                const BoxDecoration(
+                                                                    color: Colors
+                                                                        .amber),
+                                                          ),
                                                           style: TextStyle(
                                                             color: const Color
                                                                 .fromRGBO(
@@ -1156,8 +1163,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                                               ),
                                                             );
                                                           }).toList(),
-                                                          dropdownColor:
-                                                              Colors.amber,
                                                         ),
                                                       ),
                                                     ),
