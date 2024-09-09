@@ -214,13 +214,12 @@ class PredictionsHandler {
         //Get the word from the prediction that follows the query
         String data = words[sentenceLength - 1];
 
-        //?
+        //Don't write multiple times the same word in the predictions list
         if (nodes.containsKey(data)) continue;
 
         //Get the index of the word predicted in the file
-        int index =
-            _dictionnary.dicoElements.indexOf(DicoElement(data.toLowerCase()));
-        if (index == -1) _dictionnary.dicoElements.indexOf(DicoElement(data));
+        int index = _dictionnary.searchIndex(data.toLowerCase());
+        if (index == -1) _dictionnary.searchIndex(data);
         nodes.addAll({data: index});
       }
     }

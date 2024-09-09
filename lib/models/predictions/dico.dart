@@ -36,6 +36,18 @@ class Dico {
       dicoElements.add(dicoElement);
     }
   }
+
+  ///Return the index of a [word] in the dicoElements list.
+  ///-1 is returned if the word isn't in the list.
+  int searchIndex(String word) {
+    for(int i = 0; i < dicoElements.length; i++) {
+      if(dicoElements[i].word == word){
+        return i;
+      }
+    }
+    return -1;
+  }
+
 }
 
 ///Associate a word with a frequency
