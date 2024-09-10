@@ -43,6 +43,7 @@ dependencies:
   path: ^1.9.0
   sqflite: ^2.3.3+1
   google_fonts: ^6.2.1
+  dropdown_button2: ^2.3.9
 
 dev_dependencies:
   flutter_test:
@@ -70,7 +71,6 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/
-    - assets/doubleFleche.png
 
 
 
