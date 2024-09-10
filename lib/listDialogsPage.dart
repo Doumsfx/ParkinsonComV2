@@ -476,6 +476,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                         child: Container(
                                           margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.025, 0, 0, MediaQuery.of(context).size.height * 0.02),
                                           width: MediaQuery.of(context).size.width * 0.5,
+                                          height: MediaQuery.of(context).size.height * 0.12,
                                           decoration: const BoxDecoration(
                                             borderRadius:
                                             BorderRadius.all(Radius.circular(60)),
@@ -490,16 +491,59 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                                   0.02,
                                               MediaQuery.of(context).size.width *
                                                   0.015),
-                                          child: Text(
-                                            snapshot.data![index].sentence,
-                                            style: const TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 18,
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                snapshot.data![index].sentence,
+                                                style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 18,
 
-                                            ),
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
+                                                ),
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                              Container(
+                                                margin: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.01),
+                                                child: AnimatedScale(
+                                                  scale: _dialogsAnimations[index] == true
+                                                      ? 1.05
+                                                      : 1.0,
+                                                  duration: const Duration(milliseconds: 100),
+                                                  curve: Curves.bounceOut,
+                                                  child: GestureDetector(
+                                                    // Animation management
+                                                    onTapDown: (_) {
+                                                      setState(() {
+                                                        _dialogsAnimations[index] = true;
+                                                        print(snapshot.data![index].id_dialog);
+
+                                                      });
+                                                    },
+                                                    onTapUp: (_) {
+                                                      setState(() {
+                                                        _dialogsAnimations[index] = false;
+                                                      });
+                                                      // BUTTON CODE
+                                                      // TTS
+
+                                                    },
+                                                    onTapCancel: () {
+                                                      setState(() {
+                                                        _dialogsAnimations[index] = false;
+                                                      });
+                                                    },
+                                                    child: Container(
+                                                      child: Image.asset(
+                                                        'assets/sound.png',
+                                                        scale: 1,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ),
