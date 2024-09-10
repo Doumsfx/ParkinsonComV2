@@ -488,7 +488,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                                     // BUTTON CODE
                                                     Navigator.push(
                                                       context,
-                                                      MaterialPageRoute(builder: (context) => DialogPage(idDialog: snapshot.data![index].id_dialog, initialTextDialog: snapshot.data![index].sentence)),
+                                                      MaterialPageRoute(builder: (context) => DialogPage(idDialog: snapshot.data![index].id_dialog, initialTextDialog: snapshot.data![index].sentence, idTheme: snapshot.data![index].id_theme)),
                                                     );
                       
                                                   },

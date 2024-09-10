@@ -77,6 +77,12 @@ class DatabaseManager {
     return queryResult.map((e) => ThemeObject.fromMap(e)).toList();
   }
 
+  ///Retrieve a specific ThemeObject from the database using its [id]
+  Future<ThemeObject> retrieveThemeFromId(int id) async {
+    final List<Map<String, Object?>> queryResult = await db.query('Theme', where: "id_theme = ?", whereArgs: [id]);
+    return ThemeObject.fromMap(queryResult[0]);
+  }
+
   ///Retrieve the list of ThemeObject for a specific [language] from the database
   ///(fr / nl)
   Future<List<ThemeObject>> retrieveThemesFromLanguage(String language) async {
