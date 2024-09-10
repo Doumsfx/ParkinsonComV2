@@ -2,12 +2,16 @@
 // Code by Alexis Pagnon and Sanchez Adam
 // ParkinsonCom V2
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:parkinson_com_v2/customShapeThemes.dart';
 import 'package:parkinson_com_v2/customTitle.dart';
 import 'package:parkinson_com_v2/variables.dart';
+import 'package:parkinson_com_v2/dialogPage.dart';
 
+import 'main.dart';
 import 'models/database/dialog.dart';
 import 'models/database/theme.dart';
 import 'package:parkinson_com_v2/models/database/databasemanager.dart';
@@ -31,15 +35,20 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
     "RELAX": false,
   };
 
-  late Future<List<DialogObject>> listDialogs;
+  late List<DialogObject> _listDialogs;
+  late List<bool> _dialogsAnimations;
 
+  Future<void> initialisation() async{
+    _listDialogs = await databaseManager.retrieveDialogsFromLanguage(langFR ?"fr" : "nl");
+    _dialogsAnimations  = await List.filled(_listDialogs.length, false);
+  }
 
   @override
   void initState(){
-    // Initialisation of our table of scales
+    // Initialisation of our variables
 
+    initialisation();
 
-    listDialogs = databaseManager.retrieveDialogsFromLanguage(langFR ?"fr" : "nl");
     super.initState();
   }
 
@@ -52,11 +61,11 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
           builder: (context, value, child) {
             return Column(
               children: [
-
+                // First part
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-
+                    // Title and buttons
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -88,7 +97,10 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                         _buttonAnimations["BACK ARROW"] =
                                         false;
                                       });
-                                      Navigator.pop(context);
+                                      Navigator.popUntil(
+                                        context,
+                                          (route) => route.isFirst,
+                                      );
                                     },
                                     onTapCancel: () {
                                       setState(() {
@@ -223,9 +235,10 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                       _buttonAnimations["NEW DIALOG"] = false;
                                     });
                                     // BUTTON CODE
-                                    print("NOUVEAU DIALOGGGGGGGGGGGG");
-                                    print(MediaQuery.of(context).size.height);
-                                    print(MediaQuery.of(context).size.width);
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => const DialogPage(idDialog: -1, initialTextDialog: "")),
+                                    );
                                   },
                                   onTapCancel: () {
                                     setState(() {
@@ -425,17 +438,13 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                         builder: (BuildContext context,
                             AsyncSnapshot<List<DialogObject>> snapshot) {
                           if (snapshot.hasData) {
-
-                            final List<bool> _dialogsAnimations = List.filled(snapshot.data!.length, false);
-                            //print(_dialogsAnimations);
-
                             return Expanded(
                               child: ListView.builder(
                                   itemCount: snapshot.data?.length,
                                   itemBuilder: (context, index) {
                                     return AnimatedScale(
                                       scale: _dialogsAnimations[index] == true
-                                          ? 1.1
+                                          ? 1.05
                                           : 1.0,
                                       duration: const Duration(milliseconds: 100),
                                       curve: Curves.bounceOut,
@@ -444,8 +453,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                         onTapDown: (_) {
                                           setState(() {
                                             _dialogsAnimations[index] = true;
-                                            print(_dialogsAnimations[index]);
-                                            print(index);
+                                            print(snapshot.data![index].id_dialog);
 
                                           });
                                         },
@@ -454,6 +462,10 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                             _dialogsAnimations[index] = false;
                                           });
                                           // BUTTON CODE
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(builder: (context) => DialogPage(idDialog: snapshot.data![index].id_dialog, initialTextDialog: snapshot.data![index].sentence)),
+                                          );
 
                                         },
                                         onTapCancel: () {
@@ -495,7 +507,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                   }),
                             );
                           } else {
-                            return const Text("Aucun Theme");
+                            return const SizedBox();
                           }
                         }),
                     ),
