@@ -1,4 +1,4 @@
-// Dialog Page
+// Main Page
 // Code by Alexis Pagnon and Sanchez Adam
 // ParkinsonCom V2
 

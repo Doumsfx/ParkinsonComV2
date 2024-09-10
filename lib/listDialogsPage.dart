@@ -11,9 +11,7 @@ import 'package:parkinson_com_v2/customTitle.dart';
 import 'package:parkinson_com_v2/variables.dart';
 import 'package:parkinson_com_v2/dialogPage.dart';
 
-import 'main.dart';
 import 'models/database/dialog.dart';
-import 'models/database/theme.dart';
 import 'package:parkinson_com_v2/models/database/databasemanager.dart';
 
 class ListDialogsPage extends StatefulWidget {
@@ -33,14 +31,21 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
     "HELP": false,
     "HOME": false,
     "RELAX": false,
+    "TOP ARROW": false,
+    "BOT ARROW": false,
   };
 
   late List<DialogObject> _listDialogs;
   late List<bool> _dialogsAnimations;
+  late List<bool> _deleteButtonsAnimations;
+  late List<bool> _TTSButtonsAnimations;
+  final ScrollController _scrollController =  ScrollController();
 
   Future<void> initialisation() async{
     _listDialogs = await databaseManager.retrieveDialogsFromLanguage(langFR ?"fr" : "nl");
-    _dialogsAnimations  = await List.filled(_listDialogs.length, false);
+    _dialogsAnimations  = List.filled(_listDialogs.length, false);
+    _deleteButtonsAnimations  = List.filled(_listDialogs.length, false);
+    _TTSButtonsAnimations  = List.filled(_listDialogs.length, false);
   }
 
   @override
@@ -433,127 +438,366 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
 
                 // List of dialogs
                 Expanded(
-                    child: FutureBuilder(
-                        future: databaseManager.retrieveDialogsFromLanguage(langFR ?"fr" : "nl"),
-                        builder: (BuildContext context,
-                            AsyncSnapshot<List<DialogObject>> snapshot) {
-                          if (snapshot.hasData) {
-                            return Expanded(
-                              child: ListView.builder(
-                                  itemCount: snapshot.data?.length,
-                                  itemBuilder: (context, index) {
-                                    return AnimatedScale(
-                                      scale: _dialogsAnimations[index] == true
-                                          ? 1.05
-                                          : 1.0,
-                                      duration: const Duration(milliseconds: 100),
-                                      curve: Curves.bounceOut,
-                                      child: GestureDetector(
-                                        // Animation management
-                                        onTapDown: (_) {
-                                          setState(() {
-                                            _dialogsAnimations[index] = true;
-                                            print(snapshot.data![index].id_dialog);
-
-                                          });
-                                        },
-                                        onTapUp: (_) {
-                                          setState(() {
-                                            _dialogsAnimations[index] = false;
-                                          });
-                                          // BUTTON CODE
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(builder: (context) => DialogPage(idDialog: snapshot.data![index].id_dialog, initialTextDialog: snapshot.data![index].sentence)),
-                                          );
-
-                                        },
-                                        onTapCancel: () {
-                                          setState(() {
-                                            _dialogsAnimations[index] = false;
-                                          });
-                                        },
-                                        child: Container(
-                                          margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.025, 0, 0, MediaQuery.of(context).size.height * 0.02),
-                                          width: MediaQuery.of(context).size.width * 0.5,
-                                          height: MediaQuery.of(context).size.height * 0.12,
-                                          decoration: const BoxDecoration(
-                                            borderRadius:
-                                            BorderRadius.all(Radius.circular(60)),
-                                            color: Colors.white,
-                                          ),
-                                          padding: EdgeInsets.fromLTRB(
-                                              MediaQuery.of(context).size.width *
-                                                  0.04,
-                                              MediaQuery.of(context).size.width *
-                                                  0.015,
-                                              MediaQuery.of(context).size.width *
-                                                  0.02,
-                                              MediaQuery.of(context).size.width *
-                                                  0.015),
-                                          child: Row(
+                    child: RawScrollbar(
+                      thumbColor: Colors.blue,
+                      controller: _scrollController,
+                      trackVisibility: true,
+                      thumbVisibility: true,
+                      thickness: 15,
+                      radius: const Radius.circular(20),
+                      trackColor:
+                      const Color.fromRGBO(66, 89, 109, 1),
+                      crossAxisMargin: 5,
+                      mainAxisMargin: 5,
+                      trackRadius: const Radius.circular(20),
+                      padding: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.085, MediaQuery.of(context).size.width * 0.0315, MediaQuery.of(context).size.height * 0.11),
+                      child: Row(
+                        children: [
+                          FutureBuilder(
+                              future: databaseManager.retrieveDialogsFromLanguage(langFR ?"fr" : "nl"),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<List<DialogObject>> snapshot) {
+                                if (snapshot.hasData) {
+                                  return Expanded(
+                                    child: ListView.builder(
+                                        controller: _scrollController,
+                                        itemCount: snapshot.data?.length,
+                                        itemBuilder: (context, index) {
+                                          return Row(
                                             children: [
-                                              Text(
-                                                snapshot.data![index].sentence,
-                                                style: const TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 18,
-
-                                                ),
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                              Container(
-                                                margin: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.01),
-                                                child: AnimatedScale(
-                                                  scale: _dialogsAnimations[index] == true
-                                                      ? 1.05
-                                                      : 1.0,
-                                                  duration: const Duration(milliseconds: 100),
-                                                  curve: Curves.bounceOut,
-                                                  child: GestureDetector(
-                                                    // Animation management
-                                                    onTapDown: (_) {
-                                                      setState(() {
-                                                        _dialogsAnimations[index] = true;
-                                                        print(snapshot.data![index].id_dialog);
-
-                                                      });
-                                                    },
-                                                    onTapUp: (_) {
-                                                      setState(() {
-                                                        _dialogsAnimations[index] = false;
-                                                      });
-                                                      // BUTTON CODE
-                                                      // TTS
-
-                                                    },
-                                                    onTapCancel: () {
-                                                      setState(() {
-                                                        _dialogsAnimations[index] = false;
-                                                      });
-                                                    },
-                                                    child: Container(
-                                                      child: Image.asset(
-                                                        'assets/sound.png',
-                                                        scale: 1,
-                                                      ),
+                                              // Dialog + TTS
+                                              AnimatedScale(
+                                                scale: _dialogsAnimations[index] && !_TTSButtonsAnimations[index]
+                                                    ? 1.05
+                                                    : 1.0,
+                                                duration: const Duration(milliseconds: 100),
+                                                curve: Curves.bounceOut,
+                                                child: GestureDetector(
+                                                  // Animation management
+                                                  onTapDown: (_) {
+                                                    setState(() {
+                                                      _dialogsAnimations[index] = true;
+                                                      print(snapshot.data![index].id_dialog);
+                      
+                                                    });
+                                                  },
+                                                  onTapUp: (_) {
+                                                    setState(() {
+                                                      _dialogsAnimations[index] = false;
+                                                    });
+                                                    // BUTTON CODE
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(builder: (context) => DialogPage(idDialog: snapshot.data![index].id_dialog, initialTextDialog: snapshot.data![index].sentence)),
+                                                    );
+                      
+                                                  },
+                                                  onTapCancel: () {
+                                                    setState(() {
+                                                      _dialogsAnimations[index] = false;
+                                                    });
+                                                  },
+                                                  child: Container(
+                                                    margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.025, 0, 0, MediaQuery.of(context).size.height * 0.02),
+                                                    width: MediaQuery.of(context).size.width * 0.82,
+                                                    decoration: const BoxDecoration(
+                                                      borderRadius:
+                                                      BorderRadius.all(Radius.circular(60)),
+                                                      color: Colors.white,
+                                                    ),
+                                                    child: Row(
+                                                      children: [
+                                                        // Text
+                                                        Container(
+                                                          width: MediaQuery.of(context).size.width * 0.57,
+                                                          padding: EdgeInsets.fromLTRB(
+                                                              MediaQuery.of(context).size.width *
+                                                                  0.04,
+                                                              MediaQuery.of(context).size.width *
+                                                                  0.015,
+                                                              MediaQuery.of(context).size.width *
+                                                                  0.02,
+                                                              MediaQuery.of(context).size.width *
+                                                                  0.015),
+                                                          child: Text(
+                                                            snapshot.data![index].sentence,
+                                                            style: const TextStyle(
+                                                              color: Colors.black,
+                                                              fontWeight: FontWeight.bold,
+                                                              fontSize: 18,
+                      
+                                                            ),
+                                                            maxLines: 1,
+                                                            overflow: TextOverflow.ellipsis,
+                                                          ),
+                                                        ),
+                      
+                                                        // Fill in the rest of the container
+                                                        Expanded(child: SizedBox()),
+                      
+                                                        // TTS
+                                                        Container(
+                                                          margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.02),
+                                                          child: AnimatedScale(
+                                                            scale: _TTSButtonsAnimations[index]
+                                                                ? 1.1
+                                                                : 1.0,
+                                                            duration: const Duration(milliseconds: 100),
+                                                            curve: Curves.bounceOut,
+                                                            child: GestureDetector(
+                                                              // Animation management
+                                                              onTapDown: (_) {
+                                                                setState(() {
+                                                                  _TTSButtonsAnimations[index] = true;
+                      
+                                                                });
+                                                              },
+                                                              onTapUp: (_) {
+                                                                setState(() {
+                                                                  _TTSButtonsAnimations[index] = false;
+                                                                });
+                                                                // BUTTON CODE
+                                                                // TTS
+                      
+                                                              },
+                                                              onTapCancel: () {
+                                                                setState(() {
+                                                                  _TTSButtonsAnimations[index] = false;
+                                                                });
+                                                              },
+                                                              child: Container(
+                                                                child: Image.asset(
+                                                                  'assets/sound.png',
+                                                                  height: MediaQuery.of(context).size.height * 0.085,
+                                                                  color: Colors.blue,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
                                                   ),
                                                 ),
                                               ),
+                      
+                                              // Delete Dialog Buttons
+                                              AnimatedScale(
+                                                scale: _deleteButtonsAnimations[index] ? 1.1 : 1.0,
+                                                duration: const Duration(milliseconds: 100),
+                                                curve: Curves.bounceOut,
+                                                child: GestureDetector(
+                                                  onTapDown: (_) {
+                                                    setState(() {
+                                                      _deleteButtonsAnimations[index] = true;
+                                                    });
+                                                  },
+                                                  onTapUp: (_) {
+                                                    setState(() {
+                                                      _deleteButtonsAnimations[index] = false;
+                                                    });
+                                                    // BUTTON CODE
+                                                    print("delete: $index");
+                                                  },
+                                                  onTapCancel: () {
+                                                    setState(() {
+                                                      _deleteButtonsAnimations[index] = false;
+                                                    });
+                                                  },
+                                                  child: Container(
+                                                    height: MediaQuery.of(context).size.width * 0.06,
+                                                    width: MediaQuery.of(context).size.width * 0.06,
+                                                    padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.01),
+                                                    margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.01, 0, 0, MediaQuery.of(context).size.height * 0.02),
+                                                    decoration: const BoxDecoration(
+                                                      color:
+                                                      Color.fromRGBO(244, 66, 56, 1),
+                                                      shape: BoxShape.circle,
+                                                    ),
+                                                    child: Image.asset(
+                                                      "assets/trash.png",
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                      
                                             ],
-                                          ),
+                                          );
+                                        }),
+                                  );
+                                } else {
+                                  return const SizedBox();
+                                }
+                              }),
+                      
+                          // ScrollWidgets
+                          Container(
+                            margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.02),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+
+                                AnimatedScale(
+                                  scale: _buttonAnimations["TOP ARROW"]!
+                                      ? 1.1
+                                      : 1.0,
+                                  duration: const Duration(milliseconds: 100),
+                                  curve: Curves.bounceOut,
+                                  child: GestureDetector(
+                                    // Animation management
+                                    onTap: () {
+                                      _scrollController.animateTo(
+                                        _scrollController.offset - 120,
+                                        duration:
+                                        const Duration(milliseconds: 500),
+                                        curve: Curves.easeIn,
+                                      );
+                                    },
+                      
+                                    onLongPress: () {
+                                      _scrollController.animateTo(
+                                        _scrollController
+                                            .position.minScrollExtent,
+                                        duration:
+                                        const Duration(milliseconds: 1),
+                                        curve: Curves.easeIn,
+                                      );
+                                    },
+                      
+                                    onTapDown: (_) {
+                                      setState(() {
+                                        _buttonAnimations["TOP ARROW"] = true;
+                                      });
+                                    },
+                      
+                                    onTapUp: (_) {
+                                      setState(() {
+                                        _buttonAnimations["TOP ARROW"] = false;
+                                      });
+                                    },
+                      
+                                    onLongPressEnd: (_) {
+                                      setState(() {
+                                        _buttonAnimations["TOP ARROW"] = false;
+                                      });
+                                    },
+                      
+                                    child: Container(
+                                      width:
+                                      MediaQuery.of(context).size.height *
+                                          0.07,
+                                      height:
+                                      MediaQuery.of(context).size.height *
+                                          0.07,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                            MediaQuery.of(context).size.width *
+                                                0.01),
+                                        color: const Color.fromRGBO(
+                                            101, 72, 254, 1),
+                                      ),
+                                      child: Transform.rotate(
+                                        angle: 1.5708,
+                                        child: Icon(
+                                          Icons.arrow_back_ios_new_rounded,
+                                          color: Colors.white,
+                                          size: MediaQuery.of(context)
+                                              .size
+                                              .height *
+                                              0.063,
                                         ),
                                       ),
-                                    );
-                                  }),
-                            );
-                          } else {
-                            return const SizedBox();
-                          }
-                        }),
+                                    ),
+                                  ),
+                                ),
+
+                                Expanded(child: SizedBox()),
+                      
+                                AnimatedScale(
+                                  scale: _buttonAnimations["BOT ARROW"]!
+                                      ? 1.1
+                                      : 1.0,
+                                  duration: const Duration(milliseconds: 100),
+                                  curve: Curves.bounceOut,
+                                  child: GestureDetector(
+                                    // Animation management
+                                    onTap: () {
+                                      _scrollController.animateTo(
+                                        _scrollController.offset + 120,
+                                        duration:
+                                        const Duration(milliseconds: 500),
+                                        curve: Curves.easeIn,
+                                      );
+                                    },
+                      
+                                    onLongPress: () {
+                                      _scrollController.animateTo(
+                                        _scrollController
+                                            .position.maxScrollExtent,
+                                        duration:
+                                        const Duration(milliseconds: 1),
+                                        curve: Curves.easeIn,
+                                      );
+                                    },
+                      
+                                    onTapDown: (_) {
+                                      setState(() {
+                                        _buttonAnimations["BOT ARROW"] = true;
+                                      });
+                                    },
+                      
+                                    onTapUp: (_) {
+                                      setState(() {
+                                        _buttonAnimations["BOT ARROW"] = false;
+                                      });
+                                    },
+                      
+                                    onLongPressEnd: (_) {
+                                      setState(() {
+                                        _buttonAnimations["BOT ARROW"] = false;
+                                      });
+                                    },
+                      
+                                    child: Container(
+                                      width:
+                                      MediaQuery.of(context).size.height *
+                                          0.07,
+                                      height:
+                                      MediaQuery.of(context).size.height *
+                                          0.07,
+                                      margin: EdgeInsets.fromLTRB(
+                                          0,
+                                          0,
+                                          0,
+                                        MediaQuery.of(context).size.height *
+                                            0.02,),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                            MediaQuery.of(context).size.width *
+                                                0.01),
+                                        color: const Color.fromRGBO(
+                                            101, 72, 254, 1),
+                                      ),
+                                      child: Transform.rotate(
+                                        angle: -1.5708,
+                                        child: Icon(
+                                          Icons.arrow_back_ios_new_rounded,
+                                          color: Colors.white,
+                                          size: MediaQuery.of(context)
+                                              .size
+                                              .height *
+                                              0.063,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
                     ),
               ],
             );
