@@ -1,4 +1,4 @@
-// Dialog Page
+// List of dialogs Page
 // Code by Alexis Pagnon and Sanchez Adam
 // ParkinsonCom V2
 
@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:parkinson_com_v2/customShapeThemes.dart';
 import 'package:parkinson_com_v2/customTitle.dart';
+import 'package:parkinson_com_v2/listThemesPage.dart';
 import 'package:parkinson_com_v2/variables.dart';
 import 'package:parkinson_com_v2/dialogPage.dart';
 
@@ -171,6 +172,10 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                         });
                                         // BUTTON CODE
                                         print("THEMESSS");
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(builder: (context) => const ListThemesPage()),
+                                        );
                                       },
                                       onTapCancel: () {
                                         setState(() {

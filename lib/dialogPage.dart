@@ -131,10 +131,14 @@ class _DialogPageState extends State<DialogPage> {
                                           _buttonAnimations["BACK ARROW"] =
                                           false;
                                         });
+
+                                        // A MODIFIER
                                         Navigator.pushReplacement(
                                           context,
                                           MaterialPageRoute(builder: (context) => const ListDialogsPage()),
                                         );
+
+
                                       },
                                       onTapCancel: () {
                                         setState(() {
