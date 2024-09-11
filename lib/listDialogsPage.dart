@@ -13,7 +13,6 @@ import 'package:parkinson_com_v2/variables.dart';
 import 'package:parkinson_com_v2/dialogPage.dart';
 
 import 'models/database/dialog.dart';
-//import 'package:parkinson_com_v2/models/database/databasemanager.dart';
 
 class ListDialogsPage extends StatefulWidget {
   const ListDialogsPage({super.key});

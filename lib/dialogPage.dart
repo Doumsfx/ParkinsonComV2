@@ -1070,8 +1070,6 @@ class _DialogPageState extends State<DialogPage> {
                                     _buttonAnimations["SAVE"] = false;
                                   });
                                   // BUTTON CODE
-                                  print("SAVEEEEEEEEE");
-
                                   //Retrieve the list of the themes for the actual language
                                   List<ThemeObject> themesList =
                                   await databaseManager
@@ -1082,6 +1080,7 @@ class _DialogPageState extends State<DialogPage> {
                                   showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
+                                      bool isSaved = false;
                                       // Use StatefulBuilder to manage the state inside the dialog
                                       return StatefulBuilder(
                                         builder: (context, setState) {
@@ -1093,6 +1092,428 @@ class _DialogPageState extends State<DialogPage> {
                                               MediaQuery.of(context)
                                                   .size
                                                   .width;
+                                          if(!isSaved) {
+                                            return Dialog(
+                                              backgroundColor: Colors.black87,
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(
+                                                    16.0), // Optional padding for aesthetics
+                                                child: Column(
+                                                  mainAxisSize: MainAxisSize
+                                                      .min, // Ensures the dialog is as small as needed
+                                                  children: [
+                                                    // Title for theme selection
+                                                    Text(
+                                                      langFR
+                                                          ? 'Veuillez choisir un thème pour ce dialogue:'
+                                                          : 'Kies een onderwerp voor deze dialoog:',
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize:
+                                                          screenHeight *
+                                                              0.03,
+                                                          fontWeight:
+                                                          FontWeight.bold),
+                                                    ),
+                                                    SizedBox(
+                                                        height:
+                                                        screenHeight * 0.1),
+                                                    // Dropdown menu for themes
+                                                    Container(
+                                                      color: Colors.amber,
+                                                      child:
+                                                      DropdownButtonHideUnderline(
+                                                        child: DropdownButton2<
+                                                            ThemeObject>(
+                                                          value: selectedTheme,
+                                                          dropdownStyleData:
+                                                          DropdownStyleData(
+                                                            maxHeight:
+                                                            screenHeight *
+                                                                0.35,
+                                                            decoration:
+                                                            const BoxDecoration(
+                                                                color: Colors
+                                                                    .amber),
+                                                          ),
+                                                          style: TextStyle(
+                                                            color: const Color
+                                                                .fromRGBO(
+                                                                65, 65, 65, 1),
+                                                            fontWeight:
+                                                            FontWeight.bold,
+                                                            fontSize:
+                                                            screenHeight *
+                                                                0.025,
+                                                          ),
+                                                          onChanged:
+                                                              (ThemeObject?
+                                                          newValue) {
+                                                            setState(() {
+                                                              selectedTheme =
+                                                                  newValue; // Update the selected theme
+                                                            });
+                                                          },
+                                                          items: themesList.map(
+                                                                  (ThemeObject
+                                                              theme) {
+                                                                return DropdownMenuItem<
+                                                                    ThemeObject>(
+                                                                  value: theme,
+                                                                  child: Text(
+                                                                    theme.title,
+                                                                  ),
+                                                                );
+                                                              }).toList(),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                        height:
+                                                        screenHeight * 0.2),
+                                                    //Buttons to cancel and validate
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .center,
+                                                      children: [
+                                                        //Cancel button
+                                                        GestureDetector(
+                                                          onTapUp: (_) {
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          child: Container(
+                                                            decoration:
+                                                            const BoxDecoration(
+                                                              borderRadius: BorderRadius
+                                                                  .all(Radius
+                                                                  .circular(
+                                                                  60)),
+                                                              color: Colors.red,
+                                                            ),
+                                                            padding: EdgeInsets
+                                                                .fromLTRB(
+                                                                screenWidth *
+                                                                    0.1,
+                                                                8.0,
+                                                                screenWidth *
+                                                                    0.1,
+                                                                8.0),
+                                                            child: Text(
+                                                              langFR
+                                                                  ? "Annuler"
+                                                                  : "Annuleren",
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontWeight:
+                                                                FontWeight
+                                                                    .bold,
+                                                                fontSize:
+                                                                screenHeight *
+                                                                    0.025,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        //Blank space between the buttons
+                                                        SizedBox(
+                                                            width: screenWidth *
+                                                                0.15),
+                                                        //Validate button
+                                                        GestureDetector(
+                                                          onTapUp: (_) async {
+                                                            await databaseManager
+                                                                .insertDialog(
+                                                                DialogObject(
+                                                                  sentence:
+                                                                  _controller
+                                                                      .text,
+                                                                  language: langFR
+                                                                      ? "fr"
+                                                                      : "nl",
+                                                                  id_theme:
+                                                                  selectedTheme!
+                                                                      .id_theme,
+                                                                ));
+                                                            //Display the confirmation of the saving
+                                                            setState(() {
+                                                              isSaved = true;
+                                                            });
+
+                                                          },
+                                                          child: Container(
+                                                            decoration:
+                                                            const BoxDecoration(
+                                                              borderRadius: BorderRadius
+                                                                  .all(Radius
+                                                                  .circular(
+                                                                  60)),
+                                                              color: Colors
+                                                                  .lightGreen,
+                                                            ),
+                                                            padding: EdgeInsets
+                                                                .fromLTRB(
+                                                                screenWidth *
+                                                                    0.1,
+                                                                8.0,
+                                                                screenWidth *
+                                                                    0.1,
+                                                                8.0),
+                                                            child: Text(
+                                                              langFR
+                                                                  ? "Valider"
+                                                                  : "Bevestigen",
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontWeight:
+                                                                FontWeight
+                                                                    .bold,
+                                                                fontSize:
+                                                                screenHeight *
+                                                                    0.025,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          }
+                                          else {
+                                            return Dialog(
+                                              backgroundColor: Colors.black87,
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(
+                                                    16.0),
+                                                child: Column(
+                                                  mainAxisSize: MainAxisSize
+                                                      .min,
+                                                  children: [
+                                                    SizedBox(
+                                                        width:
+                                                        screenWidth * 0.95,
+                                                        height:
+                                                        screenHeight * 0.15),
+                                                    // Title for saving confirmation
+                                                    Text(
+                                                      langFR
+                                                          ? 'Dialogue enregistré avec succès !'
+                                                          : 'Dialoog succesvol opgeslaan!',
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize:
+                                                          screenHeight *
+                                                              0.03,
+                                                          fontWeight:
+                                                          FontWeight.bold),
+                                                    ),
+                                                    SizedBox(
+                                                        height:
+                                                        screenHeight * 0.2),
+                                                    //Buttons to quit
+                                                    GestureDetector(
+                                                      onTapUp: (_) {
+                                                        Navigator.pop(
+                                                            context);
+                                                      },
+                                                      child: Container(
+                                                        decoration:
+                                                        const BoxDecoration(
+                                                          borderRadius: BorderRadius
+                                                              .all(Radius
+                                                              .circular(
+                                                              60)),
+                                                          color: Colors.green,
+                                                        ),
+                                                        padding: EdgeInsets
+                                                            .fromLTRB(
+                                                            screenWidth *
+                                                                0.1,
+                                                            8.0,
+                                                            screenWidth *
+                                                                0.1,
+                                                            8.0),
+                                                        child: Text(
+                                                          langFR
+                                                              ? "OK"
+                                                              : "OK",
+                                                          style: TextStyle(
+                                                            color: Colors
+                                                                .white,
+                                                            fontWeight:
+                                                            FontWeight
+                                                                .bold,
+                                                            fontSize:
+                                                            screenHeight *
+                                                                0.025,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          }
+
+                                        },
+                                      );
+                                    },
+                                  ).then((value) {
+                                    if (value != null) {
+                                      setState(() {
+                                        selectedTheme =
+                                            value; // Update the main widget with the selected theme
+                                      });
+                                    }
+                                  });
+                                },
+                                onTapCancel: () {
+                                  setState(() {
+                                    _buttonAnimations["SAVE"] = false;
+                                  });
+                                },
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(60)),
+                                    color: Color.fromRGBO(255, 183, 34, 1),
+                                  ),
+                                  padding: EdgeInsets.fromLTRB(
+                                      MediaQuery.of(context).size.width *
+                                          0.02,
+                                      MediaQuery.of(context).size.width *
+                                          0.015,
+                                      MediaQuery.of(context).size.width *
+                                          0.02,
+                                      MediaQuery.of(context).size.width *
+                                          0.015),
+                                  margin: EdgeInsets.fromLTRB(
+                                      MediaQuery.of(context).size.width *
+                                          0.05,
+                                      0,
+                                      0,
+                                      0),
+                                  child: Text(
+                                    langFR
+                                        ? "Enregistrer nouveau"
+                                        : "   Nieuw opslaan   ",
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const Expanded(
+                              child: SizedBox(),
+                            ),
+                            AnimatedScale(
+                              scale: _buttonAnimations["SEND"] == true
+                                  ? 1.1
+                                  : 1.0,
+                              duration: const Duration(milliseconds: 100),
+                              curve: Curves.bounceOut,
+                              child: GestureDetector(
+                                // Animation management
+                                onTapDown: (_) {
+                                  setState(() {
+                                    _buttonAnimations["SEND"] = true;
+                                  });
+                                },
+                                onTapUp: (_) {
+                                  setState(() {
+                                    _buttonAnimations["SEND"] = false;
+                                  });
+                                  // BUTTON CODE
+                                  print("SENDDDDDDDDDDD");
+                                },
+                                onTapCancel: () {
+                                  setState(() {
+                                    _buttonAnimations["SEND"] = false;
+                                  });
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.fromLTRB(
+                                      0,
+                                      0,
+                                      MediaQuery.of(context).size.width *
+                                          0.08,
+                                      0),
+                                  child: CustomShape(
+                                    image: "assets/enveloppe.png",
+                                    text: langFR
+                                        ? "Envoyer à un contact"
+                                        : "Stuur naar een contact",
+                                    scale: MediaQuery.of(context).size.width *
+                                        0.0013,
+                                    backgroundColor:
+                                    const Color.fromRGBO(12, 178, 255, 1),
+                                    textColor: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        //Existing Dialog
+                        if(widget.idDialog != -1)
+                          AnimatedScale(
+                            scale: _buttonAnimations["MODIFY"] == true
+                                ? 1.1
+                                : 1.0,
+                            duration: const Duration(milliseconds: 100),
+                            curve: Curves.bounceOut,
+                            child: GestureDetector(
+                              // Animation management
+                              onTapDown: (_) {
+                                setState(() {
+                                  _buttonAnimations["MODIFY"] = true;
+                                });
+                              },
+                              onTapUp: (_) async {
+                                setState(() {
+                                  _buttonAnimations["MODIFY"] = false;
+                                });
+                                // BUTTON CODE
+                                //Retrieve the list of the themes for the actual language
+                                List<ThemeObject> themesList =
+                                await databaseManager
+                                    .retrieveThemesFromLanguage(
+                                    langFR ? 'fr' : 'nl');
+                                ThemeObject? selectedTheme = themesList[0];
+                                //Select by default the actual theme of the dialog
+                                for(var t in themesList) {
+                                  if(t.id_theme == widget.idTheme) {
+                                    selectedTheme = t;
+                                  }
+                                }
+                                //Popup for choosing a theme
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    bool isModified = false;
+                                    // Use StatefulBuilder to manage the state inside the dialog
+                                    return StatefulBuilder(
+                                      builder: (context, setState) {
+                                        double screenHeight =
+                                            MediaQuery.of(context)
+                                                .size
+                                                .height;
+                                        double screenWidth =
+                                            MediaQuery.of(context)
+                                                .size
+                                                .width;
+                                        // Popup for confirmation of the dialog modification
+                                        if(!isModified){
                                           return Dialog(
                                             backgroundColor: Colors.black87,
                                             child: Padding(
@@ -1225,8 +1646,9 @@ class _DialogPageState extends State<DialogPage> {
                                                       GestureDetector(
                                                         onTapUp: (_) async {
                                                           await databaseManager
-                                                              .insertDialog(
+                                                              .updateDialog(
                                                               DialogObject(
+                                                                id_dialog: widget.idDialog,
                                                                 sentence:
                                                                 _controller
                                                                     .text,
@@ -1237,9 +1659,10 @@ class _DialogPageState extends State<DialogPage> {
                                                                 selectedTheme!
                                                                     .id_theme,
                                                               ));
-
-                                                          Navigator.pop(
-                                                              context);
+                                                          //Refresh the UI to display the success of modification
+                                                          setState(() {
+                                                            isModified = true;
+                                                          });
                                                         },
                                                         child: Container(
                                                           decoration:
@@ -1282,344 +1705,87 @@ class _DialogPageState extends State<DialogPage> {
                                               ),
                                             ),
                                           );
-                                        },
-                                      );
-                                    },
-                                  ).then((value) {
-                                    if (value != null) {
-                                      setState(() {
-                                        selectedTheme =
-                                            value; // Update the main widget with the selected theme
-                                      });
-                                    }
-                                  });
-                                },
-                                onTapCancel: () {
-                                  setState(() {
-                                    _buttonAnimations["SAVE"] = false;
-                                  });
-                                },
-                                child: Container(
-                                  decoration: const BoxDecoration(
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(60)),
-                                    color: Color.fromRGBO(255, 183, 34, 1),
-                                  ),
-                                  padding: EdgeInsets.fromLTRB(
-                                      MediaQuery.of(context).size.width *
-                                          0.02,
-                                      MediaQuery.of(context).size.width *
-                                          0.015,
-                                      MediaQuery.of(context).size.width *
-                                          0.02,
-                                      MediaQuery.of(context).size.width *
-                                          0.015),
-                                  margin: EdgeInsets.fromLTRB(
-                                      MediaQuery.of(context).size.width *
-                                          0.05,
-                                      0,
-                                      0,
-                                      0),
-                                  child: Text(
-                                    langFR
-                                        ? "Enregistrer nouveau"
-                                        : "   Nieuw opslaan   ",
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const Expanded(
-                              child: SizedBox(),
-                            ),
-                            AnimatedScale(
-                              scale: _buttonAnimations["SEND"] == true
-                                  ? 1.1
-                                  : 1.0,
-                              duration: const Duration(milliseconds: 100),
-                              curve: Curves.bounceOut,
-                              child: GestureDetector(
-                                // Animation management
-                                onTapDown: (_) {
-                                  setState(() {
-                                    _buttonAnimations["SEND"] = true;
-                                  });
-                                },
-                                onTapUp: (_) {
-                                  setState(() {
-                                    _buttonAnimations["SEND"] = false;
-                                  });
-                                  // BUTTON CODE
-                                  print("SENDDDDDDDDDDD");
-                                },
-                                onTapCancel: () {
-                                  setState(() {
-                                    _buttonAnimations["SEND"] = false;
-                                  });
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.fromLTRB(
-                                      0,
-                                      0,
-                                      MediaQuery.of(context).size.width *
-                                          0.08,
-                                      0),
-                                  child: CustomShape(
-                                    image: "assets/enveloppe.png",
-                                    text: langFR
-                                        ? "Envoyer à un contact"
-                                        : "Stuur naar een contact",
-                                    scale: MediaQuery.of(context).size.width *
-                                        0.0013,
-                                    backgroundColor:
-                                    const Color.fromRGBO(12, 178, 255, 1),
-                                    textColor: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        if(widget.idDialog != -1)
-                          AnimatedScale(
-                            scale: _buttonAnimations["MODIFY"] == true
-                                ? 1.1
-                                : 1.0,
-                            duration: const Duration(milliseconds: 100),
-                            curve: Curves.bounceOut,
-                            child: GestureDetector(
-                              // Animation management
-                              onTapDown: (_) {
-                                setState(() {
-                                  _buttonAnimations["MODIFY"] = true;
-                                });
-                              },
-                              onTapUp: (_) async {
-                                setState(() {
-                                  _buttonAnimations["MODIFY"] = false;
-                                });
-                                // BUTTON CODE
-                                //Retrieve the list of the themes for the actual language
-                                List<ThemeObject> themesList =
-                                await databaseManager
-                                    .retrieveThemesFromLanguage(
-                                    langFR ? 'fr' : 'nl');
-                                ThemeObject? selectedTheme = themesList[0];
-                                //Select by default the actual theme of the dialog
-                                for(var t in themesList) {
-                                  if(t.id_theme == widget.idTheme) {
-                                    selectedTheme = t;
-                                  }
-                                }
-                                //Popup for choosing a theme
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    // Use StatefulBuilder to manage the state inside the dialog
-                                    return StatefulBuilder(
-                                      builder: (context, setState) {
-                                        double screenHeight =
-                                            MediaQuery.of(context)
-                                                .size
-                                                .height;
-                                        double screenWidth =
-                                            MediaQuery.of(context)
-                                                .size
-                                                .width;
-                                        return Dialog(
-                                          backgroundColor: Colors.black87,
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(
-                                                16.0), // Optional padding for aesthetics
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize
-                                                  .min, // Ensures the dialog is as small as needed
-                                              children: [
-                                                // Title for theme selection
-                                                Text(
-                                                  langFR
-                                                      ? 'Veuillez choisir un thème pour ce dialogue:'
-                                                      : 'Kies een onderwerp voor deze dialoog:',
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize:
-                                                      screenHeight *
-                                                          0.03,
-                                                      fontWeight:
-                                                      FontWeight.bold),
-                                                ),
-                                                SizedBox(
-                                                    height:
-                                                    screenHeight * 0.1),
-                                                // Dropdown menu for themes
-                                                Container(
-                                                  color: Colors.amber,
-                                                  child:
-                                                  DropdownButtonHideUnderline(
-                                                    child: DropdownButton2<
-                                                        ThemeObject>(
-                                                      value: selectedTheme,
-                                                      dropdownStyleData:
-                                                      DropdownStyleData(
-                                                        maxHeight:
-                                                        screenHeight *
-                                                            0.35,
-                                                        decoration:
-                                                        const BoxDecoration(
-                                                            color: Colors
-                                                                .amber),
-                                                      ),
-                                                      style: TextStyle(
-                                                        color: const Color
-                                                            .fromRGBO(
-                                                            65, 65, 65, 1),
-                                                        fontWeight:
-                                                        FontWeight.bold,
+                                        }
+                                        // Popup to inform that the modification is a success
+                                        else {
+                                          return Dialog(
+                                            backgroundColor: Colors.black87,
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(
+                                                  16.0), // Optional padding for aesthetics
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize
+                                                    .min, // Ensures the dialog is as small as needed
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children: [
+                                                  SizedBox(
+                                                      width:
+                                                      screenWidth * 0.95,
+                                                      height:
+                                                      screenHeight * 0.15),
+                                                  // Title for theme selection
+                                                  Text(
+                                                    langFR
+                                                        ? 'Dialogue modifié avec succès !'
+                                                        : 'Dialoogvenster succesvol gewijzigd!',
+                                                    style: TextStyle(
+                                                        color: Colors.white,
                                                         fontSize:
                                                         screenHeight *
-                                                            0.025,
+                                                            0.03,
+                                                        fontWeight:
+                                                        FontWeight.bold),
+                                                  ),
+                                                  SizedBox(
+                                                      height:
+                                                      screenHeight * 0.2),
+                                                  //Button to quit
+                                                  GestureDetector(
+                                                    onTapUp: (_) {
+                                                      Navigator.pop(
+                                                          context);
+                                                    },
+                                                    child: Container(
+                                                      decoration:
+                                                      const BoxDecoration(
+                                                        borderRadius: BorderRadius
+                                                            .all(Radius
+                                                            .circular(
+                                                            60)),
+                                                        color: Colors.green,
                                                       ),
-                                                      onChanged:
-                                                          (ThemeObject?
-                                                      newValue) {
-                                                        setState(() {
-                                                          selectedTheme =
-                                                              newValue; // Update the selected theme
-                                                        });
-                                                      },
-                                                      items: themesList.map(
-                                                              (ThemeObject
-                                                          theme) {
-                                                            return DropdownMenuItem<
-                                                                ThemeObject>(
-                                                              value: theme,
-                                                              child: Text(
-                                                                theme.title,
-                                                              ),
-                                                            );
-                                                          }).toList(),
+                                                      padding: EdgeInsets
+                                                          .fromLTRB(
+                                                          screenWidth *
+                                                              0.1,
+                                                          8.0,
+                                                          screenWidth *
+                                                              0.1,
+                                                          8.0),
+                                                      child: Text(
+                                                        langFR
+                                                            ? "OK"
+                                                            : "OK",
+                                                        style: TextStyle(
+                                                          color: Colors
+                                                              .white,
+                                                          fontWeight:
+                                                          FontWeight
+                                                              .bold,
+                                                          fontSize:
+                                                          screenHeight *
+                                                              0.025,
+                                                        ),
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
-                                                SizedBox(
-                                                    height:
-                                                    screenHeight * 0.2),
-                                                //Buttons to cancel and validate
-                                                Row(
-                                                  mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .center,
-                                                  children: [
-                                                    //Cancel button
-                                                    GestureDetector(
-                                                      onTapUp: (_) {
-                                                        Navigator.pop(
-                                                            context);
-                                                      },
-                                                      child: Container(
-                                                        decoration:
-                                                        const BoxDecoration(
-                                                          borderRadius: BorderRadius
-                                                              .all(Radius
-                                                              .circular(
-                                                              60)),
-                                                          color: Colors.red,
-                                                        ),
-                                                        padding: EdgeInsets
-                                                            .fromLTRB(
-                                                            screenWidth *
-                                                                0.1,
-                                                            8.0,
-                                                            screenWidth *
-                                                                0.1,
-                                                            8.0),
-                                                        child: Text(
-                                                          langFR
-                                                              ? "Annuler"
-                                                              : "Annuleren",
-                                                          style: TextStyle(
-                                                            color: Colors
-                                                                .white,
-                                                            fontWeight:
-                                                            FontWeight
-                                                                .bold,
-                                                            fontSize:
-                                                            screenHeight *
-                                                                0.025,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    //Blank space between the buttons
-                                                    SizedBox(
-                                                        width: screenWidth *
-                                                            0.15),
-                                                    //Validate button
-                                                    GestureDetector(
-                                                      onTapUp: (_) async {
-                                                        await databaseManager
-                                                            .updateDialog(
-                                                            DialogObject(
-                                                              id_dialog: widget.idDialog,
-                                                              sentence:
-                                                              _controller
-                                                                  .text,
-                                                              language: langFR
-                                                                  ? "fr"
-                                                                  : "nl",
-                                                              id_theme:
-                                                              selectedTheme!
-                                                                  .id_theme,
-                                                            ));
 
-                                                        Navigator.pop(
-                                                            context);
-                                                      },
-                                                      child: Container(
-                                                        decoration:
-                                                        const BoxDecoration(
-                                                          borderRadius: BorderRadius
-                                                              .all(Radius
-                                                              .circular(
-                                                              60)),
-                                                          color: Colors
-                                                              .lightGreen,
-                                                        ),
-                                                        padding: EdgeInsets
-                                                            .fromLTRB(
-                                                            screenWidth *
-                                                                0.1,
-                                                            8.0,
-                                                            screenWidth *
-                                                                0.1,
-                                                            8.0),
-                                                        child: Text(
-                                                          langFR
-                                                              ? "Valider"
-                                                              : "Bevestigen",
-                                                          style: TextStyle(
-                                                            color: Colors
-                                                                .white,
-                                                            fontWeight:
-                                                            FontWeight
-                                                                .bold,
-                                                            fontSize:
-                                                            screenHeight *
-                                                                0.025,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                )
-                                              ],
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                        );
+                                          );
+                                        }
+
                                       },
                                     );
                                   },

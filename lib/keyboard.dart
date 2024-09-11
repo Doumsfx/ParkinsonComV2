@@ -277,102 +277,19 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
                               if (index != nbValues - 1) {
                                 return Row(
                                   children: [
-                                    SizedBox(
-                                      // 16 is the size of the VerticalDivider
-                                      width: MediaQuery.sizeOf(context).width /
-                                              nbValues -
-                                          16,
-
-                                      child: GestureDetector(
-                                        // Animation management
-                                        onTapDown: (_) {
-                                          setState(() {
-                                            _wordScales["WORD $index"] = 1.1;
-                                          });
-                                        },
-                                        onTapUp: (_) {
-                                          setState(() {
-                                            _wordScales["WORD $index"] = 1.0;
-                                          });
-                                        },
-                                        onTapCancel: () {
-                                          setState(() {
-                                            _wordScales["WORD $index"] = 1.0;
-                                          });
-                                        },
-                                        child: ListTile(
-                                          title: Text(nonEmptyValues[index],
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w800,
-                                                fontSize: MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.02 *
-                                                    _wordScales["WORD $index"]!,
-                                              )),
-                                          onTap: () => {
-                                            setState(() {
-                                              widget.predictionsHandler!
-                                                  .completeSentence(
-                                                      widget.controller.text,
-                                                      nonEmptyValues[index]);
-                                              widget
-                                                  .predictionsHandler!
-                                                  .suggestedWordsList
-                                                  .value = List.empty();
-                                              _firstKey = false;
-                                              _maj = false;
-                                              _keyboard = _getKeyboardConfig(
-                                                  _maj, _modeAccent, azerty);
-                                            })
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                    const VerticalDivider(
-                                        thickness: 5,
-                                        color: Colors.grey,
-                                        indent: 10,
-                                        endIndent: 10)
-                                  ],
-                                );
-                              } else {
-                                return SizedBox(
-                                  width: MediaQuery.sizeOf(context).width /
-                                      nbValues,
-                                  child: GestureDetector(
-                                    // Animation management
-                                    onTapDown: (_) {
-                                      setState(() {
-                                        _wordScales["WORD 4"] = 1.1;
-                                      });
-                                    },
-                                    onTapUp: (_) {
-                                      setState(() {
-                                        _wordScales["WORD 4"] = 1.0;
-                                      });
-                                    },
-                                    onTapCancel: () {
-                                      setState(() {
-                                        _wordScales["WORD 4"] = 1.0;
-                                      });
-                                    },
-                                    child: ListTile(
-                                      title: Text(nonEmptyValues[index],
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w800,
-                                            fontSize: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.02 *
-                                                _wordScales["WORD 4"]!,
-                                          )),
-                                      onTap: () => {
+                                    GestureDetector(
+                                      // Let the gesture hit the whole sized box, not only the text
+                                      behavior: HitTestBehavior.opaque,
+                                      // Animation management
+                                      onTapDown: (_) {
                                         setState(() {
+                                          _wordScales["WORD $index"] = 1.1;
+                                        });
+                                      },
+                                      onTapUp: (_) {
+                                        setState(() {
+                                          _wordScales["WORD $index"] = 1.0;
+                                          //Complete the sentence with the selected word
                                           widget.predictionsHandler!
                                               .completeSentence(
                                                   widget.controller.text,
@@ -385,8 +302,84 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
                                           _maj = false;
                                           _keyboard = _getKeyboardConfig(
                                               _maj, _modeAccent, azerty);
-                                        })
+                                        });
                                       },
+                                      onTapCancel: () {
+                                        setState(() {
+                                          _wordScales["WORD $index"] = 1.0;
+                                        });
+                                      },
+                                      child: SizedBox(
+                                        // 16 is the size of the VerticalDivider
+                                        width:
+                                            MediaQuery.sizeOf(context).width /
+                                                    nbValues -
+                                                16,
+                                        child: Align(
+                                          alignment: Alignment.center,
+                                          child: Text(nonEmptyValues[index],
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w800,
+                                                fontSize: 17 *
+                                                    _wordScales["WORD $index"]!,
+                                              )),
+                                        ),
+                                      ),
+                                    ),
+                                    const VerticalDivider(
+                                        thickness: 5,
+                                        color: Colors.grey,
+                                        indent: 10,
+                                        endIndent: 10)
+                                  ],
+                                );
+                              } else {
+                                return GestureDetector(
+                                  behavior: HitTestBehavior.opaque,
+                                  // Animation management
+                                  onTapDown: (_) {
+                                    setState(() {
+                                      _wordScales["WORD 4"] = 1.1;
+                                    });
+                                  },
+                                  onTapUp: (_) {
+                                    setState(() {
+                                      _wordScales["WORD 4"] = 1.0;
+                                      // Complete the sentence with the selected word
+                                      widget.predictionsHandler!
+                                          .completeSentence(
+                                              widget.controller.text,
+                                              nonEmptyValues[index]);
+                                      widget
+                                          .predictionsHandler!
+                                          .suggestedWordsList
+                                          .value = List.empty();
+                                      _firstKey = false;
+                                      _maj = false;
+                                      _keyboard = _getKeyboardConfig(
+                                          _maj, _modeAccent, azerty);
+                                    });
+                                  },
+                                  onTapCancel: () {
+                                    setState(() {
+                                      _wordScales["WORD 4"] = 1.0;
+                                    });
+                                  },
+                                  child: SizedBox(
+                                    width: MediaQuery.sizeOf(context).width /
+                                        nbValues,
+                                    child: Align(
+                                      alignment: Alignment.center,
+                                      child: Text(nonEmptyValues[index],
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w800,
+                                            fontSize:
+                                                17 * _wordScales["WORD 4"]!,
+                                          )),
                                     ),
                                   ),
                                 );
