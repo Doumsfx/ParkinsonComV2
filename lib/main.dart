@@ -4,21 +4,16 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:parkinson_com_v2/customShape.dart';
-import 'package:parkinson_com_v2/keyboard.dart';
 import 'package:parkinson_com_v2/listDialogsPage.dart';
 import 'package:parkinson_com_v2/variables.dart';
 
-import 'models/database/dialog.dart';
-import 'models/database/theme.dart';
 
 void main() {
   // We put the game in full screen mode
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky );
 
-  //First initialization of the database manager when launching the app
+  // First initialization of the database manager when launching the app
   databaseManager.initDB();
 
   // We ensure that the phone preserve the landscape mode
@@ -65,9 +60,9 @@ class _MyHomePageState extends State<MyHomePage> {
               child: TextButton(onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ListDialogsPage()),
+                  MaterialPageRoute(builder: (context) => const ListDialogsPage()),
                 );
-              }, child: Text(
+              }, child: const Text(
                 "DIALOGUE",
                 style: TextStyle(
                   backgroundColor: Colors.white,

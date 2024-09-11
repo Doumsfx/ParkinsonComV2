@@ -12,7 +12,7 @@ import 'package:parkinson_com_v2/variables.dart';
 import 'package:parkinson_com_v2/dialogPage.dart';
 
 import 'models/database/dialog.dart';
-import 'package:parkinson_com_v2/models/database/databasemanager.dart';
+//import 'package:parkinson_com_v2/models/database/databasemanager.dart';
 
 class ListDialogsPage extends StatefulWidget {
   const ListDialogsPage({super.key});
@@ -38,14 +38,14 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
   late List<DialogObject> _listDialogs;
   late List<bool> _dialogsAnimations;
   late List<bool> _deleteButtonsAnimations;
-  late List<bool> _TTSButtonsAnimations;
+  late List<bool> _ttsButtonsAnimations;
   final ScrollController _scrollController =  ScrollController();
 
   Future<void> initialisation() async{
     _listDialogs = await databaseManager.retrieveDialogsFromLanguage(langFR ?"fr" : "nl");
     _dialogsAnimations  = List.filled(_listDialogs.length, false);
     _deleteButtonsAnimations  = List.filled(_listDialogs.length, false);
-    _TTSButtonsAnimations  = List.filled(_listDialogs.length, false);
+    _ttsButtonsAnimations  = List.filled(_listDialogs.length, false);
   }
 
   @override
@@ -61,10 +61,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(29, 52, 83, 1),
-      body: ValueListenableBuilder<bool>(
-          valueListenable: listDialogsPageState,
-          builder: (context, value, child) {
-            return Column(
+      body: Column(
               children: [
                 // First part
                 Row(
@@ -75,130 +72,128 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // First part
-                        Container(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // Back Arrow
-                              Container(
-                                margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.013, MediaQuery.of(context).size.width * 0.02, 0),
-                                child: AnimatedScale(
-                                  scale: _buttonAnimations["BACK ARROW"]!
-                                      ? 1.1
-                                      : 1.0,
-                                  duration:
-                                  const Duration(milliseconds: 100),
-                                  curve: Curves.bounceOut,
-                                  child: GestureDetector(
-                                    onTapDown: (_) {
-                                      setState(() {
-                                        _buttonAnimations["BACK ARROW"] =
-                                        true;
-                                      });
-                                    },
-                                    onTapUp: (_) {
-                                      setState(() {
-                                        _buttonAnimations["BACK ARROW"] =
-                                        false;
-                                      });
-                                      Navigator.popUntil(
-                                        context,
-                                          (route) => route.isFirst,
-                                      );
-                                    },
-                                    onTapCancel: () {
-                                      setState(() {
-                                        _buttonAnimations["BACK ARROW"] =
-                                        false;
-                                      });
-                                    },
-                                    child: Image.asset(
-                                      "assets/fleche.png",
-                                      height: MediaQuery.of(context)
-                                          .size
-                                          .width *
-                                          0.05,
-                                      width: MediaQuery.of(context)
-                                          .size
-                                          .width *
-                                          0.07,
-                                    ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Back Arrow
+                            Container(
+                              margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.013, MediaQuery.of(context).size.width * 0.02, 0),
+                              child: AnimatedScale(
+                                scale: _buttonAnimations["BACK ARROW"]!
+                                    ? 1.1
+                                    : 1.0,
+                                duration:
+                                const Duration(milliseconds: 100),
+                                curve: Curves.bounceOut,
+                                child: GestureDetector(
+                                  onTapDown: (_) {
+                                    setState(() {
+                                      _buttonAnimations["BACK ARROW"] =
+                                      true;
+                                    });
+                                  },
+                                  onTapUp: (_) {
+                                    setState(() {
+                                      _buttonAnimations["BACK ARROW"] =
+                                      false;
+                                    });
+                                    Navigator.popUntil(
+                                      context,
+                                        (route) => route.isFirst,
+                                    );
+                                  },
+                                  onTapCancel: () {
+                                    setState(() {
+                                      _buttonAnimations["BACK ARROW"] =
+                                      false;
+                                    });
+                                  },
+                                  child: Image.asset(
+                                    "assets/fleche.png",
+                                    height: MediaQuery.of(context)
+                                        .size
+                                        .width *
+                                        0.05,
+                                    width: MediaQuery.of(context)
+                                        .size
+                                        .width *
+                                        0.07,
                                   ),
                                 ),
                               ),
+                            ),
 
-                              // Title + Themes
-                              SizedBox(
-                                height: MediaQuery.of(context).size.height * 0.35,
-                                width: MediaQuery.of(context).size.width * 0.835,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    // Title
-                                    Container(
-                                      margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.19, MediaQuery.of(context).size.height / 16, 0, MediaQuery.of(context).size.height * 0.07),
-                                      child: CustomTitle(
-                                        text: value
-                                            ? 'Les dialogues'
-                                            : 'Les thèmes',
-                                        image: 'assets/themeIcon.png',
-                                        scale: 1,
-                                        backgroundColor: Colors.white,
-                                        textColor: const Color.fromRGBO(29, 52, 83, 1),
-                                      ),
+                            // Title + Themes
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.35,
+                              width: MediaQuery.of(context).size.width * 0.835,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // Title
+                                  Container(
+                                    margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.19, MediaQuery.of(context).size.height / 16, 0, MediaQuery.of(context).size.height * 0.07),
+                                    child: CustomTitle(
+                                      text: langFR
+                                          ? 'Les dialogues'
+                                          : '...',
+                                      image: 'assets/themeIcon.png',
+                                      scale: 1,
+                                      backgroundColor: Colors.white,
+                                      textColor: const Color.fromRGBO(29, 52, 83, 1),
                                     ),
+                                  ),
 
-                                    // See themes Button
-                                    AnimatedScale(
-                                      scale: _buttonAnimations["THEMES"] == true
-                                          ? 1.1
-                                          : 1.0,
-                                      duration: const Duration(milliseconds: 100),
-                                      curve: Curves.bounceOut,
-                                      alignment: Alignment.centerRight,
-                                      child: GestureDetector(
-                                        // Animation management
-                                        onTapDown: (_) {
-                                          setState(() {
-                                            _buttonAnimations["THEMES"] = true;
-                                          });
-                                        },
-                                        onTapUp: (_) {
-                                          setState(() {
-                                            _buttonAnimations["THEMES"] = false;
-                                          });
-                                          // BUTTON CODE
-                                          print("THEMESSS");
-                                        },
-                                        onTapCancel: () {
-                                          setState(() {
-                                            _buttonAnimations["THEMES"] = false;
-                                          });
-                                        },
-                                        child: Container(
-                                          margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.40, 0, 0, 0),
-                                          child: CustomShapeThemes(
-                                            text: value
-                                                ? 'Voir les thèmes'
-                                                : 'Voir les dialogues',
-                                            image: 'assets/doubleFleche.png',
-                                            backgroundColor: const Color.fromRGBO(78, 237, 255, 1),
-                                            textColor: Colors.black,
-                                          ),
+                                  // See themes Button
+                                  AnimatedScale(
+                                    scale: _buttonAnimations["THEMES"] == true
+                                        ? 1.1
+                                        : 1.0,
+                                    duration: const Duration(milliseconds: 100),
+                                    curve: Curves.bounceOut,
+                                    alignment: Alignment.centerRight,
+                                    child: GestureDetector(
+                                      // Animation management
+                                      onTapDown: (_) {
+                                        setState(() {
+                                          _buttonAnimations["THEMES"] = true;
+                                        });
+                                      },
+                                      onTapUp: (_) {
+                                        setState(() {
+                                          _buttonAnimations["THEMES"] = false;
+                                        });
+                                        // BUTTON CODE
+                                        print("THEMESSS");
+                                      },
+                                      onTapCancel: () {
+                                        setState(() {
+                                          _buttonAnimations["THEMES"] = false;
+                                        });
+                                      },
+                                      child: Container(
+                                        margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.40, 0, 0, 0),
+                                        child: CustomShapeThemes(
+                                          text: langFR
+                                              ? 'Voir les thèmes'
+                                              : '...',
+                                          image: 'assets/doubleFleche.png',
+                                          backgroundColor: const Color.fromRGBO(78, 237, 255, 1),
+                                          textColor: Colors.black,
                                         ),
                                       ),
                                     ),
+                                  ),
 
-                                  ],
-                                ),
+                                ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
 
                         // Text + Button
-                        Container(
+                        SizedBox(
                           width: MediaQuery.of(context).size.width * 0.835,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -443,14 +438,16 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                       controller: _scrollController,
                       trackVisibility: true,
                       thumbVisibility: true,
-                      thickness: 15,
-                      radius: const Radius.circular(20),
+                      thickness: MediaQuery.of(context).size.width * 0.01125,
+                      radius: Radius.circular(MediaQuery.of(context).size.width * 0.015),
                       trackColor:
                       const Color.fromRGBO(66, 89, 109, 1),
-                      crossAxisMargin: 5,
-                      mainAxisMargin: 5,
+                      crossAxisMargin: MediaQuery.of(context).size.width * 0.00375,
+                      mainAxisMargin: MediaQuery.of(context).size.width * 0.00375,
                       trackRadius: const Radius.circular(20),
-                      padding: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.085, MediaQuery.of(context).size.width * 0.0315, MediaQuery.of(context).size.height * 0.11),
+                      padding: MediaQuery.of(context).size.height > 600
+                        ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.085, MediaQuery.of(context).size.width * 0.0315, MediaQuery.of(context).size.height * 0.11)
+                        : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.085, MediaQuery.of(context).size.width * 0.027, MediaQuery.of(context).size.height * 0.11),
                       child: Row(
                         children: [
                           FutureBuilder(
@@ -467,7 +464,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                             children: [
                                               // Dialog + TTS
                                               AnimatedScale(
-                                                scale: _dialogsAnimations[index] && !_TTSButtonsAnimations[index]
+                                                scale: _dialogsAnimations[index] && !_ttsButtonsAnimations[index]
                                                     ? 1.05
                                                     : 1.0,
                                                 duration: const Duration(milliseconds: 100),
@@ -509,7 +506,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                                       children: [
                                                         // Text
                                                         Container(
-                                                          width: MediaQuery.of(context).size.width * 0.57,
+                                                          width: MediaQuery.of(context).size.width * 0.745,
                                                           padding: EdgeInsets.fromLTRB(
                                                               MediaQuery.of(context).size.width *
                                                                   0.04,
@@ -533,13 +530,13 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                                         ),
                       
                                                         // Fill in the rest of the container
-                                                        Expanded(child: SizedBox()),
+                                                        const Expanded(child: SizedBox()),
                       
                                                         // TTS
                                                         Container(
                                                           margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.02),
                                                           child: AnimatedScale(
-                                                            scale: _TTSButtonsAnimations[index]
+                                                            scale: _ttsButtonsAnimations[index]
                                                                 ? 1.1
                                                                 : 1.0,
                                                             duration: const Duration(milliseconds: 100),
@@ -548,13 +545,13 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                                               // Animation management
                                                               onTapDown: (_) {
                                                                 setState(() {
-                                                                  _TTSButtonsAnimations[index] = true;
+                                                                  _ttsButtonsAnimations[index] = true;
                       
                                                                 });
                                                               },
                                                               onTapUp: (_) {
                                                                 setState(() {
-                                                                  _TTSButtonsAnimations[index] = false;
+                                                                  _ttsButtonsAnimations[index] = false;
                                                                 });
                                                                 // BUTTON CODE
                                                                 // TTS
@@ -562,15 +559,13 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                                               },
                                                               onTapCancel: () {
                                                                 setState(() {
-                                                                  _TTSButtonsAnimations[index] = false;
+                                                                  _ttsButtonsAnimations[index] = false;
                                                                 });
                                                               },
-                                                              child: Container(
-                                                                child: Image.asset(
-                                                                  'assets/sound.png',
-                                                                  height: MediaQuery.of(context).size.height * 0.085,
-                                                                  color: Colors.blue,
-                                                                ),
+                                                              child: Image.asset(
+                                                                'assets/sound.png',
+                                                                height: MediaQuery.of(context).size.height * 0.085,
+                                                                color: Colors.blue,
                                                               ),
                                                             ),
                                                           ),
@@ -711,7 +706,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                   ),
                                 ),
 
-                                Expanded(child: SizedBox()),
+                                const Expanded(child: SizedBox()),
                       
                                 AnimatedScale(
                                   scale: _buttonAnimations["BOT ARROW"]!
@@ -800,8 +795,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                     ),
                     ),
               ],
-            );
-          }),
+      )
     );
   }
 }
