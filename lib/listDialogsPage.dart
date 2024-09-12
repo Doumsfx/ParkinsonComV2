@@ -246,7 +246,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                     // BUTTON CODE
                                     Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) => const DialogPage(idDialog: -1, initialTextDialog: "")),
+                                      MaterialPageRoute(builder: (context) => DialogPage(idDialog: -1, initialTextDialog: "")),
                                     );
                                   },
                                   onTapCancel: () {

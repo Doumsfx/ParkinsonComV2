@@ -18,7 +18,13 @@ class DialogPage extends StatefulWidget {
   final String initialTextDialog;
   final int idTheme;
 
-  const DialogPage({super.key, required this.idDialog, required this.initialTextDialog, this.idTheme = 1});
+  DialogPage({
+    Key? key,
+    required this.idDialog,
+    required this.initialTextDialog,
+    int? idTheme, // Nullable parameter
+  }) : idTheme = idTheme ?? (langFR ? 1 : 13), // Provide default value if null
+        super(key: key);
 
 
   @override
@@ -176,7 +182,8 @@ class _DialogPageState extends State<DialogPage> {
                                 ),
                                 Expanded(child: Container()),
                                 //Displaying the Theme of the Dialog at the top right corner
-                                if(widget.idDialog == -1) Container(
+                                /*
+                                if(widget.idDialog == -1 && (widget.idTheme == 1 || widget.idTheme == 13)) Container(
                                   margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.01,),
                                   child: Text(
                                     langFR
@@ -192,8 +199,11 @@ class _DialogPageState extends State<DialogPage> {
                                     ),
                                   ),
                                 ),
+
+                                 */
                                 //Need to retrieve the theme before displaying it
-                                if(widget.idDialog != -1) FutureBuilder(
+                                //if(widget.idDialog != -1)
+                                  FutureBuilder(
                                     future: databaseManager.retrieveThemeFromId(widget.idTheme),
                                     builder: (context, snapshot) {
                                       if(snapshot.hasData) {
@@ -1075,7 +1085,11 @@ class _DialogPageState extends State<DialogPage> {
                                   await databaseManager
                                       .retrieveThemesFromLanguage(
                                       langFR ? 'fr' : 'nl');
+
                                   ThemeObject? selectedTheme = themesList[0];
+                                  for(var t in themesList) {
+                                    if(t.id_theme == widget.idTheme) selectedTheme = t;
+                                  }
                                   //Popup for choosing a theme
                                   showDialog(
                                     context: context,

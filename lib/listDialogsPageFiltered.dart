@@ -36,6 +36,7 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
   };
 
   List<DialogObject> _listDialogs = [];
+  String selectedThemeTitle = "";
   late List<bool> _dialogsAnimations;
   late List<bool> _deleteButtonsAnimations;
   late List<bool> _ttsButtonsAnimations;
@@ -43,6 +44,7 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
 
   Future<void> initialisation() async{
     _listDialogs = await databaseManager.retrieveDialogsFromTheme(widget.idTheme);
+    selectedThemeTitle = (await databaseManager.retrieveThemeFromId(widget.idTheme)).title;
     setState(() {});
     _dialogsAnimations  = List.filled(_listDialogs.length, false);
     _deleteButtonsAnimations  = List.filled(_listDialogs.length, false);
@@ -164,29 +166,22 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           // Text
-                          FutureBuilder(
-                            future: databaseManager.retrieveThemeFromId(widget.idTheme),
-                            builder: (context, snapshot) {
-                              return Container(
-                                margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.04, 0, 0, MediaQuery.of(context).size.height * 0.02),
-                                child: Text(
-                                  langFR
-                                    ? 'Thème: ${snapshot.data!.title}'
-                                    : 'Thema: ${snapshot.data!.title}',
+                      Container(
+                      margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.04, 0, 0, MediaQuery.of(context).size.height * 0.02),
+                      child: Text( langFR ?
+                        'Thème: $selectedThemeTitle'
+                        : 'Thema: $selectedThemeTitle',
+                        style: GoogleFonts.josefinSans(
+                          fontSize: 18,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                          decoration: TextDecoration.underline,
+                          decorationColor: Colors.white,
+                          decorationThickness: 1.4,
+                        ),
+                      ),
+                    ),
 
-                                  style: GoogleFonts.josefinSans(
-                                    fontSize: 18,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w700,
-                                    decoration: TextDecoration.underline,
-                                    decorationColor: Colors.white,
-                                    decorationThickness: 1.4,
-                                  ),
-                                ),
-                              );
-                            },
-
-                          ),
 
                           // Button
                           AnimatedScale(
