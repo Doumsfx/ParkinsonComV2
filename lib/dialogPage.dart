@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:parkinson_com_v2/customShape.dart';
 import 'package:parkinson_com_v2/keyboard.dart';
-import 'package:parkinson_com_v2/listDialogsPage.dart';
 import 'package:parkinson_com_v2/variables.dart';
 
 import 'models/database/dialog.dart';
@@ -137,14 +136,9 @@ class _DialogPageState extends State<DialogPage> {
                                           _buttonAnimations["BACK ARROW"] =
                                           false;
                                         });
-
-                                        // A MODIFIER
-                                        Navigator.pushReplacement(
+                                        Navigator.pop(
                                           context,
-                                          MaterialPageRoute(builder: (context) => const ListDialogsPage()),
                                         );
-
-
                                       },
                                       onTapCancel: () {
                                         setState(() {
@@ -182,25 +176,6 @@ class _DialogPageState extends State<DialogPage> {
                                 ),
                                 Expanded(child: Container()),
                                 //Displaying the Theme of the Dialog at the top right corner
-                                /*
-                                if(widget.idDialog == -1 && (widget.idTheme == 1 || widget.idTheme == 13)) Container(
-                                  margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.01,),
-                                  child: Text(
-                                    langFR
-                                        ? 'Thème: Dialogue sans thème'
-                                        : 'Thema: Dialoog zonder onderwerp',
-                                    style: const TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                      decoration: TextDecoration.underline,
-                                      decorationColor: Colors.white,
-                                      decorationThickness: 1.7,
-                                    ),
-                                  ),
-                                ),
-
-                                 */
                                 //Need to retrieve the theme before displaying it
                                 //if(widget.idDialog != -1)
                                   FutureBuilder(
@@ -1121,11 +1096,9 @@ class _DialogPageState extends State<DialogPage> {
                                                       langFR
                                                           ? 'Veuillez choisir un thème pour ce dialogue:'
                                                           : 'Kies een onderwerp voor deze dialoog:',
-                                                      style: TextStyle(
+                                                      style: const TextStyle(
                                                           color: Colors.white,
-                                                          fontSize:
-                                                          screenHeight *
-                                                              0.03,
+                                                          fontSize:20,
                                                           fontWeight:
                                                           FontWeight.bold),
                                                     ),
@@ -1150,15 +1123,13 @@ class _DialogPageState extends State<DialogPage> {
                                                                 color: Colors
                                                                     .amber),
                                                           ),
-                                                          style: TextStyle(
-                                                            color: const Color
+                                                          style: const TextStyle(
+                                                            color: Color
                                                                 .fromRGBO(
                                                                 65, 65, 65, 1),
                                                             fontWeight:
                                                             FontWeight.bold,
-                                                            fontSize:
-                                                            screenHeight *
-                                                                0.025,
+                                                            fontSize:20
                                                           ),
                                                           onChanged:
                                                               (ThemeObject?
@@ -1218,15 +1189,13 @@ class _DialogPageState extends State<DialogPage> {
                                                               langFR
                                                                   ? "Annuler"
                                                                   : "Annuleren",
-                                                              style: TextStyle(
+                                                              style: const TextStyle(
                                                                 color: Colors
                                                                     .white,
                                                                 fontWeight:
                                                                 FontWeight
                                                                     .bold,
-                                                                fontSize:
-                                                                screenHeight *
-                                                                    0.025,
+                                                                fontSize:20,
                                                               ),
                                                             ),
                                                           ),
@@ -1279,15 +1248,13 @@ class _DialogPageState extends State<DialogPage> {
                                                               langFR
                                                                   ? "Valider"
                                                                   : "Bevestigen",
-                                                              style: TextStyle(
+                                                              style: const TextStyle(
                                                                 color: Colors
                                                                     .white,
                                                                 fontWeight:
                                                                 FontWeight
                                                                     .bold,
-                                                                fontSize:
-                                                                screenHeight *
-                                                                    0.025,
+                                                                fontSize:20,
                                                               ),
                                                             ),
                                                           ),
@@ -1319,18 +1286,16 @@ class _DialogPageState extends State<DialogPage> {
                                                       langFR
                                                           ? 'Dialogue enregistré avec succès !'
                                                           : 'Dialoog succesvol opgeslaan!',
-                                                      style: TextStyle(
+                                                      style: const TextStyle(
                                                           color: Colors.white,
-                                                          fontSize:
-                                                          screenHeight *
-                                                              0.03,
+                                                          fontSize:20,
                                                           fontWeight:
                                                           FontWeight.bold),
                                                     ),
                                                     SizedBox(
                                                         height:
                                                         screenHeight * 0.2),
-                                                    //Buttons to quit
+                                                    //Button to quit
                                                     GestureDetector(
                                                       onTapUp: (_) {
                                                         Navigator.pop(
@@ -1357,15 +1322,13 @@ class _DialogPageState extends State<DialogPage> {
                                                           langFR
                                                               ? "OK"
                                                               : "OK",
-                                                          style: TextStyle(
+                                                          style: const TextStyle(
                                                             color: Colors
                                                                 .white,
                                                             fontWeight:
                                                             FontWeight
                                                                 .bold,
-                                                            fontSize:
-                                                            screenHeight *
-                                                                0.025,
+                                                            fontSize:20,
                                                           ),
                                                         ),
                                                       ),
@@ -1542,11 +1505,9 @@ class _DialogPageState extends State<DialogPage> {
                                                     langFR
                                                         ? 'Veuillez choisir un thème pour ce dialogue:'
                                                         : 'Kies een onderwerp voor deze dialoog:',
-                                                    style: TextStyle(
+                                                    style: const TextStyle(
                                                         color: Colors.white,
-                                                        fontSize:
-                                                        screenHeight *
-                                                            0.03,
+                                                        fontSize:20,
                                                         fontWeight:
                                                         FontWeight.bold),
                                                   ),
@@ -1571,15 +1532,13 @@ class _DialogPageState extends State<DialogPage> {
                                                               color: Colors
                                                                   .amber),
                                                         ),
-                                                        style: TextStyle(
-                                                          color: const Color
+                                                        style: const TextStyle(
+                                                          color: Color
                                                               .fromRGBO(
                                                               65, 65, 65, 1),
                                                           fontWeight:
                                                           FontWeight.bold,
-                                                          fontSize:
-                                                          screenHeight *
-                                                              0.025,
+                                                          fontSize:20
                                                         ),
                                                         onChanged:
                                                             (ThemeObject?
@@ -1639,15 +1598,13 @@ class _DialogPageState extends State<DialogPage> {
                                                             langFR
                                                                 ? "Annuler"
                                                                 : "Annuleren",
-                                                            style: TextStyle(
+                                                            style: const TextStyle(
                                                               color: Colors
                                                                   .white,
                                                               fontWeight:
                                                               FontWeight
                                                                   .bold,
-                                                              fontSize:
-                                                              screenHeight *
-                                                                  0.025,
+                                                              fontSize:20,
                                                             ),
                                                           ),
                                                         ),
@@ -1700,15 +1657,13 @@ class _DialogPageState extends State<DialogPage> {
                                                             langFR
                                                                 ? "Valider"
                                                                 : "Bevestigen",
-                                                            style: TextStyle(
+                                                            style: const TextStyle(
                                                               color: Colors
                                                                   .white,
                                                               fontWeight:
                                                               FontWeight
                                                                   .bold,
-                                                              fontSize:
-                                                              screenHeight *
-                                                                  0.025,
+                                                              fontSize:20,
                                                             ),
                                                           ),
                                                         ),
