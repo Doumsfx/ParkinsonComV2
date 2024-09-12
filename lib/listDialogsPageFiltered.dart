@@ -141,7 +141,7 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                                 child: CustomTitle(
                                   text: langFR
                                       ? 'Les dialogues'
-                                      : '...',
+                                      : 'De dialogen',
                                   image: 'assets/themeIcon.png',
                                   scale: 1,
                                   backgroundColor: Colors.white,
@@ -170,7 +170,10 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                               return Container(
                                 margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.04, 0, 0, MediaQuery.of(context).size.height * 0.02),
                                 child: Text(
-                                  'Thème: ${snapshot.data!.title}',
+                                  langFR
+                                    ? 'Thème: ${snapshot.data!.title}'
+                                    : 'Thema: ${snapshot.data!.title}',
+
                                   style: GoogleFonts.josefinSans(
                                     fontSize: 18,
                                     color: Colors.white,
@@ -234,7 +237,7 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                                 child: Text(
                                   langFR
                                       ? "+ Nouveau dialogue"
-                                      : "   Nieuw opslaan   ",
+                                      : "+ Nieuwe dialoog",
                                   style: const TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,
@@ -644,7 +647,7 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                                                         Text(
                                                           langFR
                                                               ? 'Voulez vous vraiment supprimer ce dialogue ?'
-                                                              : 'Wil je deze dialoog echt verwijderen?',
+                                                              : 'Wil je deze dialoog echt verwijderen ?',
                                                           style: TextStyle(
                                                               color: Colors
                                                                   .white,

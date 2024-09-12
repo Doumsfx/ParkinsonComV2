@@ -142,7 +142,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                     child: CustomTitle(
                                       text: langFR
                                           ? 'Les dialogues'
-                                          : '...',
+                                          : 'De dialogen',
                                       image: 'assets/themeIcon.png',
                                       scale: 1,
                                       backgroundColor: Colors.white,
@@ -186,7 +186,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                         child: CustomShapeThemes(
                                           text: langFR
                                               ? 'Voir les thèmes'
-                                              : '...',
+                                              : "Thema's bekijken",
                                           image: 'assets/doubleFleche.png',
                                           backgroundColor: const Color.fromRGBO(78, 237, 255, 1),
                                           textColor: Colors.black,
@@ -211,7 +211,9 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                               Container(
                                 margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.04, 0, 0, MediaQuery.of(context).size.height * 0.02),
                                 child: Text(
-                                  'Liste de tous les dialogues',
+                                  langFR
+                                  ? 'Liste de tous les dialogues'
+                                  : 'Lijst met alle dialogen',
                                   style: GoogleFonts.josefinSans(
                                     fontSize: 18,
                                     color: Colors.white,
@@ -272,7 +274,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                     child: Text(
                                       langFR
                                           ? "+ Nouveau dialogue"
-                                          : "   Nieuw opslaan   ",
+                                          : "+ Nieuwe dialoog",
                                       style: const TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold,
@@ -528,44 +530,39 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                           child: Row(
                                             children: [
                                               // Text
-                                              Container(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.745,
-                                                padding:
-                                                    EdgeInsets.fromLTRB(
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            0.04,
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            0.015,
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            0.02,
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            0.015),
-                                                child: Text(
-                                                  _listDialogs[index].sentence,
-                                                  style: const TextStyle(
-                                                    color: Colors.black,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 18,
+                                              Expanded(
+                                                child: Container(
+                                                  padding:
+                                                      EdgeInsets.fromLTRB(
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.04,
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.015,
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.02,
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.015),
+                                                  child: Text(
+                                                    _listDialogs[index].sentence,
+                                                    style: const TextStyle(
+                                                      color: Colors.black,
+                                                      fontWeight: FontWeight.bold,
+                                                      fontSize: 18,
+                                                    ),
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                   ),
-                                                  maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
                                                 ),
                                               ),
-
-                                              // Fill in the rest of the container
-                                              Expanded(child: SizedBox()),
 
                                               // TTS
                                               Container(

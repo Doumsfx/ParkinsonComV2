@@ -1403,7 +1403,7 @@ class _DialogPageState extends State<DialogPage> {
                                   child: Text(
                                     langFR
                                         ? "Enregistrer nouveau"
-                                        : "   Nieuw opslaan   ",
+                                        : "      Nieuw opslaan      ",
                                     style: const TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold,
@@ -1828,7 +1828,7 @@ class _DialogPageState extends State<DialogPage> {
                                 child: Text(
                                   langFR
                                       ? " Remplacer existant "
-                                      : "   Nieuw opslaan   ",
+                                      : "Bestaande vervangen",
                                   style: const TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,

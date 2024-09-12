@@ -141,7 +141,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                 child: CustomTitle(
                                   text: langFR
                                       ? 'Les thèmes'
-                                      : '...',
+                                      : "De thema's",
                                   image: 'assets/themeIcon.png',
                                   scale: 1,
                                   backgroundColor: Colors.white,
@@ -185,7 +185,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                     child: CustomShapeThemes(
                                       text: langFR
                                           ? 'Voir les dialogues'
-                                          : '...',
+                                          : 'Bekijk de dialogen',
                                       image: 'assets/doubleFleche.png',
                                       backgroundColor: const Color.fromRGBO(78, 237, 255, 1),
                                       textColor: Colors.black,
@@ -212,7 +212,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
                             child: Text(
                               langFR
                                   ? 'Liste de tous les thèmes'
-                                  : '...',
+                                  : "Lijst met thema's",
 
                               style: GoogleFonts.josefinSans(
                                 fontSize: 18,
@@ -272,7 +272,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                 child: Text(
                                   langFR
                                       ? "+ Nouveau thème"
-                                      : "...",
+                                      : "+ Nieuw thema",
                                   style: const TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,
