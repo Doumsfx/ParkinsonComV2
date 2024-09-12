@@ -154,6 +154,16 @@ class DatabaseManager {
     );
   }
 
+  ///Count the number of dialogs that belong to a theme
+  Future<int> countDialogsFromTheme(int idTheme) async {
+    List<Map<String, Object?>> queryResult = await db.rawQuery('''
+    SELECT COUNT(*) FROM Dialog
+    WHERE id_theme = ?;
+    ''', [idTheme]);
+    print(int.parse(queryResult[0]["COUNT(*)"].toString()));
+    return int.parse(queryResult[0]["COUNT(*)"].toString());
+  }
+
   ///Use the defaultThemesAndDialogs.json file to insert default values into Theme and Dialog tables
   Future<void> insertDefaultThemesAndDialogs(Database database) async {
     Map<String, dynamic> file = jsonDecode(

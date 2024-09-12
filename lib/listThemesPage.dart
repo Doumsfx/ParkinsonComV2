@@ -607,19 +607,42 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                                             screenHeight *
                                                                 0.1),
                                                         //Suppression warning
+                                                        //TODO How many dialogs will be deleted
                                                         Text(
                                                           langFR
-                                                              ? 'Voulez vous vraiment supprimer ce thème ?'
-                                                              : '...?',
-                                                          style: TextStyle(
+                                                              ? 'Voulez vous vraiment supprimer le thème:\n${_listThemes[index].title} ?'
+                                                              : 'Weet je zeker dat je het thema wil verwijderen:\n${_listThemes[index].title}?',
+                                                          textAlign: TextAlign.center,
+                                                          style: const TextStyle(
                                                               color: Colors
                                                                   .white,
-                                                              fontSize:
-                                                              screenHeight *
-                                                                  0.03,
+                                                              fontSize:20,
                                                               fontWeight:
                                                               FontWeight
                                                                   .bold),
+                                                        ),
+
+                                                        FutureBuilder(future: databaseManager.countDialogsFromTheme(_listThemes[index].id_theme), builder:
+                                                        (context, snapshot) {
+                                                          if(snapshot.hasData) {
+                                                            return Text(
+                                                              langFR
+                                                                  ? 'Il y a ${snapshot.data} dans ce thème.\nCes dialogues seront supprimés.'
+                                                                  : 'Er is ${snapshot.data} dialogen in dit thema.\nDeze dialogen worden verwijderd.',
+                                                              textAlign: TextAlign.center,
+                                                              style: const TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize:20,
+                                                                  fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                            );
+                                                          }
+                                                          else {
+                                                            return const SizedBox.shrink();
+                                                          }
+                                                        },
                                                         ),
 
                                                         SizedBox(
