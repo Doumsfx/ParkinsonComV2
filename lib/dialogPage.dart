@@ -2,6 +2,7 @@
 // Code by Alexis Pagnon and Sanchez Adam
 // ParkinsonCom V2
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -180,64 +181,56 @@ class _DialogPageState extends State<DialogPage> {
                                     ),
                                   ),
                                 ),
-                                Expanded(child: Container()),
-                                //Displaying the Theme of the Dialog at the top right corner
-                                /*
-                                if(widget.idDialog == -1 && (widget.idTheme == 1 || widget.idTheme == 13)) Container(
-                                  margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.01,),
-                                  child: Text(
-                                    langFR
-                                        ? 'Thème: Dialogue sans thème'
-                                        : 'Thema: Dialoog zonder onderwerp',
-                                    style: const TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                      decoration: TextDecoration.underline,
-                                      decorationColor: Colors.white,
-                                      decorationThickness: 1.7,
-                                    ),
+
+                                // Displaying the Theme of the Dialog at the top right corner
+                                Expanded(
+                                  child: Center(
+                                    child: FutureBuilder(
+                                        // Need to retrieve the theme before displaying it
+                                        future: databaseManager.retrieveThemeFromId(widget.idTheme),
+                                        builder: (context, snapshot) {
+                                          if(snapshot.hasData) {
+                                            return Container(
+                                              child: AutoSizeText(langFR
+                                                  ? 'Thème: ${snapshot.data!.title}'
+                                                  : 'Thema: ${snapshot.data!.title}',
+                                                maxLines: 1,
+                                                maxFontSize: 15,
+                                                minFontSize: 5,
+                                                overflow: TextOverflow.ellipsis,
+                                    
+                                                style: const TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                  decoration: TextDecoration.underline,
+                                                  decorationColor: Colors.white,
+                                                  decorationThickness: 1.7,
+                                              ),),
+                                            );
+                                          }
+                                          else {
+                                            return Container(
+                                              margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.01,),
+                                              child: OverflowBox(
+                                                maxWidth: double.infinity,
+                                                child: Text(langFR
+                                                    ? 'Thème: Dialogue sans thème'
+                                                    : 'Thema: Dialoog zonder onderwerp',
+                                                  style: const TextStyle(
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white,
+                                                    decoration: TextDecoration.underline,
+                                                    decorationColor: Colors.white,
+                                                    decorationThickness: 1.7,
+                                                  ),),
+                                              ),
+                                            );
+                                          }
+                                        },),
                                   ),
                                 ),
-
-                                 */
-                                //Need to retrieve the theme before displaying it
-                                //if(widget.idDialog != -1)
-                                  FutureBuilder(
-                                    future: databaseManager.retrieveThemeFromId(widget.idTheme),
-                                    builder: (context, snapshot) {
-                                      if(snapshot.hasData) {
-                                        return Container(
-                                          margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.01,),
-                                          child: Text(langFR
-                                              ? 'Thème: ${snapshot.data!.title}'
-                                              : 'Thema: ${snapshot.data!.title}',style: const TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white,
-                                            decoration: TextDecoration.underline,
-                                            decorationColor: Colors.white,
-                                            decorationThickness: 1.7,
-                                          ),),
-                                        );
-                                      }
-                                      else {
-                                        return Container(
-                                          margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.01,),
-                                          child: Text(langFR
-                                              ? 'Thème: Dialogue sans thème'
-                                              : 'Thema: Dialoog zonder onderwerp',
-                                            style: const TextStyle(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
-                                              decoration: TextDecoration.underline,
-                                              decorationColor: Colors.white,
-                                              decorationThickness: 1.7,
-                                            ),),
-                                        );
-                                      }
-                                    },),
 
                               ],
                             ),
