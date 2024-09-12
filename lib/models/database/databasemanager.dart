@@ -160,7 +160,6 @@ class DatabaseManager {
     SELECT COUNT(*) FROM Dialog
     WHERE id_theme = ?;
     ''', [idTheme]);
-    print(int.parse(queryResult[0]["COUNT(*)"].toString()));
     return int.parse(queryResult[0]["COUNT(*)"].toString());
   }
 

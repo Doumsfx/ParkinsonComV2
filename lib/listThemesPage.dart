@@ -607,7 +607,6 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                                             screenHeight *
                                                                 0.1),
                                                         //Suppression warning
-                                                        //TODO How many dialogs will be deleted
                                                         Text(
                                                           langFR
                                                               ? 'Voulez vous vraiment supprimer le thème:\n${_listThemes[index].title} ?'
