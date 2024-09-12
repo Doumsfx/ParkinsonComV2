@@ -57,19 +57,45 @@ class _MyHomePageState extends State<MyHomePage> {
           valueListenable: dialogPageState,
           builder: (context, value, child) {
             return Center(
-              child: TextButton(onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const ListDialogsPage()),
-                );
-              }, child: const Text(
-                "DIALOGUE",
-                style: TextStyle(
-                  backgroundColor: Colors.white,
-                  color: Colors.black,
-                  fontSize: 30,
-                ),
-              )),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  TextButton(
+                      onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const ListDialogsPage()),
+                    );
+                  }, child:
+                  Text(
+                    langFR
+                        ? "Dialogue"
+                        : "Dialoog",
+                    style: TextStyle(
+                      backgroundColor: Colors.white,
+                      color: Colors.black,
+                      fontSize: 30,
+                    ),
+                  )),
+                  TextButton(
+                      onPressed: () {
+                    setState(() {
+                      langFR = !langFR;
+                    });
+                  },
+                      child: Text(
+                    langFR
+                      ? "Changer de langue"
+                      : "Taal wijzigen",
+                    style: TextStyle(
+                      backgroundColor: Colors.white,
+                      color: Colors.black,
+                      fontSize: 30,
+                    ),
+                  )),
+                ],
+              ),
             );
           }),
     );

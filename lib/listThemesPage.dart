@@ -775,6 +775,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
                             );
                           }),
                     ),
+
                     // ScrollWidgets
                     Container(
                       margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.02),
@@ -856,7 +857,25 @@ class _ListThemesPageState extends State<ListThemesPage> {
                             ),
                           ),
 
-                          const Expanded(child: SizedBox()),
+                          Expanded(child: Container(
+                            width: MediaQuery.of(context).size.width * 0.01875,
+                            margin: MediaQuery.of(context).size.height > 600
+                                ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.014)
+                                : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.011),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: const Color.fromRGBO(66, 89, 109, 1),
+                            ),
+
+                            child: Container(
+                              margin: EdgeInsets.all(MediaQuery.of(context).size.width * 0.00375),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: Colors.blue,
+                              ),
+                            ),
+
+                          )),
 
                           AnimatedScale(
                             scale: _buttonAnimations["BOT ARROW"]!
