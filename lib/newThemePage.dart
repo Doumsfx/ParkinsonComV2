@@ -111,7 +111,9 @@ class _NewThemePageState extends State<NewThemePage> {
                           : Container(
                             margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.2),
                             child: Text(
-                              'Nouveau Thème',
+                              langFR
+                                  ?'Nouveau Thème'
+                                  :'Nieuw Thema',
                               style: GoogleFonts.josefinSans(
                                 color: Colors.white,
                                 fontSize: 35,
@@ -127,7 +129,10 @@ class _NewThemePageState extends State<NewThemePage> {
                           : Container(
                             margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.02),
                             child: Text(
-                              'Indiquez ci-dessous le nom de votre nouveau thème',
+                              langFR
+                                  ?'Indiquez ci-dessous le nom de votre nouveau thème'
+                                  :'Voer hieronder de naam van uw nieuwe thema in',
+
                               style: GoogleFonts.josefinSans(
                                 color: Colors.white,
                                 fontSize: 20,
@@ -217,7 +222,7 @@ class _NewThemePageState extends State<NewThemePage> {
                                 ),
                                 hintText: langFR
                                     ? 'Nom du thème'
-                                    : '...',
+                                    : 'Thema naam',
                               ),
 
                               onTap: () {
@@ -290,7 +295,7 @@ class _NewThemePageState extends State<NewThemePage> {
                                 child: Text(
                                   langFR
                                       ? "Enregistrer"
-                                      : "...",
+                                      : "  Opnemen  ",
                                   style: const TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w800,
