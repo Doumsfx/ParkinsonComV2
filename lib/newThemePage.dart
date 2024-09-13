@@ -139,8 +139,12 @@ class _NewThemePageState extends State<NewThemePage> {
                         // TextField
                         Container(
                           width: MediaQuery.of(context).size.width * 0.5,
-                          height: MediaQuery.of(context).size.height * 0.11,
-                          margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.13),
+                          height: MediaQuery.of(context).size.height > 600
+                            ? MediaQuery.of(context).size.height * 0.11
+                            : MediaQuery.of(context).size.height * 0.13,
+                          margin: MediaQuery.of(context).size.height > 600
+                            ? EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.13)
+                            : EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.05),
                           decoration: BoxDecoration(
                             color: const Color.fromRGBO(255, 183, 34, 1),
                             borderRadius: BorderRadius.all(
@@ -169,7 +173,7 @@ class _NewThemePageState extends State<NewThemePage> {
                               enableInteractiveSelection: true,
                               maxLines: 1,
                               textAlign: TextAlign.center,
-                              textAlignVertical: TextAlignVertical.center,
+                              textAlignVertical: TextAlignVertical.bottom,
 
                               decoration: InputDecoration(
                                 filled: true,
