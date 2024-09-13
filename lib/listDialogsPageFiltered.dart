@@ -460,7 +460,7 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                                                 )
 
                                         ),
-                                      );
+                                      ).then((_) => initialisation());
                                     },
                                     onTapCancel: () {
                                       setState(() {

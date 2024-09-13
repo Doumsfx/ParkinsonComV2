@@ -499,7 +499,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                                         idTheme:
                                                             _listDialogs[index]
                                                                 .id_theme)),
-                                          );
+                                          ).then((_) => initialisation());
                                         },
                                         onTapCancel: () {
                                           setState(() {
