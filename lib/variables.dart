@@ -5,6 +5,7 @@ import 'models/database/databasemanager.dart';
 bool azerty = true; // true: azerty | false: abcde
 bool langFR = true;  // true: FR     | false: NL
 ValueNotifier<bool> dialogPageState = ValueNotifier<bool>(false); // true: keyboard page | false: page without keyboard
+ValueNotifier<bool> newThemePageState = ValueNotifier<bool>(false); // true: keyboard page | false: page without keyboard
 
 // Databases
 DatabaseManager databaseManager = DatabaseManager();

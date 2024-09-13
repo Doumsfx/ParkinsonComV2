@@ -12,6 +12,7 @@ class CustomKeyboard extends StatefulWidget {
   final bool textPredictions;
   late final PredictionsHandler? predictionsHandler;
 
+
   CustomKeyboard(
       {super.key, required this.controller, required this.textPredictions}) {
     if (textPredictions) {
@@ -208,6 +209,7 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
     } else if (keyText == "VALIDATE") {
       setState(() {
         dialogPageState.value = false;
+        newThemePageState.value = false;
       });
     }
 
