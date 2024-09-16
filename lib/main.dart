@@ -116,7 +116,7 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Time + Date + Battery ce sera une column(row, text, text)
+                    // Time + Date + Battery
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.24,
                       child: Column(
@@ -229,7 +229,7 @@ class _HomePageState extends State<HomePage> {
                         child: CustomHomePageTitle(
                           text: langFR
                               ? 'Menu principal'
-                              : '...',
+                              : 'Hoofdmenu',
                           image: 'assets/home.png',
                           backgroundColor: const Color.fromRGBO(0, 204, 255, 1),
                           textColor: Colors.white,
@@ -341,7 +341,7 @@ class _HomePageState extends State<HomePage> {
                           backgroundColor: const Color.fromRGBO(61, 192, 200, 1),
                           textColor: Colors.white,
                           image: 'assets/dialog.png',
-                          text: 'Dialogue',
+                          text: langFR ? 'Dialogue' : 'Dialoog',
                           imageScale: 1,
                         ),
                       ),
@@ -380,7 +380,7 @@ class _HomePageState extends State<HomePage> {
                           backgroundColor: const Color.fromRGBO(160, 208, 86, 1),
                           textColor: Colors.white,
                           image: 'assets/beach-chair.png',
-                          text: 'Détente',
+                          text: langFR ? 'Détente' : 'Ontspanning',
                           imageScale: 1.4,
                         ),
                       ),
@@ -396,7 +396,24 @@ class _HomePageState extends State<HomePage> {
           SizedBox(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height * 0.2,
-              child: Container(color: Colors.pink,)
+              child: Center(
+                child: TextButton(
+                    onPressed: () {
+                      setState(() {
+                        langFR = !langFR;
+                      });
+                    },
+                    child: Text(
+                      langFR
+                          ? "Changer de langue"
+                          : "Taal wijzigen",
+                      style: const TextStyle(
+                        backgroundColor: Colors.white,
+                        color: Colors.black,
+                        fontSize: 30,
+                      ),
+                    )),
+              )
           )
 
         ],

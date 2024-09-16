@@ -2,6 +2,7 @@
 // Code by Alexis Pagnon and Sanchez Adam
 // ParkinsonCom V2
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 class CustomMenuButton extends StatelessWidget {
@@ -22,10 +23,10 @@ class CustomMenuButton extends StatelessWidget {
           width: MediaQuery.of(context).size.height * 0.28,
           decoration: BoxDecoration(
             color: backgroundColor,
-            borderRadius: BorderRadius.circular(70)
+            borderRadius: BorderRadius.circular(MediaQuery.of(context).size.height * 0.09)
           ),
           child: Padding(
-            padding: EdgeInsets.all(52 / imageScale - 1),
+            padding: EdgeInsets.all(MediaQuery.of(context).size.height * 0.065 / imageScale - 1),
             child: Image.asset(
               image,
             ),
@@ -39,15 +40,22 @@ class CustomMenuButton extends StatelessWidget {
           width: MediaQuery.of(context).size.height * 0.28,
           decoration: BoxDecoration(
               color: backgroundColor,
-              borderRadius: BorderRadius.circular(70)
+              borderRadius: BorderRadius.circular(MediaQuery.of(context).size.height * 0.09)
           ),
           child: Center(
-            child: Text(
-              text,
-              style: TextStyle(
-                color: textColor,
-                fontWeight: FontWeight.w700,
-                fontSize: 20,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.012),
+              child: AutoSizeText(
+                text,
+                style: TextStyle(
+                  color: textColor,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 20,
+                ),
+
+                maxLines: 1,
+                minFontSize: 10,
+                maxFontSize: 20,
 
               ),
             ),
