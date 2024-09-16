@@ -444,8 +444,9 @@ class _DialogPageState extends State<DialogPage> {
                                             onTapUp: (_) {
                                               setState(() {
                                                 _buttonAnimations["TTS"] = false;
-                                                // TODO code du TTS
-                                                // Je pense que le mieux est de faire une fonction que l'on appelle juste ici
+                                                //TTS
+                                                ttsHandler.setText(_controller.text);
+                                                ttsHandler.speak();
                                               });
                                             },
                                             onTapCancel: () {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'models/ttshandler.dart';
 import 'models/database/databasemanager.dart';
 
 // Global variables
@@ -9,3 +10,6 @@ ValueNotifier<bool> newThemePageState = ValueNotifier<bool>(false); // true: key
 
 // Databases
 DatabaseManager databaseManager = DatabaseManager();
+
+//TTS
+TtsHandler ttsHandler = TtsHandler();

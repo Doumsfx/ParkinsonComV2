@@ -561,6 +561,8 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                                                   });
                                                   // BUTTON CODE
                                                   // TTS
+                                                  ttsHandler.setText(_listDialogs[index].sentence);
+                                                  ttsHandler.speak();
                                                 },
                                                 onTapCancel: () {
                                                   setState(() {

@@ -16,6 +16,9 @@ void main() {
   // First initialization of the database manager when launching the app
   databaseManager.initDB();
 
+  // Initialization of the TTS handler when launching the app
+  ttsHandler.initTts();
+
   // We ensure that the phone preserve the landscape mode
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.landscapeLeft,
@@ -72,7 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     langFR
                         ? "Dialogue"
                         : "Dialoog",
-                    style: TextStyle(
+                    style: const TextStyle(
                       backgroundColor: Colors.white,
                       color: Colors.black,
                       fontSize: 30,
