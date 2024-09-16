@@ -45,6 +45,7 @@ dependencies:
   google_fonts: ^6.2.1
   dropdown_button2: ^2.3.9
   auto_size_text: ^3.0.0
+  battery_plus: ^6.0.3
 
 dev_dependencies:
   flutter_test:
