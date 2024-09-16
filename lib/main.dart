@@ -85,6 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       onPressed: () {
                     setState(() {
                       langFR = !langFR;
+                      ttsHandler.setVoiceFrOrNl(langFR ? 'fr' : 'nl', 'female');
                     });
                   },
                       child: Text(

@@ -1,25 +1,31 @@
 
+import 'dart:collection';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:parkinson_com_v2/variables.dart';
 
-enum TtsState { playing, stopped}
+enum TtsState { playing, stopped }
 
 class TtsHandler {
   late FlutterTts flutterTts;
   String? language; //Selected language
   String? voice; //Selected voice
   String? engine; //Selected engine (ex: com.google.android.tts / com.samsung.SMT / etc)
-  double _volume = 0.5; // Voice volume [0; 1]
+  double _volume = 1.0; // Voice volume [0; 1]
   double _pitch = 1.0; // Voice pitch [0.5; 2]
   double _rate = 0.5; // Voice speed rate [0; 1]
+  //Map of four selected voices that are by default with the google engine
+  Map<String, Map<String,String>> chosenVoices = {'fr' : {'female' : 'fr-fr-x-fra-local', 'male' : 'fr-fr-x-frb-local'}, 'nl' : {'female' : 'nl-be-x-bec-local', 'male' : 'nl-be-x-bed-local'}};
+
 
   String? _newVoiceText;
 
   TtsState ttsState = TtsState.stopped;
 
   Future<List<String>>? _languagesList;
+  Future<List<Map<String, String>>>? _voicesList;
 
   //Get State (don't need paused or continued for our usage)
   bool get isPlaying => ttsState == TtsState.playing;
@@ -67,9 +73,13 @@ class TtsHandler {
       //Set the voice to the device's default one
       _getDefaultVoice();
 
-      //Retrieve the list of languages available on the device
+      //Retrieve the list of languages and voices available on the device
       _languagesList = _getLanguages();
+      _voicesList = _getVoices();
+
     }
+
+
   }
 
   ///Default Engine
@@ -103,8 +113,24 @@ class TtsHandler {
 
   ///Retrieve a list of languages available on the device (using the ISO 639)
   Future<List<String>> _getLanguages() async {
-    List<String> languages = await flutterTts.getLanguages;
-    return languages;
+    List<dynamic> languages = await flutterTts.getLanguages;
+    var languagesList = <String>[];
+    for (var l in languages) {
+      languagesList.add(l as String);
+    }
+    return languagesList;
+  }
+
+  Future<List<Map<String, String>>> _getVoices() async {
+    var voices = await flutterTts.getVoices;
+    // Cast the dynamic list to a List<Map<Object?, Object?>>
+    List<Map<Object?, Object?>> voicesList = List<Map<Object?, Object?>>.from(voices);
+    // Convert each map to a Map<String, String>
+    List<Map<String, String>> voicesFormatted = voicesList
+        .map((map) => map.map((key, value) => MapEntry(key.toString(), value.toString())))
+        .toList();
+    voicesFormatted.sort((a,b) => a["locale"]!.compareTo(b["locale"]!));
+    return voicesFormatted;
   }
 
   ///Set the new text to be said
@@ -126,5 +152,25 @@ class TtsHandler {
   void setRate(double value) {
     _rate = value;
   }
+
+  ///Set one of the four voices ('male' or 'female' [gender] for 'fr' or 'nl' [language])
+  void setVoiceFrOrNl(String language, String gender) async {
+    if(chosenVoices.containsKey(language) && chosenVoices[language]!.containsKey(gender)){
+      //Check if the voice is one of the voices that are on the device
+      for(var v in (await _voicesList!)) {
+        if(v["name"]! == chosenVoices[language]![gender]) {
+          flutterTts.setVoice(v);
+          break;
+        }
+      }
+      return;
+    }
+    //Voice unknown or not available -> set the default
+    flutterTts.setVoice(await flutterTts.getDefaultVoice);
+  }
+
+
+
+
 
 }
