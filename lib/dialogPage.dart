@@ -1311,8 +1311,8 @@ class _DialogPageState extends State<DialogPage> {
                                                     //Button to quit
                                                     GestureDetector(
                                                       onTapUp: (_) {
-                                                        Navigator.pop(
-                                                            context);
+                                                        Navigator.pop(context);
+                                                        Navigator.pop(context);
                                                       },
                                                       child: Container(
                                                         decoration:

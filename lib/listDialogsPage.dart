@@ -246,8 +246,8 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                     // BUTTON CODE
                                     Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) => DialogPage(idDialog: -1, initialTextDialog: "")),
-                                    );
+                                      MaterialPageRoute(builder: (context) => DialogPage(idDialog: -1, initialTextDialog: "",)),
+                                    ).then((_) => initialisation());
                                   },
                                   onTapCancel: () {
                                     setState(() {
@@ -499,7 +499,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                                         idTheme:
                                                             _listDialogs[index]
                                                                 .id_theme)),
-                                          );
+                                          ).then((_) => initialisation());
                                         },
                                         onTapCancel: () {
                                           setState(() {

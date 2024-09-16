@@ -11,6 +11,7 @@ import 'package:parkinson_com_v2/customTitle.dart';
 import 'package:parkinson_com_v2/listDialogsPage.dart';
 import 'package:parkinson_com_v2/listDialogsPageFiltered.dart';
 import 'package:parkinson_com_v2/models/database/theme.dart';
+import 'package:parkinson_com_v2/newThemePage.dart';
 import 'package:parkinson_com_v2/variables.dart';
 
 class ListThemesPage extends StatefulWidget {
@@ -244,7 +245,10 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                   _buttonAnimations["NEW DIALOG"] = false;
                                 });
                                 // BUTTON CODE
-                                // TODO code bouton nouveau theme
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => NewThemePage(),)
+                                );
 
                               },
                               onTapCancel: () {

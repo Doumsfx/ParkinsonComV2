@@ -205,7 +205,7 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(builder: (context) => DialogPage(idDialog: -1, initialTextDialog: "", idTheme: widget.idTheme,)),
-                                );
+                                ).then((_) => initialisation());
                               },
                               onTapCancel: () {
                                 setState(() {
@@ -460,7 +460,7 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                                                 )
 
                                         ),
-                                      );
+                                      ).then((_) => initialisation());
                                     },
                                     onTapCancel: () {
                                       setState(() {
