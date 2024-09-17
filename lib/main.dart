@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:parkinson_com_v2/customHomePageTitle.dart';
 import 'package:parkinson_com_v2/customMenuButton.dart';
+import 'package:parkinson_com_v2/customShapeMenu.dart';
 import 'package:parkinson_com_v2/listDialogsPage.dart';
 import 'package:parkinson_com_v2/variables.dart';
 import 'package:battery_plus/battery_plus.dart';
@@ -62,6 +63,9 @@ class _HomePageState extends State<HomePage> {
     "HELP": false,
     "DIALOG": false,
     "RELAX": false,
+    "SETTINGS": false,
+    "REMINDERS": false,
+    "CONTACTS": false,
   };
   var battery = Battery();
   int batteryLevel = 0;
@@ -164,19 +168,17 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
 
+
+
                               // Text
-                              Expanded(
-                                child: Center(
-                                  child: Container(
-                                    margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.04, MediaQuery.of(context).size.height * 0.04, 0, 0),
-                                    child: Text(
-                                      "$batteryLevel%",
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 15,
-                                      ),
-                                    ),
+                              Container(
+                                margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.height * 0.08, MediaQuery.of(context).size.height * 0.04, MediaQuery.of(context).size.height * 0.02, 0),
+                                child: Text(
+                                  "$batteryLevel%",
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 15,
                                   ),
                                 ),
                               ),
@@ -190,6 +192,8 @@ class _HomePageState extends State<HomePage> {
                                   height: MediaQuery.of(context).size.height * 0.07,
                                 ),
                               ),
+
+                              const Expanded(child: SizedBox()),
 
                             ],
                           ),
@@ -265,6 +269,12 @@ class _HomePageState extends State<HomePage> {
                             });
                             // BUTTON CODE
                             print("HELLLLLLLLLLP");
+
+                            setState(() {
+                              langFR = !langFR;
+                              ttsHandler.setVoiceFrOrNl(langFR ? 'fr' : 'nl', 'female');
+                            });
+
                           },
                           onTapCancel: () {
                             setState(() {
@@ -310,7 +320,9 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   // Dialog button
                   Container(
-                    margin: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.27),
+                    margin: MediaQuery.of(context).size.height > 600
+                        ? EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.27)
+                        : EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.29),
                     child: AnimatedScale(
                       scale: _buttonAnimations["DIALOG"]! ? 1.1 : 1.0,
                       duration: const Duration(milliseconds: 100),
@@ -346,6 +358,7 @@ class _HomePageState extends State<HomePage> {
                           image: 'assets/dialog.png',
                           text: langFR ? 'Dialogue' : 'Dialoog',
                           imageScale: 1,
+                          scale: MediaQuery.of(context).size.height > 600 ? 1 : 1.2,
                         ),
                       ),
                     ),
@@ -385,6 +398,7 @@ class _HomePageState extends State<HomePage> {
                           image: 'assets/beach-chair.png',
                           text: langFR ? 'Détente' : 'Ontspanning',
                           imageScale: 1.4,
+                          scale: MediaQuery.of(context).size.height > 600 ? 1 : 1.2,
                         ),
                       ),
                     ),
@@ -399,26 +413,131 @@ class _HomePageState extends State<HomePage> {
           SizedBox(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height * 0.2,
-              child: Center(
-                child: TextButton(
-                    onPressed: () {
-                      setState(() {
-                        langFR = !langFR;
-                        ttsHandler.setVoiceFrOrNl(langFR ? 'fr' : 'nl', 'female');
-                      });
-                    },
-                    child: Text(
-                      langFR
-                          ? "Changer de langue"
-                          : "Taal wijzigen",
-                      style: const TextStyle(
-                        backgroundColor: Colors.white,
-                        color: Colors.black,
-                        fontSize: 30,
+              child: Row(
+                children: [
+                  // Settings
+                  Container(
+                    margin: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.02),
+                    child: AnimatedScale(
+                      scale: _buttonAnimations["SETTINGS"]! ? 1.1 : 1.0,
+                      duration: const Duration(milliseconds: 100),
+                      curve: Curves.bounceOut,
+                      alignment: Alignment.center,
+
+                      child: GestureDetector(
+                        // Animation management
+                        onTapDown: (_) {
+                          setState(() {
+                            _buttonAnimations["SETTINGS"] = true;
+                          });
+                        },
+                        onTapUp: (_) {
+                          setState(() {
+                            _buttonAnimations["SETTINGS"] = false;
+                          });
+                          // BUTTON CODE
+                          print("SETTINGGGGGGGGGS");
+                        },
+                        onTapCancel: () {
+                          setState(() {
+                            _buttonAnimations["SETTINGS"] = false;
+                          });
+                        },
+                        child: CustomShapeMenu(
+                            text: langFR ? 'Mes options' : 'Mijn keuzes',
+                            image: 'assets/profile-user.png',
+                            backgroundColor: const Color.fromRGBO(245, 107, 56, 1),
+                            textColor: const Color.fromRGBO(35, 55, 79, 1),
+                            imageScale: 5,
+                            scale: MediaQuery.of(context).size.height > 600 ? 1 : 0.85,
+                            ),
                       ),
-                    )),
+                    ),
+                  ),
+
+                  // Reminders
+                  Expanded(
+                    child: Center(
+                      child: AnimatedScale(
+                        scale: _buttonAnimations["REMINDERS"]! ? 1.1 : 1.0,
+                        duration: const Duration(milliseconds: 100),
+                        curve: Curves.bounceOut,
+                        alignment: Alignment.center,
+
+                        child: GestureDetector(
+                          // Animation management
+                          onTapDown: (_) {
+                            setState(() {
+                              _buttonAnimations["REMINDERS"] = true;
+                            });
+                          },
+                          onTapUp: (_) {
+                            setState(() {
+                              _buttonAnimations["REMINDERS"] = false;
+                            });
+                            // BUTTON CODE
+                            print("REMINNNNNNDERS");
+                          },
+                          onTapCancel: () {
+                            setState(() {
+                              _buttonAnimations["REMINDERS"] = false;
+                            });
+                          },
+                          child: CustomShapeMenu(
+                            text: langFR ? 'Rappels' : 'Herinneringen',
+                            image: 'assets/horloge.png',
+                            backgroundColor: Colors.white,
+                            textColor: const Color.fromRGBO(224, 106, 109, 1),
+                            imageScale: 1,
+                            scale: MediaQuery.of(context).size.height > 600 ? 1 : 0.85,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  // Contacts
+                  Container(
+                    margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.07),
+                    child: AnimatedScale(
+                      scale: _buttonAnimations["CONTACTS"]! ? 1.1 : 1.0,
+                      duration: const Duration(milliseconds: 100),
+                      curve: Curves.bounceOut,
+                      alignment: Alignment.center,
+
+                      child: GestureDetector(
+                        // Animation management
+                        onTapDown: (_) {
+                          setState(() {
+                            _buttonAnimations["CONTACTS"] = true;
+                          });
+                        },
+                        onTapUp: (_) {
+                          setState(() {
+                            _buttonAnimations["CONTACTS"] = false;
+                          });
+                          // BUTTON CODE
+                          print("CONTACTSSSSS");
+                        },
+                        onTapCancel: () {
+                          setState(() {
+                            _buttonAnimations["CONTACTS"] = false;
+                          });
+                        },
+                        child: CustomShapeMenu(
+                          text: langFR ? 'Contacts' : 'Contacten',
+                          image: 'assets/enveloppe.png',
+                          backgroundColor: const Color.fromRGBO(12, 178, 255, 1),
+                          textColor: const Color.fromRGBO(35, 55, 79, 1),
+                          imageScale: 0.9,
+                          scale: MediaQuery.of(context).size.height > 600 ? 1 : 0.85,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               )
-          )
+          ),
 
         ],
       )

@@ -12,7 +12,7 @@ class CustomTitle extends StatelessWidget {
   final Color backgroundColor;
   final Color textColor;
 
-  CustomTitle({super.key, required this.text, required this.image, required this.scale, required this.backgroundColor, required this.textColor});
+  const CustomTitle({super.key, required this.text, required this.image, required this.scale, required this.backgroundColor, required this.textColor});
 
   @override
   Widget build(BuildContext context) {
