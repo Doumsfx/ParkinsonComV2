@@ -22,7 +22,7 @@ class CustomKeyboard extends StatefulWidget {
   }
 
   @override
-  _CustomKeyboardState createState() => _CustomKeyboardState();
+  State<CustomKeyboard> createState() => _CustomKeyboardState();
 }
 
 class _CustomKeyboardState extends State<CustomKeyboard> {
@@ -330,11 +330,12 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
                                         ),
                                       ),
                                     ),
-                                    const VerticalDivider(
-                                        thickness: 5,
+                                    VerticalDivider(
+                                        thickness: MediaQuery.of(context).size.height * 0.006,
                                         color: Colors.grey,
-                                        indent: 10,
-                                        endIndent: 10)
+                                        indent: MediaQuery.of(context).size.height * 0.012,
+                                        endIndent: MediaQuery.of(context).size.height * 0.012,
+                                    )
                                   ],
                                 );
                               } else {
