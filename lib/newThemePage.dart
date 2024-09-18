@@ -31,7 +31,7 @@ class _NewThemePageState extends State<NewThemePage> {
   @override
   void initState() {
     super.initState();
-    customKeyboard = CustomKeyboard(controller: _controller, textPredictions: true);
+    customKeyboard = CustomKeyboard(controller: _controller, textPredictions: isConnected, forcedPredictionsOff: true);
 
   }
 

@@ -13,6 +13,8 @@ import 'package:parkinson_com_v2/listDialogsPage.dart';
 import 'package:parkinson_com_v2/variables.dart';
 import 'package:battery_plus/battery_plus.dart';
 
+import 'models/internetAlert.dart';
+
 
 void main() {
   // We put the game in full screen mode
@@ -57,6 +59,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late InternetAlert internetAlert;
   // Useful variables
   final Map<String, bool> _buttonAnimations = {
     "POWER": false,
@@ -95,6 +98,12 @@ class _HomePageState extends State<HomePage> {
         batteryLevel = newBatteryLevel;
         timeAndDate = newTimeAndDate;
       });
+    });
+
+    //Internet Checker
+    internetAlert = InternetAlert();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      internetAlert.startCheckInternet(context);
     });
   }
 

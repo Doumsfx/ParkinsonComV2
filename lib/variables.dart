@@ -13,3 +13,6 @@ DatabaseManager databaseManager = DatabaseManager();
 
 //TTS
 TtsHandler ttsHandler = TtsHandler();
+
+//Internet Checker
+ValueNotifier<bool> isConnected = ValueNotifier<bool>(true);
