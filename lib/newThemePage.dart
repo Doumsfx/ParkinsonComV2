@@ -256,18 +256,147 @@ class _NewThemePageState extends State<NewThemePage> {
                                   _buttonAnimations["SAVE"] = false;
                                 });
                                 // BUTTON CODE
+                                // Save button
+                                showDialog(context: context, builder: (context) {
+                                  //Popup Can't save an empty theme
+                                  double screenWidth = MediaQuery.of(context).size.width;
+                                  double screenHeight = MediaQuery.of(context).size.height;
+                                    if(_controller.text.isEmpty) {
+                                      return Dialog(
+                                        backgroundColor: Colors.black87,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              SizedBox(height: screenHeight * 0.1, width: screenWidth * 0.95),
+                                              Text(langFR ?
+                                              "Impossible d'enregistrer un thème vide !"
+                                                  : ".",
+                                                textAlign: TextAlign.center,
+                                                style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize:20,
+                                                    fontWeight:
+                                                    FontWeight.bold),
+                                              ),
+                                              SizedBox(height: screenHeight * 0.1),
+                                              //Button to close the popup
+                                              GestureDetector(
+                                                onTapUp: (_) {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Container(
+                                                  decoration:
+                                                  const BoxDecoration(
+                                                    borderRadius: BorderRadius
+                                                        .all(Radius
+                                                        .circular(
+                                                        60)),
+                                                    color: Colors.green,
+                                                  ),
+                                                  padding: EdgeInsets
+                                                      .fromLTRB(
+                                                      screenWidth *
+                                                          0.1,
+                                                      8.0,
+                                                      screenWidth *
+                                                          0.1,
+                                                      8.0),
+                                                  child: const Text("OK",
+                                                    style: TextStyle(
+                                                      color: Colors
+                                                          .white,
+                                                      fontWeight:
+                                                      FontWeight
+                                                          .bold,
+                                                      fontSize:20,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                    //Popup Theme added with success
+                                    else {
+                                      //Add the theme into the database
+                                      databaseManager.insertTheme(ThemeObject(title: _controller.text, language: langFR ? "fr" : "nl"));
 
-                                // We add the theme in our database
-                                await databaseManager.insertTheme(ThemeObject(title: _controller.text, language: langFR ? "fr" : "nl"));
+                                      return Dialog(
+                                        backgroundColor: Colors.black87,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              SizedBox(height: screenHeight * 0.1, width: screenWidth * 0.95),
+                                              Text(langFR ?
+                                              "Thème enregistré avec succès !"
+                                                  : ".",
+                                                textAlign: TextAlign.center,
+                                                style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize:20,
+                                                    fontWeight:
+                                                    FontWeight.bold),
+                                              ),
+                                              SizedBox(height: screenHeight * 0.1),
+                                              //Button to close the popup
+                                              GestureDetector(
+                                                onTapUp: (_)  {
+                                                  setState(() {
+                                                    newThemePageState = ValueNotifier<bool>(false);
+                                                  });
 
-                                setState(() {
-                                  newThemePageState = ValueNotifier<bool>(false);
-                                });
+                                                  // Redirection
+                                                  Navigator.pushReplacement(
+                                                      context,
+                                                      MaterialPageRoute(builder: (context) => const ListThemesPage(),)
+                                                  );
+                                                },
+                                                child: Container(
+                                                  decoration:
+                                                  const BoxDecoration(
+                                                    borderRadius: BorderRadius
+                                                        .all(Radius
+                                                        .circular(
+                                                        60)),
+                                                    color: Colors.green,
+                                                  ),
+                                                  padding: EdgeInsets
+                                                      .fromLTRB(
+                                                      screenWidth *
+                                                          0.1,
+                                                      8.0,
+                                                      screenWidth *
+                                                          0.1,
+                                                      8.0),
+                                                  child: const Text("OK",
+                                                    style: TextStyle(
+                                                      color: Colors
+                                                          .white,
+                                                      fontWeight:
+                                                      FontWeight
+                                                          .bold,
+                                                      fontSize:20,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
 
-                                // Redirection
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(builder: (context) => const ListThemesPage(),)
+                                    }
+                                  },
                                 );
 
                               },
