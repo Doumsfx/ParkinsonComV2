@@ -10,8 +10,10 @@ import '../variables.dart';
 
 
 class InternetAlert {
+  //This key is used to know when the popup is already displayed or not, because we only close the popup when it is displayed
+  //the popup can be closed by several causes (button to close it, back button, click outside of the popup, get internet back)
+  GlobalKey _alertKey = GlobalKey();
   late StreamSubscription<InternetStatus> _listener;
-  bool _isDialogOpen = false;
 
 
   void startCheckInternet(BuildContext context) {
@@ -36,10 +38,9 @@ class InternetAlert {
     showDialog(
       context: context,
       builder: (context) {
-        if(!_isDialogOpen) {
-          _isDialogOpen = true;
           double screenWidth = MediaQuery.of(context).size.width;
           return Dialog(
+            key: _alertKey,
             backgroundColor: Colors.black87,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -102,18 +103,13 @@ class InternetAlert {
               ),
             ),
           );
-        }
-        else {
-          return const SizedBox.shrink();
-        }
       },
     );
   }
 
   void _closeAlert(BuildContext context) {
-    if (_isDialogOpen) {
+    if(_alertKey.currentContext != null) {
       Navigator.pop(context);
-      _isDialogOpen = false;
     }
   }
 
