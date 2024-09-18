@@ -247,7 +247,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                 // BUTTON CODE
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => NewThemePage(),)
+                                  MaterialPageRoute(builder: (context) => const NewThemePage(),)
                                 );
 
                               },
@@ -686,14 +686,12 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                                                       ? "NON"
                                                                       : "NEEN",
                                                                   style:
-                                                                  TextStyle(
+                                                                  const TextStyle(
                                                                     color: Colors
                                                                         .white,
                                                                     fontWeight:
                                                                     FontWeight.bold,
-                                                                    fontSize:
-                                                                    screenHeight *
-                                                                        0.025,
+                                                                    fontSize: 20,
                                                                   ),
                                                                 ),
                                                               ),
@@ -735,14 +733,12 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                                                       ? "OUI"
                                                                       : "JA",
                                                                   style:
-                                                                  TextStyle(
+                                                                  const TextStyle(
                                                                     color: Colors
                                                                         .white,
                                                                     fontWeight:
                                                                     FontWeight.bold,
-                                                                    fontSize:
-                                                                    screenHeight *
-                                                                        0.025,
+                                                                    fontSize: 20,
                                                                   ),
                                                                 ),
                                                               ),

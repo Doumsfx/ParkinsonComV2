@@ -604,16 +604,14 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                                             index] = false;
                                                       });
                                                     },
-                                                    child: Container(
-                                                      child: Image.asset(
-                                                        'assets/sound.png',
-                                                        height: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .height *
-                                                            0.085,
-                                                        color: Colors.blue,
-                                                      ),
+                                                    child: Image.asset(
+                                                      'assets/sound.png',
+                                                      height: MediaQuery.of(
+                                                                  context)
+                                                              .size
+                                                              .height *
+                                                          0.085,
+                                                      color: Colors.blue,
                                                     ),
                                                   ),
                                                 ),
@@ -681,12 +679,10 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                                               langFR
                                                                   ? 'Voulez vous vraiment supprimer ce dialogue ?'
                                                                   : 'Wil je deze dialoog echt verwijderen?',
-                                                              style: TextStyle(
+                                                              style: const TextStyle(
                                                                   color: Colors
                                                                       .white,
-                                                                  fontSize:
-                                                                      screenHeight *
-                                                                          0.03,
+                                                                  fontSize: 20,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .bold),
@@ -730,14 +726,12 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                                                           ? "NON"
                                                                           : "NEEN",
                                                                       style:
-                                                                          TextStyle(
+                                                                          const TextStyle(
                                                                         color: Colors
                                                                             .white,
                                                                         fontWeight:
                                                                             FontWeight.bold,
-                                                                        fontSize:
-                                                                            screenHeight *
-                                                                                0.025,
+                                                                              fontSize: 20,
                                                                       ),
                                                                     ),
                                                                   ),
@@ -779,14 +773,12 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                                                           ? "OUI"
                                                                           : "JA",
                                                                       style:
-                                                                          TextStyle(
+                                                                          const TextStyle(
                                                                         color: Colors
                                                                             .white,
                                                                         fontWeight:
                                                                             FontWeight.bold,
-                                                                        fontSize:
-                                                                            screenHeight *
-                                                                                0.025,
+                                                                            fontSize: 20,
                                                                       ),
                                                                     ),
                                                                   ),

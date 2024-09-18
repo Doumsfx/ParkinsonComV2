@@ -645,12 +645,10 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                                                           langFR
                                                               ? 'Voulez vous vraiment supprimer ce dialogue ?'
                                                               : 'Wil je deze dialoog echt verwijderen ?',
-                                                          style: TextStyle(
+                                                          style: const TextStyle(
                                                               color: Colors
                                                                   .white,
-                                                              fontSize:
-                                                              screenHeight *
-                                                                  0.03,
+                                                              fontSize: 20,
                                                               fontWeight:
                                                               FontWeight
                                                                   .bold),
@@ -694,14 +692,12 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                                                                       ? "NON"
                                                                       : "NEEN",
                                                                   style:
-                                                                  TextStyle(
+                                                                  const TextStyle(
                                                                     color: Colors
                                                                         .white,
                                                                     fontWeight:
                                                                     FontWeight.bold,
-                                                                    fontSize:
-                                                                    screenHeight *
-                                                                        0.025,
+                                                                    fontSize: 20,
                                                                   ),
                                                                 ),
                                                               ),
@@ -743,14 +739,12 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                                                                       ? "OUI"
                                                                       : "JA",
                                                                   style:
-                                                                  TextStyle(
+                                                                  const TextStyle(
                                                                     color: Colors
                                                                         .white,
                                                                     fontWeight:
                                                                     FontWeight.bold,
-                                                                    fontSize:
-                                                                    screenHeight *
-                                                                        0.025,
+                                                                    fontSize: 20,
                                                                   ),
                                                                 ),
                                                               ),
