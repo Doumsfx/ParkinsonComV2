@@ -12,7 +12,7 @@ import '../variables.dart';
 class InternetAlert {
   //This key is used to know when the popup is already displayed or not, because we only close the popup when it is displayed
   //the popup can be closed by several causes (button to close it, back button, click outside of the popup, get internet back)
-  GlobalKey _alertKey = GlobalKey();
+  final GlobalKey _alertKey = GlobalKey();
   late StreamSubscription<InternetStatus> _listener;
 
 

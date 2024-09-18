@@ -47,7 +47,7 @@ class _NewThemePageState extends State<NewThemePage> {
               children: [
                 // Back Arrow
                 value
-                    ? SizedBox()
+                    ? const SizedBox()
                     : Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -107,7 +107,7 @@ class _NewThemePageState extends State<NewThemePage> {
                       children: [
                         // Title
                         value
-                          ? SizedBox()
+                          ? const SizedBox()
                           : Container(
                             margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.2),
                             child: Text(
@@ -125,7 +125,7 @@ class _NewThemePageState extends State<NewThemePage> {
 
                         // Subtitle
                         value
-                          ? SizedBox()
+                          ? const SizedBox()
                           : Container(
                             margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.02),
                             child: Text(

@@ -11,7 +11,7 @@ class CustomShape extends StatelessWidget {
   final Color backgroundColor;
   final Color textColor;
 
-  CustomShape({super.key, required this.text, required this.image, required this.scale, required this.backgroundColor, required this.textColor});
+  const CustomShape({super.key, required this.text, required this.image, required this.scale, required this.backgroundColor, required this.textColor});
 
   @override
   Widget build(BuildContext context) {

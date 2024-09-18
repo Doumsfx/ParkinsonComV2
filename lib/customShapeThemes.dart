@@ -11,7 +11,7 @@ class CustomShapeThemes extends StatelessWidget {
   final Color backgroundColor;
   final Color textColor;
 
-  CustomShapeThemes({super.key, required this.text, required this.image, required this.backgroundColor, required this.textColor});
+  const CustomShapeThemes({super.key, required this.text, required this.image, required this.backgroundColor, required this.textColor});
 
   @override
   Widget build(BuildContext context) {

@@ -47,6 +47,31 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
     _dialogsAnimations  = List.filled(_listDialogs.length, false);
     _deleteButtonsAnimations  = List.filled(_listDialogs.length, false);
     _ttsButtonsAnimations  = List.filled(_listDialogs.length, false);
+
+    // Sorting the list
+    int i;
+    int endIndex;
+    List<DialogObject> firstPart = [];
+    List<DialogObject> secondPart = [];
+
+    // Separate into two lists: firstPart with the dialogs of the user and secondPart with the base dialogs
+    if(_listDialogs.length > 1){
+      for(i = _listDialogs.length - 1; i > 0; i -= 1){
+        if(_listDialogs[i].id_dialog > 146){
+          firstPart.add(_listDialogs[i]);
+        }
+        else{
+          endIndex = i;
+          secondPart = _listDialogs.sublist(0, endIndex + 1);
+          break;
+        }
+      }
+
+      // Combine the two parts
+      _listDialogs = [];
+      _listDialogs = firstPart + secondPart;
+      setState(() {});
+    }
   }
 
   @override
@@ -604,16 +629,14 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                                             index] = false;
                                                       });
                                                     },
-                                                    child: Container(
-                                                      child: Image.asset(
-                                                        'assets/sound.png',
-                                                        height: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .height *
-                                                            0.085,
-                                                        color: Colors.blue,
-                                                      ),
+                                                    child: Image.asset(
+                                                      'assets/sound.png',
+                                                      height: MediaQuery.of(
+                                                                  context)
+                                                              .size
+                                                              .height *
+                                                          0.085,
+                                                      color: Colors.blue,
                                                     ),
                                                   ),
                                                 ),
@@ -681,12 +704,10 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                                               langFR
                                                                   ? 'Voulez vous vraiment supprimer ce dialogue ?'
                                                                   : 'Wil je deze dialoog echt verwijderen?',
-                                                              style: TextStyle(
+                                                              style: const TextStyle(
                                                                   color: Colors
                                                                       .white,
-                                                                  fontSize:
-                                                                      screenHeight *
-                                                                          0.03,
+                                                                  fontSize: 20,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .bold),
@@ -730,14 +751,12 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                                                           ? "NON"
                                                                           : "NEEN",
                                                                       style:
-                                                                          TextStyle(
+                                                                          const TextStyle(
                                                                         color: Colors
                                                                             .white,
                                                                         fontWeight:
                                                                             FontWeight.bold,
-                                                                        fontSize:
-                                                                            screenHeight *
-                                                                                0.025,
+                                                                              fontSize: 20,
                                                                       ),
                                                                     ),
                                                                   ),
@@ -779,14 +798,12 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                                                           ? "OUI"
                                                                           : "JA",
                                                                       style:
-                                                                          TextStyle(
+                                                                          const TextStyle(
                                                                         color: Colors
                                                                             .white,
                                                                         fontWeight:
                                                                             FontWeight.bold,
-                                                                        fontSize:
-                                                                            screenHeight *
-                                                                                0.025,
+                                                                            fontSize: 20,
                                                                       ),
                                                                     ),
                                                                   ),

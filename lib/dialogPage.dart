@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:parkinson_com_v2/customShape.dart';
 import 'package:parkinson_com_v2/keyboard.dart';
-import 'package:parkinson_com_v2/listDialogsPage.dart';
 import 'package:parkinson_com_v2/variables.dart';
 
 import 'models/database/dialog.dart';
@@ -185,24 +184,22 @@ class _DialogPageState extends State<DialogPage> {
                                         future: databaseManager.retrieveThemeFromId(widget.idTheme),
                                         builder: (context, snapshot) {
                                           if(snapshot.hasData) {
-                                            return Container(
-                                              child: AutoSizeText(langFR
-                                                  ? 'Thème: ${snapshot.data!.title}'
-                                                  : 'Thema: ${snapshot.data!.title}',
-                                                maxLines: 1,
-                                                maxFontSize: 15,
-                                                minFontSize: 5,
-                                                overflow: TextOverflow.ellipsis,
+                                            return AutoSizeText(langFR
+                                                ? 'Thème: ${snapshot.data!.title}'
+                                                : 'Thema: ${snapshot.data!.title}',
+                                              maxLines: 1,
+                                              maxFontSize: 15,
+                                              minFontSize: 5,
+                                              overflow: TextOverflow.ellipsis,
 
-                                                style: const TextStyle(
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.white,
-                                                  decoration: TextDecoration.underline,
-                                                  decorationColor: Colors.white,
-                                                  decorationThickness: 1.7,
-                                              ),),
-                                            );
+                                              style: const TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                                decoration: TextDecoration.underline,
+                                                decorationColor: Colors.white,
+                                                decorationThickness: 1.7,
+                                            ),);
                                           }
                                           else {
                                             return Container(

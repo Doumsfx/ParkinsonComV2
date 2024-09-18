@@ -11,7 +11,7 @@ class CustomHomePageTitle extends StatelessWidget {
   final Color backgroundColor;
   final Color textColor;
 
-  CustomHomePageTitle({super.key, required this.text, required this.image, required this.backgroundColor, required this.textColor});
+  const CustomHomePageTitle({super.key, required this.text, required this.image, required this.backgroundColor, required this.textColor});
 
   @override
   Widget build(BuildContext context) {

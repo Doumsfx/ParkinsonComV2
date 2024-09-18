@@ -1,10 +1,8 @@
 
-import 'dart:collection';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_tts/flutter_tts.dart';
-import 'package:parkinson_com_v2/variables.dart';
 
 enum TtsState { playing, stopped }
 

@@ -47,6 +47,31 @@ class _ListThemesPageState extends State<ListThemesPage> {
     _dialogsAnimations  = List.filled(_listThemes.length, false);
     _deleteButtonsAnimations  = List.filled(_listThemes.length, false);
     _ttsButtonsAnimations  = List.filled(_listThemes.length, false);
+
+    // Sorting the list
+    int i;
+    int endIndex;
+    List<ThemeObject> firstPart = [];
+    List<ThemeObject> secondPart = [];
+
+    // Separate into two lists: firstPart with the themes of the user and secondPart with the base themes
+    if(_listThemes.length > 1){
+      for(i = _listThemes.length - 1; i > 0; i -= 1){
+        if(_listThemes[i].id_theme > 24){
+          firstPart.add(_listThemes[i]);
+        }
+        else{
+          endIndex = i;
+          secondPart = _listThemes.sublist(0, endIndex + 1);
+          break;
+        }
+      }
+
+      // Combine the two parts
+      _listThemes = [];
+      _listThemes = firstPart + secondPart;
+      setState(() {});
+    }
   }
 
   @override
@@ -247,7 +272,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                 // BUTTON CODE
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => NewThemePage(),)
+                                  MaterialPageRoute(builder: (context) => const NewThemePage(),)
                                 );
 
                               },
@@ -686,14 +711,12 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                                                       ? "NON"
                                                                       : "NEEN",
                                                                   style:
-                                                                  TextStyle(
+                                                                  const TextStyle(
                                                                     color: Colors
                                                                         .white,
                                                                     fontWeight:
                                                                     FontWeight.bold,
-                                                                    fontSize:
-                                                                    screenHeight *
-                                                                        0.025,
+                                                                    fontSize: 20,
                                                                   ),
                                                                 ),
                                                               ),
@@ -735,14 +758,12 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                                                       ? "OUI"
                                                                       : "JA",
                                                                   style:
-                                                                  TextStyle(
+                                                                  const TextStyle(
                                                                     color: Colors
                                                                         .white,
                                                                     fontWeight:
                                                                     FontWeight.bold,
-                                                                    fontSize:
-                                                                    screenHeight *
-                                                                        0.025,
+                                                                    fontSize: 20,
                                                                   ),
                                                                 ),
                                                               ),
