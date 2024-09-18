@@ -792,7 +792,8 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                                                   ),
                                                                 ),
                                                               ],
-                                                            )
+                                                            ),
+                                                            SizedBox(height: screenHeight * 0.03),
                                                           ]),
                                                     ),
                                                   );

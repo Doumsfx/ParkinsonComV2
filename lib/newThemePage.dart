@@ -273,8 +273,8 @@ class _NewThemePageState extends State<NewThemePage> {
                                             children: [
                                               SizedBox(height: screenHeight * 0.1, width: screenWidth * 0.95),
                                               Text(langFR ?
-                                              "Impossible d'enregistrer un thème vide !"
-                                                  : ".",
+                                              "Impossible d'enregistrer un thème vide."
+                                                  : "Je kan geen leeg thema maken.",
                                                 textAlign: TextAlign.center,
                                                 style: const TextStyle(
                                                     color: Colors.white,
@@ -317,6 +317,7 @@ class _NewThemePageState extends State<NewThemePage> {
                                                   ),
                                                 ),
                                               ),
+                                              SizedBox(height: screenHeight * 0.03)
                                             ],
                                           ),
                                         ),
@@ -339,7 +340,7 @@ class _NewThemePageState extends State<NewThemePage> {
                                               SizedBox(height: screenHeight * 0.1, width: screenWidth * 0.95),
                                               Text(langFR ?
                                               "Thème enregistré avec succès !"
-                                                  : ".",
+                                                  : "Thema succesvol opgeslaan!",
                                                 textAlign: TextAlign.center,
                                                 style: const TextStyle(
                                                     color: Colors.white,
@@ -390,6 +391,7 @@ class _NewThemePageState extends State<NewThemePage> {
                                                   ),
                                                 ),
                                               ),
+                                              SizedBox(height: screenHeight * 0.03),
                                             ],
                                           ),
                                         ),
@@ -439,13 +441,13 @@ class _NewThemePageState extends State<NewThemePage> {
 
                         // Space
                         value
-                            ? Expanded(child: SizedBox())
-                            : SizedBox(),
+                            ? const Expanded(child: SizedBox())
+                            : const SizedBox(),
 
                         // Keyboard
                         value
                             ? customKeyboard
-                            : SizedBox(),
+                            : const SizedBox(),
 
                       ],
                     ),
@@ -454,7 +456,7 @@ class _NewThemePageState extends State<NewThemePage> {
 
                 // Buttons at the right
                 value
-                  ? SizedBox()
+                  ? const SizedBox()
                   : Container(
                   margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.012),
                   child: Column(

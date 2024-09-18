@@ -756,7 +756,8 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                                                               ),
                                                             ),
                                                           ],
-                                                        )
+                                                        ),
+                                                        SizedBox(height: screenHeight * 0.03),
                                                       ]),
                                                 ),
                                               );

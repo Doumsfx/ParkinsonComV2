@@ -1274,7 +1274,8 @@ class _DialogPageState extends State<DialogPage> {
                                                           ),
                                                         ),
                                                       ],
-                                                    )
+                                                    ),
+                                                    SizedBox(height: screenHeight * 0.03),
                                                   ],
                                                 ),
                                               ),
@@ -1347,6 +1348,7 @@ class _DialogPageState extends State<DialogPage> {
                                                         ),
                                                       ),
                                                     ),
+                                                    SizedBox(height: screenHeight * 0.03),
                                                   ],
                                                 ),
                                               ),
@@ -1453,6 +1455,7 @@ class _DialogPageState extends State<DialogPage> {
                                 ),
                               ),
                             ),
+
                           ],
                         ),
                         //Existing Dialog
@@ -1683,7 +1686,8 @@ class _DialogPageState extends State<DialogPage> {
                                                         ),
                                                       ),
                                                     ],
-                                                  )
+                                                  ),
+                                                  SizedBox(height: screenHeight * 0.03),
                                                 ],
                                               ),
                                             ),
@@ -1762,6 +1766,7 @@ class _DialogPageState extends State<DialogPage> {
                                                       ),
                                                     ),
                                                   ),
+                                                  SizedBox(height: screenHeight * 0.03),
 
                                                 ],
                                               ),

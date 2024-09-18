@@ -748,7 +748,8 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                                               ),
                                                             ),
                                                           ],
-                                                        )
+                                                        ),
+                                                        SizedBox(height: screenHeight * 0.03),
                                                       ]),
                                                 ),
                                               );

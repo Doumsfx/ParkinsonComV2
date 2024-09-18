@@ -48,7 +48,7 @@ class InternetAlert {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.15, width: screenWidth * 0.95),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.13, width: screenWidth * 0.95),
                   Text(langFR ?
                     "Vous n'avez pas de connexion internet.\nCela peut désactiver certaines fonctionnalités\n(autocomplétion, e-mail, etc).\nMerci de réactiver internet\nsi vous souhaitez utiliser ces fonctionnalités."
                     : "U heeft geen internetverbinding.\nDit kan sommige functies uitschakelen\n(automatisch aanvullen, e-mail, enz.).\nReactiveer internet\n als u deze functies wilt gebruiken.",
@@ -59,7 +59,7 @@ class InternetAlert {
                         fontWeight:
                         FontWeight.bold),
                   ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.15),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.12),
                   //Button to close the popup
                   GestureDetector(
                     onTapUp: (_) {
@@ -97,6 +97,7 @@ class InternetAlert {
                       ),
                     ),
                   ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                 ],
               ),
             ),
