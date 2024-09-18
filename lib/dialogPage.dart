@@ -1736,7 +1736,7 @@ class _DialogPageState extends State<DialogPage> {
                                                             .all(Radius
                                                             .circular(
                                                             60)),
-                                                        color: Colors.green,
+                                                        color: Colors.lightGreen,
                                                       ),
                                                       padding: EdgeInsets
                                                           .fromLTRB(

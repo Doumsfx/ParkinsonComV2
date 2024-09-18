@@ -295,7 +295,7 @@ class _NewThemePageState extends State<NewThemePage> {
                                                         .all(Radius
                                                         .circular(
                                                         60)),
-                                                    color: Colors.green,
+                                                    color: Colors.lightGreen,
                                                   ),
                                                   padding: EdgeInsets
                                                       .fromLTRB(
@@ -369,7 +369,7 @@ class _NewThemePageState extends State<NewThemePage> {
                                                         .all(Radius
                                                         .circular(
                                                         60)),
-                                                    color: Colors.green,
+                                                    color: Colors.lightGreen,
                                                   ),
                                                   padding: EdgeInsets
                                                       .fromLTRB(
