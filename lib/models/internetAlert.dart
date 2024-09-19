@@ -14,6 +14,7 @@ class InternetAlert {
   //the popup can be closed by several causes (button to close it, back button, click outside of the popup, get internet back)
   final GlobalKey _alertKey = GlobalKey();
   late StreamSubscription<InternetStatus> _listener;
+  bool buttonAnimation = false;
 
 
   void startCheckInternet(BuildContext context) {
@@ -39,69 +40,97 @@ class InternetAlert {
       context: context,
       builder: (context) {
           double screenWidth = MediaQuery.of(context).size.width;
-          return Dialog(
-            key: _alertKey,
-            backgroundColor: Colors.black87,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.13, width: screenWidth * 0.95),
-                  Text(langFR ?
-                    "Vous n'avez pas de connexion internet.\nCela peut désactiver certaines fonctionnalités\n(autocomplétion, e-mail, etc).\nMerci de réactiver internet\nsi vous souhaitez utiliser ces fonctionnalités."
-                    : "U heeft geen internetverbinding.\nDit kan sommige functies uitschakelen\n(automatisch aanvullen, e-mail, enz.).\nReactiveer internet\n als u deze functies wilt gebruiken.",
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontSize:20,
-                        fontWeight:
-                        FontWeight.bold),
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.12),
-                  //Button to close the popup
-                  GestureDetector(
-                    onTapUp: (_) {
-                      _closeAlert(context);
-                    },
-                    child: Container(
-                      decoration:
-                      const BoxDecoration(
-                        borderRadius: BorderRadius
-                            .all(Radius
-                            .circular(
-                            60)),
-                        color: Colors.lightGreen,
-                      ),
-                      padding: EdgeInsets
-                          .fromLTRB(
-                          screenWidth *
-                              0.1,
-                          8.0,
-                          screenWidth *
-                              0.1,
-                          8.0),
-                      child: Text(
-                        langFR
-                            ? "Continuer sans internet"
-                            : "Ga verder zonder internet",
+          return StatefulBuilder(
+            builder:(context, setState) {
+              return Dialog(
+                key: _alertKey,
+                backgroundColor: Colors.black87,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(height: MediaQuery.of(context).size.height * 0.13, width: screenWidth * 0.95),
+                      Text(langFR ?
+                      "Vous n'avez pas de connexion internet.\nCela peut désactiver certaines fonctionnalités\n(autocomplétion, e-mail, etc).\nMerci de réactiver internet\nsi vous souhaitez utiliser ces fonctionnalités."
+                          : "U heeft geen internetverbinding.\nDit kan sommige functies uitschakelen\n(automatisch aanvullen, e-mail, enz.).\nReactiveer internet\n als u deze functies wilt gebruiken.",
+                        textAlign: TextAlign.center,
                         style: const TextStyle(
-                          color: Colors
-                              .white,
-                          fontWeight:
-                          FontWeight
-                              .bold,
-                          fontSize:20,
+                            color: Colors.white,
+                            fontSize:20,
+                            fontWeight:
+                            FontWeight.bold),
+                      ),
+                      SizedBox(height: MediaQuery.of(context).size.height * 0.12),
+                      //Button to close the popup
+                      AnimatedScale(
+                        scale: buttonAnimation ? 1.1 : 1.0,
+                        duration: const Duration(milliseconds: 100),
+                        curve: Curves.bounceOut,
+                        alignment: Alignment.center,
+
+                        child: GestureDetector(
+                          // Animation management
+                          onTapDown: (_) {
+                            setState(() {
+                              buttonAnimation = true;
+                            });
+                          },
+                          onTapUp: (_) {
+                            setState(() {
+                              buttonAnimation = false;
+                            });
+                            // BUTTON CODE
+                            _closeAlert(context);
+
+                          },
+                          onTapCancel: () {
+                            setState(() {
+                              buttonAnimation = false;
+                            });
+                          },
+                          child: Container(
+                            decoration:
+                            const BoxDecoration(
+                              borderRadius: BorderRadius
+                                  .all(Radius
+                                  .circular(
+                                  60)),
+                              color: Colors.lightGreen,
+                            ),
+                            padding: EdgeInsets
+                                .fromLTRB(
+                                screenWidth *
+                                    0.1,
+                                8.0,
+                                screenWidth *
+                                    0.1,
+                                8.0),
+                            child: Text(
+                              langFR
+                                  ? "Continuer sans internet"
+                                  : "Ga verder zonder internet",
+                              style: const TextStyle(
+                                color: Colors
+                                    .white,
+                                fontWeight:
+                                FontWeight
+                                    .bold,
+                                fontSize:20,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
+                      SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+                    ],
                   ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-                ],
-              ),
-            ),
+                ),
+              );
+            },
+
           );
       },
     );
