@@ -1053,73 +1053,7 @@ class _DialogPageState extends State<DialogPage> {
                                       });
                                     } else {
                                       //Popup can't save an empty dialog
-                                      showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            double screenHeight = MediaQuery.of(context).size.height;
-                                            double screenWidth = MediaQuery.of(context).size.width;
-                                            return StatefulBuilder(builder: (context, setState) {
-                                              return Dialog(
-                                                backgroundColor: Colors.black87,
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(16.0),
-                                                  child: Column(
-                                                    mainAxisSize: MainAxisSize.min,
-                                                    children: [
-                                                      SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.15),
-                                                      Text(
-                                                        langFR ? 'Vous ne pouvez pas ajouter un dialogue vide !' : 'Je kan geen leeg dialoogvenster toevoegen!',
-                                                        style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-                                                      ),
-                                                      SizedBox(height: screenHeight * 0.2),
-                                                      //Button to quit
-                                                      AnimatedScale(
-                                                        scale: _buttonAnimations["POPUP OK"]! ? 1.1 : 1.0,
-                                                        duration: const Duration(milliseconds: 100),
-                                                        curve: Curves.bounceOut,
-                                                        child: GestureDetector(
-                                                          // Animation management
-                                                          onTapDown: (_) {
-                                                            setState(() {
-                                                              _buttonAnimations["POPUP OK"] = true;
-                                                            });
-                                                          },
-                                                          onTapUp: (_) {
-                                                            setState(() {
-                                                              _buttonAnimations["POPUP OK"] = false;
-                                                            });
-                                                            // BUTTON CODE
-                                                            Navigator.pop(context);
-                                                          },
-                                                          onTapCancel: () {
-                                                            setState(() {
-                                                              _buttonAnimations["POPUP OK"] = false;
-                                                            });
-                                                          },
-                                                          child: Container(
-                                                            decoration: const BoxDecoration(
-                                                              borderRadius: BorderRadius.all(Radius.circular(60)),
-                                                              color: Colors.lightGreen,
-                                                            ),
-                                                            padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
-                                                            child: Text(
-                                                              langFR ? "OK" : "OK",
-                                                              style: const TextStyle(
-                                                                color: Colors.white,
-                                                                fontWeight: FontWeight.bold,
-                                                                fontSize: 20,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      SizedBox(height: screenHeight * 0.03),
-                                                    ],
-                                                  ),
-                                                ),
-                                              );
-                                            });
-                                          });
+                                      _showDialogEmptyText();
                                     }
                                   },
                                   onTapCancel: () {
@@ -1203,247 +1137,252 @@ class _DialogPageState extends State<DialogPage> {
                                     _buttonAnimations["MODIFY"] = false;
                                   });
                                   // BUTTON CODE
-                                  //Retrieve the list of the themes for the actual language
-                                  List<ThemeObject> themesList = await databaseManager.retrieveThemesFromLanguage(langFR ? 'fr' : 'nl');
-                                  ThemeObject? selectedTheme = themesList[0];
-                                  //Select by default the actual theme of the dialog
-                                  for (var t in themesList) {
-                                    if (t.id_theme == widget.idTheme) {
-                                      selectedTheme = t;
+                                  //Can't save the modified dialog if it is empty
+                                  if (_controller.text.isNotEmpty) {
+                                    //Retrieve the list of the themes for the actual language
+                                    List<ThemeObject> themesList = await databaseManager.retrieveThemesFromLanguage(langFR ? 'fr' : 'nl');
+                                    ThemeObject? selectedTheme = themesList[0];
+                                    //Select by default the actual theme of the dialog
+                                    for (var t in themesList) {
+                                      if (t.id_theme == widget.idTheme) {
+                                        selectedTheme = t;
+                                      }
                                     }
-                                  }
-                                  //Popup for choosing a theme
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      bool isModified = false;
-                                      // Use StatefulBuilder to manage the state inside the dialog
-                                      return StatefulBuilder(
-                                        builder: (context, setState) {
-                                          double screenHeight = MediaQuery.of(context).size.height;
-                                          double screenWidth = MediaQuery.of(context).size.width;
-                                          // Popup for confirmation of the dialog modification
-                                          if (!isModified) {
-                                            return Dialog(
-                                              backgroundColor: Colors.black87,
-                                              child: Padding(
-                                                padding: const EdgeInsets.all(16.0), // Optional padding for aesthetics
-                                                child: Column(
-                                                  mainAxisSize: MainAxisSize.min, // Ensures the dialog is as small as needed
-                                                  children: [
-                                                    // Title for theme selection
-                                                    Text(
-                                                      langFR ? 'Veuillez choisir un thème pour ce dialogue:' : 'Kies een onderwerp voor deze dialoog:',
-                                                      style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-                                                    ),
-                                                    SizedBox(height: screenHeight * 0.1),
-                                                    // Dropdown menu for themes
-                                                    Container(
-                                                      color: Colors.amber,
-                                                      child: DropdownButtonHideUnderline(
-                                                        child: DropdownButton2<ThemeObject>(
-                                                          value: selectedTheme,
-                                                          dropdownStyleData: DropdownStyleData(
-                                                            maxHeight: screenHeight * 0.35,
-                                                            decoration: const BoxDecoration(color: Colors.amber),
+                                    //Popup for choosing a theme
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        bool isModified = false;
+                                        // Use StatefulBuilder to manage the state inside the dialog
+                                        return StatefulBuilder(
+                                          builder: (context, setState) {
+                                            double screenHeight = MediaQuery.of(context).size.height;
+                                            double screenWidth = MediaQuery.of(context).size.width;
+                                            // Popup for confirmation of the dialog modification
+                                            if (!isModified) {
+                                              return Dialog(
+                                                backgroundColor: Colors.black87,
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(16.0), // Optional padding for aesthetics
+                                                  child: Column(
+                                                    mainAxisSize: MainAxisSize.min, // Ensures the dialog is as small as needed
+                                                    children: [
+                                                      // Title for theme selection
+                                                      Text(
+                                                        langFR ? 'Veuillez choisir un thème pour ce dialogue:' : 'Kies een onderwerp voor deze dialoog:',
+                                                        style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                                                      ),
+                                                      SizedBox(height: screenHeight * 0.1),
+                                                      // Dropdown menu for themes
+                                                      Container(
+                                                        color: Colors.amber,
+                                                        child: DropdownButtonHideUnderline(
+                                                          child: DropdownButton2<ThemeObject>(
+                                                            value: selectedTheme,
+                                                            dropdownStyleData: DropdownStyleData(
+                                                              maxHeight: screenHeight * 0.35,
+                                                              decoration: const BoxDecoration(color: Colors.amber),
+                                                            ),
+                                                            style: const TextStyle(color: Color.fromRGBO(65, 65, 65, 1), fontWeight: FontWeight.bold, fontSize: 20),
+                                                            onChanged: (ThemeObject? newValue) {
+                                                              setState(() {
+                                                                selectedTheme = newValue; // Update the selected theme
+                                                              });
+                                                            },
+                                                            items: themesList.map((ThemeObject theme) {
+                                                              return DropdownMenuItem<ThemeObject>(
+                                                                value: theme,
+                                                                child: Text(
+                                                                  theme.title,
+                                                                ),
+                                                              );
+                                                            }).toList(),
                                                           ),
-                                                          style: const TextStyle(color: Color.fromRGBO(65, 65, 65, 1), fontWeight: FontWeight.bold, fontSize: 20),
-                                                          onChanged: (ThemeObject? newValue) {
+                                                        ),
+                                                      ),
+                                                      SizedBox(height: screenHeight * 0.2),
+                                                      //Buttons to cancel and validate
+                                                      Row(
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        children: [
+                                                          //Cancel button
+                                                          AnimatedScale(
+                                                            scale: _buttonAnimations["POPUP NO"]! ? 1.1 : 1.0,
+                                                            duration: const Duration(milliseconds: 100),
+                                                            curve: Curves.bounceOut,
+                                                            alignment: Alignment.center,
+                                                            child: GestureDetector(
+                                                              // Animation management
+                                                              onTapDown: (_) {
+                                                                setState(() {
+                                                                  _buttonAnimations["POPUP NO"] = true;
+                                                                });
+                                                              },
+                                                              onTapUp: (_) {
+                                                                setState(() {
+                                                                  _buttonAnimations["POPUP NO"] = false;
+                                                                });
+                                                                // BUTTON CODE
+                                                                Navigator.pop(context);
+                                                              },
+                                                              onTapCancel: () {
+                                                                setState(() {
+                                                                  _buttonAnimations["POPUP NO"] = false;
+                                                                });
+                                                              },
+                                                              child: Container(
+                                                                decoration: const BoxDecoration(
+                                                                  borderRadius: BorderRadius.all(Radius.circular(60)),
+                                                                  color: Colors.red,
+                                                                ),
+                                                                padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
+                                                                child: Text(
+                                                                  langFR ? "Annuler" : "Annuleren",
+                                                                  style: const TextStyle(
+                                                                    color: Colors.white,
+                                                                    fontWeight: FontWeight.bold,
+                                                                    fontSize: 20,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          //Blank space between the buttons
+                                                          SizedBox(width: screenWidth * 0.15),
+                                                          //Validate button
+                                                          AnimatedScale(
+                                                            scale: _buttonAnimations["POPUP YES"]! ? 1.1 : 1.0,
+                                                            duration: const Duration(milliseconds: 100),
+                                                            curve: Curves.bounceOut,
+                                                            alignment: Alignment.center,
+                                                            child: GestureDetector(
+                                                              // Animation management
+                                                              onTapDown: (_) {
+                                                                setState(() {
+                                                                  _buttonAnimations["POPUP YES"] = true;
+                                                                });
+                                                              },
+                                                              onTapUp: (_) async {
+                                                                await databaseManager.updateDialog(DialogObject(
+                                                                  id_dialog: widget.idDialog,
+                                                                  sentence: _controller.text,
+                                                                  language: langFR ? "fr" : "nl",
+                                                                  id_theme: selectedTheme!.id_theme,
+                                                                ));
+                                                                //Refresh the UI to display the success of modification
+                                                                setState(() {
+                                                                  isModified = true;
+                                                                  _buttonAnimations["POPUP YES"] = false;
+                                                                });
+                                                              },
+                                                              onTapCancel: () {
+                                                                setState(() {
+                                                                  _buttonAnimations["POPUP YES"] = false;
+                                                                });
+                                                              },
+                                                              child: Container(
+                                                                decoration: const BoxDecoration(
+                                                                  borderRadius: BorderRadius.all(Radius.circular(60)),
+                                                                  color: Colors.lightGreen,
+                                                                ),
+                                                                padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
+                                                                child: Text(
+                                                                  langFR ? "Valider" : "Bevestigen",
+                                                                  style: const TextStyle(
+                                                                    color: Colors.white,
+                                                                    fontWeight: FontWeight.bold,
+                                                                    fontSize: 20,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      SizedBox(height: screenHeight * 0.03),
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
+                                            }
+                                            // Popup to inform that the modification is a success
+                                            else {
+                                              return Dialog(
+                                                backgroundColor: Colors.black87,
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(16.0), // Optional padding for aesthetics
+                                                  child: Column(
+                                                    mainAxisSize: MainAxisSize.min, // Ensures the dialog is as small as needed
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: [
+                                                      SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.15),
+                                                      // Title for theme selection
+                                                      Text(
+                                                        langFR ? 'Dialogue modifié avec succès !' : 'Dialoogvenster succesvol gewijzigd!',
+                                                        style: TextStyle(color: Colors.white, fontSize: screenHeight * 0.03, fontWeight: FontWeight.bold),
+                                                      ),
+                                                      SizedBox(height: screenHeight * 0.2),
+                                                      //Button to quit
+                                                      AnimatedScale(
+                                                        scale: _buttonAnimations["POPUP OK"]! ? 1.1 : 1.0,
+                                                        duration: const Duration(milliseconds: 100),
+                                                        curve: Curves.bounceOut,
+                                                        alignment: Alignment.center,
+                                                        child: GestureDetector(
+                                                          // Animation management
+                                                          onTapDown: (_) {
                                                             setState(() {
-                                                              selectedTheme = newValue; // Update the selected theme
+                                                              _buttonAnimations["POPUP OK"] = true;
                                                             });
                                                           },
-                                                          items: themesList.map((ThemeObject theme) {
-                                                            return DropdownMenuItem<ThemeObject>(
-                                                              value: theme,
-                                                              child: Text(
-                                                                theme.title,
-                                                              ),
-                                                            );
-                                                          }).toList(),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    SizedBox(height: screenHeight * 0.2),
-                                                    //Buttons to cancel and validate
-                                                    Row(
-                                                      mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: [
-                                                        //Cancel button
-                                                        AnimatedScale(
-                                                          scale: _buttonAnimations["POPUP NO"]! ? 1.1 : 1.0,
-                                                          duration: const Duration(milliseconds: 100),
-                                                          curve: Curves.bounceOut,
-                                                          alignment: Alignment.center,
-                                                          child: GestureDetector(
-                                                            // Animation management
-                                                            onTapDown: (_) {
-                                                              setState(() {
-                                                                _buttonAnimations["POPUP NO"] = true;
-                                                              });
-                                                            },
-                                                            onTapUp: (_) {
-                                                              setState(() {
-                                                                _buttonAnimations["POPUP NO"] = false;
-                                                              });
-                                                              // BUTTON CODE
-                                                              Navigator.pop(context);
-                                                            },
-                                                            onTapCancel: () {
-                                                              setState(() {
-                                                                _buttonAnimations["POPUP NO"] = false;
-                                                              });
-                                                            },
-                                                            child: Container(
-                                                              decoration: const BoxDecoration(
-                                                                borderRadius: BorderRadius.all(Radius.circular(60)),
-                                                                color: Colors.red,
-                                                              ),
-                                                              padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
-                                                              child: Text(
-                                                                langFR ? "Annuler" : "Annuleren",
-                                                                style: const TextStyle(
-                                                                  color: Colors.white,
-                                                                  fontWeight: FontWeight.bold,
-                                                                  fontSize: 20,
-                                                                ),
-                                                              ),
+                                                          onTapUp: (_) {
+                                                            setState(() {
+                                                              _buttonAnimations["POPUP OK"] = false;
+                                                            });
+                                                            // BUTTON CODE
+                                                            Navigator.pop(context);
+                                                          },
+                                                          onTapCancel: () {
+                                                            setState(() {
+                                                              _buttonAnimations["POPUP OK"] = false;
+                                                            });
+                                                          },
+                                                          child: Container(
+                                                            decoration: const BoxDecoration(
+                                                              borderRadius: BorderRadius.all(Radius.circular(60)),
+                                                              color: Colors.lightGreen,
                                                             ),
-                                                          ),
-                                                        ),
-                                                        //Blank space between the buttons
-                                                        SizedBox(width: screenWidth * 0.15),
-                                                        //Validate button
-                                                        AnimatedScale(
-                                                          scale: _buttonAnimations["POPUP YES"]! ? 1.1 : 1.0,
-                                                          duration: const Duration(milliseconds: 100),
-                                                          curve: Curves.bounceOut,
-                                                          alignment: Alignment.center,
-                                                          child: GestureDetector(
-                                                            // Animation management
-                                                            onTapDown: (_) {
-                                                              setState(() {
-                                                                _buttonAnimations["POPUP YES"] = true;
-                                                              });
-                                                            },
-                                                            onTapUp: (_) async {
-                                                              await databaseManager.updateDialog(DialogObject(
-                                                                id_dialog: widget.idDialog,
-                                                                sentence: _controller.text,
-                                                                language: langFR ? "fr" : "nl",
-                                                                id_theme: selectedTheme!.id_theme,
-                                                              ));
-                                                              //Refresh the UI to display the success of modification
-                                                              setState(() {
-                                                                isModified = true;
-                                                                _buttonAnimations["POPUP YES"] = false;
-                                                              });
-                                                            },
-                                                            onTapCancel: () {
-                                                              setState(() {
-                                                                _buttonAnimations["POPUP YES"] = false;
-                                                              });
-                                                            },
-                                                            child: Container(
-                                                              decoration: const BoxDecoration(
-                                                                borderRadius: BorderRadius.all(Radius.circular(60)),
-                                                                color: Colors.lightGreen,
+                                                            padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
+                                                            child: Text(
+                                                              langFR ? "OK" : "OK",
+                                                              style: TextStyle(
+                                                                color: Colors.white,
+                                                                fontWeight: FontWeight.bold,
+                                                                fontSize: screenHeight * 0.025,
                                                               ),
-                                                              padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
-                                                              child: Text(
-                                                                langFR ? "Valider" : "Bevestigen",
-                                                                style: const TextStyle(
-                                                                  color: Colors.white,
-                                                                  fontWeight: FontWeight.bold,
-                                                                  fontSize: 20,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    SizedBox(height: screenHeight * 0.03),
-                                                  ],
-                                                ),
-                                              ),
-                                            );
-                                          }
-                                          // Popup to inform that the modification is a success
-                                          else {
-                                            return Dialog(
-                                              backgroundColor: Colors.black87,
-                                              child: Padding(
-                                                padding: const EdgeInsets.all(16.0), // Optional padding for aesthetics
-                                                child: Column(
-                                                  mainAxisSize: MainAxisSize.min, // Ensures the dialog is as small as needed
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: [
-                                                    SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.15),
-                                                    // Title for theme selection
-                                                    Text(
-                                                      langFR ? 'Dialogue modifié avec succès !' : 'Dialoogvenster succesvol gewijzigd!',
-                                                      style: TextStyle(color: Colors.white, fontSize: screenHeight * 0.03, fontWeight: FontWeight.bold),
-                                                    ),
-                                                    SizedBox(height: screenHeight * 0.2),
-                                                    //Button to quit
-                                                    AnimatedScale(
-                                                      scale: _buttonAnimations["POPUP OK"]! ? 1.1 : 1.0,
-                                                      duration: const Duration(milliseconds: 100),
-                                                      curve: Curves.bounceOut,
-                                                      alignment: Alignment.center,
-                                                      child: GestureDetector(
-                                                        // Animation management
-                                                        onTapDown: (_) {
-                                                          setState(() {
-                                                            _buttonAnimations["POPUP OK"] = true;
-                                                          });
-                                                        },
-                                                        onTapUp: (_) {
-                                                          setState(() {
-                                                            _buttonAnimations["POPUP OK"] = false;
-                                                          });
-                                                          // BUTTON CODE
-                                                          Navigator.pop(context);
-                                                        },
-                                                        onTapCancel: () {
-                                                          setState(() {
-                                                            _buttonAnimations["POPUP OK"] = false;
-                                                          });
-                                                        },
-                                                        child: Container(
-                                                          decoration: const BoxDecoration(
-                                                            borderRadius: BorderRadius.all(Radius.circular(60)),
-                                                            color: Colors.lightGreen,
-                                                          ),
-                                                          padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
-                                                          child: Text(
-                                                            langFR ? "OK" : "OK",
-                                                            style: TextStyle(
-                                                              color: Colors.white,
-                                                              fontWeight: FontWeight.bold,
-                                                              fontSize: screenHeight * 0.025,
                                                             ),
                                                           ),
                                                         ),
                                                       ),
-                                                    ),
-                                                    SizedBox(height: screenHeight * 0.03),
-                                                  ],
+                                                      SizedBox(height: screenHeight * 0.03),
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
-                                            );
-                                          }
-                                        },
-                                      );
-                                    },
-                                  ).then((value) {
-                                    if (value != null) {
-                                      setState(() {
-                                        selectedTheme = value; // Update the main widget with the selected theme
-                                      });
-                                    }
-                                  });
+                                              );
+                                            }
+                                          },
+                                        );
+                                      },
+                                    ).then((value) {
+                                      if (value != null) {
+                                        setState(() {
+                                          selectedTheme = value; // Update the main widget with the selected theme
+                                        });
+                                      }
+                                    });
+                                  } else {
+                                    _showDialogEmptyText();
+                                  }
                                 },
                                 onTapCancel: () {
                                   setState(() {
@@ -1474,5 +1413,76 @@ class _DialogPageState extends State<DialogPage> {
             );
           }),
     );
+  }
+
+  ///Show a popup to inform that you can't save an empty dialog
+  void _showDialogEmptyText() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          double screenHeight = MediaQuery.of(context).size.height;
+          double screenWidth = MediaQuery.of(context).size.width;
+          return StatefulBuilder(builder: (context, setState) {
+            return Dialog(
+              backgroundColor: Colors.black87,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.15),
+                    Text(
+                      langFR ? 'Vous ne pouvez pas enregistrer un dialogue vide !' : 'Je kunt geen leeg dialoogvenster opslaan!',
+                      style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: screenHeight * 0.2),
+                    //Button to quit
+                    AnimatedScale(
+                      scale: _buttonAnimations["POPUP OK"]! ? 1.1 : 1.0,
+                      duration: const Duration(milliseconds: 100),
+                      curve: Curves.bounceOut,
+                      child: GestureDetector(
+                        // Animation management
+                        onTapDown: (_) {
+                          setState(() {
+                            _buttonAnimations["POPUP OK"] = true;
+                          });
+                        },
+                        onTapUp: (_) {
+                          setState(() {
+                            _buttonAnimations["POPUP OK"] = false;
+                          });
+                          // BUTTON CODE
+                          Navigator.pop(context);
+                        },
+                        onTapCancel: () {
+                          setState(() {
+                            _buttonAnimations["POPUP OK"] = false;
+                          });
+                        },
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(60)),
+                            color: Colors.lightGreen,
+                          ),
+                          padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
+                          child: Text(
+                            langFR ? "OK" : "OK",
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: screenHeight * 0.03),
+                  ],
+                ),
+              ),
+            );
+          });
+        });
   }
 }
