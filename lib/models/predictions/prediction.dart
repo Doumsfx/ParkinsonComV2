@@ -28,7 +28,6 @@ class PredictionsHandler {
     }
   }
 
-
   /// Method to remove the listener
   void removeListener() {
     controller.removeListener(_onTextChanged);
@@ -57,7 +56,6 @@ class PredictionsHandler {
     addListener(); // Re-add listener after clearing
   }
 
-
   ///Complete the [sentence] with the selected [word] (autocomplete if we started the word, add it if we didn't)
   void completeSentence(String sentence, String word) {
     List<String> wordsList = sentence.split(" ");
@@ -69,7 +67,8 @@ class PredictionsHandler {
   void _onTextChanged() {
     //Debouncing, avoid to be triggered twice
     if (_debounce?.isActive ?? false) _debounce?.cancel();
-    _debounce = Timer(const Duration(milliseconds: 400), () { //Duration can be changed
+    _debounce = Timer(const Duration(milliseconds: 400), () {
+      //Duration can be changed
       if (isFR) {
         predictFR(controller.text); //FR
       } else {
@@ -97,19 +96,17 @@ class PredictionsHandler {
       'correctTypoInPartialWord': 'true'
     });
     //Get JSON Data (Typewise not available for NL)
-    final response =
-        await http.post(Uri.parse(url), headers: headers, body: body);
+    final response = await http.post(Uri.parse(url), headers: headers, body: body);
 
     if (response.statusCode == 200) {
-      final document = jsonDecode(
-          utf8.decode(response.bodyBytes)); //UTF8 for accentuated characters
+      final document = jsonDecode(utf8.decode(response.bodyBytes)); //UTF8 for accentuated characters
       //document contains a list of predicted words
       final suggestions = document["predictions"];
       for (var sugges in suggestions) {
         wordList.add(sugges["text"]);
       }
       //Update the suggestedWordsList with the new words
-      suggestedWordsList.value =  wordList;
+      suggestedWordsList.value = wordList;
     } else {
       throw Exception('Failed to load Json data');
     }
@@ -138,8 +135,7 @@ class PredictionsHandler {
           if (j != data.length - 2) word += " ";
         }
         //Add the line into dictionnary as DicoElement
-        _dictionnary.dicoElements.insert(
-            i, DicoElement(word, frequency: int.parse(data[data.length - 1])));
+        _dictionnary.dicoElements.insert(i, DicoElement(word, frequency: int.parse(data[data.length - 1])));
       }
     } catch (e) {
       throw Exception("Error loading file: $e");
@@ -153,20 +149,16 @@ class PredictionsHandler {
     //Can't use Google SuggestQueries without a query
     if (query != "") {
       //SuggestQueries
-      final response = await http.get(Uri.parse(
-          'https://suggestqueries.google.com/complete/search?output=toolbar&hl=be-NL&q=$query'));
+      final response = await http.get(Uri.parse('https://suggestqueries.google.com/complete/search?output=toolbar&hl=be-NL&q=$query'));
 
       if (response.statusCode == 200) {
         //Treat the XML response
-        List<String> wordList =
-            List.empty(growable: true); //List of received predictions
+        List<String> wordList = List.empty(growable: true); //List of received predictions
 
         final document = xml.XmlDocument.parse(response.body); //XML body
-        final suggestions = document
-            .findAllElements('CompleteSuggestion'); //<CompleteSuggestion>
+        final suggestions = document.findAllElements('CompleteSuggestion'); //<CompleteSuggestion>
         for (var sugges in suggestions) {
-          final suggesElement =
-              sugges.findElements('suggestion').first; //<suggestion>
+          final suggesElement = sugges.findElements('suggestion').first; //<suggestion>
           final data = suggesElement.getAttribute('data'); //"data" attribute
           if (data != null) {
             wordList.add(data); //Add prediction
@@ -189,9 +181,7 @@ class PredictionsHandler {
     //No query => 3 first words from dictionnary
     else {
       for (int i = 0; i < 3; i++) {
-        results.add(
-            _dictionnary.dicoElements[i].word.substring(0, 1).toUpperCase() +
-                _dictionnary.dicoElements[i].word.substring(1));
+        results.add(_dictionnary.dicoElements[i].word.substring(0, 1).toUpperCase() + _dictionnary.dicoElements[i].word.substring(1));
       }
     }
     //Final predictions list
@@ -237,7 +227,6 @@ class PredictionsHandler {
     }
     return sorted;
   }
-
 
   /// Complete the [predictions] list with words that have the same root as the last word in the [sentence]
   /// (only when we have less than 3 words predicted).

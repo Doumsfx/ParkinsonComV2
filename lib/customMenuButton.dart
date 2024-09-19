@@ -22,10 +22,7 @@ class CustomMenuButton extends StatelessWidget {
         Container(
           height: MediaQuery.of(context).size.height * 0.28 * scale,
           width: MediaQuery.of(context).size.height * 0.28 * scale,
-          decoration: BoxDecoration(
-            color: backgroundColor,
-            borderRadius: BorderRadius.circular(MediaQuery.of(context).size.height * 0.09 * scale)
-          ),
+          decoration: BoxDecoration(color: backgroundColor, borderRadius: BorderRadius.circular(MediaQuery.of(context).size.height * 0.09 * scale)),
           child: Padding(
             padding: EdgeInsets.all(MediaQuery.of(context).size.height * 0.065 * scale / imageScale - 1),
             child: Image.asset(
@@ -39,10 +36,7 @@ class CustomMenuButton extends StatelessWidget {
         Container(
           height: MediaQuery.of(context).size.height * 0.09 * scale,
           width: MediaQuery.of(context).size.height * 0.28 * scale,
-          decoration: BoxDecoration(
-              color: backgroundColor,
-              borderRadius: BorderRadius.circular(MediaQuery.of(context).size.height * 0.09 * scale)
-          ),
+          decoration: BoxDecoration(color: backgroundColor, borderRadius: BorderRadius.circular(MediaQuery.of(context).size.height * 0.09 * scale)),
           child: Center(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.012 * scale),
@@ -53,11 +47,9 @@ class CustomMenuButton extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                   fontSize: 20,
                 ),
-
                 maxLines: 1,
                 minFontSize: 10,
                 maxFontSize: 20,
-
               ),
             ),
           ),

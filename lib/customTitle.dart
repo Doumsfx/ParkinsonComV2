@@ -21,7 +21,6 @@ class CustomTitle extends StatelessWidget {
       clipBehavior: Clip.none,
       alignment: Alignment.centerLeft,
       children: [
-
         Container(
           width: MediaQuery.of(context).size.width * 0.50,
           height: MediaQuery.of(context).size.height * 0.12,
@@ -36,9 +35,7 @@ class CustomTitle extends StatelessWidget {
               style: GoogleFonts.josefinSans(
                 color: textColor,
                 fontWeight: FontWeight.w700,
-                fontSize: MediaQuery.of(context).size.height > 600
-                          ? 32
-                          : 28,
+                fontSize: MediaQuery.of(context).size.height > 600 ? 32 : 28,
               ),
             ),
           ),
@@ -60,7 +57,6 @@ class CustomTitle extends StatelessWidget {
             ),
           ),
         ),
-
       ],
     );
   }

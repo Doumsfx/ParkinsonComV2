@@ -20,7 +20,6 @@ class CustomHomePageTitle extends StatelessWidget {
       clipBehavior: Clip.none,
       alignment: Alignment.centerLeft,
       children: [
-
         // Text
         Container(
           width: MediaQuery.of(context).size.width * 0.50,
@@ -29,9 +28,7 @@ class CustomHomePageTitle extends StatelessWidget {
             borderRadius: const BorderRadius.all(Radius.circular(60)),
             color: backgroundColor,
           ),
-          padding: MediaQuery.of(context).size.height > 600
-            ? EdgeInsets.fromLTRB(MediaQuery.of(context).size.height * 0.05, MediaQuery.of(context).size.height * 0.008, MediaQuery.of(context).size.height * 0.0126, MediaQuery.of(context).size.height * 0.0126)
-            : EdgeInsets.fromLTRB(MediaQuery.of(context).size.height * 0.05, 0, MediaQuery.of(context).size.height * 0.0126, 0),
+          padding: MediaQuery.of(context).size.height > 600 ? EdgeInsets.fromLTRB(MediaQuery.of(context).size.height * 0.05, MediaQuery.of(context).size.height * 0.008, MediaQuery.of(context).size.height * 0.0126, MediaQuery.of(context).size.height * 0.0126) : EdgeInsets.fromLTRB(MediaQuery.of(context).size.height * 0.05, 0, MediaQuery.of(context).size.height * 0.0126, 0),
           child: Center(
             child: Text(
               text,
@@ -60,7 +57,6 @@ class CustomHomePageTitle extends StatelessWidget {
             ),
           ),
         ),
-
       ],
     );
   }

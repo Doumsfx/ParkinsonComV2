@@ -41,14 +41,14 @@ class _ListThemesPageState extends State<ListThemesPage> {
   late List<bool> _dialogsAnimations;
   late List<bool> _deleteButtonsAnimations;
   late List<bool> _ttsButtonsAnimations;
-  final ScrollController _scrollController =  ScrollController();
+  final ScrollController _scrollController = ScrollController();
 
-  Future<void> initialisation() async{
-    _listThemes = await databaseManager.retrieveThemesFromLanguage(langFR ?"fr" : "nl");
+  Future<void> initialisation() async {
+    _listThemes = await databaseManager.retrieveThemesFromLanguage(langFR ? "fr" : "nl");
     setState(() {});
-    _dialogsAnimations  = List.filled(_listThemes.length, false);
-    _deleteButtonsAnimations  = List.filled(_listThemes.length, false);
-    _ttsButtonsAnimations  = List.filled(_listThemes.length, false);
+    _dialogsAnimations = List.filled(_listThemes.length, false);
+    _deleteButtonsAnimations = List.filled(_listThemes.length, false);
+    _ttsButtonsAnimations = List.filled(_listThemes.length, false);
 
     // Sorting the list
     int i;
@@ -57,12 +57,11 @@ class _ListThemesPageState extends State<ListThemesPage> {
     List<ThemeObject> secondPart = [];
 
     // Separate into two lists: firstPart with the themes of the user and secondPart with the base themes
-    if(_listThemes.length > 1){
-      for(i = _listThemes.length - 1; i >= 0; i -= 1){
-        if(_listThemes[i].id_theme > 24){
+    if (_listThemes.length > 1) {
+      for (i = _listThemes.length - 1; i >= 0; i -= 1) {
+        if (_listThemes[i].id_theme > 24) {
           firstPart.add(_listThemes[i]);
-        }
-        else{
+        } else {
           endIndex = i;
           secondPart = _listThemes.sublist(0, endIndex + 1);
           break;
@@ -85,8 +84,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
 
   ///Used to refresh the UI from the StatefulBuilder
   void _updateParent() {
-    setState(() {
-    });
+    setState(() {});
   }
 
   @override
@@ -112,45 +110,33 @@ class _ListThemesPageState extends State<ListThemesPage> {
                         Container(
                           margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.013, MediaQuery.of(context).size.width * 0.02, 0),
                           child: AnimatedScale(
-                            scale: _buttonAnimations["BACK ARROW"]!
-                                ? 1.1
-                                : 1.0,
-                            duration:
-                            const Duration(milliseconds: 100),
+                            scale: _buttonAnimations["BACK ARROW"]! ? 1.1 : 1.0,
+                            duration: const Duration(milliseconds: 100),
                             curve: Curves.bounceOut,
                             child: GestureDetector(
                               onTapDown: (_) {
                                 setState(() {
-                                  _buttonAnimations["BACK ARROW"] =
-                                  true;
+                                  _buttonAnimations["BACK ARROW"] = true;
                                 });
                               },
                               onTapUp: (_) {
                                 setState(() {
-                                  _buttonAnimations["BACK ARROW"] =
-                                  false;
+                                  _buttonAnimations["BACK ARROW"] = false;
                                 });
                                 Navigator.popUntil(
                                   context,
-                                      (route) => route.isFirst,
+                                  (route) => route.isFirst,
                                 );
                               },
                               onTapCancel: () {
                                 setState(() {
-                                  _buttonAnimations["BACK ARROW"] =
-                                  false;
+                                  _buttonAnimations["BACK ARROW"] = false;
                                 });
                               },
                               child: Image.asset(
                                 "assets/fleche.png",
-                                height: MediaQuery.of(context)
-                                    .size
-                                    .width *
-                                    0.05,
-                                width: MediaQuery.of(context)
-                                    .size
-                                    .width *
-                                    0.07,
+                                height: MediaQuery.of(context).size.width * 0.05,
+                                width: MediaQuery.of(context).size.width * 0.07,
                               ),
                             ),
                           ),
@@ -167,9 +153,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
                               Container(
                                 margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.19, MediaQuery.of(context).size.height / 16, 0, MediaQuery.of(context).size.height * 0.07),
                                 child: CustomTitle(
-                                  text: langFR
-                                      ? 'Les thèmes'
-                                      : "De thema's",
+                                  text: langFR ? 'Les thèmes' : "De thema's",
                                   image: 'assets/themeIcon.png',
                                   scale: 1,
                                   backgroundColor: Colors.white,
@@ -179,9 +163,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
 
                               // See themes Button
                               AnimatedScale(
-                                scale: _buttonAnimations["THEMES"] == true
-                                    ? 1.1
-                                    : 1.0,
+                                scale: _buttonAnimations["THEMES"] == true ? 1.1 : 1.0,
                                 duration: const Duration(milliseconds: 100),
                                 curve: Curves.bounceOut,
                                 alignment: Alignment.centerRight,
@@ -211,9 +193,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                   child: Container(
                                     margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.40, 0, 0, 0),
                                     child: CustomShapeThemes(
-                                      text: langFR
-                                          ? 'Voir les dialogues'
-                                          : 'Bekijk de dialogen',
+                                      text: langFR ? 'Voir les dialogues' : 'Bekijk de dialogen',
                                       image: 'assets/doubleFleche.png',
                                       backgroundColor: const Color.fromRGBO(78, 237, 255, 1),
                                       textColor: Colors.black,
@@ -221,7 +201,6 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                   ),
                                 ),
                               ),
-
                             ],
                           ),
                         ),
@@ -238,10 +217,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
                           Container(
                             margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.04, 0, 0, MediaQuery.of(context).size.height * 0.02),
                             child: Text(
-                              langFR
-                                  ? 'Liste de tous les thèmes'
-                                  : "Lijst met thema's",
-
+                              langFR ? 'Liste de tous les thèmes' : "Lijst met thema's",
                               style: GoogleFonts.josefinSans(
                                 fontSize: 18,
                                 color: Colors.white,
@@ -255,9 +231,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
 
                           // Button
                           AnimatedScale(
-                            scale: _buttonAnimations["NEW DIALOG"] == true
-                                ? 1.1
-                                : 1.0,
+                            scale: _buttonAnimations["NEW DIALOG"] == true ? 1.1 : 1.0,
                             duration: const Duration(milliseconds: 100),
                             curve: Curves.bounceOut,
                             child: GestureDetector(
@@ -273,10 +247,10 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                 });
                                 // BUTTON CODE
                                 Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => const NewThemePage(),)
-                                );
-
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const NewThemePage(),
+                                    ));
                               },
                               onTapCancel: () {
                                 setState(() {
@@ -287,23 +261,12 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                 margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.025, 0, 0, MediaQuery.of(context).size.height * 0.02),
                                 width: MediaQuery.of(context).size.width * 0.7,
                                 decoration: const BoxDecoration(
-                                  borderRadius:
-                                  BorderRadius.all(Radius.circular(60)),
+                                  borderRadius: BorderRadius.all(Radius.circular(60)),
                                   color: Color.fromRGBO(255, 183, 34, 1),
                                 ),
-                                padding: EdgeInsets.fromLTRB(
-                                    MediaQuery.of(context).size.width *
-                                        0.04,
-                                    MediaQuery.of(context).size.width *
-                                        0.015,
-                                    MediaQuery.of(context).size.width *
-                                        0.02,
-                                    MediaQuery.of(context).size.width *
-                                        0.015),
+                                padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.04, MediaQuery.of(context).size.width * 0.015, MediaQuery.of(context).size.width * 0.02, MediaQuery.of(context).size.width * 0.015),
                                 child: Text(
-                                  langFR
-                                      ? "+ Nouveau thème"
-                                      : "+ Nieuw thema",
+                                  langFR ? "+ Nouveau thème" : "+ Nieuw thema",
                                   style: const TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,
@@ -325,8 +288,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
                   child: Column(
                     children: [
                       AnimatedScale(
-                        scale:
-                        _buttonAnimations["HELP"]! ? 1.1 : 1.0,
+                        scale: _buttonAnimations["HELP"]! ? 1.1 : 1.0,
                         duration: const Duration(milliseconds: 100),
                         curve: Curves.bounceOut,
                         child: GestureDetector(
@@ -350,30 +312,17 @@ class _ListThemesPageState extends State<ListThemesPage> {
                           },
 
                           child: Container(
-                            margin: EdgeInsets.fromLTRB(
-                                0,
-                                MediaQuery.of(context).size.height *
-                                    0.03,
-                                0,
-                                MediaQuery.of(context).size.height *
-                                    0.03),
+                            margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.03, 0, MediaQuery.of(context).size.height * 0.03),
                             child: Image.asset(
                               "assets/helping_icon.png",
-                              height: MediaQuery.of(context)
-                                  .size
-                                  .width *
-                                  0.06,
-                              width: MediaQuery.of(context)
-                                  .size
-                                  .width *
-                                  0.06,
+                              height: MediaQuery.of(context).size.width * 0.06,
+                              width: MediaQuery.of(context).size.width * 0.06,
                             ),
                           ),
                         ),
                       ),
                       AnimatedScale(
-                        scale:
-                        _buttonAnimations["HOME"]! ? 1.1 : 1.0,
+                        scale: _buttonAnimations["HOME"]! ? 1.1 : 1.0,
                         duration: const Duration(milliseconds: 100),
                         curve: Curves.bounceOut,
                         child: GestureDetector(
@@ -395,29 +344,17 @@ class _ListThemesPageState extends State<ListThemesPage> {
                             });
                           },
                           child: Container(
-                            margin: EdgeInsets.fromLTRB(
-                                0,
-                                0,
-                                0,
-                                MediaQuery.of(context).size.height *
-                                    0.03),
+                            margin: EdgeInsets.fromLTRB(0, 0, 0, MediaQuery.of(context).size.height * 0.03),
                             child: Image.asset(
                               "assets/home.png",
-                              height: MediaQuery.of(context)
-                                  .size
-                                  .width *
-                                  0.06,
-                              width: MediaQuery.of(context)
-                                  .size
-                                  .width *
-                                  0.06,
+                              height: MediaQuery.of(context).size.width * 0.06,
+                              width: MediaQuery.of(context).size.width * 0.06,
                             ),
                           ),
                         ),
                       ),
                       AnimatedScale(
-                        scale:
-                        _buttonAnimations["RELAX"]! ? 1.1 : 1.0,
+                        scale: _buttonAnimations["RELAX"]! ? 1.1 : 1.0,
                         duration: const Duration(milliseconds: 100),
                         curve: Curves.bounceOut,
                         child: GestureDetector(
@@ -439,18 +376,11 @@ class _ListThemesPageState extends State<ListThemesPage> {
                             });
                           },
                           child: Container(
-                            height:
-                            MediaQuery.of(context).size.width *
-                                0.060,
-                            width:
-                            MediaQuery.of(context).size.width *
-                                0.060,
-                            padding: EdgeInsets.all(
-                                MediaQuery.of(context).size.width *
-                                    0.01),
+                            height: MediaQuery.of(context).size.width * 0.060,
+                            width: MediaQuery.of(context).size.width * 0.060,
+                            padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.01),
                             decoration: const BoxDecoration(
-                              color:
-                              Color.fromRGBO(160, 208, 86, 1),
+                              color: Color.fromRGBO(160, 208, 86, 1),
                               shape: BoxShape.circle,
                             ),
                             child: Image.asset(
@@ -474,14 +404,11 @@ class _ListThemesPageState extends State<ListThemesPage> {
                 thumbVisibility: true,
                 thickness: MediaQuery.of(context).size.width * 0.01125,
                 radius: Radius.circular(MediaQuery.of(context).size.width * 0.015),
-                trackColor:
-                const Color.fromRGBO(66, 89, 109, 1),
+                trackColor: const Color.fromRGBO(66, 89, 109, 1),
                 crossAxisMargin: MediaQuery.of(context).size.width * 0.00375,
                 mainAxisMargin: MediaQuery.of(context).size.width * 0.00375,
                 trackRadius: const Radius.circular(20),
-                padding: MediaQuery.of(context).size.height > 600
-                    ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.085, MediaQuery.of(context).size.width * 0.0315, MediaQuery.of(context).size.height * 0.11)
-                    : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.085, MediaQuery.of(context).size.width * 0.027, MediaQuery.of(context).size.height * 0.11),
+                padding: MediaQuery.of(context).size.height > 600 ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.085, MediaQuery.of(context).size.width * 0.0315, MediaQuery.of(context).size.height * 0.11) : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.085, MediaQuery.of(context).size.width * 0.027, MediaQuery.of(context).size.height * 0.11),
                 child: Row(
                   children: [
                     // List of dialogs
@@ -494,19 +421,14 @@ class _ListThemesPageState extends State<ListThemesPage> {
                               children: [
                                 // Themes
                                 AnimatedScale(
-                                  scale: _dialogsAnimations[index] &&
-                                      !_ttsButtonsAnimations[index]
-                                      ? 1.05
-                                      : 1.0,
-                                  duration:
-                                  const Duration(milliseconds: 100),
+                                  scale: _dialogsAnimations[index] && !_ttsButtonsAnimations[index] ? 1.05 : 1.0,
+                                  duration: const Duration(milliseconds: 100),
                                   curve: Curves.bounceOut,
                                   child: GestureDetector(
                                     // Animation management
                                     onTapDown: (_) {
                                       setState(() {
                                         _dialogsAnimations[index] = true;
-
                                       });
                                     },
                                     onTapUp: (_) {
@@ -514,11 +436,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                         _dialogsAnimations[index] = false;
                                       });
                                       // BUTTON CODE
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => ListDialogsPageFiltered(idTheme: _listThemes[index].id_theme))
-                                      );
-
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => ListDialogsPageFiltered(idTheme: _listThemes[index].id_theme)));
                                     },
                                     onTapCancel: () {
                                       setState(() {
@@ -526,49 +444,15 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                       });
                                     },
                                     child: Container(
-                                      margin: EdgeInsets.fromLTRB(
-                                          MediaQuery.of(context)
-                                              .size
-                                              .width *
-                                              0.025,
-                                          0,
-                                          0,
-                                          MediaQuery.of(context)
-                                              .size
-                                              .height *
-                                              0.02),
-                                      width: MediaQuery.of(context)
-                                          .size
-                                          .width *
-                                          0.82,
+                                      margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.025, 0, 0, MediaQuery.of(context).size.height * 0.02),
+                                      width: MediaQuery.of(context).size.width * 0.82,
                                       decoration: const BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(60)),
+                                        borderRadius: BorderRadius.all(Radius.circular(60)),
                                         color: Colors.white,
                                       ),
                                       child: Container(
-                                        width: MediaQuery.of(context)
-                                            .size
-                                            .width *
-                                            0.745,
-                                        padding:
-                                        EdgeInsets.fromLTRB(
-                                            MediaQuery.of(context)
-                                                .size
-                                                .width *
-                                                0.04,
-                                            MediaQuery.of(context)
-                                                .size
-                                                .width *
-                                                0.015,
-                                            MediaQuery.of(context)
-                                                .size
-                                                .width *
-                                                0.02,
-                                            MediaQuery.of(context)
-                                                .size
-                                                .width *
-                                                0.015),
+                                        width: MediaQuery.of(context).size.width * 0.745,
+                                        padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.04, MediaQuery.of(context).size.width * 0.015, MediaQuery.of(context).size.width * 0.02, MediaQuery.of(context).size.width * 0.015),
                                         child: Text(
                                           _listThemes[index].title,
                                           style: const TextStyle(
@@ -577,8 +461,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                             fontSize: 18,
                                           ),
                                           maxLines: 1,
-                                          overflow:
-                                          TextOverflow.ellipsis,
+                                          overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
                                     ),
@@ -587,103 +470,63 @@ class _ListThemesPageState extends State<ListThemesPage> {
 
                                 // Delete Dialog Buttons
                                 AnimatedScale(
-                                  scale: _deleteButtonsAnimations[index]
-                                      ? 1.1
-                                      : 1.0,
-                                  duration:
-                                  const Duration(milliseconds: 100),
+                                  scale: _deleteButtonsAnimations[index] ? 1.1 : 1.0,
+                                  duration: const Duration(milliseconds: 100),
                                   curve: Curves.bounceOut,
                                   child: GestureDetector(
                                     onTapDown: (_) {
                                       setState(() {
-                                        _deleteButtonsAnimations[index] =
-                                        true;
+                                        _deleteButtonsAnimations[index] = true;
                                       });
                                     },
                                     onTapUp: (_) {
                                       // BUTTON CODE
                                       setState(() {
-                                        _deleteButtonsAnimations[index] =
-                                        false;
+                                        _deleteButtonsAnimations[index] = false;
                                       });
                                       //Popup to confirm the deletion
                                       showDialog(
                                           context: context,
                                           builder: (BuildContext context) {
                                             // Use StatefulBuilder to manage the state inside the dialog
-                                            return StatefulBuilder(builder:
-                                                (context, setState) {
-                                              double screenHeight =
-                                                  MediaQuery.of(context)
-                                                      .size
-                                                      .height;
-                                              double screenWidth =
-                                                  MediaQuery.of(context)
-                                                      .size
-                                                      .width;
+                                            return StatefulBuilder(builder: (context, setState) {
+                                              double screenHeight = MediaQuery.of(context).size.height;
+                                              double screenWidth = MediaQuery.of(context).size.width;
 
                                               return Dialog(
-                                                backgroundColor:
-                                                Colors.black87,
+                                                backgroundColor: Colors.black87,
                                                 child: Padding(
-                                                  padding: const EdgeInsets
-                                                      .all(
-                                                      16.0), // Optional padding for aesthetics
+                                                  padding: const EdgeInsets.all(16.0), // Optional padding for aesthetics
                                                   child: Column(
-                                                      mainAxisSize: MainAxisSize
-                                                          .min, // Ensures the dialog is as small as needed
+                                                      mainAxisSize: MainAxisSize.min, // Ensures the dialog is as small as needed
                                                       children: [
-                                                        SizedBox(
-                                                            height:
-                                                            screenHeight *
-                                                                0.1),
+                                                        SizedBox(height: screenHeight * 0.1),
                                                         //Suppression warning
                                                         Text(
-                                                          langFR
-                                                              ? 'Voulez vous vraiment supprimer le thème:\n${_listThemes[index].title} ?'
-                                                              : 'Weet je zeker dat je het thema wil verwijderen:\n${_listThemes[index].title}?',
+                                                          langFR ? 'Voulez vous vraiment supprimer le thème:\n${_listThemes[index].title} ?' : 'Weet je zeker dat je het thema wil verwijderen:\n${_listThemes[index].title}?',
                                                           textAlign: TextAlign.center,
-                                                          style: const TextStyle(
-                                                              color: Colors
-                                                                  .white,
-                                                              fontSize:20,
-                                                              fontWeight:
-                                                              FontWeight
-                                                                  .bold),
+                                                          style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
                                                         ),
 
-                                                        FutureBuilder(future: databaseManager.countDialogsFromTheme(_listThemes[index].id_theme), builder:
-                                                        (context, snapshot) {
-                                                          if(snapshot.hasData) {
-                                                            return Text(
-                                                              langFR
-                                                                  ? 'Il y a ${snapshot.data} dans ce thème.\nCes dialogues seront supprimés.'
-                                                                  : 'Er is ${snapshot.data} dialogen in dit thema.\nDeze dialogen worden verwijderd.',
-                                                              textAlign: TextAlign.center,
-                                                              style: const TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize:20,
-                                                                  fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                            );
-                                                          }
-                                                          else {
-                                                            return const SizedBox.shrink();
-                                                          }
-                                                        },
+                                                        FutureBuilder(
+                                                          future: databaseManager.countDialogsFromTheme(_listThemes[index].id_theme),
+                                                          builder: (context, snapshot) {
+                                                            if (snapshot.hasData) {
+                                                              return Text(
+                                                                langFR ? 'Il y a ${snapshot.data} dans ce thème.\nCes dialogues seront supprimés.' : 'Er is ${snapshot.data} dialogen in dit thema.\nDeze dialogen worden verwijderd.',
+                                                                textAlign: TextAlign.center,
+                                                                style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                                                              );
+                                                            } else {
+                                                              return const SizedBox.shrink();
+                                                            }
+                                                          },
                                                         ),
 
-                                                        SizedBox(
-                                                            height:
-                                                            screenHeight *
-                                                                0.2),
+                                                        SizedBox(height: screenHeight * 0.2),
                                                         //Buttons to cancel and validate
                                                         Row(
-                                                          mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
+                                                          mainAxisAlignment: MainAxisAlignment.center,
                                                           children: [
                                                             //Cancel button
                                                             AnimatedScale(
@@ -691,7 +534,6 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                                               duration: const Duration(milliseconds: 100),
                                                               curve: Curves.bounceOut,
                                                               alignment: Alignment.center,
-
                                                               child: GestureDetector(
                                                                 // Animation management
                                                                 onTapDown: (_) {
@@ -705,40 +547,23 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                                                   });
                                                                   // BUTTON CODE
                                                                   Navigator.pop(context);
-
                                                                 },
                                                                 onTapCancel: () {
                                                                   setState(() {
                                                                     _buttonAnimations["POPUP NO"] = false;
                                                                   });
                                                                 },
-                                                                child:
-                                                                Container(
-                                                                  decoration:
-                                                                  const BoxDecoration(
-                                                                    borderRadius:
-                                                                    BorderRadius.all(
-                                                                        Radius.circular(60)),
-                                                                    color: Colors
-                                                                        .red,
+                                                                child: Container(
+                                                                  decoration: const BoxDecoration(
+                                                                    borderRadius: BorderRadius.all(Radius.circular(60)),
+                                                                    color: Colors.red,
                                                                   ),
-                                                                  padding: EdgeInsets.fromLTRB(
-                                                                      screenWidth *
-                                                                          0.1,
-                                                                      8.0,
-                                                                      screenWidth *
-                                                                          0.1,
-                                                                      8.0),
+                                                                  padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
                                                                   child: Text(
-                                                                    langFR
-                                                                        ? "NON"
-                                                                        : "NEEN",
-                                                                    style:
-                                                                    const TextStyle(
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontWeight:
-                                                                      FontWeight.bold,
+                                                                    langFR ? "NON" : "NEEN",
+                                                                    style: const TextStyle(
+                                                                      color: Colors.white,
+                                                                      fontWeight: FontWeight.bold,
                                                                       fontSize: 20,
                                                                     ),
                                                                   ),
@@ -746,17 +571,13 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                                               ),
                                                             ),
                                                             //Blank space between the buttons
-                                                            SizedBox(
-                                                                width:
-                                                                screenWidth *
-                                                                    0.15),
+                                                            SizedBox(width: screenWidth * 0.15),
                                                             //Validate button
                                                             AnimatedScale(
                                                               scale: _buttonAnimations["POPUP YES"]! ? 1.1 : 1.0,
                                                               duration: const Duration(milliseconds: 100),
                                                               curve: Curves.bounceOut,
                                                               alignment: Alignment.center,
-
                                                               child: GestureDetector(
                                                                 // Animation management
                                                                 onTapDown: (_) {
@@ -781,33 +602,17 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                                                     _buttonAnimations["POPUP YES"] = false;
                                                                   });
                                                                 },
-                                                                child:
-                                                                Container(
-                                                                  decoration:
-                                                                  const BoxDecoration(
-                                                                    borderRadius:
-                                                                    BorderRadius.all(
-                                                                        Radius.circular(60)),
-                                                                    color: Colors
-                                                                        .lightGreen,
+                                                                child: Container(
+                                                                  decoration: const BoxDecoration(
+                                                                    borderRadius: BorderRadius.all(Radius.circular(60)),
+                                                                    color: Colors.lightGreen,
                                                                   ),
-                                                                  padding: EdgeInsets.fromLTRB(
-                                                                      screenWidth *
-                                                                          0.1,
-                                                                      8.0,
-                                                                      screenWidth *
-                                                                          0.1,
-                                                                      8.0),
+                                                                  padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
                                                                   child: Text(
-                                                                    langFR
-                                                                        ? "OUI"
-                                                                        : "JA",
-                                                                    style:
-                                                                    const TextStyle(
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontWeight:
-                                                                      FontWeight.bold,
+                                                                    langFR ? "OUI" : "JA",
+                                                                    style: const TextStyle(
+                                                                      color: Colors.white,
+                                                                      fontWeight: FontWeight.bold,
                                                                       fontSize: 20,
                                                                     ),
                                                                   ),
@@ -825,38 +630,16 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                     },
                                     onTapCancel: () {
                                       setState(() {
-                                        _deleteButtonsAnimations[index] =
-                                        false;
+                                        _deleteButtonsAnimations[index] = false;
                                       });
                                     },
                                     child: Container(
-                                      height: MediaQuery.of(context)
-                                          .size
-                                          .width *
-                                          0.06,
-                                      width: MediaQuery.of(context)
-                                          .size
-                                          .width *
-                                          0.06,
-                                      padding: EdgeInsets.all(
-                                          MediaQuery.of(context)
-                                              .size
-                                              .width *
-                                              0.01),
-                                      margin: EdgeInsets.fromLTRB(
-                                          MediaQuery.of(context)
-                                              .size
-                                              .width *
-                                              0.01,
-                                          0,
-                                          0,
-                                          MediaQuery.of(context)
-                                              .size
-                                              .height *
-                                              0.02),
+                                      height: MediaQuery.of(context).size.width * 0.06,
+                                      width: MediaQuery.of(context).size.width * 0.06,
+                                      padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.01),
+                                      margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.01, 0, 0, MediaQuery.of(context).size.height * 0.02),
                                       decoration: const BoxDecoration(
-                                        color:
-                                        Color.fromRGBO(244, 66, 56, 1),
+                                        color: Color.fromRGBO(244, 66, 56, 1),
                                         shape: BoxShape.circle,
                                       ),
                                       child: Image.asset(
@@ -876,11 +659,8 @@ class _ListThemesPageState extends State<ListThemesPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-
                           AnimatedScale(
-                            scale: _buttonAnimations["TOP ARROW"]!
-                                ? 1.1
-                                : 1.0,
+                            scale: _buttonAnimations["TOP ARROW"]! ? 1.1 : 1.0,
                             duration: const Duration(milliseconds: 100),
                             curve: Curves.bounceOut,
                             child: GestureDetector(
@@ -888,18 +668,15 @@ class _ListThemesPageState extends State<ListThemesPage> {
                               onTap: () {
                                 _scrollController.animateTo(
                                   _scrollController.offset - 120,
-                                  duration:
-                                  const Duration(milliseconds: 500),
+                                  duration: const Duration(milliseconds: 500),
                                   curve: Curves.easeIn,
                                 );
                               },
 
                               onLongPress: () {
                                 _scrollController.animateTo(
-                                  _scrollController
-                                      .position.minScrollExtent,
-                                  duration:
-                                  const Duration(milliseconds: 1),
+                                  _scrollController.position.minScrollExtent,
+                                  duration: const Duration(milliseconds: 1),
                                   curve: Curves.easeIn,
                                 );
                               },
@@ -923,44 +700,31 @@ class _ListThemesPageState extends State<ListThemesPage> {
                               },
 
                               child: Container(
-                                width:
-                                MediaQuery.of(context).size.height *
-                                    0.07,
-                                height:
-                                MediaQuery.of(context).size.height *
-                                    0.07,
+                                width: MediaQuery.of(context).size.height * 0.07,
+                                height: MediaQuery.of(context).size.height * 0.07,
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(
-                                      MediaQuery.of(context).size.width *
-                                          0.01),
-                                  color: const Color.fromRGBO(
-                                      101, 72, 254, 1),
+                                  borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * 0.01),
+                                  color: const Color.fromRGBO(101, 72, 254, 1),
                                 ),
                                 child: Transform.rotate(
                                   angle: 1.5708,
                                   child: Icon(
                                     Icons.arrow_back_ios_new_rounded,
                                     color: Colors.white,
-                                    size: MediaQuery.of(context)
-                                        .size
-                                        .height *
-                                        0.063,
+                                    size: MediaQuery.of(context).size.height * 0.063,
                                   ),
                                 ),
                               ),
                             ),
                           ),
-
-                          Expanded(child: Container(
+                          Expanded(
+                              child: Container(
                             width: MediaQuery.of(context).size.width * 0.01875,
-                            margin: MediaQuery.of(context).size.height > 600
-                                ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.014)
-                                : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.011),
+                            margin: MediaQuery.of(context).size.height > 600 ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.014) : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.011),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
                               color: const Color.fromRGBO(66, 89, 109, 1),
                             ),
-
                             child: Container(
                               margin: EdgeInsets.all(MediaQuery.of(context).size.width * 0.00375),
                               decoration: BoxDecoration(
@@ -968,13 +732,9 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                 color: Colors.blue,
                               ),
                             ),
-
                           )),
-
                           AnimatedScale(
-                            scale: _buttonAnimations["BOT ARROW"]!
-                                ? 1.1
-                                : 1.0,
+                            scale: _buttonAnimations["BOT ARROW"]! ? 1.1 : 1.0,
                             duration: const Duration(milliseconds: 100),
                             curve: Curves.bounceOut,
                             child: GestureDetector(
@@ -982,18 +742,15 @@ class _ListThemesPageState extends State<ListThemesPage> {
                               onTap: () {
                                 _scrollController.animateTo(
                                   _scrollController.offset + 120,
-                                  duration:
-                                  const Duration(milliseconds: 500),
+                                  duration: const Duration(milliseconds: 500),
                                   curve: Curves.easeIn,
                                 );
                               },
 
                               onLongPress: () {
                                 _scrollController.animateTo(
-                                  _scrollController
-                                      .position.maxScrollExtent,
-                                  duration:
-                                  const Duration(milliseconds: 1),
+                                  _scrollController.position.maxScrollExtent,
+                                  duration: const Duration(milliseconds: 1),
                                   curve: Curves.easeIn,
                                 );
                               },
@@ -1017,34 +774,24 @@ class _ListThemesPageState extends State<ListThemesPage> {
                               },
 
                               child: Container(
-                                width:
-                                MediaQuery.of(context).size.height *
-                                    0.07,
-                                height:
-                                MediaQuery.of(context).size.height *
-                                    0.07,
+                                width: MediaQuery.of(context).size.height * 0.07,
+                                height: MediaQuery.of(context).size.height * 0.07,
                                 margin: EdgeInsets.fromLTRB(
                                   0,
                                   0,
                                   0,
-                                  MediaQuery.of(context).size.height *
-                                      0.02,),
+                                  MediaQuery.of(context).size.height * 0.02,
+                                ),
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(
-                                      MediaQuery.of(context).size.width *
-                                          0.01),
-                                  color: const Color.fromRGBO(
-                                      101, 72, 254, 1),
+                                  borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * 0.01),
+                                  color: const Color.fromRGBO(101, 72, 254, 1),
                                 ),
                                 child: Transform.rotate(
                                   angle: -1.5708,
                                   child: Icon(
                                     Icons.arrow_back_ios_new_rounded,
                                     color: Colors.white,
-                                    size: MediaQuery.of(context)
-                                        .size
-                                        .height *
-                                        0.063,
+                                    size: MediaQuery.of(context).size.height * 0.063,
                                   ),
                                 ),
                               ),
@@ -1058,7 +805,6 @@ class _ListThemesPageState extends State<ListThemesPage> {
               ),
             ),
           ],
-        )
-    );
+        ));
   }
 }

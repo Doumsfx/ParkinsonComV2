@@ -24,7 +24,7 @@ class CustomShapeMenu extends StatelessWidget {
       children: [
         Container(
           width: MediaQuery.of(context).size.width * 0.23 * scale,
-          height: MediaQuery.of(context).size.width * 0.05* scale,
+          height: MediaQuery.of(context).size.width * 0.05 * scale,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(60 * scale)),
             color: backgroundColor,
@@ -42,11 +42,9 @@ class CustomShapeMenu extends StatelessWidget {
                 maxLines: 1,
                 maxFontSize: 20,
                 minFontSize: 5,
-
               ),
             ),
           ),
-
         ),
         Positioned(
           right: MediaQuery.of(context).size.width * 0.05 * -1 * scale,

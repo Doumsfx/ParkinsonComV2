@@ -35,7 +35,6 @@ class _NewThemePageState extends State<NewThemePage> {
   void initState() {
     super.initState();
     customKeyboard = CustomKeyboard(controller: _controller, textPredictions: isConnected, forcedPredictionsOff: true);
-
   }
 
   @override
@@ -52,56 +51,43 @@ class _NewThemePageState extends State<NewThemePage> {
                 value
                     ? const SizedBox()
                     : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Back Arrow
-                    Container(
-                      margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.013, MediaQuery.of(context).size.width * 0.02, 0),
-                      child: AnimatedScale(
-                        scale: (_buttonAnimations["BACK ARROW"] ?? false) ? 1.1 : 1.0,
-
-                        duration:
-                        const Duration(milliseconds: 100),
-                        curve: Curves.bounceOut,
-                        child: GestureDetector(
-                          onTapDown: (_) {
-                            setState(() {
-                              _buttonAnimations["BACK ARROW"] =
-                              true;
-                            });
-                          },
-                          onTapUp: (_) {
-                            setState(() {
-                              _buttonAnimations["BACK ARROW"] =
-                              false;
-                            });
-                            Navigator.pop(context);
-                          },
-                          onTapCancel: () {
-                            setState(() {
-                              _buttonAnimations["BACK ARROW"] =
-                              false;
-                            });
-                          },
-                          child: Image.asset(
-                            "assets/fleche.png",
-                            height: MediaQuery.of(context)
-                                .size
-                                .width *
-                                0.05,
-                            width: MediaQuery.of(context)
-                                .size
-                                .width *
-                                0.07,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Back Arrow
+                          Container(
+                            margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.013, MediaQuery.of(context).size.width * 0.02, 0),
+                            child: AnimatedScale(
+                              scale: (_buttonAnimations["BACK ARROW"] ?? false) ? 1.1 : 1.0,
+                              duration: const Duration(milliseconds: 100),
+                              curve: Curves.bounceOut,
+                              child: GestureDetector(
+                                onTapDown: (_) {
+                                  setState(() {
+                                    _buttonAnimations["BACK ARROW"] = true;
+                                  });
+                                },
+                                onTapUp: (_) {
+                                  setState(() {
+                                    _buttonAnimations["BACK ARROW"] = false;
+                                  });
+                                  Navigator.pop(context);
+                                },
+                                onTapCancel: () {
+                                  setState(() {
+                                    _buttonAnimations["BACK ARROW"] = false;
+                                  });
+                                },
+                                child: Image.asset(
+                                  "assets/fleche.png",
+                                  height: MediaQuery.of(context).size.width * 0.05,
+                                  width: MediaQuery.of(context).size.width * 0.07,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
+                          const Expanded(child: SizedBox()),
+                        ],
                       ),
-                    ),
-                    const Expanded(child: SizedBox()),
-                  ],
-                ),
-
-
 
                 // Titles + TextField + Save Button
                 Expanded(
@@ -110,56 +96,45 @@ class _NewThemePageState extends State<NewThemePage> {
                       children: [
                         // Title
                         value
-                          ? const SizedBox()
-                          : Container(
-                            margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.2),
-                            child: Text(
-                              langFR
-                                  ?'Nouveau Thème'
-                                  :'Nieuw Thema',
-                              style: GoogleFonts.josefinSans(
-                                color: Colors.white,
-                                fontSize: 35,
-                                fontWeight: FontWeight.w500,
+                            ? const SizedBox()
+                            : Container(
+                                margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.2),
+                                child: Text(
+                                  langFR ? 'Nouveau Thème' : 'Nieuw Thema',
+                                  style: GoogleFonts.josefinSans(
+                                    color: Colors.white,
+                                    fontSize: 35,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-
 
                         // Subtitle
                         value
-                          ? const SizedBox()
-                          : Container(
-                            margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.02),
-                            child: Text(
-                              langFR
-                                  ?'Indiquez ci-dessous le nom de votre nouveau thème'
-                                  :'Voer hieronder de naam van uw nieuwe thema in',
-
-                              style: GoogleFonts.josefinSans(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500,
+                            ? const SizedBox()
+                            : Container(
+                                margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.02),
+                                child: Text(
+                                  langFR ? 'Indiquez ci-dessous le nom de votre nouveau thème' : 'Voer hieronder de naam van uw nieuwe thema in',
+                                  style: GoogleFonts.josefinSans(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
 
                         // TextField
                         Container(
                           width: MediaQuery.of(context).size.width * 0.5,
-                          height: MediaQuery.of(context).size.height > 600
-                            ? MediaQuery.of(context).size.height * 0.11
-                            : MediaQuery.of(context).size.height * 0.13,
-                          margin: MediaQuery.of(context).size.height > 600
-                            ? EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.13)
-                            : EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.05),
+                          height: MediaQuery.of(context).size.height > 600 ? MediaQuery.of(context).size.height * 0.11 : MediaQuery.of(context).size.height * 0.13,
+                          margin: MediaQuery.of(context).size.height > 600 ? EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.13) : EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.05),
                           decoration: BoxDecoration(
                             color: const Color.fromRGBO(255, 183, 34, 1),
                             borderRadius: BorderRadius.all(
                               Radius.circular(MediaQuery.of(context).size.width * 0.045),
                             ),
                           ),
-
                           child: Padding(
                             padding: EdgeInsets.fromLTRB(
                               MediaQuery.of(context).size.width * 0.02,
@@ -189,43 +164,31 @@ class _NewThemePageState extends State<NewThemePage> {
                                 iconColor: const Color.fromRGBO(255, 183, 34, 1),
                                 focusColor: const Color.fromRGBO(255, 183, 34, 1),
                                 hoverColor: const Color.fromRGBO(255, 183, 34, 1),
-
                                 border: OutlineInputBorder(
                                   borderSide: const BorderSide(
-                                    color: Color.fromRGBO(255, 183, 34, 1),),
+                                    color: Color.fromRGBO(255, 183, 34, 1),
+                                  ),
                                   borderRadius: BorderRadius.all(
-                                    Radius.circular(
-                                        MediaQuery.of(context)
-                                            .size
-                                            .width *
-                                            0.045),
+                                    Radius.circular(MediaQuery.of(context).size.width * 0.045),
                                   ),
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: const BorderSide(
-                                    color: Color.fromRGBO(255, 183, 34, 1),),
+                                    color: Color.fromRGBO(255, 183, 34, 1),
+                                  ),
                                   borderRadius: BorderRadius.all(
-                                    Radius.circular(
-                                        MediaQuery.of(context)
-                                            .size
-                                            .width *
-                                            0.045),
+                                    Radius.circular(MediaQuery.of(context).size.width * 0.045),
                                   ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderSide: const BorderSide(
-                                    color: Color.fromRGBO(255, 183, 34, 1),),
+                                    color: Color.fromRGBO(255, 183, 34, 1),
+                                  ),
                                   borderRadius: BorderRadius.all(
-                                    Radius.circular(
-                                        MediaQuery.of(context)
-                                            .size
-                                            .width *
-                                            0.045),
+                                    Radius.circular(MediaQuery.of(context).size.width * 0.045),
                                   ),
                                 ),
-                                hintText: langFR
-                                    ? 'Nom du thème'
-                                    : 'Thema naam',
+                                hintText: langFR ? 'Nom du thème' : 'Thema naam',
                               ),
 
                               onTap: () {
@@ -242,9 +205,7 @@ class _NewThemePageState extends State<NewThemePage> {
                         Container(
                           margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.05),
                           child: AnimatedScale(
-                            scale: _buttonAnimations["SAVE"] == true
-                                ? 1.1
-                                : 1.0,
+                            scale: _buttonAnimations["SAVE"] == true ? 1.1 : 1.0,
                             duration: const Duration(milliseconds: 100),
                             curve: Curves.bounceOut,
                             child: GestureDetector(
@@ -260,97 +221,79 @@ class _NewThemePageState extends State<NewThemePage> {
                                 });
                                 // BUTTON CODE
                                 // Save button
-                                showDialog(context: context, builder: (context) {
-                                  //Popup Can't save an empty theme
-                                  double screenWidth = MediaQuery.of(context).size.width;
-                                  double screenHeight = MediaQuery.of(context).size.height;
-                                    if(_controller.text.isEmpty) {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    //Popup Can't save an empty theme
+                                    double screenWidth = MediaQuery.of(context).size.width;
+                                    double screenHeight = MediaQuery.of(context).size.height;
+                                    if (_controller.text.isEmpty) {
                                       return StatefulBuilder(
                                         builder: (context, setState) {
-                                            return Dialog(
-                                           backgroundColor: Colors.black87,
-                                           child: Padding(
-                                             padding: const EdgeInsets.all(8.0),
-                                             child: Column(
-                                               mainAxisAlignment: MainAxisAlignment.center,
-                                               crossAxisAlignment: CrossAxisAlignment.center,
-                                               mainAxisSize: MainAxisSize.min,
-                                               children: [
-                                                 SizedBox(height: screenHeight * 0.1, width: screenWidth * 0.95),
-                                                 Text(langFR ?
-                                                 "Impossible d'enregistrer un thème vide."
-                                                     : "Je kan geen leeg thema maken.",
-                                                   textAlign: TextAlign.center,
-                                                   style: const TextStyle(
-                                                       color: Colors.white,
-                                                       fontSize:20,
-                                                       fontWeight:
-                                                       FontWeight.bold),
-                                                 ),
-                                                 SizedBox(height: screenHeight * 0.1),
-                                                 //Button to close the popup
-                                                 AnimatedScale(
-                                                   scale: _buttonAnimations["POPUP OK"]! ? 1.1 : 1.0,
-                                                   duration: const Duration(milliseconds: 100),
-                                                   curve: Curves.bounceOut,
-                                                   alignment: Alignment.center,
-
-                                                   child: GestureDetector(
-                                                     // Animation management
-                                                     onTapDown: (_) {
-                                                       setState(() {
-                                                         _buttonAnimations["POPUP OK"] = true;
-                                                       });
-                                                     },
-                                                     onTapUp: (_) {
-                                                       setState(() {
-                                                         _buttonAnimations["POPUP OK"] = false;
-                                                       });
-                                                       // BUTTON CODE
-                                                       Navigator.pop(context);
-
-                                                     },
-                                                     onTapCancel: () {
-                                                       setState(() {
-                                                         _buttonAnimations["POPUP OK"] = false;
-                                                       });
-                                                     },
-                                                     child: Container(
-                                                       decoration:
-                                                       const BoxDecoration(
-                                                         borderRadius: BorderRadius
-                                                             .all(Radius
-                                                             .circular(
-                                                             60)),
-                                                         color: Colors.lightGreen,
-                                                       ),
-                                                       padding: EdgeInsets
-                                                           .fromLTRB(
-                                                           screenWidth *
-                                                               0.1,
-                                                           8.0,
-                                                           screenWidth *
-                                                               0.1,
-                                                           8.0),
-                                                       child: const Text("OK",
-                                                         style: TextStyle(
-                                                           color: Colors
-                                                               .white,
-                                                           fontWeight:
-                                                           FontWeight
-                                                               .bold,
-                                                           fontSize:20,
-                                                         ),
-                                                       ),
-                                                     ),
-                                                   ),
-                                                 ),
-                                                 SizedBox(height: screenHeight * 0.03)
-                                               ],
-                                             ),
-                                           ),
-                                         );
-                                         },
+                                          return Dialog(
+                                            backgroundColor: Colors.black87,
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: Column(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  SizedBox(height: screenHeight * 0.1, width: screenWidth * 0.95),
+                                                  Text(
+                                                    langFR ? "Impossible d'enregistrer un thème vide." : "Je kan geen leeg thema maken.",
+                                                    textAlign: TextAlign.center,
+                                                    style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                                                  ),
+                                                  SizedBox(height: screenHeight * 0.1),
+                                                  //Button to close the popup
+                                                  AnimatedScale(
+                                                    scale: _buttonAnimations["POPUP OK"]! ? 1.1 : 1.0,
+                                                    duration: const Duration(milliseconds: 100),
+                                                    curve: Curves.bounceOut,
+                                                    alignment: Alignment.center,
+                                                    child: GestureDetector(
+                                                      // Animation management
+                                                      onTapDown: (_) {
+                                                        setState(() {
+                                                          _buttonAnimations["POPUP OK"] = true;
+                                                        });
+                                                      },
+                                                      onTapUp: (_) {
+                                                        setState(() {
+                                                          _buttonAnimations["POPUP OK"] = false;
+                                                        });
+                                                        // BUTTON CODE
+                                                        Navigator.pop(context);
+                                                      },
+                                                      onTapCancel: () {
+                                                        setState(() {
+                                                          _buttonAnimations["POPUP OK"] = false;
+                                                        });
+                                                      },
+                                                      child: Container(
+                                                        decoration: const BoxDecoration(
+                                                          borderRadius: BorderRadius.all(Radius.circular(60)),
+                                                          color: Colors.lightGreen,
+                                                        ),
+                                                        padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
+                                                        child: const Text(
+                                                          "OK",
+                                                          style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontWeight: FontWeight.bold,
+                                                            fontSize: 20,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  SizedBox(height: screenHeight * 0.03)
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        },
                                       );
                                     }
                                     //Popup Theme added with success
@@ -359,102 +302,82 @@ class _NewThemePageState extends State<NewThemePage> {
                                       databaseManager.insertTheme(ThemeObject(title: _controller.text, language: langFR ? "fr" : "nl"));
 
                                       return StatefulBuilder(
-                                          builder: (context, setState) {
-                                            return Dialog(
-                                              backgroundColor: Colors.black87,
-                                              child: Padding(
-                                                padding: const EdgeInsets.all(8.0),
-                                                child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                                  mainAxisSize: MainAxisSize.min,
-                                                  children: [
-                                                    SizedBox(height: screenHeight * 0.1, width: screenWidth * 0.95),
-                                                    Text(langFR ?
-                                                    "Thème enregistré avec succès !"
-                                                        : "Thema succesvol opgeslaan!",
-                                                      textAlign: TextAlign.center,
-                                                      style: const TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize:20,
-                                                          fontWeight:
-                                                          FontWeight.bold),
-                                                    ),
-                                                    SizedBox(height: screenHeight * 0.1),
-                                                    //Button to close the popup
-                                                    AnimatedScale(
-                                                      scale: _buttonAnimations["POPUP OK"]! ? 1.1 : 1.0,
-                                                      duration: const Duration(milliseconds: 100),
-                                                      curve: Curves.bounceOut,
-                                                      alignment: Alignment.center,
+                                        builder: (context, setState) {
+                                          return Dialog(
+                                            backgroundColor: Colors.black87,
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: Column(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  SizedBox(height: screenHeight * 0.1, width: screenWidth * 0.95),
+                                                  Text(
+                                                    langFR ? "Thème enregistré avec succès !" : "Thema succesvol opgeslaan!",
+                                                    textAlign: TextAlign.center,
+                                                    style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                                                  ),
+                                                  SizedBox(height: screenHeight * 0.1),
+                                                  //Button to close the popup
+                                                  AnimatedScale(
+                                                    scale: _buttonAnimations["POPUP OK"]! ? 1.1 : 1.0,
+                                                    duration: const Duration(milliseconds: 100),
+                                                    curve: Curves.bounceOut,
+                                                    alignment: Alignment.center,
+                                                    child: GestureDetector(
+                                                      // Animation management
+                                                      onTapDown: (_) {
+                                                        setState(() {
+                                                          _buttonAnimations["POPUP OK"] = true;
+                                                        });
+                                                      },
+                                                      onTapUp: (_) {
+                                                        setState(() {
+                                                          newThemePageState = ValueNotifier<bool>(false);
+                                                          _buttonAnimations["POPUP OK"] = false;
+                                                        });
 
-                                                      child: GestureDetector(
-                                                        // Animation management
-                                                        onTapDown: (_) {
-                                                          setState(() {
-                                                            _buttonAnimations["POPUP OK"] = true;
-                                                          });
-                                                        },
-                                                        onTapUp: (_)  {
-                                                          setState(() {
-                                                            newThemePageState = ValueNotifier<bool>(false);
-                                                            _buttonAnimations["POPUP OK"] = false;
-                                                          });
+                                                        // Redirection
+                                                        Navigator.pushReplacement(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                              builder: (context) => const ListThemesPage(),
+                                                            ));
+                                                      },
 
-                                                          // Redirection
-                                                          Navigator.pushReplacement(
-                                                              context,
-                                                              MaterialPageRoute(builder: (context) => const ListThemesPage(),)
-                                                          );
-                                                        },
-
-                                                        onTapCancel: () {
-                                                          setState(() {
-                                                            _buttonAnimations["POPUP OK"] = false;
-                                                          });
-                                                        },
-                                                        child: Container(
-                                                          decoration:
-                                                          const BoxDecoration(
-                                                            borderRadius: BorderRadius
-                                                                .all(Radius
-                                                                .circular(
-                                                                60)),
-                                                            color: Colors.lightGreen,
-                                                          ),
-                                                          padding: EdgeInsets
-                                                              .fromLTRB(
-                                                              screenWidth *
-                                                                  0.1,
-                                                              8.0,
-                                                              screenWidth *
-                                                                  0.1,
-                                                              8.0),
-                                                          child: const Text("OK",
-                                                            style: TextStyle(
-                                                              color: Colors
-                                                                  .white,
-                                                              fontWeight:
-                                                              FontWeight
-                                                                  .bold,
-                                                              fontSize:20,
-                                                            ),
+                                                      onTapCancel: () {
+                                                        setState(() {
+                                                          _buttonAnimations["POPUP OK"] = false;
+                                                        });
+                                                      },
+                                                      child: Container(
+                                                        decoration: const BoxDecoration(
+                                                          borderRadius: BorderRadius.all(Radius.circular(60)),
+                                                          color: Colors.lightGreen,
+                                                        ),
+                                                        padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
+                                                        child: const Text(
+                                                          "OK",
+                                                          style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontWeight: FontWeight.bold,
+                                                            fontSize: 20,
                                                           ),
                                                         ),
                                                       ),
                                                     ),
-                                                    SizedBox(height: screenHeight * 0.03),
-                                                  ],
-                                                ),
+                                                  ),
+                                                  SizedBox(height: screenHeight * 0.03),
+                                                ],
                                               ),
-                                            );
-                                          },
+                                            ),
+                                          );
+                                        },
                                       );
-
                                     }
                                   },
                                 );
-
                               },
                               onTapCancel: () {
                                 setState(() {
@@ -464,23 +387,12 @@ class _NewThemePageState extends State<NewThemePage> {
                               child: Container(
                                 width: MediaQuery.of(context).size.width * 0.3,
                                 decoration: const BoxDecoration(
-                                  borderRadius:
-                                  BorderRadius.all(Radius.circular(30)),
+                                  borderRadius: BorderRadius.all(Radius.circular(30)),
                                   color: Color.fromRGBO(61, 192, 200, 1),
                                 ),
-                                padding: EdgeInsets.fromLTRB(
-                                    MediaQuery.of(context).size.width *
-                                        0.02,
-                                    MediaQuery.of(context).size.width *
-                                        0.015,
-                                    MediaQuery.of(context).size.width *
-                                        0.02,
-                                    MediaQuery.of(context).size.width *
-                                        0.015),
+                                padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.02, MediaQuery.of(context).size.width * 0.015, MediaQuery.of(context).size.width * 0.02, MediaQuery.of(context).size.width * 0.015),
                                 child: Text(
-                                  langFR
-                                      ? "Enregistrer"
-                                      : "  Opnemen  ",
+                                  langFR ? "Enregistrer" : "  Opnemen  ",
                                   style: const TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w800,
@@ -494,15 +406,10 @@ class _NewThemePageState extends State<NewThemePage> {
                         ),
 
                         // Space
-                        value
-                            ? const Expanded(child: SizedBox())
-                            : const SizedBox(),
+                        value ? const Expanded(child: SizedBox()) : const SizedBox(),
 
                         // Keyboard
-                        value
-                            ? customKeyboard
-                            : const SizedBox(),
-
+                        value ? customKeyboard : const SizedBox(),
                       ],
                     ),
                   ),
@@ -510,153 +417,118 @@ class _NewThemePageState extends State<NewThemePage> {
 
                 // Buttons at the right
                 value
-                  ? const SizedBox()
-                  : Container(
-                  margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.012),
-                  child: Column(
-                    children: [
-                      AnimatedScale(
-                        scale:
-                        _buttonAnimations["HELP"]! ? 1.1 : 1.0,
-                        duration: const Duration(milliseconds: 100),
-                        curve: Curves.bounceOut,
-                        child: GestureDetector(
-                          // Animation management
-                          onTapDown: (_) {
-                            setState(() {
-                              _buttonAnimations["HELP"] = true;
-                            });
-                          },
-                          onTapUp: (_) {
-                            setState(() {
-                              _buttonAnimations["HELP"] = false;
-                            });
-                            // BUTTON CODE
-                            print("HELLLLLLLLLLP");
-                          },
-                          onTapCancel: () {
-                            setState(() {
-                              _buttonAnimations["HELP"] = false;
-                            });
-                          },
+                    ? const SizedBox()
+                    : Container(
+                        margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.012),
+                        child: Column(
+                          children: [
+                            AnimatedScale(
+                              scale: _buttonAnimations["HELP"]! ? 1.1 : 1.0,
+                              duration: const Duration(milliseconds: 100),
+                              curve: Curves.bounceOut,
+                              child: GestureDetector(
+                                // Animation management
+                                onTapDown: (_) {
+                                  setState(() {
+                                    _buttonAnimations["HELP"] = true;
+                                  });
+                                },
+                                onTapUp: (_) {
+                                  setState(() {
+                                    _buttonAnimations["HELP"] = false;
+                                  });
+                                  // BUTTON CODE
+                                  print("HELLLLLLLLLLP");
+                                },
+                                onTapCancel: () {
+                                  setState(() {
+                                    _buttonAnimations["HELP"] = false;
+                                  });
+                                },
 
-                          child: Container(
-                            margin: EdgeInsets.fromLTRB(
-                                0,
-                                MediaQuery.of(context).size.height *
-                                    0.03,
-                                0,
-                                MediaQuery.of(context).size.height *
-                                    0.03),
-                            child: Image.asset(
-                              "assets/helping_icon.png",
-                              height: MediaQuery.of(context)
-                                  .size
-                                  .width *
-                                  0.06,
-                              width: MediaQuery.of(context)
-                                  .size
-                                  .width *
-                                  0.06,
+                                child: Container(
+                                  margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.03, 0, MediaQuery.of(context).size.height * 0.03),
+                                  child: Image.asset(
+                                    "assets/helping_icon.png",
+                                    height: MediaQuery.of(context).size.width * 0.06,
+                                    width: MediaQuery.of(context).size.width * 0.06,
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
+                            AnimatedScale(
+                              scale: _buttonAnimations["HOME"]! ? 1.1 : 1.0,
+                              duration: const Duration(milliseconds: 100),
+                              curve: Curves.bounceOut,
+                              child: GestureDetector(
+                                onTapDown: (_) {
+                                  setState(() {
+                                    _buttonAnimations["HOME"] = true;
+                                  });
+                                },
+                                onTapUp: (_) {
+                                  setState(() {
+                                    _buttonAnimations["HOME"] = false;
+                                  });
+                                  // BUTTON CODE
+                                  print("HOMEEEEEEEEEEEEEEEEE");
+                                },
+                                onTapCancel: () {
+                                  setState(() {
+                                    _buttonAnimations["HOME"] = false;
+                                  });
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.fromLTRB(0, 0, 0, MediaQuery.of(context).size.height * 0.03),
+                                  child: Image.asset(
+                                    "assets/home.png",
+                                    height: MediaQuery.of(context).size.width * 0.06,
+                                    width: MediaQuery.of(context).size.width * 0.06,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            AnimatedScale(
+                              scale: _buttonAnimations["RELAX"]! ? 1.1 : 1.0,
+                              duration: const Duration(milliseconds: 100),
+                              curve: Curves.bounceOut,
+                              child: GestureDetector(
+                                onTapDown: (_) {
+                                  setState(() {
+                                    _buttonAnimations["RELAX"] = true;
+                                  });
+                                },
+                                onTapUp: (_) {
+                                  setState(() {
+                                    _buttonAnimations["RELAX"] = false;
+                                  });
+                                  // BUTTON CODE
+                                  print("RELAAAAAAAAAX");
+                                },
+                                onTapCancel: () {
+                                  setState(() {
+                                    _buttonAnimations["RELAX"] = false;
+                                  });
+                                },
+                                child: Container(
+                                  height: MediaQuery.of(context).size.width * 0.060,
+                                  width: MediaQuery.of(context).size.width * 0.060,
+                                  padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.01),
+                                  decoration: const BoxDecoration(
+                                    color: Color.fromRGBO(160, 208, 86, 1),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Image.asset(
+                                    "assets/beach-chair.png",
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      AnimatedScale(
-                        scale:
-                        _buttonAnimations["HOME"]! ? 1.1 : 1.0,
-                        duration: const Duration(milliseconds: 100),
-                        curve: Curves.bounceOut,
-                        child: GestureDetector(
-                          onTapDown: (_) {
-                            setState(() {
-                              _buttonAnimations["HOME"] = true;
-                            });
-                          },
-                          onTapUp: (_) {
-                            setState(() {
-                              _buttonAnimations["HOME"] = false;
-                            });
-                            // BUTTON CODE
-                            print("HOMEEEEEEEEEEEEEEEEE");
-                          },
-                          onTapCancel: () {
-                            setState(() {
-                              _buttonAnimations["HOME"] = false;
-                            });
-                          },
-                          child: Container(
-                            margin: EdgeInsets.fromLTRB(
-                                0,
-                                0,
-                                0,
-                                MediaQuery.of(context).size.height *
-                                    0.03),
-                            child: Image.asset(
-                              "assets/home.png",
-                              height: MediaQuery.of(context)
-                                  .size
-                                  .width *
-                                  0.06,
-                              width: MediaQuery.of(context)
-                                  .size
-                                  .width *
-                                  0.06,
-                            ),
-                          ),
-                        ),
-                      ),
-                      AnimatedScale(
-                        scale:
-                        _buttonAnimations["RELAX"]! ? 1.1 : 1.0,
-                        duration: const Duration(milliseconds: 100),
-                        curve: Curves.bounceOut,
-                        child: GestureDetector(
-                          onTapDown: (_) {
-                            setState(() {
-                              _buttonAnimations["RELAX"] = true;
-                            });
-                          },
-                          onTapUp: (_) {
-                            setState(() {
-                              _buttonAnimations["RELAX"] = false;
-                            });
-                            // BUTTON CODE
-                            print("RELAAAAAAAAAX");
-                          },
-                          onTapCancel: () {
-                            setState(() {
-                              _buttonAnimations["RELAX"] = false;
-                            });
-                          },
-                          child: Container(
-                            height:
-                            MediaQuery.of(context).size.width *
-                                0.060,
-                            width:
-                            MediaQuery.of(context).size.width *
-                                0.060,
-                            padding: EdgeInsets.all(
-                                MediaQuery.of(context).size.width *
-                                    0.01),
-                            decoration: const BoxDecoration(
-                              color:
-                              Color.fromRGBO(160, 208, 86, 1),
-                              shape: BoxShape.circle,
-                            ),
-                            child: Image.asset(
-                              "assets/beach-chair.png",
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
               ],
             );
-
           }),
     );
   }

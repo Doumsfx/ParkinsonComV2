@@ -13,14 +13,9 @@ class CustomKeyboard extends StatefulWidget {
   late final PredictionsHandler? predictionsHandler;
   final bool forcedPredictionsOff; //Turn to true if you want to disable the predictions (ex : Theme creation)
 
-  CustomKeyboard(
-      {super.key,
-      required this.controller,
-      required this.textPredictions,
-      this.forcedPredictionsOff = false}) {
+  CustomKeyboard({super.key, required this.controller, required this.textPredictions, this.forcedPredictionsOff = false}) {
     if (textPredictions.value) {
-      predictionsHandler =
-          PredictionsHandler(controller: controller, isFR: langFR);
+      predictionsHandler = PredictionsHandler(controller: controller, isFR: langFR);
     }
   }
 
@@ -69,8 +64,7 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
   }
 
   // Utility function to get the keyboard configuration
-  List<List<String>> _getKeyboardConfig(
-      bool maj, bool modeAccent, bool azerty) {
+  List<List<String>> _getKeyboardConfig(bool maj, bool modeAccent, bool azerty) {
     if (modeAccent) {
       return maj
           ? [
@@ -159,10 +153,8 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
       int offset = widget.controller.selection.extentOffset;
 
       setState(() {
-        widget.controller.text =
-            "${widget.controller.text.substring(0, offset)} ${widget.controller.text.substring(offset, widget.controller.text.length)}";
-        widget.controller.selection =
-            TextSelection.collapsed(offset: offset + 1);
+        widget.controller.text = "${widget.controller.text.substring(0, offset)} ${widget.controller.text.substring(offset, widget.controller.text.length)}";
+        widget.controller.selection = TextSelection.collapsed(offset: offset + 1);
       });
     } else if (keyText == "RETURN") {
       setState(() {
@@ -173,21 +165,13 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
 
           if (start == end) {
             setState(() {
-              widget.controller.text =
-                  widget.controller.text.substring(0, offset0 - 1) +
-                      widget.controller.text
-                          .substring(offset0, widget.controller.text.length);
-              widget.controller.selection =
-                  TextSelection.collapsed(offset: offset0 - 1);
+              widget.controller.text = widget.controller.text.substring(0, offset0 - 1) + widget.controller.text.substring(offset0, widget.controller.text.length);
+              widget.controller.selection = TextSelection.collapsed(offset: offset0 - 1);
             });
           } else {
             setState(() {
-              widget.controller.text =
-                  widget.controller.text.substring(0, start) +
-                      widget.controller.text
-                          .substring(end, widget.controller.text.length);
-              widget.controller.selection =
-                  TextSelection.collapsed(offset: start);
+              widget.controller.text = widget.controller.text.substring(0, start) + widget.controller.text.substring(end, widget.controller.text.length);
+              widget.controller.selection = TextSelection.collapsed(offset: start);
             });
           }
         }
@@ -201,10 +185,8 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
       int offset1 = widget.controller.selection.extentOffset;
 
       setState(() {
-        widget.controller.text =
-            "${widget.controller.text.substring(0, offset1)}\n${widget.controller.text.substring(offset1, widget.controller.text.length)}";
-        widget.controller.selection =
-            TextSelection.collapsed(offset: offset1 + 1);
+        widget.controller.text = "${widget.controller.text.substring(0, offset1)}\n${widget.controller.text.substring(offset1, widget.controller.text.length)}";
+        widget.controller.selection = TextSelection.collapsed(offset: offset1 + 1);
         _firstKey = true;
         _maj = true;
         _keyboard = _getKeyboardConfig(_maj, _modeAccent, azerty);
@@ -221,10 +203,8 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
       int offset1 = widget.controller.selection.extentOffset;
 
       setState(() {
-        widget.controller.text =
-            "${widget.controller.text.substring(0, offset1)}-${widget.controller.text.substring(offset1, widget.controller.text.length)}";
-        widget.controller.selection =
-            TextSelection.collapsed(offset: offset1 + 1);
+        widget.controller.text = "${widget.controller.text.substring(0, offset1)}-${widget.controller.text.substring(offset1, widget.controller.text.length)}";
+        widget.controller.selection = TextSelection.collapsed(offset: offset1 + 1);
       });
     }
 
@@ -233,12 +213,8 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
       int offset1 = widget.controller.selection.extentOffset;
 
       setState(() {
-        widget.controller.text = widget.controller.text.substring(0, offset1) +
-            keyText! +
-            widget.controller.text
-                .substring(offset1, widget.controller.text.length);
-        widget.controller.selection =
-            TextSelection.collapsed(offset: offset1 + 1);
+        widget.controller.text = widget.controller.text.substring(0, offset1) + keyText! + widget.controller.text.substring(offset1, widget.controller.text.length);
+        widget.controller.selection = TextSelection.collapsed(offset: offset1 + 1);
       });
     }
   }
@@ -246,9 +222,7 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height > 600
-          ? MediaQuery.of(context).size.height * 0.55
-          : MediaQuery.of(context).size.height * 0.58,
+      height: MediaQuery.of(context).size.height > 600 ? MediaQuery.of(context).size.height * 0.55 : MediaQuery.of(context).size.height * 0.58,
       width: MediaQuery.of(context).size.width,
       child: Container(
         color: const Color.fromRGBO(34, 39, 42, 1),
@@ -258,10 +232,7 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
             widget.forcedPredictionsOff
                 ?
                 //Force the predictions to be turned off
-                Container(
-                    height: MediaQuery.of(context).size.height * 0.077,
-                    width: MediaQuery.of(context).size.width,
-                    color: const Color.fromRGBO(69, 73, 76, 1))
+                Container(height: MediaQuery.of(context).size.height * 0.077, width: MediaQuery.of(context).size.width, color: const Color.fromRGBO(69, 73, 76, 1))
                 : //Predictions can be turned on
                 // Detect when disconnected from internet
                 ValueListenableBuilder(
@@ -277,87 +248,56 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
                         child: widget.textPredictions.value
                             ? ValueListenableBuilder(
                                 // Refresh when the suggested words list is modified
-                                valueListenable: widget
-                                    .predictionsHandler!.suggestedWordsList,
-                                builder: (BuildContext context,
-                                    List<String> value, Widget? child) {
-                                  List<String> nonEmptyValues = value
-                                      .where((word) => word.isNotEmpty)
-                                      .toList();
+                                valueListenable: widget.predictionsHandler!.suggestedWordsList,
+                                builder: (BuildContext context, List<String> value, Widget? child) {
+                                  List<String> nonEmptyValues = value.where((word) => word.isNotEmpty).toList();
                                   int nbValues = nonEmptyValues.length;
 
                                   return SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.077,
+                                    height: MediaQuery.of(context).size.height * 0.077,
                                     child: ListView.builder(
                                       scrollDirection: Axis.horizontal,
                                       itemCount: nbValues,
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
+                                      itemBuilder: (BuildContext context, int index) {
                                         if (index != nbValues - 1) {
                                           return Row(
                                             children: [
                                               GestureDetector(
                                                 // Let the gesture hit the whole sized box, not only the text
-                                                behavior:
-                                                    HitTestBehavior.opaque,
+                                                behavior: HitTestBehavior.opaque,
                                                 // Animation management
                                                 onTapDown: (_) {
                                                   setState(() {
-                                                    _wordScales["WORD $index"] =
-                                                        1.1;
+                                                    _wordScales["WORD $index"] = 1.1;
                                                   });
                                                 },
                                                 onTapUp: (_) {
                                                   setState(() {
-                                                    _wordScales["WORD $index"] =
-                                                        1.0;
+                                                    _wordScales["WORD $index"] = 1.0;
                                                     //Complete the sentence with the selected word
-                                                    widget.predictionsHandler!
-                                                        .completeSentence(
-                                                            widget.controller
-                                                                .text,
-                                                            nonEmptyValues[
-                                                                index]);
-                                                    widget
-                                                        .predictionsHandler!
-                                                        .suggestedWordsList
-                                                        .value = List.empty();
+                                                    widget.predictionsHandler!.completeSentence(widget.controller.text, nonEmptyValues[index]);
+                                                    widget.predictionsHandler!.suggestedWordsList.value = List.empty();
                                                     _firstKey = false;
                                                     _maj = false;
-                                                    _keyboard =
-                                                        _getKeyboardConfig(
-                                                            _maj,
-                                                            _modeAccent,
-                                                            azerty);
+                                                    _keyboard = _getKeyboardConfig(_maj, _modeAccent, azerty);
                                                   });
                                                 },
                                                 onTapCancel: () {
                                                   setState(() {
-                                                    _wordScales["WORD $index"] =
-                                                        1.0;
+                                                    _wordScales["WORD $index"] = 1.0;
                                                   });
                                                 },
                                                 child: SizedBox(
                                                   // 16 is the size of the VerticalDivider
-                                                  width:
-                                                      MediaQuery.sizeOf(context)
-                                                                  .width /
-                                                              nbValues -
-                                                          16,
+                                                  width: MediaQuery.sizeOf(context).width / nbValues - 16,
                                                   child: Align(
                                                     alignment: Alignment.center,
-                                                    child: Text(
-                                                        nonEmptyValues[index],
-                                                        textAlign:
-                                                            TextAlign.center,
+                                                    child: Text(nonEmptyValues[index],
+                                                        textAlign: TextAlign.center,
                                                         style: TextStyle(
                                                           color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.w800,
-                                                          fontSize: 17 *
-                                                              _wordScales[
-                                                                  "WORD $index"]!,
+                                                          fontWeight: FontWeight.w800,
+                                                          fontSize: 17 * _wordScales["WORD $index"]!,
                                                         )),
                                                   ),
                                                 ),
@@ -383,18 +323,11 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
                                               setState(() {
                                                 _wordScales["WORD 4"] = 1.0;
                                                 // Complete the sentence with the selected word
-                                                widget.predictionsHandler!
-                                                    .completeSentence(
-                                                        widget.controller.text,
-                                                        nonEmptyValues[index]);
-                                                widget
-                                                    .predictionsHandler!
-                                                    .suggestedWordsList
-                                                    .value = List.empty();
+                                                widget.predictionsHandler!.completeSentence(widget.controller.text, nonEmptyValues[index]);
+                                                widget.predictionsHandler!.suggestedWordsList.value = List.empty();
                                                 _firstKey = false;
                                                 _maj = false;
-                                                _keyboard = _getKeyboardConfig(
-                                                    _maj, _modeAccent, azerty);
+                                                _keyboard = _getKeyboardConfig(_maj, _modeAccent, azerty);
                                               });
                                             },
                                             onTapCancel: () {
@@ -403,21 +336,15 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
                                               });
                                             },
                                             child: SizedBox(
-                                              width: MediaQuery.sizeOf(context)
-                                                      .width /
-                                                  nbValues,
+                                              width: MediaQuery.sizeOf(context).width / nbValues,
                                               child: Align(
                                                 alignment: Alignment.center,
-                                                child: Text(
-                                                    nonEmptyValues[index],
+                                                child: Text(nonEmptyValues[index],
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                       color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.w800,
-                                                      fontSize: 17 *
-                                                          _wordScales[
-                                                              "WORD 4"]!,
+                                                      fontWeight: FontWeight.w800,
+                                                      fontSize: 17 * _wordScales["WORD 4"]!,
                                                     )),
                                               ),
                                             ),
@@ -439,48 +366,28 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
                 Container(
                   color: const Color.fromRGBO(34, 39, 42, 1),
                   child: VirtualKeyboard(
-                      height: MediaQuery.of(context).size.height > 600
-                          ? MediaQuery.of(context).size.height * (0.55 - 0.077)
-                          : MediaQuery.of(context).size.height * (0.58 - 0.13),
+                      height: MediaQuery.of(context).size.height > 600 ? MediaQuery.of(context).size.height * (0.55 - 0.077) : MediaQuery.of(context).size.height * (0.58 - 0.13),
                       width: MediaQuery.of(context).size.width * 0.887,
                       textColor: Colors.white,
-                      defaultLayouts: const [
-                        VirtualKeyboardDefaultLayouts.Custom
-                      ],
+                      defaultLayouts: const [VirtualKeyboardDefaultLayouts.Custom],
                       type: VirtualKeyboardType.Custom,
                       keys: _keyboard,
                       builder: (context, key) {
                         // We define the size of the keys as well as the font size
                         Size keySize = key.text == "ESPACE"
-                            ? Size(MediaQuery.of(context).size.width / 2.2,
-                                MediaQuery.of(context).size.height / 11)
+                            ? Size(MediaQuery.of(context).size.width / 2.2, MediaQuery.of(context).size.height / 11)
                             : key.text == "?123" || key.text == "ABC"
-                                ? Size(MediaQuery.of(context).size.width / 11.5,
-                                    MediaQuery.of(context).size.height / 11)
-                                : Size(MediaQuery.of(context).size.width / 13,
-                                    MediaQuery.of(context).size.height / 11);
+                                ? Size(MediaQuery.of(context).size.width / 11.5, MediaQuery.of(context).size.height / 11)
+                                : Size(MediaQuery.of(context).size.width / 13, MediaQuery.of(context).size.height / 11);
 
-                        double fontSize =
-                            key.text == "?123" || key.text == "ABC" ? 17 : 20;
+                        double fontSize = key.text == "?123" || key.text == "ABC" ? 17 : 20;
 
-                        Color couleurFond = key.text == "MAJ" ||
-                                key.text == "?123" ||
-                                key.text == "TIRET" ||
-                                key.text == "," ||
-                                key.text == "." ||
-                                key.text == "ABC" ||
-                                key.action == VirtualKeyboardKeyAction.Return
+                        Color couleurFond = key.text == "MAJ" || key.text == "?123" || key.text == "TIRET" || key.text == "," || key.text == "." || key.text == "ABC" || key.action == VirtualKeyboardKeyAction.Return
                             ? const Color.fromRGBO(51, 56, 59, 1) // Dark Grey
                             : const Color.fromRGBO(69, 73, 76, 1); // Light Grey
 
                         return Container(
-                          margin: MediaQuery.of(context).size.height > 600
-                              ? EdgeInsets.fromLTRB(
-                                  0,
-                                  MediaQuery.of(context).size.height * 0.01,
-                                  0,
-                                  MediaQuery.of(context).size.height * 0.01)
-                              : EdgeInsets.zero,
+                          margin: MediaQuery.of(context).size.height > 600 ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.01) : EdgeInsets.zero,
                           child: GestureDetector(
                             onTapDown: (_) {
                               setState(() {
@@ -512,8 +419,7 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
                                   minimumSize: const Size(0, 0),
                                   alignment: Alignment.center,
                                   // Allows you to define the click size only on the button
-                                  tapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
+                                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                 ),
                                 onPressed: () {
                                   _onKeyPress(key.text);
@@ -521,17 +427,11 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
                                 child: key.text == "MAJ"
                                     ? Image.asset(
                                         'assets/maj.png',
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.065,
-                                        width:
-                                            MediaQuery.of(context).size.height *
-                                                0.065,
+                                        height: MediaQuery.of(context).size.height * 0.065,
+                                        width: MediaQuery.of(context).size.height * 0.065,
                                       )
                                     : Text(
-                                        key.text == "TIRET"
-                                            ? "-"
-                                            : key.text.toString(),
+                                        key.text == "TIRET" ? "-" : key.text.toString(),
                                         style: TextStyle(
                                           fontSize: fontSize,
                                           color: Colors.white,
@@ -547,9 +447,7 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
                 ),
                 Container(
                   color: const Color.fromRGBO(34, 39, 42, 1),
-                  height: MediaQuery.of(context).size.height > 600
-                      ? MediaQuery.of(context).size.height * (0.55 - 0.08)
-                      : MediaQuery.of(context).size.height * (0.58 - 0.08),
+                  height: MediaQuery.of(context).size.height > 600 ? MediaQuery.of(context).size.height * (0.55 - 0.08) : MediaQuery.of(context).size.height * (0.58 - 0.08),
                   width: MediaQuery.of(context).size.width * (1 - 0.887),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -577,14 +475,11 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
                           },
                           child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                  fixedSize: Size(
-                                      MediaQuery.of(context).size.width / 11.25,
-                                      MediaQuery.of(context).size.height / 8),
+                                  fixedSize: Size(MediaQuery.of(context).size.width / 11.25, MediaQuery.of(context).size.height / 8),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(8.0),
                                   ),
-                                  backgroundColor:
-                                      const Color.fromRGBO(51, 56, 59, 1)),
+                                  backgroundColor: const Color.fromRGBO(51, 56, 59, 1)),
                               onPressed: () {
                                 _onKeyPress("RETURN");
                               },
@@ -596,8 +491,7 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
                         ),
                       ),
                       AnimatedScale(
-                        scale:
-                            _buttonAnimations["BACKSPACE"] == true ? 1.1 : 1.0,
+                        scale: _buttonAnimations["BACKSPACE"] == true ? 1.1 : 1.0,
                         duration: const Duration(milliseconds: 100),
                         curve: Curves.bounceOut,
                         child: GestureDetector(
@@ -620,14 +514,11 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
                           },
                           child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                  fixedSize: Size(
-                                      MediaQuery.of(context).size.width / 11.25,
-                                      MediaQuery.of(context).size.height / 8),
+                                  fixedSize: Size(MediaQuery.of(context).size.width / 11.25, MediaQuery.of(context).size.height / 8),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(8.0),
                                   ),
-                                  backgroundColor:
-                                      const Color.fromRGBO(87, 138, 227, 1)),
+                                  backgroundColor: const Color.fromRGBO(87, 138, 227, 1)),
                               onPressed: () {
                                 _onKeyPress("BACKSPACE");
                               },
@@ -639,8 +530,7 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
                         ),
                       ),
                       AnimatedScale(
-                        scale:
-                            _buttonAnimations["VALIDATE"] == true ? 1.1 : 1.0,
+                        scale: _buttonAnimations["VALIDATE"] == true ? 1.1 : 1.0,
                         duration: const Duration(milliseconds: 100),
                         curve: Curves.bounceOut,
                         child: GestureDetector(
@@ -663,14 +553,11 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
                           },
                           child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                fixedSize: Size(
-                                    MediaQuery.of(context).size.width / 11.25,
-                                    MediaQuery.of(context).size.height / 8),
+                                fixedSize: Size(MediaQuery.of(context).size.width / 11.25, MediaQuery.of(context).size.height / 8),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8.0),
                                 ),
-                                backgroundColor:
-                                    const Color.fromRGBO(155, 199, 84, 1),
+                                backgroundColor: const Color.fromRGBO(155, 199, 84, 1),
                               ),
                               onPressed: () {
                                 _onKeyPress("VALIDATE");

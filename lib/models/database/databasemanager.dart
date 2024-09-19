@@ -86,9 +86,7 @@ class DatabaseManager {
   ///Retrieve the list of ThemeObject for a specific [language] from the database
   ///(fr / nl)
   Future<List<ThemeObject>> retrieveThemesFromLanguage(String language) async {
-    final List<Map<String, Object?>> queryResult = await db.query('Theme',
-    where: "language = ?",
-    whereArgs: [language]);
+    final List<Map<String, Object?>> queryResult = await db.query('Theme', where: "language = ?", whereArgs: [language]);
     return queryResult.map((e) => ThemeObject.fromMap(e)).toList();
   }
 
@@ -129,19 +127,13 @@ class DatabaseManager {
   ///Retrieve the list of DialogObject for a specific language from the database
   ///(fr / nl)
   Future<List<DialogObject>> retrieveDialogsFromLanguage(String language) async {
-    final List<Map<String, Object?>> queryResult = await db.query('Dialog',
-      where: "language = ?",
-      whereArgs: [language]
-    );
+    final List<Map<String, Object?>> queryResult = await db.query('Dialog', where: "language = ?", whereArgs: [language]);
     return queryResult.map((e) => DialogObject.fromMap(e)).toList();
   }
 
   ///Retrieve the list of DialogObject for a specific Theme from the database using the [themeId]
   Future<List<DialogObject>> retrieveDialogsFromTheme(int themeId) async {
-    final List<Map<String, Object?>> queryResult = await db.query('Dialog',
-        where: "id_theme = ?",
-        whereArgs: [themeId]
-    );
+    final List<Map<String, Object?>> queryResult = await db.query('Dialog', where: "id_theme = ?", whereArgs: [themeId]);
     return queryResult.map((e) => DialogObject.fromMap(e)).toList();
   }
 
@@ -165,8 +157,7 @@ class DatabaseManager {
 
   ///Use the defaultThemesAndDialogs.json file to insert default values into Theme and Dialog tables
   Future<void> insertDefaultThemesAndDialogs(Database database) async {
-    Map<String, dynamic> file = jsonDecode(
-        await rootBundle.loadString('assets/defaultThemesAndDialogs.json'));
+    Map<String, dynamic> file = jsonDecode(await rootBundle.loadString('assets/defaultThemesAndDialogs.json'));
     int idThemeCounter = 0;
     for (var language in file.keys) {
       for (var theme in file[language].keys) {

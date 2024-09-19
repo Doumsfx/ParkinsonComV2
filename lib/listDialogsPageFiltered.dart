@@ -12,7 +12,6 @@ import 'package:parkinson_com_v2/dialogPage.dart';
 
 import 'models/database/dialog.dart';
 
-
 class ListDialogsPageFiltered extends StatefulWidget {
   final int idTheme;
   const ListDialogsPageFiltered({super.key, required this.idTheme});
@@ -42,15 +41,15 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
   late List<bool> _dialogsAnimations;
   late List<bool> _deleteButtonsAnimations;
   late List<bool> _ttsButtonsAnimations;
-  final ScrollController _scrollController =  ScrollController();
+  final ScrollController _scrollController = ScrollController();
 
-  Future<void> initialisation() async{
+  Future<void> initialisation() async {
     _listDialogs = await databaseManager.retrieveDialogsFromTheme(widget.idTheme);
     selectedThemeTitle = (await databaseManager.retrieveThemeFromId(widget.idTheme)).title;
     setState(() {});
-    _dialogsAnimations  = List.filled(_listDialogs.length, false);
-    _deleteButtonsAnimations  = List.filled(_listDialogs.length, false);
-    _ttsButtonsAnimations  = List.filled(_listDialogs.length, false);
+    _dialogsAnimations = List.filled(_listDialogs.length, false);
+    _deleteButtonsAnimations = List.filled(_listDialogs.length, false);
+    _ttsButtonsAnimations = List.filled(_listDialogs.length, false);
 
     // Sorting the list
     int i;
@@ -59,12 +58,11 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
     List<DialogObject> secondPart = [];
 
     // Separate into two lists: firstPart with the dialogs of the user and secondPart with the base dialogs
-    if(_listDialogs.length > 1){
-      for(i = _listDialogs.length - 1; i >= 0; i -= 1){
-        if(_listDialogs[i].id_dialog > 146){
+    if (_listDialogs.length > 1) {
+      for (i = _listDialogs.length - 1; i >= 0; i -= 1) {
+        if (_listDialogs[i].id_dialog > 146) {
           firstPart.add(_listDialogs[i]);
-        }
-        else{
+        } else {
           endIndex = i;
           secondPart = _listDialogs.sublist(0, endIndex + 1);
 
@@ -90,8 +88,7 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
 
   /// Used to refresh the UI from the StatefulBuilder
   void _updateParent() {
-    setState(() {
-    });
+    setState(() {});
   }
 
   @override
@@ -117,44 +114,34 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                         Container(
                           margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.013, MediaQuery.of(context).size.width * 0.02, 0),
                           child: AnimatedScale(
-                            scale: _buttonAnimations["BACK ARROW"]!
-                                ? 1.1
-                                : 1.0,
-                            duration:
-                            const Duration(milliseconds: 100),
+                            scale: _buttonAnimations["BACK ARROW"]! ? 1.1 : 1.0,
+                            duration: const Duration(milliseconds: 100),
                             curve: Curves.bounceOut,
                             child: GestureDetector(
                               onTapDown: (_) {
                                 setState(() {
-                                  _buttonAnimations["BACK ARROW"] =
-                                  true;
+                                  _buttonAnimations["BACK ARROW"] = true;
                                 });
                               },
                               onTapUp: (_) {
                                 setState(() {
-                                  _buttonAnimations["BACK ARROW"] =
-                                  false;
+                                  _buttonAnimations["BACK ARROW"] = false;
                                 });
 
                                 // Button code
-                                Navigator.pop(context,);
+                                Navigator.pop(
+                                  context,
+                                );
                               },
                               onTapCancel: () {
                                 setState(() {
-                                  _buttonAnimations["BACK ARROW"] =
-                                  false;
+                                  _buttonAnimations["BACK ARROW"] = false;
                                 });
                               },
                               child: Image.asset(
                                 "assets/fleche.png",
-                                height: MediaQuery.of(context)
-                                    .size
-                                    .width *
-                                    0.05,
-                                width: MediaQuery.of(context)
-                                    .size
-                                    .width *
-                                    0.07,
+                                height: MediaQuery.of(context).size.width * 0.05,
+                                width: MediaQuery.of(context).size.width * 0.07,
                               ),
                             ),
                           ),
@@ -171,18 +158,13 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                               Container(
                                 margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.19, MediaQuery.of(context).size.height / 16, 0, MediaQuery.of(context).size.height * 0.07),
                                 child: CustomTitle(
-                                  text: langFR
-                                      ? 'Les dialogues'
-                                      : 'De dialogen',
+                                  text: langFR ? 'Les dialogues' : 'De dialogen',
                                   image: 'assets/themeIcon.png',
                                   scale: 1,
                                   backgroundColor: Colors.white,
                                   textColor: const Color.fromRGBO(29, 52, 83, 1),
                                 ),
                               ),
-
-
-
                             ],
                           ),
                         ),
@@ -196,28 +178,24 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           // Text
-                      Container(
-                      margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.04, 0, 0, MediaQuery.of(context).size.height * 0.02),
-                      child: Text( langFR ?
-                        'Thème: $selectedThemeTitle'
-                        : 'Thema: $selectedThemeTitle',
-                        style: GoogleFonts.josefinSans(
-                          fontSize: 18,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700,
-                          decoration: TextDecoration.underline,
-                          decorationColor: Colors.white,
-                          decorationThickness: 1.4,
-                        ),
-                      ),
-                    ),
-
+                          Container(
+                            margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.04, 0, 0, MediaQuery.of(context).size.height * 0.02),
+                            child: Text(
+                              langFR ? 'Thème: $selectedThemeTitle' : 'Thema: $selectedThemeTitle',
+                              style: GoogleFonts.josefinSans(
+                                fontSize: 18,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                                decoration: TextDecoration.underline,
+                                decorationColor: Colors.white,
+                                decorationThickness: 1.4,
+                              ),
+                            ),
+                          ),
 
                           // Button
                           AnimatedScale(
-                            scale: _buttonAnimations["NEW DIALOG"] == true
-                                ? 1.1
-                                : 1.0,
+                            scale: _buttonAnimations["NEW DIALOG"] == true ? 1.1 : 1.0,
                             duration: const Duration(milliseconds: 100),
                             curve: Curves.bounceOut,
                             child: GestureDetector(
@@ -234,7 +212,12 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                                 // BUTTON CODE
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => DialogPage(idDialog: -1, initialTextDialog: "", idTheme: widget.idTheme,)),
+                                  MaterialPageRoute(
+                                      builder: (context) => DialogPage(
+                                            idDialog: -1,
+                                            initialTextDialog: "",
+                                            idTheme: widget.idTheme,
+                                          )),
                                 ).then((_) => initialisation());
                               },
                               onTapCancel: () {
@@ -246,23 +229,12 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                                 margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.025, 0, 0, MediaQuery.of(context).size.height * 0.02),
                                 width: MediaQuery.of(context).size.width * 0.7,
                                 decoration: const BoxDecoration(
-                                  borderRadius:
-                                  BorderRadius.all(Radius.circular(60)),
+                                  borderRadius: BorderRadius.all(Radius.circular(60)),
                                   color: Color.fromRGBO(78, 237, 255, 1),
                                 ),
-                                padding: EdgeInsets.fromLTRB(
-                                    MediaQuery.of(context).size.width *
-                                        0.04,
-                                    MediaQuery.of(context).size.width *
-                                        0.015,
-                                    MediaQuery.of(context).size.width *
-                                        0.02,
-                                    MediaQuery.of(context).size.width *
-                                        0.015),
+                                padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.04, MediaQuery.of(context).size.width * 0.015, MediaQuery.of(context).size.width * 0.02, MediaQuery.of(context).size.width * 0.015),
                                 child: Text(
-                                  langFR
-                                      ? "+ Nouveau dialogue"
-                                      : "+ Nieuwe dialoog",
+                                  langFR ? "+ Nouveau dialogue" : "+ Nieuwe dialoog",
                                   style: const TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,
@@ -284,8 +256,7 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                   child: Column(
                     children: [
                       AnimatedScale(
-                        scale:
-                        _buttonAnimations["HELP"]! ? 1.1 : 1.0,
+                        scale: _buttonAnimations["HELP"]! ? 1.1 : 1.0,
                         duration: const Duration(milliseconds: 100),
                         curve: Curves.bounceOut,
                         child: GestureDetector(
@@ -309,30 +280,17 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                           },
 
                           child: Container(
-                            margin: EdgeInsets.fromLTRB(
-                                0,
-                                MediaQuery.of(context).size.height *
-                                    0.03,
-                                0,
-                                MediaQuery.of(context).size.height *
-                                    0.03),
+                            margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.03, 0, MediaQuery.of(context).size.height * 0.03),
                             child: Image.asset(
                               "assets/helping_icon.png",
-                              height: MediaQuery.of(context)
-                                  .size
-                                  .width *
-                                  0.06,
-                              width: MediaQuery.of(context)
-                                  .size
-                                  .width *
-                                  0.06,
+                              height: MediaQuery.of(context).size.width * 0.06,
+                              width: MediaQuery.of(context).size.width * 0.06,
                             ),
                           ),
                         ),
                       ),
                       AnimatedScale(
-                        scale:
-                        _buttonAnimations["HOME"]! ? 1.1 : 1.0,
+                        scale: _buttonAnimations["HOME"]! ? 1.1 : 1.0,
                         duration: const Duration(milliseconds: 100),
                         curve: Curves.bounceOut,
                         child: GestureDetector(
@@ -354,29 +312,17 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                             });
                           },
                           child: Container(
-                            margin: EdgeInsets.fromLTRB(
-                                0,
-                                0,
-                                0,
-                                MediaQuery.of(context).size.height *
-                                    0.03),
+                            margin: EdgeInsets.fromLTRB(0, 0, 0, MediaQuery.of(context).size.height * 0.03),
                             child: Image.asset(
                               "assets/home.png",
-                              height: MediaQuery.of(context)
-                                  .size
-                                  .width *
-                                  0.06,
-                              width: MediaQuery.of(context)
-                                  .size
-                                  .width *
-                                  0.06,
+                              height: MediaQuery.of(context).size.width * 0.06,
+                              width: MediaQuery.of(context).size.width * 0.06,
                             ),
                           ),
                         ),
                       ),
                       AnimatedScale(
-                        scale:
-                        _buttonAnimations["RELAX"]! ? 1.1 : 1.0,
+                        scale: _buttonAnimations["RELAX"]! ? 1.1 : 1.0,
                         duration: const Duration(milliseconds: 100),
                         curve: Curves.bounceOut,
                         child: GestureDetector(
@@ -398,18 +344,11 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                             });
                           },
                           child: Container(
-                            height:
-                            MediaQuery.of(context).size.width *
-                                0.060,
-                            width:
-                            MediaQuery.of(context).size.width *
-                                0.060,
-                            padding: EdgeInsets.all(
-                                MediaQuery.of(context).size.width *
-                                    0.01),
+                            height: MediaQuery.of(context).size.width * 0.060,
+                            width: MediaQuery.of(context).size.width * 0.060,
+                            padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.01),
                             decoration: const BoxDecoration(
-                              color:
-                              Color.fromRGBO(160, 208, 86, 1),
+                              color: Color.fromRGBO(160, 208, 86, 1),
                               shape: BoxShape.circle,
                             ),
                             child: Image.asset(
@@ -433,14 +372,11 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                 thumbVisibility: true,
                 thickness: MediaQuery.of(context).size.width * 0.01125,
                 radius: Radius.circular(MediaQuery.of(context).size.width * 0.015),
-                trackColor:
-                const Color.fromRGBO(66, 89, 109, 1),
+                trackColor: const Color.fromRGBO(66, 89, 109, 1),
                 crossAxisMargin: MediaQuery.of(context).size.width * 0.00375,
                 mainAxisMargin: MediaQuery.of(context).size.width * 0.00375,
                 trackRadius: const Radius.circular(20),
-                padding: MediaQuery.of(context).size.height > 600
-                    ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.085, MediaQuery.of(context).size.width * 0.0315, MediaQuery.of(context).size.height * 0.11)
-                    : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.085, MediaQuery.of(context).size.width * 0.027, MediaQuery.of(context).size.height * 0.11),
+                padding: MediaQuery.of(context).size.height > 600 ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.085, MediaQuery.of(context).size.width * 0.0315, MediaQuery.of(context).size.height * 0.11) : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.085, MediaQuery.of(context).size.width * 0.027, MediaQuery.of(context).size.height * 0.11),
                 child: Row(
                   children: [
                     // List of dialogs
@@ -453,19 +389,14 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                               children: [
                                 // Dialog + TTS
                                 AnimatedScale(
-                                  scale: _dialogsAnimations[index] &&
-                                      !_ttsButtonsAnimations[index]
-                                      ? 1.05
-                                      : 1.0,
-                                  duration:
-                                  const Duration(milliseconds: 100),
+                                  scale: _dialogsAnimations[index] && !_ttsButtonsAnimations[index] ? 1.05 : 1.0,
+                                  duration: const Duration(milliseconds: 100),
                                   curve: Curves.bounceOut,
                                   child: GestureDetector(
                                     // Animation management
                                     onTapDown: (_) {
                                       setState(() {
                                         _dialogsAnimations[index] = true;
-
                                       });
                                     },
                                     onTapUp: (_) {
@@ -476,20 +407,11 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) =>
-                                                DialogPage(
-                                                    idDialog:
-                                                    _listDialogs[index]
-                                                        .id_dialog,
-                                                    initialTextDialog:
-                                                    _listDialogs[index]
-                                                        .sentence,
-                                                    idTheme:
-                                                    _listDialogs[index].id_theme,
-
-                                                )
-
-                                        ),
+                                            builder: (context) => DialogPage(
+                                                  idDialog: _listDialogs[index].id_dialog,
+                                                  initialTextDialog: _listDialogs[index].sentence,
+                                                  idTheme: _listDialogs[index].id_theme,
+                                                )),
                                       ).then((_) => initialisation());
                                     },
                                     onTapCancel: () {
@@ -498,52 +420,18 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                                       });
                                     },
                                     child: Container(
-                                      margin: EdgeInsets.fromLTRB(
-                                          MediaQuery.of(context)
-                                              .size
-                                              .width *
-                                              0.025,
-                                          0,
-                                          0,
-                                          MediaQuery.of(context)
-                                              .size
-                                              .height *
-                                              0.02),
-                                      width: MediaQuery.of(context)
-                                          .size
-                                          .width *
-                                          0.82,
+                                      margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.025, 0, 0, MediaQuery.of(context).size.height * 0.02),
+                                      width: MediaQuery.of(context).size.width * 0.82,
                                       decoration: const BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(60)),
+                                        borderRadius: BorderRadius.all(Radius.circular(60)),
                                         color: Colors.white,
                                       ),
                                       child: Row(
                                         children: [
                                           // Text
                                           Container(
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width *
-                                                0.745,
-                                            padding:
-                                            EdgeInsets.fromLTRB(
-                                                MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                    0.04,
-                                                MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                    0.015,
-                                                MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                    0.02,
-                                                MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                    0.015),
+                                            width: MediaQuery.of(context).size.width * 0.745,
+                                            padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.04, MediaQuery.of(context).size.width * 0.015, MediaQuery.of(context).size.width * 0.02, MediaQuery.of(context).size.width * 0.015),
                                             child: Text(
                                               _listDialogs[index].sentence,
                                               style: const TextStyle(
@@ -552,8 +440,7 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                                                 fontSize: 18,
                                               ),
                                               maxLines: 1,
-                                              overflow:
-                                              TextOverflow.ellipsis,
+                                              overflow: TextOverflow.ellipsis,
                                             ),
                                           ),
 
@@ -562,32 +449,21 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
 
                                           // TTS
                                           Container(
-                                            margin: EdgeInsets.only(
-                                                right:
-                                                MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                    0.02),
+                                            margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.02),
                                             child: AnimatedScale(
-                                              scale: _ttsButtonsAnimations[
-                                              index]
-                                                  ? 1.1
-                                                  : 1.0,
-                                              duration: const Duration(
-                                                  milliseconds: 100),
+                                              scale: _ttsButtonsAnimations[index] ? 1.1 : 1.0,
+                                              duration: const Duration(milliseconds: 100),
                                               curve: Curves.bounceOut,
                                               child: GestureDetector(
                                                 // Animation management
                                                 onTapDown: (_) {
                                                   setState(() {
-                                                    _ttsButtonsAnimations[
-                                                    index] = true;
+                                                    _ttsButtonsAnimations[index] = true;
                                                   });
                                                 },
                                                 onTapUp: (_) {
                                                   setState(() {
-                                                    _ttsButtonsAnimations[
-                                                    index] = false;
+                                                    _ttsButtonsAnimations[index] = false;
                                                   });
                                                   // BUTTON CODE
                                                   // TTS
@@ -596,17 +472,12 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                                                 },
                                                 onTapCancel: () {
                                                   setState(() {
-                                                    _ttsButtonsAnimations[
-                                                    index] = false;
+                                                    _ttsButtonsAnimations[index] = false;
                                                   });
                                                 },
                                                 child: Image.asset(
                                                   'assets/sound.png',
-                                                  height: MediaQuery.of(
-                                                      context)
-                                                      .size
-                                                      .height *
-                                                      0.085,
+                                                  height: MediaQuery.of(context).size.height * 0.085,
                                                   color: Colors.blue,
                                                 ),
                                               ),
@@ -620,79 +491,47 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
 
                                 // Delete Dialog Buttons
                                 AnimatedScale(
-                                  scale: _deleteButtonsAnimations[index]
-                                      ? 1.1
-                                      : 1.0,
-                                  duration:
-                                  const Duration(milliseconds: 100),
+                                  scale: _deleteButtonsAnimations[index] ? 1.1 : 1.0,
+                                  duration: const Duration(milliseconds: 100),
                                   curve: Curves.bounceOut,
                                   child: GestureDetector(
                                     onTapDown: (_) {
                                       setState(() {
-                                        _deleteButtonsAnimations[index] =
-                                        true;
+                                        _deleteButtonsAnimations[index] = true;
                                       });
                                     },
                                     onTapUp: (_) {
                                       // BUTTON CODE
                                       setState(() {
-                                        _deleteButtonsAnimations[index] =
-                                        false;
+                                        _deleteButtonsAnimations[index] = false;
                                       });
                                       //Popup to confirm the deletion
                                       showDialog(
                                           context: context,
                                           builder: (BuildContext context) {
                                             // Use StatefulBuilder to manage the state inside the dialog
-                                            return StatefulBuilder(builder:
-                                                (context, setState) {
-                                              double screenHeight =
-                                                  MediaQuery.of(context)
-                                                      .size
-                                                      .height;
-                                              double screenWidth =
-                                                  MediaQuery.of(context)
-                                                      .size
-                                                      .width;
+                                            return StatefulBuilder(builder: (context, setState) {
+                                              double screenHeight = MediaQuery.of(context).size.height;
+                                              double screenWidth = MediaQuery.of(context).size.width;
 
                                               return Dialog(
-                                                backgroundColor:
-                                                Colors.black87,
+                                                backgroundColor: Colors.black87,
                                                 child: Padding(
-                                                  padding: const EdgeInsets
-                                                      .all(
-                                                      16.0), // Optional padding for aesthetics
+                                                  padding: const EdgeInsets.all(16.0), // Optional padding for aesthetics
                                                   child: Column(
-                                                      mainAxisSize: MainAxisSize
-                                                          .min, // Ensures the dialog is as small as needed
+                                                      mainAxisSize: MainAxisSize.min, // Ensures the dialog is as small as needed
                                                       children: [
-                                                        SizedBox(
-                                                            height:
-                                                            screenHeight *
-                                                                0.1),
+                                                        SizedBox(height: screenHeight * 0.1),
                                                         //Suppression warning
                                                         Text(
-                                                          langFR
-                                                              ? 'Voulez vous vraiment supprimer ce dialogue ?'
-                                                              : 'Wil je deze dialoog echt verwijderen ?',
-                                                          style: const TextStyle(
-                                                              color: Colors
-                                                                  .white,
-                                                              fontSize: 20,
-                                                              fontWeight:
-                                                              FontWeight
-                                                                  .bold),
+                                                          langFR ? 'Voulez vous vraiment supprimer ce dialogue ?' : 'Wil je deze dialoog echt verwijderen ?',
+                                                          style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
                                                         ),
 
-                                                        SizedBox(
-                                                            height:
-                                                            screenHeight *
-                                                                0.2),
+                                                        SizedBox(height: screenHeight * 0.2),
                                                         //Buttons to cancel and validate
                                                         Row(
-                                                          mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
+                                                          mainAxisAlignment: MainAxisAlignment.center,
                                                           children: [
                                                             //Cancel button
                                                             AnimatedScale(
@@ -700,7 +539,6 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                                                               duration: const Duration(milliseconds: 100),
                                                               curve: Curves.bounceOut,
                                                               alignment: Alignment.center,
-
                                                               child: GestureDetector(
                                                                 // Animation management
                                                                 onTapDown: (_) {
@@ -714,40 +552,23 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                                                                   });
                                                                   // BUTTON CODE
                                                                   Navigator.pop(context);
-
                                                                 },
                                                                 onTapCancel: () {
                                                                   setState(() {
                                                                     _buttonAnimations["POPUP NO"] = false;
                                                                   });
                                                                 },
-                                                                child:
-                                                                Container(
-                                                                  decoration:
-                                                                  const BoxDecoration(
-                                                                    borderRadius:
-                                                                    BorderRadius.all(
-                                                                        Radius.circular(60)),
-                                                                    color: Colors
-                                                                        .red,
+                                                                child: Container(
+                                                                  decoration: const BoxDecoration(
+                                                                    borderRadius: BorderRadius.all(Radius.circular(60)),
+                                                                    color: Colors.red,
                                                                   ),
-                                                                  padding: EdgeInsets.fromLTRB(
-                                                                      screenWidth *
-                                                                          0.1,
-                                                                      8.0,
-                                                                      screenWidth *
-                                                                          0.1,
-                                                                      8.0),
+                                                                  padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
                                                                   child: Text(
-                                                                    langFR
-                                                                        ? "NON"
-                                                                        : "NEEN",
-                                                                    style:
-                                                                    const TextStyle(
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontWeight:
-                                                                      FontWeight.bold,
+                                                                    langFR ? "NON" : "NEEN",
+                                                                    style: const TextStyle(
+                                                                      color: Colors.white,
+                                                                      fontWeight: FontWeight.bold,
                                                                       fontSize: 20,
                                                                     ),
                                                                   ),
@@ -755,17 +576,13 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                                                               ),
                                                             ),
                                                             //Blank space between the buttons
-                                                            SizedBox(
-                                                                width:
-                                                                screenWidth *
-                                                                    0.15),
+                                                            SizedBox(width: screenWidth * 0.15),
                                                             //Validate button
                                                             AnimatedScale(
                                                               scale: _buttonAnimations["POPUP YES"]! ? 1.1 : 1.0,
                                                               duration: const Duration(milliseconds: 100),
                                                               curve: Curves.bounceOut,
                                                               alignment: Alignment.center,
-
                                                               child: GestureDetector(
                                                                 // Animation management
                                                                 onTapDown: (_) {
@@ -790,33 +607,17 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                                                                     _buttonAnimations["POPUP YES"] = false;
                                                                   });
                                                                 },
-                                                                child:
-                                                                Container(
-                                                                  decoration:
-                                                                  const BoxDecoration(
-                                                                    borderRadius:
-                                                                    BorderRadius.all(
-                                                                        Radius.circular(60)),
-                                                                    color: Colors
-                                                                        .lightGreen,
+                                                                child: Container(
+                                                                  decoration: const BoxDecoration(
+                                                                    borderRadius: BorderRadius.all(Radius.circular(60)),
+                                                                    color: Colors.lightGreen,
                                                                   ),
-                                                                  padding: EdgeInsets.fromLTRB(
-                                                                      screenWidth *
-                                                                          0.1,
-                                                                      8.0,
-                                                                      screenWidth *
-                                                                          0.1,
-                                                                      8.0),
+                                                                  padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
                                                                   child: Text(
-                                                                    langFR
-                                                                        ? "OUI"
-                                                                        : "JA",
-                                                                    style:
-                                                                    const TextStyle(
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontWeight:
-                                                                      FontWeight.bold,
+                                                                    langFR ? "OUI" : "JA",
+                                                                    style: const TextStyle(
+                                                                      color: Colors.white,
+                                                                      fontWeight: FontWeight.bold,
                                                                       fontSize: 20,
                                                                     ),
                                                                   ),
@@ -834,38 +635,16 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                                     },
                                     onTapCancel: () {
                                       setState(() {
-                                        _deleteButtonsAnimations[index] =
-                                        false;
+                                        _deleteButtonsAnimations[index] = false;
                                       });
                                     },
                                     child: Container(
-                                      height: MediaQuery.of(context)
-                                          .size
-                                          .width *
-                                          0.06,
-                                      width: MediaQuery.of(context)
-                                          .size
-                                          .width *
-                                          0.06,
-                                      padding: EdgeInsets.all(
-                                          MediaQuery.of(context)
-                                              .size
-                                              .width *
-                                              0.01),
-                                      margin: EdgeInsets.fromLTRB(
-                                          MediaQuery.of(context)
-                                              .size
-                                              .width *
-                                              0.01,
-                                          0,
-                                          0,
-                                          MediaQuery.of(context)
-                                              .size
-                                              .height *
-                                              0.02),
+                                      height: MediaQuery.of(context).size.width * 0.06,
+                                      width: MediaQuery.of(context).size.width * 0.06,
+                                      padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.01),
+                                      margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.01, 0, 0, MediaQuery.of(context).size.height * 0.02),
                                       decoration: const BoxDecoration(
-                                        color:
-                                        Color.fromRGBO(244, 66, 56, 1),
+                                        color: Color.fromRGBO(244, 66, 56, 1),
                                         shape: BoxShape.circle,
                                       ),
                                       child: Image.asset(
@@ -884,11 +663,8 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-
                           AnimatedScale(
-                            scale: _buttonAnimations["TOP ARROW"]!
-                                ? 1.1
-                                : 1.0,
+                            scale: _buttonAnimations["TOP ARROW"]! ? 1.1 : 1.0,
                             duration: const Duration(milliseconds: 100),
                             curve: Curves.bounceOut,
                             child: GestureDetector(
@@ -896,18 +672,15 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                               onTap: () {
                                 _scrollController.animateTo(
                                   _scrollController.offset - 120,
-                                  duration:
-                                  const Duration(milliseconds: 500),
+                                  duration: const Duration(milliseconds: 500),
                                   curve: Curves.easeIn,
                                 );
                               },
 
                               onLongPress: () {
                                 _scrollController.animateTo(
-                                  _scrollController
-                                      .position.minScrollExtent,
-                                  duration:
-                                  const Duration(milliseconds: 1),
+                                  _scrollController.position.minScrollExtent,
+                                  duration: const Duration(milliseconds: 1),
                                   curve: Curves.easeIn,
                                 );
                               },
@@ -931,44 +704,31 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                               },
 
                               child: Container(
-                                width:
-                                MediaQuery.of(context).size.height *
-                                    0.07,
-                                height:
-                                MediaQuery.of(context).size.height *
-                                    0.07,
+                                width: MediaQuery.of(context).size.height * 0.07,
+                                height: MediaQuery.of(context).size.height * 0.07,
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(
-                                      MediaQuery.of(context).size.width *
-                                          0.01),
-                                  color: const Color.fromRGBO(
-                                      101, 72, 254, 1),
+                                  borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * 0.01),
+                                  color: const Color.fromRGBO(101, 72, 254, 1),
                                 ),
                                 child: Transform.rotate(
                                   angle: 1.5708,
                                   child: Icon(
                                     Icons.arrow_back_ios_new_rounded,
                                     color: Colors.white,
-                                    size: MediaQuery.of(context)
-                                        .size
-                                        .height *
-                                        0.063,
+                                    size: MediaQuery.of(context).size.height * 0.063,
                                   ),
                                 ),
                               ),
                             ),
                           ),
-
-                          Expanded(child: Container(
+                          Expanded(
+                              child: Container(
                             width: MediaQuery.of(context).size.width * 0.01875,
-                            margin: MediaQuery.of(context).size.height > 600
-                                ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.014)
-                                : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.011),
+                            margin: MediaQuery.of(context).size.height > 600 ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.014) : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.011),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
                               color: const Color.fromRGBO(66, 89, 109, 1),
                             ),
-
                             child: Container(
                               margin: EdgeInsets.all(MediaQuery.of(context).size.width * 0.00375),
                               decoration: BoxDecoration(
@@ -976,13 +736,9 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                                 color: Colors.blue,
                               ),
                             ),
-
                           )),
-
                           AnimatedScale(
-                            scale: _buttonAnimations["BOT ARROW"]!
-                                ? 1.1
-                                : 1.0,
+                            scale: _buttonAnimations["BOT ARROW"]! ? 1.1 : 1.0,
                             duration: const Duration(milliseconds: 100),
                             curve: Curves.bounceOut,
                             child: GestureDetector(
@@ -990,18 +746,15 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                               onTap: () {
                                 _scrollController.animateTo(
                                   _scrollController.offset + 120,
-                                  duration:
-                                  const Duration(milliseconds: 500),
+                                  duration: const Duration(milliseconds: 500),
                                   curve: Curves.easeIn,
                                 );
                               },
 
                               onLongPress: () {
                                 _scrollController.animateTo(
-                                  _scrollController
-                                      .position.maxScrollExtent,
-                                  duration:
-                                  const Duration(milliseconds: 1),
+                                  _scrollController.position.maxScrollExtent,
+                                  duration: const Duration(milliseconds: 1),
                                   curve: Curves.easeIn,
                                 );
                               },
@@ -1025,34 +778,24 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                               },
 
                               child: Container(
-                                width:
-                                MediaQuery.of(context).size.height *
-                                    0.07,
-                                height:
-                                MediaQuery.of(context).size.height *
-                                    0.07,
+                                width: MediaQuery.of(context).size.height * 0.07,
+                                height: MediaQuery.of(context).size.height * 0.07,
                                 margin: EdgeInsets.fromLTRB(
                                   0,
                                   0,
                                   0,
-                                  MediaQuery.of(context).size.height *
-                                      0.02,),
+                                  MediaQuery.of(context).size.height * 0.02,
+                                ),
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(
-                                      MediaQuery.of(context).size.width *
-                                          0.01),
-                                  color: const Color.fromRGBO(
-                                      101, 72, 254, 1),
+                                  borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * 0.01),
+                                  color: const Color.fromRGBO(101, 72, 254, 1),
                                 ),
                                 child: Transform.rotate(
                                   angle: -1.5708,
                                   child: Icon(
                                     Icons.arrow_back_ios_new_rounded,
                                     color: Colors.white,
-                                    size: MediaQuery.of(context)
-                                        .size
-                                        .height *
-                                        0.063,
+                                    size: MediaQuery.of(context).size.height * 0.063,
                                   ),
                                 ),
                               ),
@@ -1066,7 +809,6 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
               ),
             ),
           ],
-        )
-    );
+        ));
   }
 }
