@@ -33,6 +33,8 @@ class _ListThemesPageState extends State<ListThemesPage> {
     "RELAX": false,
     "TOP ARROW": false,
     "BOT ARROW": false,
+    "POPUP NO": false,
+    "POPUP YES": false,
   };
 
   List<ThemeObject> _listThemes = [];
@@ -56,7 +58,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
 
     // Separate into two lists: firstPart with the themes of the user and secondPart with the base themes
     if(_listThemes.length > 1){
-      for(i = _listThemes.length - 1; i > 0; i -= 1){
+      for(i = _listThemes.length - 1; i >= 0; i -= 1){
         if(_listThemes[i].id_theme > 24){
           firstPart.add(_listThemes[i]);
         }
@@ -684,39 +686,61 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                                               .center,
                                                           children: [
                                                             //Cancel button
-                                                            GestureDetector(
-                                                              onTapUp: (_) {
-                                                                Navigator.pop(
-                                                                    context);
-                                                              },
-                                                              child:
-                                                              Container(
-                                                                decoration:
-                                                                const BoxDecoration(
-                                                                  borderRadius:
-                                                                  BorderRadius.all(
-                                                                      Radius.circular(60)),
-                                                                  color: Colors
-                                                                      .red,
-                                                                ),
-                                                                padding: EdgeInsets.fromLTRB(
-                                                                    screenWidth *
-                                                                        0.1,
-                                                                    8.0,
-                                                                    screenWidth *
-                                                                        0.1,
-                                                                    8.0),
-                                                                child: Text(
-                                                                  langFR
-                                                                      ? "NON"
-                                                                      : "NEEN",
-                                                                  style:
-                                                                  const TextStyle(
+                                                            AnimatedScale(
+                                                              scale: _buttonAnimations["POPUP NO"]! ? 1.1 : 1.0,
+                                                              duration: const Duration(milliseconds: 100),
+                                                              curve: Curves.bounceOut,
+                                                              alignment: Alignment.center,
+
+                                                              child: GestureDetector(
+                                                                // Animation management
+                                                                onTapDown: (_) {
+                                                                  setState(() {
+                                                                    _buttonAnimations["POPUP NO"] = true;
+                                                                  });
+                                                                },
+                                                                onTapUp: (_) {
+                                                                  setState(() {
+                                                                    _buttonAnimations["POPUP NO"] = false;
+                                                                  });
+                                                                  // BUTTON CODE
+                                                                  Navigator.pop(context);
+
+                                                                },
+                                                                onTapCancel: () {
+                                                                  setState(() {
+                                                                    _buttonAnimations["POPUP NO"] = false;
+                                                                  });
+                                                                },
+                                                                child:
+                                                                Container(
+                                                                  decoration:
+                                                                  const BoxDecoration(
+                                                                    borderRadius:
+                                                                    BorderRadius.all(
+                                                                        Radius.circular(60)),
                                                                     color: Colors
-                                                                        .white,
-                                                                    fontWeight:
-                                                                    FontWeight.bold,
-                                                                    fontSize: 20,
+                                                                        .red,
+                                                                  ),
+                                                                  padding: EdgeInsets.fromLTRB(
+                                                                      screenWidth *
+                                                                          0.1,
+                                                                      8.0,
+                                                                      screenWidth *
+                                                                          0.1,
+                                                                      8.0),
+                                                                  child: Text(
+                                                                    langFR
+                                                                        ? "NON"
+                                                                        : "NEEN",
+                                                                    style:
+                                                                    const TextStyle(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontWeight:
+                                                                      FontWeight.bold,
+                                                                      fontSize: 20,
+                                                                    ),
                                                                   ),
                                                                 ),
                                                               ),
@@ -727,43 +751,65 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                                                 screenWidth *
                                                                     0.15),
                                                             //Validate button
-                                                            GestureDetector(
-                                                              onTapUp: (_) async {
-                                                                await databaseManager.deleteTheme(_listThemes[index].id_theme);
-                                                                //Refresh ui
-                                                                _listThemes.removeAt(index);
-                                                                _updateParent();
-                                                                //Close the popup
-                                                                Navigator.pop(context); // Close the dialog
-                                                              },
-                                                              child:
-                                                              Container(
-                                                                decoration:
-                                                                const BoxDecoration(
-                                                                  borderRadius:
-                                                                  BorderRadius.all(
-                                                                      Radius.circular(60)),
-                                                                  color: Colors
-                                                                      .lightGreen,
-                                                                ),
-                                                                padding: EdgeInsets.fromLTRB(
-                                                                    screenWidth *
-                                                                        0.1,
-                                                                    8.0,
-                                                                    screenWidth *
-                                                                        0.1,
-                                                                    8.0),
-                                                                child: Text(
-                                                                  langFR
-                                                                      ? "OUI"
-                                                                      : "JA",
-                                                                  style:
-                                                                  const TextStyle(
+                                                            AnimatedScale(
+                                                              scale: _buttonAnimations["POPUP YES"]! ? 1.1 : 1.0,
+                                                              duration: const Duration(milliseconds: 100),
+                                                              curve: Curves.bounceOut,
+                                                              alignment: Alignment.center,
+
+                                                              child: GestureDetector(
+                                                                // Animation management
+                                                                onTapDown: (_) {
+                                                                  setState(() {
+                                                                    _buttonAnimations["POPUP YES"] = true;
+                                                                  });
+                                                                },
+                                                                onTapUp: (_) async {
+                                                                  setState(() {
+                                                                    _buttonAnimations["POPUP YES"] = false;
+                                                                  });
+                                                                  await databaseManager.deleteTheme(_listThemes[index].id_theme);
+                                                                  //Refresh ui
+                                                                  _listThemes.removeAt(index);
+                                                                  _updateParent();
+                                                                  //Close the popup
+                                                                  Navigator.pop(context); // Close the dialog
+                                                                },
+
+                                                                onTapCancel: () {
+                                                                  setState(() {
+                                                                    _buttonAnimations["POPUP YES"] = false;
+                                                                  });
+                                                                },
+                                                                child:
+                                                                Container(
+                                                                  decoration:
+                                                                  const BoxDecoration(
+                                                                    borderRadius:
+                                                                    BorderRadius.all(
+                                                                        Radius.circular(60)),
                                                                     color: Colors
-                                                                        .white,
-                                                                    fontWeight:
-                                                                    FontWeight.bold,
-                                                                    fontSize: 20,
+                                                                        .lightGreen,
+                                                                  ),
+                                                                  padding: EdgeInsets.fromLTRB(
+                                                                      screenWidth *
+                                                                          0.1,
+                                                                      8.0,
+                                                                      screenWidth *
+                                                                          0.1,
+                                                                      8.0),
+                                                                  child: Text(
+                                                                    langFR
+                                                                        ? "OUI"
+                                                                        : "JA",
+                                                                    style:
+                                                                    const TextStyle(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontWeight:
+                                                                      FontWeight.bold,
+                                                                      fontSize: 20,
+                                                                    ),
                                                                   ),
                                                                 ),
                                                               ),
