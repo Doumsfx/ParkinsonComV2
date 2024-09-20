@@ -123,10 +123,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                 setState(() {
                                   _buttonAnimations["BACK ARROW"] = false;
                                 });
-                                Navigator.popUntil(
-                                  context,
-                                  (route) => route.isFirst,
-                                );
+                                Navigator.pop(context);
                               },
                               onTapCancel: () {
                                 setState(() {
@@ -182,7 +179,11 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                     print("DIALOGUEEEE");
                                     Navigator.pushReplacement(
                                       context,
-                                      MaterialPageRoute(builder: (context) => const ListDialogsPage()),
+                                      PageRouteBuilder(
+                                        pageBuilder: (context, animation, secondaryAnimation) => const ListDialogsPage(),
+                                        transitionDuration: const Duration(milliseconds: 100),
+                                        reverseTransitionDuration: const Duration(milliseconds: 100),
+                                      ),
                                     );
                                   },
                                   onTapCancel: () {
@@ -336,7 +337,10 @@ class _ListThemesPageState extends State<ListThemesPage> {
                               _buttonAnimations["HOME"] = false;
                             });
                             // BUTTON CODE
-                            print("HOMEEEEEEEEEEEEEEEEE");
+                            Navigator.popUntil(
+                              context,
+                                  (route) => route.isFirst,
+                            );
                           },
                           onTapCancel: () {
                             setState(() {
@@ -436,7 +440,14 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                         _dialogsAnimations[index] = false;
                                       });
                                       // BUTTON CODE
-                                      Navigator.push(context, MaterialPageRoute(builder: (context) => ListDialogsPageFiltered(idTheme: _listThemes[index].id_theme)));
+                                      Navigator.push(
+                                        context,
+                                        PageRouteBuilder(
+                                          pageBuilder: (context, animation, secondaryAnimation) => ListDialogsPageFiltered(idTheme: _listThemes[index].id_theme),
+                                          transitionDuration: const Duration(milliseconds: 100),
+                                          reverseTransitionDuration: const Duration(milliseconds: 100),
+                                        ),
+                                      );
                                     },
                                     onTapCancel: () {
                                       setState(() {

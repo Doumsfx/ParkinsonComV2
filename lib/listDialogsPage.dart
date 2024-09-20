@@ -180,9 +180,13 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                     });
                                     // BUTTON CODE
                                     print("THEMESSS");
-                                    Navigator.pushReplacement(
+                                    Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) => const ListThemesPage()),
+                                      PageRouteBuilder(
+                                        pageBuilder: (context, animation, secondaryAnimation) => const ListThemesPage(),
+                                        transitionDuration: const Duration(milliseconds: 100),
+                                        reverseTransitionDuration: const Duration(milliseconds: 100),
+                                      ),
                                     );
                                   },
                                   onTapCancel: () {
@@ -339,7 +343,10 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                               _buttonAnimations["HOME"] = false;
                             });
                             // BUTTON CODE
-                            print("HOMEEEEEEEEEEEEEEEEE");
+                            Navigator.popUntil(
+                              context,
+                                  (route) => route.isFirst,
+                            );
                           },
                           onTapCancel: () {
                             setState(() {

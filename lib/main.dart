@@ -156,7 +156,7 @@ class _HomePageState extends State<HomePage> {
                                           _buttonAnimations["POWER"] = false;
                                         });
                                         // BUTTON CODE
-                                        print("POWWWWWWWWWWWWER");
+                                        SystemNavigator.pop();
                                       },
                                       onTapCancel: () {
                                         setState(() {

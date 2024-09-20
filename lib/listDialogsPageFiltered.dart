@@ -304,7 +304,10 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                               _buttonAnimations["HOME"] = false;
                             });
                             // BUTTON CODE
-                            print("HOMEEEEEEEEEEEEEEEEE");
+                            Navigator.popUntil(
+                              context,
+                                  (route) => route.isFirst,
+                            );
                           },
                           onTapCancel: () {
                             setState(() {
