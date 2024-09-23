@@ -26,6 +26,9 @@ void main() {
   // Initialization of the TTS handler when launching the app
   ttsHandler.initTts();
 
+  // Set the texts to the default language
+  languagesTextsFile.setNewLanguage("FR");
+
   // We ensure that the phone preserve the landscape mode
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.landscapeLeft,
@@ -235,7 +238,7 @@ class _HomePageState extends State<HomePage> {
                         child: Container(
                           margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.04, MediaQuery.of(context).size.height / 16, 0, 0),
                           child: CustomHomePageTitle(
-                            text: langFR ? 'Menu principal' : 'Hoofdmenu',
+                            text: languagesTextsFile.texts["main_title"]!,
                             image: 'assets/home.png',
                             backgroundColor: const Color.fromRGBO(0, 204, 255, 1),
                             textColor: Colors.white,
