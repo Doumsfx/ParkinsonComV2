@@ -13,6 +13,7 @@ import 'package:parkinson_com_v2/listDialogsPageFiltered.dart';
 import 'package:parkinson_com_v2/models/database/theme.dart';
 import 'package:parkinson_com_v2/newThemePage.dart';
 import 'package:parkinson_com_v2/variables.dart';
+import 'package:diacritic/diacritic.dart';
 
 class ListThemesPage extends StatefulWidget {
   const ListThemesPage({super.key});
@@ -71,6 +72,11 @@ class _ListThemesPageState extends State<ListThemesPage> {
       // Combine the two parts
       _listThemes = [];
       _listThemes = firstPart + secondPart;
+      setState(() {});
+
+
+      // Sorting the list in alphabetic order
+      _listThemes.sort((a, b) => removeDiacritics(a.title).compareTo(removeDiacritics(b.title)));
       setState(() {});
     }
   }
