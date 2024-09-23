@@ -251,7 +251,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => const NewThemePage(),
-                                    ));
+                                    )).then((_) => initialisation());
                               },
                               onTapCancel: () {
                                 setState(() {

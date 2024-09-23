@@ -5,7 +5,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:parkinson_com_v2/keyboard.dart';
-import 'package:parkinson_com_v2/listThemesPage.dart';
 import 'package:parkinson_com_v2/models/database/theme.dart';
 import 'package:parkinson_com_v2/variables.dart';
 
@@ -339,11 +338,8 @@ class _NewThemePageState extends State<NewThemePage> {
                                                         });
 
                                                         // Redirection
-                                                        Navigator.pushReplacement(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                              builder: (context) => const ListThemesPage(),
-                                                            ));
+                                                        Navigator.pop(context); // Quit popup
+                                                        Navigator.pop(context); // Get back to list
                                                       },
 
                                                       onTapCancel: () {
