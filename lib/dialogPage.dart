@@ -801,6 +801,7 @@ class _DialogPageState extends State<DialogPage> {
                           ),
                           Row(
                             children: [
+                              // Save button
                               AnimatedScale(
                                 scale: _buttonAnimations["SAVE"] == true ? 1.1 : 1.0,
                                 duration: const Duration(milliseconds: 100),
@@ -1067,18 +1068,25 @@ class _DialogPageState extends State<DialogPage> {
                                     });
                                   },
                                   child: Container(
+                                    width: MediaQuery.of(context).size.width * 0.29,
+                                    height: MediaQuery.of(context).size.width * 0.065,
                                     decoration: const BoxDecoration(
                                       borderRadius: BorderRadius.all(Radius.circular(60)),
                                       color: Color.fromRGBO(255, 183, 34, 1),
                                     ),
-                                    padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.02, MediaQuery.of(context).size.width * 0.015, MediaQuery.of(context).size.width * 0.02, MediaQuery.of(context).size.width * 0.015),
+                                    padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.01, 0, MediaQuery.of(context).size.width * 0.01, 0),
                                     margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.05, 0, 0, 0),
-                                    child: Text(
-                                      languagesTextsFile.texts["dialog_save"]!,
-                                      style: const TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18,
+                                    child: Center(
+                                      child: AutoSizeText(
+                                        languagesTextsFile.texts["dialog_save"]!,
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18,
+                                        ),
+                                        maxLines: 1,
+                                        minFontSize: 10,
+                                        maxFontSize: 18,
                                       ),
                                     ),
                                   ),
@@ -1087,6 +1095,8 @@ class _DialogPageState extends State<DialogPage> {
                               const Expanded(
                                 child: SizedBox(),
                               ),
+
+                              // Send button
                               AnimatedScale(
                                 scale: _buttonAnimations["SEND"] == true ? 1.1 : 1.0,
                                 duration: const Duration(milliseconds: 100),
@@ -1396,18 +1406,25 @@ class _DialogPageState extends State<DialogPage> {
                                   });
                                 },
                                 child: Container(
+                                  width: MediaQuery.of(context).size.width * 0.29,
+                                  height: MediaQuery.of(context).size.width * 0.065,
                                   decoration: const BoxDecoration(
                                     borderRadius: BorderRadius.all(Radius.circular(60)),
                                     color: Color.fromRGBO(255, 183, 34, 1),
                                   ),
-                                  padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.02, MediaQuery.of(context).size.width * 0.015, MediaQuery.of(context).size.width * 0.02, MediaQuery.of(context).size.width * 0.015),
+                                  padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.01, 0, MediaQuery.of(context).size.width * 0.01, 0),
                                   margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.05, MediaQuery.of(context).size.height * 0.03, 0, 0),
-                                  child: Text(
-                                    languagesTextsFile.texts["dialog_modify"]!,
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
+                                  child: Center(
+                                    child: AutoSizeText(
+                                      languagesTextsFile.texts["dialog_modify"]!,
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                      ),
+                                      maxLines: 1,
+                                      minFontSize: 10,
+                                      maxFontSize: 18,
                                     ),
                                   ),
                                 ),
