@@ -14,9 +14,11 @@ class CustomKeyboard extends StatefulWidget {
   final bool forcedPredictionsOff; //Turn to true if you want to disable the predictions (ex : Theme creation)
 
   CustomKeyboard({super.key, required this.controller, required this.textPredictions, this.forcedPredictionsOff = false}) {
+    /*
     if (textPredictions.value) {
       predictionsHandler = PredictionsHandler(controller: controller, isFR: langFR);
-    }
+    }*/
+    predictionsHandler = PredictionsHandler(controller: controller, isFR: langFR);
   }
 
   @override

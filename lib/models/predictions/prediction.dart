@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:parkinson_com_v2/variables.dart';
 import 'package:xml/xml.dart' as xml;
 
 import 'dico.dart';
@@ -20,11 +21,14 @@ class PredictionsHandler {
   PredictionsHandler({required this.controller, this.isFR = true}) {
     suggestedWordsList = ValueNotifier(List<String>.empty());
     controller.addListener(_onTextChanged);
+    isConnected.addListener(_refreshPredictions);
     //Initialization with empty query for the starting words
-    if (isFR) {
-      predictFR(controller.text); //FR
-    } else {
-      initDicoNL(controller.text); //NL
+    if (isConnected.value) {
+      if (isFR) {
+        predictFR(controller.text); //FR
+      } else {
+        initDicoNL(controller.text); //NL
+      }
     }
   }
 
@@ -38,6 +42,16 @@ class PredictionsHandler {
     controller.addListener(_onTextChanged);
   }
 
+  void _refreshPredictions() {
+    if (isConnected.value) {
+      if (isFR) {
+        predictFR(controller.text); //FR
+      } else {
+        initDicoNL(controller.text); //NL
+      }
+    }
+  }
+
   /// Method to clear the text and manage listeners.
   void clearText() {
     /* Before using this method, we were using the _controller.clear() in the TextField onTap
@@ -47,10 +61,12 @@ class PredictionsHandler {
     controller.clear(); // Clear the text field
 
     //Prediction with empty sentence
-    if (isFR) {
-      predictFR(""); //FR
-    } else {
-      predictNL(""); //NL
+    if (isConnected.value) {
+      if (isFR) {
+        predictFR(""); //FR
+      } else {
+        predictNL(""); //NL
+      }
     }
 
     addListener(); // Re-add listener after clearing
@@ -65,16 +81,18 @@ class PredictionsHandler {
 
   ///Event listener that will update the [suggestedWordsList] based on the new text of the [PredictionsHandler.controller]
   void _onTextChanged() {
-    //Debouncing, avoid to be triggered twice
-    if (_debounce?.isActive ?? false) _debounce?.cancel();
-    _debounce = Timer(const Duration(milliseconds: 400), () {
-      //Duration can be changed
-      if (isFR) {
-        predictFR(controller.text); //FR
-      } else {
-        predictNL(controller.text); //NL
-      }
-    });
+    if(isConnected.value) {
+      //Debouncing, avoid to be triggered twice
+      if (_debounce?.isActive ?? false) _debounce?.cancel();
+      _debounce = Timer(const Duration(milliseconds: 400), () {
+        //Duration can be changed
+        if (isFR) {
+          predictFR(controller.text); //FR
+        } else {
+          predictNL(controller.text); //NL
+        }
+      });
+    }
   }
 
   ///Initialization of the dictionnary of NL words before the first attempts to predict words

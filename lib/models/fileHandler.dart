@@ -9,7 +9,7 @@ class FileHandler {
 
   FileHandler() {
     texts = {};
-    setNewLanguage("FR"); //load the french version by default
+    setNewLanguage("fr"); //load the french version by default
   }
 
   ///Load the texts for a specific [language] (available by default : FR and NL)
@@ -22,7 +22,7 @@ class FileHandler {
         texts = file[language]!;
       }
       else {
-        texts = file["FR"]!; //Reset by default to French
+        texts = file["fr"]!; //Reset by default to French
         throw Exception("Language is unknown or empty: $language");
       }
     }

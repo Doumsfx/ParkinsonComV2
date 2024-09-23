@@ -312,6 +312,7 @@ class _DialogPageState extends State<DialogPage> {
                                             onTapUp: (_) {
                                               setState(() {
                                                 _buttonAnimations["ERASE"] = false;
+
                                                 customKeyboard.predictionsHandler?.clearText();
                                               });
                                             },
