@@ -24,6 +24,7 @@ class DialogPage extends StatefulWidget {
     required this.initialTextDialog,
     int? idTheme, // Nullable parameter
   })  : idTheme = idTheme ?? (langFR ? 1 : 13),
+        //Default theme is 1 for French and 13 for Dutch
         // Provide default value if null
         super(key: key);
 
@@ -141,7 +142,7 @@ class _DialogPageState extends State<DialogPage> {
                                 Container(
                                   margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.01),
                                   child: Text(
-                                    langFR ? 'Rédiger un dialogue' : 'Een dialoog schrijven',
+                                    languagesTextsFile.texts["dialog_title"]!,
                                     style: GoogleFonts.josefinSans(
                                       fontSize: 25,
                                       fontWeight: FontWeight.w500,
@@ -159,7 +160,7 @@ class _DialogPageState extends State<DialogPage> {
                                       builder: (context, snapshot) {
                                         if (snapshot.hasData) {
                                           return AutoSizeText(
-                                            langFR ? 'Thème: ${snapshot.data!.title}' : 'Thema: ${snapshot.data!.title}',
+                                            '${languagesTextsFile.texts["dialog_theme"]!} ${snapshot.data!.title}',
                                             maxLines: 1,
                                             maxFontSize: 15,
                                             minFontSize: 5,
@@ -181,7 +182,7 @@ class _DialogPageState extends State<DialogPage> {
                                             child: OverflowBox(
                                               maxWidth: double.infinity,
                                               child: Text(
-                                                langFR ? 'Thème: Dialogue sans thème' : 'Thema: Dialoog zonder onderwerp',
+                                                languagesTextsFile.texts["dialog_without_theme"]!,
                                                 style: const TextStyle(
                                                   fontSize: 15,
                                                   fontWeight: FontWeight.bold,
@@ -283,7 +284,7 @@ class _DialogPageState extends State<DialogPage> {
                                               Radius.circular(MediaQuery.of(context).size.width * 0.045),
                                             ),
                                           ),
-                                          hintText: langFR ? 'Ecrire votre texte ici...' : 'Schrijf hier uw tekst...',
+                                          hintText: languagesTextsFile.texts["dialog_hint_text"]!,
                                         ),
                                       ),
                                     ),
@@ -847,7 +848,7 @@ class _DialogPageState extends State<DialogPage> {
                                                       children: [
                                                         // Title for theme selection
                                                         Text(
-                                                          langFR ? 'Veuillez choisir un thème pour ce dialogue:' : 'Kies een onderwerp voor deze dialoog:',
+                                                          languagesTextsFile.texts["pop_up_save_dialog"]!,
                                                           style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
                                                         ),
                                                         SizedBox(height: screenHeight * 0.1),
@@ -915,7 +916,7 @@ class _DialogPageState extends State<DialogPage> {
                                                                   ),
                                                                   padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
                                                                   child: Text(
-                                                                    langFR ? "Annuler" : "Annuleren",
+                                                                    languagesTextsFile.texts["pop_up_cancel"]!,
                                                                     style: const TextStyle(
                                                                       color: Colors.white,
                                                                       fontWeight: FontWeight.bold,
@@ -964,7 +965,7 @@ class _DialogPageState extends State<DialogPage> {
                                                                   ),
                                                                   padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
                                                                   child: Text(
-                                                                    langFR ? "Valider" : "Bevestigen",
+                                                                    languagesTextsFile.texts["pop_up_validate"]!,
                                                                     style: const TextStyle(
                                                                       color: Colors.white,
                                                                       fontWeight: FontWeight.bold,
@@ -992,7 +993,7 @@ class _DialogPageState extends State<DialogPage> {
                                                         SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.15),
                                                         // Title for saving confirmation
                                                         Text(
-                                                          langFR ? 'Dialogue enregistré avec succès !' : 'Dialoog succesvol opgeslaan!',
+                                                          languagesTextsFile.texts["pop_up_save_dialog_succes"]!,
                                                           style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
                                                         ),
                                                         SizedBox(height: screenHeight * 0.2),
@@ -1028,7 +1029,7 @@ class _DialogPageState extends State<DialogPage> {
                                                               ),
                                                               padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
                                                               child: Text(
-                                                                langFR ? "OK" : "OK",
+                                                                languagesTextsFile.texts["pop_up_ok"]!,
                                                                 style: const TextStyle(
                                                                   color: Colors.white,
                                                                   fontWeight: FontWeight.bold,
@@ -1072,7 +1073,7 @@ class _DialogPageState extends State<DialogPage> {
                                     padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.02, MediaQuery.of(context).size.width * 0.015, MediaQuery.of(context).size.width * 0.02, MediaQuery.of(context).size.width * 0.015),
                                     margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.05, 0, 0, 0),
                                     child: Text(
-                                      langFR ? "Enregistrer nouveau" : "      Nieuw opslaan      ",
+                                      languagesTextsFile.texts["dialog_save"]!,
                                       style: const TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold,
@@ -1112,7 +1113,7 @@ class _DialogPageState extends State<DialogPage> {
                                     margin: EdgeInsets.fromLTRB(0, 0, MediaQuery.of(context).size.width * 0.08, 0),
                                     child: CustomShape(
                                       image: "assets/enveloppe.png",
-                                      text: langFR ? "Envoyer à un contact" : "Stuur naar een contact",
+                                      text: languagesTextsFile.texts["dialog_send"]!,
                                       scale: MediaQuery.of(context).size.width * 0.0013,
                                       backgroundColor: const Color.fromRGBO(12, 178, 255, 1),
                                       textColor: Colors.white,
@@ -1172,7 +1173,7 @@ class _DialogPageState extends State<DialogPage> {
                                                     children: [
                                                       // Title for theme selection
                                                       Text(
-                                                        langFR ? 'Veuillez choisir un thème pour ce dialogue:' : 'Kies een onderwerp voor deze dialoog:',
+                                                        languagesTextsFile.texts["pop_up_save_dialog"]!,
                                                         style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
                                                       ),
                                                       SizedBox(height: screenHeight * 0.1),
@@ -1240,7 +1241,7 @@ class _DialogPageState extends State<DialogPage> {
                                                                 ),
                                                                 padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
                                                                 child: Text(
-                                                                  langFR ? "Annuler" : "Annuleren",
+                                                                  languagesTextsFile.texts["pop_up_cancel"]!,
                                                                   style: const TextStyle(
                                                                     color: Colors.white,
                                                                     fontWeight: FontWeight.bold,
@@ -1290,7 +1291,7 @@ class _DialogPageState extends State<DialogPage> {
                                                                 ),
                                                                 padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
                                                                 child: Text(
-                                                                  langFR ? "Valider" : "Bevestigen",
+                                                                  languagesTextsFile.texts["pop_up_validate"]!,
                                                                   style: const TextStyle(
                                                                     color: Colors.white,
                                                                     fontWeight: FontWeight.bold,
@@ -1321,7 +1322,7 @@ class _DialogPageState extends State<DialogPage> {
                                                       SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.15),
                                                       // Title for theme selection
                                                       Text(
-                                                        langFR ? 'Dialogue modifié avec succès !' : 'Dialoogvenster succesvol gewijzigd!',
+                                                        languagesTextsFile.texts["pop_up_modify_dialog_succes"]!,
                                                         style: TextStyle(color: Colors.white, fontSize: screenHeight * 0.03, fontWeight: FontWeight.bold),
                                                       ),
                                                       SizedBox(height: screenHeight * 0.2),
@@ -1357,7 +1358,7 @@ class _DialogPageState extends State<DialogPage> {
                                                             ),
                                                             padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
                                                             child: Text(
-                                                              langFR ? "OK" : "OK",
+                                                              languagesTextsFile.texts["pop_up_ok"]!,
                                                               style: TextStyle(
                                                                 color: Colors.white,
                                                                 fontWeight: FontWeight.bold,
@@ -1400,7 +1401,7 @@ class _DialogPageState extends State<DialogPage> {
                                   padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.02, MediaQuery.of(context).size.width * 0.015, MediaQuery.of(context).size.width * 0.02, MediaQuery.of(context).size.width * 0.015),
                                   margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.05, MediaQuery.of(context).size.height * 0.03, 0, 0),
                                   child: Text(
-                                    langFR ? " Remplacer existant " : "Bestaande vervangen",
+                                    languagesTextsFile.texts["dialog_modify"]!,
                                     style: const TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold,
@@ -1435,7 +1436,7 @@ class _DialogPageState extends State<DialogPage> {
                   children: [
                     SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.15),
                     Text(
-                      langFR ? 'Vous ne pouvez pas enregistrer un dialogue vide !' : 'Je kunt geen leeg dialoogvenster opslaan!',
+                      languagesTextsFile.texts["pop_up_cant_save_dialog"]!,
                       style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: screenHeight * 0.2),
@@ -1470,7 +1471,7 @@ class _DialogPageState extends State<DialogPage> {
                           ),
                           padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
                           child: Text(
-                            langFR ? "OK" : "OK",
+                            languagesTextsFile.texts["pop_up_ok"]!,
                             style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,

@@ -1,5 +1,5 @@
 {
-  "FR" : {
+  "fr" : {
     "main_title" : "Menu principal",
     "main_dialog" : "Dialogue",
     "main_relax" : "Détente",
@@ -12,6 +12,7 @@
     "dialog_list_new" : "+ Nouveau dialogue",
     "dialog_title" : "Rédiger un dialogue",
     "dialog_theme" : "Thème:",
+    "dialog_without_theme": "Thème: Dialogue sans thème",
     "dialog_hint_text" : "Ecrire votre texte ici...",
     "dialog_save" : "Enregistrer nouveau",
     "dialog_modify" : "Remplacer existant",
@@ -30,7 +31,10 @@
     "pop_up_yes" : "OUI",
     "pop_up_no" : "NON",
     "pop_up_ok" : "OK",
+    "pop_up_cancel" : "Annuler",
+    "pop_up_validate" : "Valider",
     "pop_up_internet" : "Vous n'avez pas de connexion internet.\nCela peut désactiver certaines fonctionnalités\n(autocomplétion, e-mail, etc).\nMerci de réactiver internet\nsi vous souhaitez utiliser ces fonctionnalités.",
+    "pop_up_continue_without_internet" : "Continuer sans internet",
     "pop_up_delete_dialog" : "Voulez vous vraiment supprimer ce dialogue ?",
     "pop_up_delete_theme_first" : "Voulez vous vraiment supprimer le thème:\n",
     "pop_up_delete_theme_second" : "?\nIl y a ",
@@ -42,7 +46,7 @@
     "pop_up_cant_save_theme" : "Impossible d'enregistrer un thème vide.",
     "pop_up_save_theme" : "Thème enregistré avec succès !"
   },
-  "NL" : {
+  "nl" : {
     "main_title" : "Hoofdmenu",
     "main_dialog" : "Dialoog",
     "main_relax" : "Ontspanning",
@@ -55,8 +59,9 @@
     "dialog_list_new" : "+ Nieuwe dialoog",
     "dialog_title" : "Een dialoog schrijven",
     "dialog_theme" : "Thema:",
+    "dialog_without_theme": "Thema: Dialoog zonder onderwerp",
     "dialog_hint_text" : "Schrijf hier uw tekst...",
-    "dialog_save" : "'Nieuw opslaan",
+    "dialog_save" : "Nieuw opslaan",
     "dialog_modify" : "Bestaande vervangen",
     "dialog_send" : "Stuur naar een contact",
     "theme_list_title" : "De thema's",
@@ -73,7 +78,10 @@
     "pop_up_yes" : "JA",
     "pop_up_no" : "NEEN",
     "pop_up_ok" : "OK",
+    "pop_up_cancel" : "Annuleren",
+    "pop_up_validate" : "Bevestigen",
     "pop_up_internet" : "U heeft geen internetverbinding.\nDit kan sommige functies uitschakelen\n(automatisch aanvullen, e-mail, enz.).\nReactiveer internet\n als u deze functies wilt gebruiken.",
+    "pop_up_continue_without_internet" : "Ga verder zonder internet",
     "pop_up_delete_dialog" : "Wil je deze dialoog echt verwijderen ?",
     "pop_up_delete_theme_first" : "Weet je zeker dat je het thema wil verwijderen:\n",
     "pop_up_delete_theme_second" : "?\nEr is ",

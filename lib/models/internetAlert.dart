@@ -51,7 +51,7 @@ class InternetAlert {
                   children: [
                     SizedBox(height: MediaQuery.of(context).size.height * 0.13, width: screenWidth * 0.95),
                     Text(
-                      langFR ? "Vous n'avez pas de connexion internet.\nCela peut désactiver certaines fonctionnalités\n(autocomplétion, e-mail, etc).\nMerci de réactiver internet\nsi vous souhaitez utiliser ces fonctionnalités." : "U heeft geen internetverbinding.\nDit kan sommige functies uitschakelen\n(automatisch aanvullen, e-mail, enz.).\nReactiveer internet\n als u deze functies wilt gebruiken.",
+                      languagesTextsFile.texts["pop_up_internet"]!,
                       textAlign: TextAlign.center,
                       style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
                     ),
@@ -88,7 +88,7 @@ class InternetAlert {
                           ),
                           padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
                           child: Text(
-                            langFR ? "Continuer sans internet" : "Ga verder zonder internet",
+                            languagesTextsFile.texts["pop_up_continue_without_internet"]!,
                             style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
