@@ -153,7 +153,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                               Container(
                                 margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.19, MediaQuery.of(context).size.height / 16, 0, MediaQuery.of(context).size.height * 0.07),
                                 child: CustomTitle(
-                                  text: langFR ? 'Les dialogues' : 'De dialogen',
+                                  text: languagesTextsFile.texts["dialog_list_title"]!,
                                   image: 'assets/themeIcon.png',
                                   scale: 1,
                                   backgroundColor: Colors.white,
@@ -197,7 +197,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                   child: Container(
                                     margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.40, 0, 0, 0),
                                     child: CustomShapeThemes(
-                                      text: langFR ? 'Voir les thèmes' : "Thema's bekijken",
+                                      text: languagesTextsFile.texts["dialog_list_theme"]!,
                                       image: 'assets/doubleFleche.png',
                                       backgroundColor: const Color.fromRGBO(78, 237, 255, 1),
                                       textColor: Colors.black,
@@ -221,7 +221,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                           Container(
                             margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.04, 0, 0, MediaQuery.of(context).size.height * 0.02),
                             child: Text(
-                              langFR ? 'Liste de tous les dialogues' : 'Lijst met alle dialogen',
+                              languagesTextsFile.texts["dialog_list_name"]!,
                               style: GoogleFonts.josefinSans(
                                 fontSize: 18,
                                 color: Colors.white,
@@ -273,7 +273,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                 ),
                                 padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.04, MediaQuery.of(context).size.width * 0.015, MediaQuery.of(context).size.width * 0.02, MediaQuery.of(context).size.width * 0.015),
                                 child: Text(
-                                  langFR ? "+ Nouveau dialogue" : "+ Nieuwe dialoog",
+                                  languagesTextsFile.texts["dialog_list_new"]!,
                                   style: const TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,
@@ -559,7 +559,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                                         SizedBox(height: screenHeight * 0.1),
                                                         //Suppression warning
                                                         Text(
-                                                          langFR ? 'Voulez vous vraiment supprimer ce dialogue ?' : 'Wil je deze dialoog echt verwijderen?',
+                                                          languagesTextsFile.texts["pop_up_delete_dialog"]!,
                                                           style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
                                                         ),
 
@@ -600,7 +600,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                                                   ),
                                                                   padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
                                                                   child: Text(
-                                                                    langFR ? "NON" : "NEEN",
+                                                                    languagesTextsFile.texts["pop_up_no"]!,
                                                                     style: const TextStyle(
                                                                       color: Colors.white,
                                                                       fontWeight: FontWeight.bold,
@@ -648,7 +648,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                                                   ),
                                                                   padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
                                                                   child: Text(
-                                                                    langFR ? "OUI" : "JA",
+                                                                    languagesTextsFile.texts["pop_up_yes"]!,
                                                                     style: const TextStyle(
                                                                       color: Colors.white,
                                                                       fontWeight: FontWeight.bold,

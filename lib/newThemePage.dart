@@ -100,7 +100,7 @@ class _NewThemePageState extends State<NewThemePage> {
                             : Container(
                                 margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.2),
                                 child: Text(
-                                  langFR ? 'Nouveau Thème' : 'Nieuw Thema',
+                                  languagesTextsFile.texts["new_theme_title"],
                                   style: GoogleFonts.josefinSans(
                                     color: Colors.white,
                                     fontSize: 35,
@@ -115,7 +115,7 @@ class _NewThemePageState extends State<NewThemePage> {
                             : Container(
                                 margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.02),
                                 child: Text(
-                                  langFR ? 'Indiquez ci-dessous le nom de votre nouveau thème' : 'Voer hieronder de naam van uw nieuwe thema in',
+                                  languagesTextsFile.texts["new_theme_subtitle"],
                                   style: GoogleFonts.josefinSans(
                                     color: Colors.white,
                                     fontSize: 20,
@@ -188,7 +188,7 @@ class _NewThemePageState extends State<NewThemePage> {
                                     Radius.circular(MediaQuery.of(context).size.width * 0.045),
                                   ),
                                 ),
-                                hintText: langFR ? 'Nom du thème' : 'Thema naam',
+                                hintText: languagesTextsFile.texts["new_theme_hint_text"],
                               ),
 
                               onTap: () {
@@ -241,7 +241,7 @@ class _NewThemePageState extends State<NewThemePage> {
                                                 children: [
                                                   SizedBox(height: screenHeight * 0.1, width: screenWidth * 0.95),
                                                   Text(
-                                                    langFR ? "Impossible d'enregistrer un thème vide." : "Je kan geen leeg thema maken.",
+                                                    languagesTextsFile.texts["pop_up_cant_save_theme"],
                                                     textAlign: TextAlign.center,
                                                     style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
                                                   ),
@@ -277,9 +277,9 @@ class _NewThemePageState extends State<NewThemePage> {
                                                           color: Colors.lightGreen,
                                                         ),
                                                         padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
-                                                        child: const Text(
-                                                          "OK",
-                                                          style: TextStyle(
+                                                        child: Text(
+                                                          languagesTextsFile.texts["pop_up_ok"],
+                                                          style: const TextStyle(
                                                             color: Colors.white,
                                                             fontWeight: FontWeight.bold,
                                                             fontSize: 20,
@@ -314,7 +314,7 @@ class _NewThemePageState extends State<NewThemePage> {
                                                 children: [
                                                   SizedBox(height: screenHeight * 0.1, width: screenWidth * 0.95),
                                                   Text(
-                                                    langFR ? "Thème enregistré avec succès !" : "Thema succesvol opgeslaan!",
+                                                    languagesTextsFile.texts["pop_up_save_theme"],
                                                     textAlign: TextAlign.center,
                                                     style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
                                                   ),
@@ -357,9 +357,9 @@ class _NewThemePageState extends State<NewThemePage> {
                                                           color: Colors.lightGreen,
                                                         ),
                                                         padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
-                                                        child: const Text(
-                                                          "OK",
-                                                          style: TextStyle(
+                                                        child: Text(
+                                                          languagesTextsFile.texts["pop_up_ok"],
+                                                          style: const TextStyle(
                                                             color: Colors.white,
                                                             fontWeight: FontWeight.bold,
                                                             fontSize: 20,
@@ -392,7 +392,7 @@ class _NewThemePageState extends State<NewThemePage> {
                                 ),
                                 padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.02, MediaQuery.of(context).size.width * 0.015, MediaQuery.of(context).size.width * 0.02, MediaQuery.of(context).size.width * 0.015),
                                 child: Text(
-                                  langFR ? "Enregistrer" : "  Opnemen  ",
+                                  languagesTextsFile.texts["new_theme_save"],
                                   style: const TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w800,
