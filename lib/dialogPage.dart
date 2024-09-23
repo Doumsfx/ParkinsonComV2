@@ -992,7 +992,7 @@ class _DialogPageState extends State<DialogPage> {
                                                         SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.15),
                                                         // Title for saving confirmation
                                                         Text(
-                                                          langFR ? 'Dialogue enregistré avec succès !' : 'Dialoog succesvol opgeslaan!',
+                                                          langFR ? 'Dialogue enregistré avec succès !' : 'Dialoog succesvol opgeslaan !',
                                                           style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
                                                         ),
                                                         SizedBox(height: screenHeight * 0.2),
@@ -1014,6 +1014,7 @@ class _DialogPageState extends State<DialogPage> {
                                                                 _buttonAnimations["POPUP OK"] = false;
                                                               });
                                                               // BUTTON CODE
+                                                              Navigator.pop(context);
                                                               Navigator.pop(context);
                                                             },
                                                             onTapCancel: () {

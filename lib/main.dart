@@ -274,6 +274,7 @@ class _HomePageState extends State<HomePage> {
                               setState(() {
                                 langFR = !langFR;
                                 ttsHandler.setVoiceFrOrNl(langFR ? 'fr' : 'nl', 'female');
+                                languagesTextsFile.setNewLanguage(langFR ? 'fr' : 'nl');
                               });
                             },
                             onTapCancel: () {
@@ -342,7 +343,7 @@ class _HomePageState extends State<HomePage> {
                             backgroundColor: const Color.fromRGBO(61, 192, 200, 1),
                             textColor: Colors.white,
                             image: 'assets/dialog.png',
-                            text: langFR ? 'Dialogue' : 'Dialoog',
+                            text: languagesTextsFile.texts["main_dialog"]!,
                             imageScale: 1,
                             scale: MediaQuery.of(context).size.height > 600 ? 1 : 1.2,
                           ),
@@ -381,7 +382,7 @@ class _HomePageState extends State<HomePage> {
                             backgroundColor: const Color.fromRGBO(160, 208, 86, 1),
                             textColor: Colors.white,
                             image: 'assets/beach-chair.png',
-                            text: langFR ? 'Détente' : 'Ontspanning',
+                            text: languagesTextsFile.texts["main_relax"]!,
                             imageScale: 1.4,
                             scale: MediaQuery.of(context).size.height > 600 ? 1 : 1.2,
                           ),
@@ -425,7 +426,7 @@ class _HomePageState extends State<HomePage> {
                             });
                           },
                           child: CustomShapeMenu(
-                            text: langFR ? 'Mes options' : 'Mijn keuzes',
+                            text: languagesTextsFile.texts["main_settings"]!,
                             image: 'assets/profile-user.png',
                             backgroundColor: const Color.fromRGBO(245, 107, 56, 1),
                             textColor: const Color.fromRGBO(35, 55, 79, 1),
@@ -464,7 +465,7 @@ class _HomePageState extends State<HomePage> {
                               });
                             },
                             child: CustomShapeMenu(
-                              text: langFR ? 'Rappels' : 'Herinneringen',
+                              text: languagesTextsFile.texts["main_reminders"]!,
                               image: 'assets/horloge.png',
                               backgroundColor: Colors.white,
                               textColor: const Color.fromRGBO(224, 106, 109, 1),
@@ -504,7 +505,7 @@ class _HomePageState extends State<HomePage> {
                             });
                           },
                           child: CustomShapeMenu(
-                            text: langFR ? 'Contacts' : 'Contacten',
+                            text: languagesTextsFile.texts["main_contacts"]!,
                             image: 'assets/enveloppe.png',
                             backgroundColor: const Color.fromRGBO(12, 178, 255, 1),
                             textColor: const Color.fromRGBO(35, 55, 79, 1),
