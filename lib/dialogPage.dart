@@ -121,9 +121,16 @@ class _DialogPageState extends State<DialogPage> {
                                               setState(() {
                                                 _buttonAnimations["BACK ARROW"] = false;
                                               });
-                                              Navigator.pop(
-                                                context,
-                                              );
+                                              //BUTTON CODE
+                                              if(_controller.text != widget.initialTextDialog) {
+                                                _showTextUnsavedBackArrow();
+                                              }
+                                              else {
+                                                Navigator.pop(
+                                                  context,
+                                                );
+                                              }
+
                                             },
                                             onTapCancel: () {
                                               setState(() {
@@ -577,10 +584,15 @@ class _DialogPageState extends State<DialogPage> {
                                       _buttonAnimations["HOME"] = false;
                                     });
                                     // BUTTON CODE
-                                    Navigator.popUntil(
-                                      context,
-                                          (route) => route.isFirst,
-                                    );
+                                    if(_controller.text != widget.initialTextDialog) {
+                                      _showTextUnsavedHomeButton();
+                                    }
+                                    else {
+                                      Navigator.popUntil(
+                                        context,
+                                            (route) => route.isFirst,
+                                      );
+                                    }
                                   },
                                   onTapCancel: () {
                                     setState(() {
@@ -801,10 +813,15 @@ class _DialogPageState extends State<DialogPage> {
                                             _buttonAnimations["HOME"] = false;
                                           });
                                           // BUTTON CODE
-                                          Navigator.popUntil(
-                                            context,
-                                                (route) => route.isFirst,
-                                          );
+                                          if(_controller.text != widget.initialTextDialog) {
+                                            _showTextUnsavedHomeButton();
+                                          }
+                                          else {
+                                            Navigator.popUntil(
+                                              context,
+                                                  (route) => route.isFirst,
+                                            );
+                                          }
                                         },
                                         onTapCancel: () {
                                           setState(() {
@@ -1578,6 +1595,259 @@ class _DialogPageState extends State<DialogPage> {
                         ),
                       ),
                     ),
+                    SizedBox(height: screenHeight * 0.03),
+                  ],
+                ),
+              ),
+            );
+          });
+        });
+  }
+
+  ///Popup when the user try to quit without saving his modifications
+  void _showTextUnsavedBackArrow() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          double screenHeight = MediaQuery.of(context).size.height;
+          double screenWidth = MediaQuery.of(context).size.width;
+          return StatefulBuilder(builder: (context, setState) {
+            return Dialog(
+              backgroundColor: Colors.black87,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.15),
+                    Text(
+                      languagesTextsFile.texts["pop_up_dialog_unsaved"]!,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: screenHeight * 0.2),
+                    //Buttons
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        //Cancel button
+                        AnimatedScale(
+                          scale: _buttonAnimations["POPUP NO"]! ? 1.1 : 1.0,
+                          duration: const Duration(milliseconds: 100),
+                          curve: Curves.bounceOut,
+                          alignment: Alignment.center,
+                          child: GestureDetector(
+                            // Animation management
+                            onTapDown: (_) {
+                              setState(() {
+                                _buttonAnimations["POPUP NO"] = true;
+                              });
+                            },
+                            onTapUp: (_) {
+                              setState(() {
+                                _buttonAnimations["POPUP NO"] = false;
+                              });
+                              // BUTTON CODE
+                              Navigator.pop(context);
+                            },
+                            onTapCancel: () {
+                              setState(() {
+                                _buttonAnimations["POPUP NO"] = false;
+                              });
+                            },
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(60)),
+                                color: Colors.red,
+                              ),
+                              padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
+                              child: Text(
+                                languagesTextsFile.texts["pop_up_no"]!,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        //Blank space between the buttons
+                        SizedBox(width: screenWidth * 0.15),
+                        //Yes button
+                        AnimatedScale(
+                          scale: _buttonAnimations["POPUP YES"]! ? 1.1 : 1.0,
+                          duration: const Duration(milliseconds: 100),
+                          curve: Curves.bounceOut,
+                          alignment: Alignment.center,
+                          child: GestureDetector(
+                            // Animation management
+                            onTapDown: (_) {
+                              setState(() {
+                                _buttonAnimations["POPUP YES"] = true;
+                              });
+                            },
+                            onTapUp: (_) async {
+                              setState(() {
+                                _buttonAnimations["POPUP YES"] = false;
+                              });
+                              //Close the popup
+                              Navigator.pop(context);
+                              //Close the menu
+                              Navigator.pop(context);
+                            },
+                            onTapCancel: () {
+                              setState(() {
+                                _buttonAnimations["POPUP YES"] = false;
+                              });
+                            },
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(60)),
+                                color: Colors.lightGreen,
+                              ),
+                              padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
+                              child: Text(
+                                languagesTextsFile.texts["pop_up_yes"]!,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    SizedBox(height: screenHeight * 0.03),
+                  ],
+                ),
+              ),
+            );
+          });
+        });
+  }
+
+  ///Popup when the user try to quit without saving his modifications
+  void _showTextUnsavedHomeButton() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          double screenHeight = MediaQuery.of(context).size.height;
+          double screenWidth = MediaQuery.of(context).size.width;
+          return StatefulBuilder(builder: (context, setState) {
+            return Dialog(
+              backgroundColor: Colors.black87,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.15),
+                    Text(
+                      languagesTextsFile.texts["pop_up_dialog_unsaved"]!,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: screenHeight * 0.2),
+                    //Buttons
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        //Cancel button
+                        AnimatedScale(
+                          scale: _buttonAnimations["POPUP NO"]! ? 1.1 : 1.0,
+                          duration: const Duration(milliseconds: 100),
+                          curve: Curves.bounceOut,
+                          alignment: Alignment.center,
+                          child: GestureDetector(
+                            // Animation management
+                            onTapDown: (_) {
+                              setState(() {
+                                _buttonAnimations["POPUP NO"] = true;
+                              });
+                            },
+                            onTapUp: (_) {
+                              setState(() {
+                                _buttonAnimations["POPUP NO"] = false;
+                              });
+                              // BUTTON CODE
+                              Navigator.pop(context);
+                            },
+                            onTapCancel: () {
+                              setState(() {
+                                _buttonAnimations["POPUP NO"] = false;
+                              });
+                            },
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(60)),
+                                color: Colors.red,
+                              ),
+                              padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
+                              child: Text(
+                                languagesTextsFile.texts["pop_up_no"]!,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        //Blank space between the buttons
+                        SizedBox(width: screenWidth * 0.15),
+                        //Yes button
+                        AnimatedScale(
+                          scale: _buttonAnimations["POPUP YES"]! ? 1.1 : 1.0,
+                          duration: const Duration(milliseconds: 100),
+                          curve: Curves.bounceOut,
+                          alignment: Alignment.center,
+                          child: GestureDetector(
+                            // Animation management
+                            onTapDown: (_) {
+                              setState(() {
+                                _buttonAnimations["POPUP YES"] = true;
+                              });
+                            },
+                            onTapUp: (_) async {
+                              setState(() {
+                                _buttonAnimations["POPUP YES"] = false;
+                              });
+                              //Close the popup
+                              Navigator.popUntil(
+                                context,
+                                    (route) => route.isFirst,
+                              );
+                            },
+                            onTapCancel: () {
+                              setState(() {
+                                _buttonAnimations["POPUP YES"] = false;
+                              });
+                            },
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(60)),
+                                color: Colors.lightGreen,
+                              ),
+                              padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
+                              child: Text(
+                                languagesTextsFile.texts["pop_up_yes"]!,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+
                     SizedBox(height: screenHeight * 0.03),
                   ],
                 ),

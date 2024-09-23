@@ -44,7 +44,8 @@
     "pop_up_save_dialog_succes" : "Dialogue enregistré avec succès !",
     "pop_up_modify_dialog_succes" : "Dialogue modifié avec succès !",
     "pop_up_cant_save_theme" : "Impossible d'enregistrer un thème vide.",
-    "pop_up_save_theme" : "Thème enregistré avec succès !"
+    "pop_up_save_theme" : "Thème enregistré avec succès !",
+    "pop_up_dialog_unsaved" : "Voulez-vous vraiment quitter ?\nVous n'avez pas enregistré ce dialogue.\nSi vous souhaitez l'enregistrer,\ncliquez sur NON et Enregistrer nouveau."
   },
   "nl" : {
     "main_title" : "Hoofdmenu",
@@ -91,6 +92,8 @@
     "pop_up_save_dialog_succes" : "Dialoog succesvol opgeslaan !",
     "pop_up_modify_dialog_succes" : "Dialoogvenster succesvol gewijzigd !",
     "pop_up_cant_save_theme" : "Je kan geen leeg thema maken.",
-    "pop_up_save_theme" : "Thema succesvol opgeslaan !"
+    "pop_up_save_theme" : "Thema succesvol opgeslaan !",
+    "pop_up_dialog_unsaved" : "Weet je zeker dat je wilt afsluiten?\nJe hebt je dialoog niet opgeslagen.\nAls je deze wilt opslaan,\n klik dan nogmaals op NEEN en Opslaan."
+
   }
 }
