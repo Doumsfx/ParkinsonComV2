@@ -1015,8 +1015,8 @@ class _DialogPageState extends State<DialogPage> {
                                                                 _buttonAnimations["POPUP OK"] = false;
                                                               });
                                                               // BUTTON CODE
-                                                              Navigator.pop(context); //Quit popup
-                                                              Navigator.pop(context); //Get back to list
+                                                              Navigator.pop(context); // Quit popup
+                                                              Navigator.pop(context); // Get back to list
                                                             },
                                                             onTapCancel: () {
                                                               setState(() {
@@ -1345,7 +1345,8 @@ class _DialogPageState extends State<DialogPage> {
                                                               _buttonAnimations["POPUP OK"] = false;
                                                             });
                                                             // BUTTON CODE
-                                                            Navigator.pop(context);
+                                                            Navigator.pop(context); // Quit popup
+                                                            Navigator.pop(context); // Get back to list
                                                           },
                                                           onTapCancel: () {
                                                             setState(() {

@@ -27,7 +27,7 @@ void main() {
   ttsHandler.initTts();
 
   // Set the texts to the default language
-  languagesTextsFile.setNewLanguage("nl");
+  languagesTextsFile.setNewLanguage("fr");
 
   // We ensure that the phone preserve the landscape mode
   SystemChrome.setPreferredOrientations([
