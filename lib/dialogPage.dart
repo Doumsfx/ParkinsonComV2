@@ -3,6 +3,7 @@
 // ParkinsonCom V2
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:diacritic/diacritic.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -917,10 +918,20 @@ class _DialogPageState extends State<DialogPage> {
                                       //Retrieve the list of the themes for the actual language
                                       List<ThemeObject> themesList = await databaseManager.retrieveThemesFromLanguage(language);
 
+                                      // Sorting list in alphabetic order
+                                      themesList.sort((a, b) {
+                                        if (a.id_theme == idDialogWithoutTheme[language]) return -1;
+                                        if (b.id_theme == idDialogWithoutTheme[language]) return 1;
+                                        return removeDiacritics(a.title).compareTo(removeDiacritics(b.title));
+                                      });
+
                                       ThemeObject? selectedTheme = themesList[0];
                                       for (var t in themesList) {
                                         if (t.id_theme == widget.idTheme) selectedTheme = t;
                                       }
+
+
+
                                       //Popup for choosing a theme
                                       showDialog(
                                         context: context,
@@ -971,6 +982,7 @@ class _DialogPageState extends State<DialogPage> {
                                                                   ),
                                                                 );
                                                               }).toList(),
+
                                                             ),
                                                           ),
                                                         ),
@@ -1250,6 +1262,14 @@ class _DialogPageState extends State<DialogPage> {
                                   if (_controller.text.isNotEmpty) {
                                     //Retrieve the list of the themes for the actual language
                                     List<ThemeObject> themesList = await databaseManager.retrieveThemesFromLanguage(language);
+
+                                    // Sorting list in alphabetic order
+                                    themesList.sort((a, b) {
+                                      if (a.id_theme == idDialogWithoutTheme[language]) return -1;
+                                      if (b.id_theme == idDialogWithoutTheme[language]) return 1;
+                                      return removeDiacritics(a.title).compareTo(removeDiacritics(b.title));
+                                    });
+
                                     ThemeObject? selectedTheme = themesList[0];
                                     //Select by default the actual theme of the dialog
                                     for (var t in themesList) {

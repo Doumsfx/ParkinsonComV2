@@ -76,7 +76,11 @@ class _ListThemesPageState extends State<ListThemesPage> {
 
 
       // Sorting the list in alphabetic order
-      _listThemes.sort((a, b) => removeDiacritics(a.title).compareTo(removeDiacritics(b.title)));
+      _listThemes.sort((a, b) {
+        if (a.id_theme == idDialogWithoutTheme[language]) return -1;
+        if (b.id_theme == idDialogWithoutTheme[language]) return 1;
+        return removeDiacritics(a.title).compareTo(removeDiacritics(b.title));
+      });
       setState(() {});
     }
   }

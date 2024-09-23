@@ -8,15 +8,22 @@ bool azerty = true; // true: azerty | false: abcde
 String language = "fr"; // "fr" | "nl"
 ValueNotifier<bool> dialogPageState = ValueNotifier<bool>(false); // true: keyboard page | false: page without keyboard
 ValueNotifier<bool> newThemePageState = ValueNotifier<bool>(false); // true: keyboard page | false: page without keyboard
+final Map<String, int> idDialogWithoutTheme = {
+  "fr": 1,
+  "nl": 13,
+};
+
 
 // Databases
 DatabaseManager databaseManager = DatabaseManager();
 
-//TTS
+// TTS
 TtsHandler ttsHandler = TtsHandler();
 
-//Internet Checker
+// Internet Checker
 ValueNotifier<bool> isConnected = ValueNotifier<bool>(true);
 
-//Texts Manager
+// Texts Manager
 FileHandler languagesTextsFile = FileHandler();
+
+
