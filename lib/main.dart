@@ -272,9 +272,13 @@ class _HomePageState extends State<HomePage> {
                               print("HELLLLLLLLLLP");
 
                               setState(() {
-                                langFR = !langFR;
-                                ttsHandler.setVoiceFrOrNl(langFR ? 'fr' : 'nl', 'female');
-                                languagesTextsFile.setNewLanguage(langFR ? 'fr' : 'nl');
+                                if(language == "fr") {
+                                  language = "nl";
+                                } else {
+                                  language = "fr";
+                                }
+                                ttsHandler.setVoiceFrOrNl(language, 'female');
+                                languagesTextsFile.setNewLanguage(language);
                               });
                             },
                             onTapCancel: () {

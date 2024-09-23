@@ -44,7 +44,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
   final ScrollController _scrollController = ScrollController();
 
   Future<void> initialisation() async {
-    _listThemes = await databaseManager.retrieveThemesFromLanguage(langFR ? "fr" : "nl");
+    _listThemes = await databaseManager.retrieveThemesFromLanguage(language);
     setState(() {});
     _dialogsAnimations = List.filled(_listThemes.length, false);
     _deleteButtonsAnimations = List.filled(_listThemes.length, false);

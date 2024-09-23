@@ -22,10 +22,10 @@ class DialogPage extends StatefulWidget {
     Key? key,
     required this.idDialog,
     required this.initialTextDialog,
-    int? idTheme, // Nullable parameter
-  })  : idTheme = idTheme ?? (langFR ? 1 : 13),
-        //Default theme is 1 for French and 13 for Dutch
-        // Provide default value if null
+    int? idTheme,
+  })  :
+        //Default theme is 1 for French and 13 for Dutch, add other cases if you want more languages
+        idTheme = idTheme ?? (language == "fr" ? 1 : language == "nl" ? 13 : 1),
         super(key: key);
 
   @override
@@ -822,7 +822,7 @@ class _DialogPageState extends State<DialogPage> {
                                     //Empty dialog can't be saved
                                     if (_controller.text.isNotEmpty) {
                                       //Retrieve the list of the themes for the actual language
-                                      List<ThemeObject> themesList = await databaseManager.retrieveThemesFromLanguage(langFR ? 'fr' : 'nl');
+                                      List<ThemeObject> themesList = await databaseManager.retrieveThemesFromLanguage(language);
 
                                       ThemeObject? selectedTheme = themesList[0];
                                       for (var t in themesList) {
@@ -946,7 +946,7 @@ class _DialogPageState extends State<DialogPage> {
                                                                 onTapUp: (_) async {
                                                                   await databaseManager.insertDialog(DialogObject(
                                                                     sentence: _controller.text,
-                                                                    language: langFR ? "fr" : "nl",
+                                                                    language: language,
                                                                     id_theme: selectedTheme!.id_theme,
                                                                   ));
                                                                   //Display the confirmation of the saving
@@ -1156,7 +1156,7 @@ class _DialogPageState extends State<DialogPage> {
                                   //Can't save the modified dialog if it is empty
                                   if (_controller.text.isNotEmpty) {
                                     //Retrieve the list of the themes for the actual language
-                                    List<ThemeObject> themesList = await databaseManager.retrieveThemesFromLanguage(langFR ? 'fr' : 'nl');
+                                    List<ThemeObject> themesList = await databaseManager.retrieveThemesFromLanguage(language);
                                     ThemeObject? selectedTheme = themesList[0];
                                     //Select by default the actual theme of the dialog
                                     for (var t in themesList) {
@@ -1240,6 +1240,7 @@ class _DialogPageState extends State<DialogPage> {
                                                                 });
                                                                 // BUTTON CODE
                                                                 Navigator.pop(context);
+                                                                Navigator.pop(context);
                                                               },
                                                               onTapCancel: () {
                                                                 setState(() {
@@ -1282,7 +1283,7 @@ class _DialogPageState extends State<DialogPage> {
                                                                 await databaseManager.updateDialog(DialogObject(
                                                                   id_dialog: widget.idDialog,
                                                                   sentence: _controller.text,
-                                                                  language: langFR ? "fr" : "nl",
+                                                                  language: language,
                                                                   id_theme: selectedTheme!.id_theme,
                                                                 ));
                                                                 //Refresh the UI to display the success of modification

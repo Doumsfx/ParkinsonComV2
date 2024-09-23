@@ -18,7 +18,7 @@ class CustomKeyboard extends StatefulWidget {
     if (textPredictions.value) {
       predictionsHandler = PredictionsHandler(controller: controller, isFR: langFR);
     }*/
-    predictionsHandler = PredictionsHandler(controller: controller, isFR: langFR);
+    predictionsHandler = PredictionsHandler(controller: controller, prediLanguage: language);
   }
 
   @override

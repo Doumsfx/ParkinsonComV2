@@ -44,7 +44,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
   final ScrollController _scrollController = ScrollController();
 
   Future<void> initialisation() async {
-    _listDialogs = await databaseManager.retrieveDialogsFromLanguage(langFR ? "fr" : "nl");
+    _listDialogs = await databaseManager.retrieveDialogsFromLanguage(language);
     setState(() {});
     _dialogsAnimations = List.filled(_listDialogs.length, false);
     _deleteButtonsAnimations = List.filled(_listDialogs.length, false);

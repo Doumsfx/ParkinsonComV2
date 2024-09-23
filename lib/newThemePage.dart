@@ -298,7 +298,7 @@ class _NewThemePageState extends State<NewThemePage> {
                                     //Popup Theme added with success
                                     else {
                                       //Add the theme into the database
-                                      databaseManager.insertTheme(ThemeObject(title: _controller.text, language: langFR ? "fr" : "nl"));
+                                      databaseManager.insertTheme(ThemeObject(title: _controller.text, language: language));
 
                                       return StatefulBuilder(
                                         builder: (context, setState) {

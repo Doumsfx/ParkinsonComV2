@@ -5,7 +5,7 @@ import 'models/database/databasemanager.dart';
 
 // Global variables
 bool azerty = true; // true: azerty | false: abcde
-bool langFR = true; // true: FR     | false: NL
+String language = "fr"; // "fr" | "nl"
 ValueNotifier<bool> dialogPageState = ValueNotifier<bool>(false); // true: keyboard page | false: page without keyboard
 ValueNotifier<bool> newThemePageState = ValueNotifier<bool>(false); // true: keyboard page | false: page without keyboard
 

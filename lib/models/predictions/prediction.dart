@@ -12,21 +12,21 @@ import 'dico.dart';
 
 class PredictionsHandler {
   final TextEditingController controller;
-  bool isFR;
+  String prediLanguage;
   late ValueNotifier<List<String>> suggestedWordsList;
   late Dico _dictionnary;
 
   Timer? _debounce; //This will prevent the the predictions request to trigger twice (because of the controller and event listener)
 
-  PredictionsHandler({required this.controller, this.isFR = true}) {
+  PredictionsHandler({required this.controller, this.prediLanguage = "fr"}) {
     suggestedWordsList = ValueNotifier(List<String>.empty());
     controller.addListener(_onTextChanged);
     isConnected.addListener(_refreshPredictions);
     //Initialization with empty query for the starting words
     if (isConnected.value) {
-      if (isFR) {
+      if (prediLanguage == "fr") {
         predictFR(controller.text); //FR
-      } else {
+      } else if(prediLanguage == "nl") {
         initDicoNL(controller.text); //NL
       }
     }
@@ -44,9 +44,9 @@ class PredictionsHandler {
 
   void _refreshPredictions() {
     if (isConnected.value) {
-      if (isFR) {
+      if (prediLanguage == "fr") {
         predictFR(controller.text); //FR
-      } else {
+      } else if(prediLanguage == "nl"){
         initDicoNL(controller.text); //NL
       }
     }
@@ -62,9 +62,9 @@ class PredictionsHandler {
 
     //Prediction with empty sentence
     if (isConnected.value) {
-      if (isFR) {
+      if (prediLanguage == "fr") {
         predictFR(""); //FR
-      } else {
+      } else if(prediLanguage == "nl"){
         predictNL(""); //NL
       }
     }
@@ -86,9 +86,9 @@ class PredictionsHandler {
       if (_debounce?.isActive ?? false) _debounce?.cancel();
       _debounce = Timer(const Duration(milliseconds: 400), () {
         //Duration can be changed
-        if (isFR) {
+        if (prediLanguage == "fr") {
           predictFR(controller.text); //FR
-        } else {
+        } else if(prediLanguage == "nl"){
           predictNL(controller.text); //NL
         }
       });
