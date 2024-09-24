@@ -9,31 +9,34 @@ import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
 
 class EmailHandler {
-  late final SmtpServer smtpServer;
+  late SmtpServer _smtpServer;
 
   EmailHandler() {
-    smtpServer = SmtpServer("mail.infomaniak.com", username: dotenv.env["USERNAME"], password: dotenv.env["PASSWORD"]);
+    _smtpServer = SmtpServer("mail.infomaniak.com", username: dotenv.env["EMAIL_USERNAME"], password: dotenv.env["EMAIL_PASSWORD"]);
   }
 
-  Future<void> sendMessage(String recipient ,String content) async {
+  ///Send an e-mail to the [recipient] with a specific [content].
+  ///Return 0 if it is a success, -1 if there is an error with the e-mail, -2 if there is an error with the SMTP connection.
+  Future<int> sendMessage(String recipient, String content) async {
     try {
+      //Create the message
       final message = Message()
         ..from = const Address("recherche@parkinsoncom.eu","ParkinsonCom")
         ..recipients.add(recipient)
         ..subject = 'Mail de ParkinsonCom v2'
         ..text = content;
-
+      //Send the message
       try {
-        final sendReport = await send(message, smtpServer);
+        final sendReport = await send(message, _smtpServer);
         print('Message sent: ' + sendReport.toString());
+        return 1;
       } on MailerException catch (e) {
-        print('Message not sent.');
-        for (var p in e.problems) {
-          print('Problem: ${p.code}: ${p.msg}');
-        }
+        print('Message not sent. : $e');
+        return -1;
       }
     } on SocketException catch (e) {
       print('SMTP request failed, check your network restrictions : $e');
+      return -2;
     }
   }
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:parkinson_com_v2/models/emailhandler.dart';
 import 'package:parkinson_com_v2/models/fileHandler.dart';
 import 'models/ttshandler.dart';
 import 'models/database/databasemanager.dart';
@@ -25,5 +26,8 @@ ValueNotifier<bool> isConnected = ValueNotifier<bool>(true);
 
 // Texts Manager
 FileHandler languagesTextsFile = FileHandler();
+
+//E-Mail Handler
+EmailHandler emailHandler = EmailHandler();
 
 

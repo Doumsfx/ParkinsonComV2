@@ -1219,7 +1219,9 @@ class _DialogPageState extends State<DialogPage> {
                                       _buttonAnimations["SEND"] = false;
                                     });
                                     // BUTTON CODE
+                                    //todo change recipient + popup select user + popup based on the result + can't send empty dialog
                                     print("SENDDDDDDDDDDD");
+                                    emailHandler.sendMessage("alexis.pagnon@uphf.fr", _controller.text);
                                   },
                                   onTapCancel: () {
                                     setState(() {
