@@ -7,7 +7,7 @@ class Reminder {
   String title;
   String hour;
   bool ring; //In the database, true is 1 and 0 is false
-  String days;
+  String days; //String containing the list of days (example : 'Monday Friday Sunday') --> must be split later as a List if needed
 
   Reminder({required this.id_reminder, required this.title, required this.hour, required this.ring, required this.days});
 
