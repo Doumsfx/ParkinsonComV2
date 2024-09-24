@@ -1,6 +1,11 @@
+// Database Manager
+// Code by Pagnon Alexis and Sanchez Adam
+// ParkinsonCom V2
+
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
+import 'package:parkinson_com_v2/models/database/reminder.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'theme.dart';
@@ -44,7 +49,19 @@ class DatabaseManager {
             FOREIGN KEY (id_theme) REFERENCES Theme (id_theme) ON DELETE CASCADE
             );
           """);
+    /*Insert Default French and Dutch Themes and Dialogs*/
     await insertDefaultThemesAndDialogs(database);
+
+    /*Creation of the Reminder table*/
+    await database.execute("""
+            CREATE TABLE IF NOT EXISTS Reminder(
+            id_reminder INTEGER PRIMARY KEY,
+            title TEXT,
+            hour TIME,
+            ring BOOL,
+            days TEXT
+            );
+          """);
   }
 
   ///Enable Foreign Keys
@@ -175,6 +192,47 @@ class DatabaseManager {
         }
       }
     }
+  }
+
+
+  /* CRUD Reminder */
+  ///Insert a [Reminder] into the database
+  ///(the id_reminder  will be replaced by the autoincrement)
+  Future<int> insertReminder(Reminder reminder) async {
+    int result = await db.insert('Reminder', reminder.toMap());
+    return result;
+  }
+
+  ///Update a [theme] of the database (updating requires the right id_theme)
+  Future<int> updateReminder(Reminder reminder) async {
+    int result = await db.update(
+      'Reminder',
+      reminder.toMap(),
+      where: "id_reminder = ?",
+      whereArgs: [reminder.id_reminder],
+    );
+    return result;
+  }
+
+  ///Retrieve the list of ThemeObject from the database
+  Future<List<Reminder>> retrieveReminders() async {
+    final List<Map<String, Object?>> queryResult = await db.query('Reminder');
+    return queryResult.map((e) => Reminder.fromMap(e)).toList();
+  }
+
+  ///Retrieve a specific ThemeObject from the database using its [id]
+  Future<Reminder> retrieveReminderFromId(int id) async {
+    final List<Map<String, Object?>> queryResult = await db.query('Reminder', where: "id_reminder = ?", whereArgs: [id]);
+    return Reminder.fromMap(queryResult[0]);
+  }
+
+  ///Delete the Reminder with the [id] from the database
+  Future<void> deleteReminder(int id) async {
+    await db.delete(
+      'Reminder',
+      where: "id_reminder = ?",
+      whereArgs: [id],
+    );
   }
 
   factory DatabaseManager() {

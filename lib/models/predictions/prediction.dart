@@ -1,3 +1,7 @@
+// Predictions Manager
+// Code by Pagnon Alexis and Sanchez Adam
+// ParkinsonCom V2
+
 import 'dart:collection';
 import 'dart:convert';
 import 'dart:async';

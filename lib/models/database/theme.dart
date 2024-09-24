@@ -1,3 +1,7 @@
+// ThemeObject Class
+// Code by Pagnon Alexis and Sanchez Adam
+// ParkinsonCom V2
+
 class ThemeObject {
   int id_theme;
   String title;

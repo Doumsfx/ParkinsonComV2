@@ -1,3 +1,7 @@
+// Dico and DicoElement Classes
+// Code by Pagnon Alexis and Sanchez Adam
+// ParkinsonCom V2
+
 import 'dart:convert';
 
 class Dico {
