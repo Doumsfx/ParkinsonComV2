@@ -930,8 +930,6 @@ class _DialogPageState extends State<DialogPage> {
                                         if (t.id_theme == widget.idTheme) selectedTheme = t;
                                       }
 
-
-
                                       //Popup for choosing a theme
                                       showDialog(
                                         context: context,
@@ -1165,7 +1163,7 @@ class _DialogPageState extends State<DialogPage> {
                                       });
                                     } else {
                                       //Popup can't save an empty dialog
-                                      _showDialogEmptyText();
+                                      _showGenericPopupOK(languagesTextsFile.texts["pop_up_cant_save_dialog"]!);
                                     }
                                   },
                                   onTapCancel: () {
@@ -1214,14 +1212,29 @@ class _DialogPageState extends State<DialogPage> {
                                       _buttonAnimations["SEND"] = true;
                                     });
                                   },
-                                  onTapUp: (_) {
+                                  onTapUp: (_) async {
                                     setState(() {
                                       _buttonAnimations["SEND"] = false;
                                     });
                                     // BUTTON CODE
-                                    //todo change recipient + popup select user + popup based on the result + can't send empty dialog
+                                    //todo change recipient + popup select user
                                     print("SENDDDDDDDDDDD");
-                                    emailHandler.sendMessage("alexis.pagnon@uphf.fr", _controller.text);
+
+                                    if (_controller.text.isNotEmpty) {
+                                      String content = "\n\n${_controller.text}\n\n";
+                                      final result = await emailHandler.sendMessage("alexis.pagnon@uphf.fr", content);
+                                      if(result == 1) {
+                                        //TODO Set the right contact name in parameters
+                                        String contactName = "Pagnon Alexis";
+                                        _showGenericPopupOK("${languagesTextsFile.texts["pop_up_message_sended"]!}\n$contactName");
+                                      }
+                                      else if(result < 0) {
+                                        _showGenericPopupOK(languagesTextsFile.texts["popup_message_send_fail"]!);
+                                      }
+                                    }
+                                    else {
+                                      _showGenericPopupOK(languagesTextsFile.texts["pop_up_cant_send_empty_msg"]!);
+                                    }
                                   },
                                   onTapCancel: () {
                                     setState(() {
@@ -1514,7 +1527,8 @@ class _DialogPageState extends State<DialogPage> {
                                       }
                                     });
                                   } else {
-                                    _showDialogEmptyText();
+                                    //Popup can't save an empty dialog
+                                    _showGenericPopupOK(languagesTextsFile.texts["pop_up_cant_save_dialog"]!);
                                   }
                                 },
                                 onTapCancel: () {
@@ -1553,77 +1567,6 @@ class _DialogPageState extends State<DialogPage> {
             );
           }),
     );
-  }
-
-  ///Show a popup to inform that you can't save an empty dialog
-  void _showDialogEmptyText() {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          double screenHeight = MediaQuery.of(context).size.height;
-          double screenWidth = MediaQuery.of(context).size.width;
-          return StatefulBuilder(builder: (context, setState) {
-            return Dialog(
-              backgroundColor: Colors.black87,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.15),
-                    Text(
-                      languagesTextsFile.texts["pop_up_cant_save_dialog"]!,
-                      style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: screenHeight * 0.2),
-                    //Button to quit
-                    AnimatedScale(
-                      scale: _buttonAnimations["POPUP OK"]! ? 1.1 : 1.0,
-                      duration: const Duration(milliseconds: 100),
-                      curve: Curves.bounceOut,
-                      child: GestureDetector(
-                        // Animation management
-                        onTapDown: (_) {
-                          setState(() {
-                            _buttonAnimations["POPUP OK"] = true;
-                          });
-                        },
-                        onTapUp: (_) {
-                          setState(() {
-                            _buttonAnimations["POPUP OK"] = false;
-                          });
-                          // BUTTON CODE
-                          Navigator.pop(context);
-                        },
-                        onTapCancel: () {
-                          setState(() {
-                            _buttonAnimations["POPUP OK"] = false;
-                          });
-                        },
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(60)),
-                            color: Colors.lightGreen,
-                          ),
-                          padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
-                          child: Text(
-                            languagesTextsFile.texts["pop_up_ok"]!,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: screenHeight * 0.03),
-                  ],
-                ),
-              ),
-            );
-          });
-        });
   }
 
   ///Popup when the user try to quit without saving his modifications
@@ -1878,4 +1821,236 @@ class _DialogPageState extends State<DialogPage> {
           });
         });
   }
+
+  ///Generic popup to display a specific [text] from the JSON and with an "OK" button
+  void _showGenericPopupOK(String text) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          double screenHeight = MediaQuery.of(context).size.height;
+          double screenWidth = MediaQuery.of(context).size.width;
+          return StatefulBuilder(builder: (context, setState) {
+            return Dialog(
+              backgroundColor: Colors.black87,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.15),
+                    Text(
+                      text,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: screenHeight * 0.2),
+                    //Button to quit
+                    AnimatedScale(
+                      scale: _buttonAnimations["POPUP OK"]! ? 1.1 : 1.0,
+                      duration: const Duration(milliseconds: 100),
+                      curve: Curves.bounceOut,
+                      child: GestureDetector(
+                        // Animation management
+                        onTapDown: (_) {
+                          setState(() {
+                            _buttonAnimations["POPUP OK"] = true;
+                          });
+                        },
+                        onTapUp: (_) {
+                          setState(() {
+                            _buttonAnimations["POPUP OK"] = false;
+                          });
+                          // BUTTON CODE
+                          Navigator.pop(context);
+                        },
+                        onTapCancel: () {
+                          setState(() {
+                            _buttonAnimations["POPUP OK"] = false;
+                          });
+                        },
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(60)),
+                            color: Colors.lightGreen,
+                          ),
+                          padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
+                          child: Text(
+                            languagesTextsFile.texts["pop_up_ok"]!,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: screenHeight * 0.03),
+                  ],
+                ),
+              ),
+            );
+          });
+        });
+  }
+
+  //TODO
+  /*
+  ///Popup that display the list of contact and let choose to who we are sending the message
+  void _showContactList() {
+    ///todo get contact list + init slectedContact
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // Use StatefulBuilder to manage the state inside the dialog
+        return StatefulBuilder(
+          builder: (context, setState) {
+            double screenHeight = MediaQuery.of(context).size.height;
+            double screenWidth = MediaQuery.of(context).size.width;
+              return Dialog(
+                backgroundColor: Colors.black87,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  // Optional padding for aesthetics
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    // Ensures the dialog is as small as needed
+                    children: [
+                      // Title for theme selection
+                      Text(
+                        languagesTextsFile.texts["pop_up_contact_send"]!,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: screenHeight * 0.1),
+                      // Dropdown menu for themes
+                      Container(
+                        color: Colors.amber,
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton2<Contact>(
+                            value: selectedContact,
+                            dropdownStyleData: DropdownStyleData(
+                              maxHeight: screenHeight * 0.35,
+                              decoration: const BoxDecoration(color: Colors.amber),
+                            ),
+                            style: const TextStyle(color: Color.fromRGBO(65, 65, 65, 1), fontWeight: FontWeight.bold, fontSize: 20),
+                            onChanged: (Contact? newValue) {
+                              setState(() {
+                                selectedContact = newValue; // Update the selected theme
+                              });
+                            },
+                            items: selectedContact.map((Contact contact) {
+                              return DropdownMenuItem<Contact>(
+                                value: contact,
+                                child: Text(
+                                  "${contact.family_name} ${contact.first_name}",
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: screenHeight * 0.2),
+                      //Buttons to cancel and validate
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          //Cancel button
+                          AnimatedScale(
+                            scale: _buttonAnimations["POPUP NO"]! ? 1.1 : 1.0,
+                            duration: const Duration(milliseconds: 100),
+                            curve: Curves.bounceOut,
+                            alignment: Alignment.center,
+                            child: GestureDetector(
+                              // Animation management
+                              onTapDown: (_) {
+                                setState(() {
+                                  _buttonAnimations["POPUP NO"] = true;
+                                });
+                              },
+                              onTapUp: (_) {
+                                setState(() {
+                                  _buttonAnimations["POPUP NO"] = false;
+                                });
+                                // BUTTON CODE
+                                Navigator.pop(context);
+                              },
+                              onTapCancel: () {
+                                setState(() {
+                                  _buttonAnimations["POPUP NO"] = false;
+                                });
+                              },
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular(60)),
+                                  color: Colors.red,
+                                ),
+                                padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
+                                child: Text(
+                                  languagesTextsFile.texts["pop_up_cancel"]!,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          //Blank space between the buttons
+                          SizedBox(width: screenWidth * 0.15),
+                          //Validate button
+                          AnimatedScale(
+                            scale: _buttonAnimations["POPUP YES"]! ? 1.1 : 1.0,
+                            duration: const Duration(milliseconds: 100),
+                            curve: Curves.bounceOut,
+                            alignment: Alignment.center,
+                            child: GestureDetector(
+                              // Animation management
+                              onTapDown: (_) {
+                                setState(() {
+                                  _buttonAnimations["POPUP YES"] = true;
+                                });
+                              },
+                              onTapUp: (_) async {
+                                //TODO Send msg to selectedContact
+
+                              },
+                              onTapCancel: () {
+                                setState(() {
+                                  _buttonAnimations["POPUP YES"] = false;
+                                });
+                              },
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular(60)),
+                                  color: Colors.lightGreen,
+                                ),
+                                padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
+                                child: Text(
+                                  languagesTextsFile.texts["pop_up_validate"]!,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: screenHeight * 0.03),
+                    ],
+                  ),
+                ),
+              );
+
+            },
+        );
+        },
+    );
+  }
+
+   */
 }

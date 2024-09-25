@@ -27,8 +27,8 @@ class EmailHandler {
         ..text = content;
       //Send the message
       try {
-        final sendReport = await send(message, _smtpServer);
-        print('Message sent: ' + sendReport.toString());
+        final sendReport = await send(message, _smtpServer, timeout: const Duration(seconds: 10));
+        print('Message sent: $sendReport');
         return 1;
       } on MailerException catch (e) {
         print('Message not sent. : $e');

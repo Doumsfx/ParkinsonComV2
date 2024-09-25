@@ -45,7 +45,11 @@
     "pop_up_modify_dialog_succes" : "Dialogue modifié avec succès !",
     "pop_up_cant_save_theme" : "Impossible d'enregistrer un thème vide.",
     "pop_up_save_theme" : "Thème enregistré avec succès !",
-    "pop_up_dialog_unsaved" : "Voulez-vous vraiment quitter ?\nVous n'avez pas enregistré ce dialogue.\nSi vous souhaitez l'enregistrer,\ncliquez sur NON et Enregistrer nouveau."
+    "pop_up_dialog_unsaved" : "Voulez-vous vraiment quitter ?\nVous n'avez pas enregistré ce dialogue.\nSi vous souhaitez l'enregistrer,\ncliquez sur NON et Enregistrer nouveau.",
+    "popup_message_send_fail" : "Une erreur est survenue lors de l'envoie du message.",
+    "pop_up_message_sended" : "Votre message a été envoyé avec succès à ",
+    "pop_up_cant_send_empty_msg" : "Vous ne pouvez pas envoyer un message vide !",
+    "pop_up_contact_send" : "Veuillez choisir la personne à contacter :"
   },
   "nl" : {
     "main_title" : "Hoofdmenu",
@@ -93,7 +97,10 @@
     "pop_up_modify_dialog_succes" : "Dialoogvenster succesvol gewijzigd !",
     "pop_up_cant_save_theme" : "Je kan geen leeg thema maken.",
     "pop_up_save_theme" : "Thema succesvol opgeslaan !",
-    "pop_up_dialog_unsaved" : "Weet je zeker dat je wilt afsluiten?\nJe hebt je dialoog niet opgeslagen.\nAls je deze wilt opslaan,\n klik dan nogmaals op NEEN en Opslaan."
-
+    "pop_up_dialog_unsaved" : "Weet je zeker dat je wilt afsluiten?\nJe hebt je dialoog niet opgeslagen.\nAls je deze wilt opslaan,\n klik dan nogmaals op NEEN en Opslaan.",
+    "popup_message_send_fail" : "Er is een fout opgetreden tijdens het verzenden van het bericht.",
+    "pop_up_message_sended" : "Jouw bericht is succesvol verzonden naar ",
+    "pop_up_cant_send_empty_msg" : "Je kunt geen leeg bericht sturen!",
+    "pop_up_contact_send" : "Kies de persoon met wie u contact wilt opnemen:"
   }
 }
