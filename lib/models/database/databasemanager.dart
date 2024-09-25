@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:parkinson_com_v2/models/database/reminder.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'contact.dart';
 import 'theme.dart';
 import 'dialog.dart';
 
@@ -62,6 +63,21 @@ class DatabaseManager {
             days TEXT
             );
           """);
+
+    /*Creation of the Contact table*/
+    await database.execute("""
+            CREATE TABLE IF NOT EXISTS Contact(
+            id_contact INTEGER PRIMARY KEY,
+            last_name TEXT,
+            first_name TEXT,
+            email TEXT,
+            phone TEXT,
+            priority INTEGER
+            );
+          """);
+
+    //todo delete this
+    await _insertContacts(database);
   }
 
   ///Enable Foreign Keys
@@ -203,7 +219,7 @@ class DatabaseManager {
     return result;
   }
 
-  ///Update a [theme] of the database (updating requires the right id_theme)
+  ///Update a [reminder] of the database (updating requires the right id_reminder)
   Future<int> updateReminder(Reminder reminder) async {
     int result = await db.update(
       'Reminder',
@@ -214,13 +230,13 @@ class DatabaseManager {
     return result;
   }
 
-  ///Retrieve the list of ThemeObject from the database
+  ///Retrieve the list of Reminder from the database
   Future<List<Reminder>> retrieveReminders() async {
     final List<Map<String, Object?>> queryResult = await db.query('Reminder');
     return queryResult.map((e) => Reminder.fromMap(e)).toList();
   }
 
-  ///Retrieve a specific ThemeObject from the database using its [id]
+  ///Retrieve a specific Reminder from the database using its [id]
   Future<Reminder> retrieveReminderFromId(int id) async {
     final List<Map<String, Object?>> queryResult = await db.query('Reminder', where: "id_reminder = ?", whereArgs: [id]);
     return Reminder.fromMap(queryResult[0]);
@@ -235,7 +251,54 @@ class DatabaseManager {
     );
   }
 
+  /* CRUD Contact */
+  ///Insert a [Contact] into the database
+  ///(the id_contact  will be replaced by the autoincrement)
+  Future<int> insertContact(Contact contact) async {
+    int result = await db.insert('Contact', contact.toMap());
+    return result;
+  }
+
+  ///Update a [contact] of the database (updating requires the right id_contact)
+  Future<int> updateContact(Contact contact) async {
+    int result = await db.update(
+      'Contact',
+      contact.toMap(),
+      where: "id_contact = ?",
+      whereArgs: [contact.id_contact],
+    );
+    return result;
+  }
+
+  ///Retrieve the list of Contact from the database
+  Future<List<Contact>> retrieveContacts() async {
+    final List<Map<String, Object?>> queryResult = await db.query('Contact');
+    return queryResult.map((e) => Contact.fromMap(e)).toList();
+  }
+
+  ///Retrieve a specific Contact from the database using its [id]
+  Future<Contact> retrieveContactFromId(int id) async {
+    final List<Map<String, Object?>> queryResult = await db.query('Contact', where: "id_contact = ?", whereArgs: [id]);
+    return Contact.fromMap(queryResult[0]);
+  }
+
+  ///Delete the Contact with the [id] from the database
+  Future<void> deleteContact(int id) async {
+    await db.delete(
+      'Contact',
+      where: "id_contact = ?",
+      whereArgs: [id],
+    );
+  }
+
   factory DatabaseManager() {
     return _databaseManager;
+  }
+
+
+  //todo delete this
+  Future<void> _insertContacts(Database database) async {
+    await database.insert('Contact', {'last_name' : 'Sanchez', 'first_name' : 'Adam', 'email' : 'adam.sanchez@uphf.fr', 'priority' : 2});
+    await database.insert('Contact', {'last_name' : 'Pagnon', 'first_name' : 'Alexis', 'email' : 'alexis.pagnon@uphf.fr', 'priority' : 1});
   }
 }

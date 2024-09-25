@@ -11,6 +11,7 @@ import 'package:parkinson_com_v2/customShape.dart';
 import 'package:parkinson_com_v2/keyboard.dart';
 import 'package:parkinson_com_v2/variables.dart';
 
+import 'models/database/contact.dart';
 import 'models/database/dialog.dart';
 import 'models/database/theme.dart';
 
@@ -1219,22 +1220,9 @@ class _DialogPageState extends State<DialogPage> {
                                     // BUTTON CODE
                                     //todo change recipient + popup select user
                                     print("SENDDDDDDDDDDD");
+                                    _showContactList();
 
-                                    if (_controller.text.isNotEmpty) {
-                                      String content = "\n\n${_controller.text}\n\n";
-                                      final result = await emailHandler.sendMessage("alexis.pagnon@uphf.fr", content);
-                                      if(result == 1) {
-                                        //TODO Set the right contact name in parameters
-                                        String contactName = "Pagnon Alexis";
-                                        _showGenericPopupOK("${languagesTextsFile.texts["pop_up_message_sended"]!}\n$contactName");
-                                      }
-                                      else if(result < 0) {
-                                        _showGenericPopupOK(languagesTextsFile.texts["popup_message_send_fail"]!);
-                                      }
-                                    }
-                                    else {
-                                      _showGenericPopupOK(languagesTextsFile.texts["pop_up_cant_send_empty_msg"]!);
-                                    }
+
                                   },
                                   onTapCancel: () {
                                     setState(() {
@@ -1894,11 +1882,20 @@ class _DialogPageState extends State<DialogPage> {
         });
   }
 
-  //TODO
-  /*
+
   ///Popup that display the list of contact and let choose to who we are sending the message
-  void _showContactList() {
-    ///todo get contact list + init slectedContact
+  void _showContactList() async {
+    //Get contact list
+    List<Contact> contactsList = await databaseManager.retrieveContacts();
+    Contact? selectedContact = contactsList[0];
+    //Set directly on the principal contact
+    for(var c in contactsList) {
+      if(c.priority == 1) {
+        selectedContact = c;
+        break;
+      }
+    }
+    //Popup to choose the contact
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -1936,14 +1933,15 @@ class _DialogPageState extends State<DialogPage> {
                             style: const TextStyle(color: Color.fromRGBO(65, 65, 65, 1), fontWeight: FontWeight.bold, fontSize: 20),
                             onChanged: (Contact? newValue) {
                               setState(() {
-                                selectedContact = newValue; // Update the selected theme
+                                selectedContact = newValue; // Update the selected contact
                               });
                             },
-                            items: selectedContact.map((Contact contact) {
+                            items: contactsList.map((Contact contact) {
                               return DropdownMenuItem<Contact>(
                                 value: contact,
                                 child: Text(
-                                  "${contact.family_name} ${contact.first_name}",
+                                  //Show "(last name) (first name) - (method for contacting)"
+                                  "${contact.last_name} ${contact.first_name} - ${contact.email != null ? languagesTextsFile.texts["list_contacts_mail"]! : languagesTextsFile.texts["list_contacts_phone"]!}",
                                 ),
                               );
                             }).toList(),
@@ -2013,7 +2011,33 @@ class _DialogPageState extends State<DialogPage> {
                                 });
                               },
                               onTapUp: (_) async {
-                                //TODO Send msg to selectedContact
+                                //Send message to selectedContact
+                                Navigator.of(context).pop();
+                                if (_controller.text.isNotEmpty) {
+                                  //Send an E-Mail
+                                  if (selectedContact!.email != null) {
+                                    String content = "${languagesTextsFile.texts["mail_body_1"]!} ${selectedContact!.first_name}, ${selectedContact!.email}\n\n${_controller.text}\n\n${languagesTextsFile.texts["mail_body_2"]!} ${selectedContact!.email} ${languagesTextsFile.texts["mail_body_3"]!}";
+                                    final result = await emailHandler.sendMessage(selectedContact!.email!, content);
+                                    if(result == 1) {
+                                      String contactName = "${selectedContact!.last_name} ${selectedContact!.first_name}";
+                                      if(mounted) { //Protect from trying to display the popup when the context has changed (ex : going back to the menu)
+                                        _showGenericPopupOK("${languagesTextsFile.texts["pop_up_message_sended"]!}\n$contactName");
+                                      }
+                                    }
+                                    else if(result < 0) {
+                                      if (mounted) { //Protect from trying to display the popup when the context has changed (ex : going back to the menu)
+                                        _showGenericPopupOK(languagesTextsFile.texts["popup_message_send_fail"]!);
+                                      }
+                                    }
+                                  }
+                                  //Send a SMS
+                                  else if(selectedContact!.phone != null) {
+                                    //todo send sms
+                                  }
+                                }
+                                else {
+                                  _showGenericPopupOK(languagesTextsFile.texts["pop_up_cant_send_empty_msg"]!);
+                                }
 
                               },
                               onTapCancel: () {
@@ -2052,5 +2076,5 @@ class _DialogPageState extends State<DialogPage> {
     );
   }
 
-   */
+
 }
