@@ -197,6 +197,7 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
       setState(() {
         dialogPageState.value = false;
         newThemePageState.value = false;
+        newReminderPageState.value = false;
       });
     }
 

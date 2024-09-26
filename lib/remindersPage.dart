@@ -1,30 +1,29 @@
-// List of dialogs Page
+// List of dialogs filtered by themes Page
 // Code by Alexis Pagnon and Sanchez Adam
 // ParkinsonCom V2
 
 import 'dart:async';
 
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:parkinson_com_v2/customShapeThemes.dart';
-import 'package:parkinson_com_v2/customTitle.dart';
-import 'package:parkinson_com_v2/listThemesPage.dart';
+import 'package:parkinson_com_v2/customRemindersTitle.dart';
+import 'package:parkinson_com_v2/newReminderPage.dart';
 import 'package:parkinson_com_v2/variables.dart';
-import 'package:parkinson_com_v2/dialogPage.dart';
 
 import 'models/database/dialog.dart';
 
-class ListDialogsPage extends StatefulWidget {
-  const ListDialogsPage({super.key});
+class RemindersPage extends StatefulWidget {
+  const RemindersPage({super.key});
 
   @override
-  State<ListDialogsPage> createState() => _ListDialogsPageState();
+  State<RemindersPage> createState() => _RemindersPageState();
 }
 
-class _ListDialogsPageState extends State<ListDialogsPage> {
+class _RemindersPageState extends State<RemindersPage> {
   // Useful variables
   final Map<String, bool> _buttonAnimations = {
-    "NEW DIALOG": false,
+    "NEW REMINDER": false,
     "THEMES": false,
     "DIALOGS": false,
     "BACK ARROW": false,
@@ -38,13 +37,22 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
   };
 
   List<DialogObject> _listDialogs = [];
+  String selectedThemeTitle = "";
   late List<bool> _dialogsAnimations;
   late List<bool> _deleteButtonsAnimations;
   late List<bool> _ttsButtonsAnimations;
   final ScrollController _scrollController = ScrollController();
 
+  var battery = Battery();
+  int batteryLevel = 0;
+  late Timer timer;
+  var timeAndDate = DateTime.now();
+
   Future<void> initialisation() async {
-    _listDialogs = await databaseManager.retrieveDialogsFromLanguage(language);
+
+    batteryLevel = await battery.batteryLevel;
+
+    _listDialogs = await databaseManager.retrieveDialogs();
     setState(() {});
     _dialogsAnimations = List.filled(_listDialogs.length, false);
     _deleteButtonsAnimations = List.filled(_listDialogs.length, false);
@@ -64,6 +72,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
         } else {
           endIndex = i;
           secondPart = _listDialogs.sublist(0, endIndex + 1);
+
           break;
         }
       }
@@ -72,17 +81,41 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
       _listDialogs = [];
       _listDialogs = firstPart + secondPart;
       setState(() {});
+      print(firstPart[0].id_theme);
+      print(firstPart[1].id_theme);
     }
+  }
+
+  String formatWithTwoDigits(int number) {
+    return number.toString().padLeft(2, '0');
   }
 
   @override
   void initState() {
-    // Initialisation of our variables
-    initialisation();
     super.initState();
+    // Initialisation de nos variables
+    initialisation();
+
+    timer = Timer.periodic(const Duration(seconds: 1), (_) async {
+      int newBatteryLevel = await battery.batteryLevel;
+      DateTime newTimeAndDate = DateTime.now();
+
+      // Update of our variables
+      setState(() {
+        batteryLevel = newBatteryLevel;
+        timeAndDate = newTimeAndDate;
+      });
+    });
+
   }
 
-  ///Used to refresh the UI from the StatefulBuilder
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
+  }
+
+  /// Used to refresh the UI from the StatefulBuilder
   void _updateParent() {
     setState(() {});
   }
@@ -106,184 +139,148 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Back Arrow
-                        Container(
-                          margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.013, MediaQuery.of(context).size.width * 0.02, 0),
-                          child: AnimatedScale(
-                            scale: _buttonAnimations["BACK ARROW"]! ? 1.1 : 1.0,
-                            duration: const Duration(milliseconds: 100),
-                            curve: Curves.bounceOut,
-                            child: GestureDetector(
-                              onTapDown: (_) {
-                                setState(() {
-                                  _buttonAnimations["BACK ARROW"] = true;
-                                });
-                              },
-                              onTapUp: (_) {
-                                setState(() {
-                                  _buttonAnimations["BACK ARROW"] = false;
-                                });
-                                Navigator.popUntil(
-                                  context,
-                                  (route) => route.isFirst,
-                                );
-                              },
-                              onTapCancel: () {
-                                setState(() {
-                                  _buttonAnimations["BACK ARROW"] = false;
-                                });
-                              },
-                              child: Image.asset(
-                                "assets/fleche.png",
-                                height: MediaQuery.of(context).size.width * 0.05,
-                                width: MediaQuery.of(context).size.width * 0.07,
-                              ),
-                            ),
-                          ),
-                        ),
 
-                        // Title + Themes
                         SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.35,
-                          width: MediaQuery.of(context).size.width * 0.835,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // Title
-                              Container(
-                                margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.19, MediaQuery.of(context).size.height / 16, 0, MediaQuery.of(context).size.height * 0.07),
-                                child: CustomTitle(
-                                  text: languagesTextsFile.texts["dialog_list_title"]!,
-                                  image: 'assets/themeIcon.png',
-                                  imageScale: 1,
-                                  backgroundColor: Colors.white,
-                                  textColor: const Color.fromRGBO(29, 52, 83, 1),
-                                ),
-                              ),
+                            width: MediaQuery.of(context).size.width * 0.24,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Back Arrow
+                                Container(
+                                  margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.013, MediaQuery.of(context).size.width * 0.02, 0),
+                                  child: AnimatedScale(
+                                    scale: _buttonAnimations["BACK ARROW"]! ? 1.1 : 1.0,
+                                    duration: const Duration(milliseconds: 100),
+                                    curve: Curves.bounceOut,
+                                    child: GestureDetector(
+                                      onTapDown: (_) {
+                                        setState(() {
+                                          _buttonAnimations["BACK ARROW"] = true;
+                                        });
+                                      },
+                                      onTapUp: (_) {
+                                        setState(() {
+                                          _buttonAnimations["BACK ARROW"] = false;
+                                        });
 
-                              // See themes Button
-                              AnimatedScale(
-                                scale: _buttonAnimations["THEMES"] == true ? 1.1 : 1.0,
-                                duration: const Duration(milliseconds: 100),
-                                curve: Curves.bounceOut,
-                                alignment: Alignment.centerRight,
-                                child: GestureDetector(
-                                  // Animation management
-                                  onTapDown: (_) {
-                                    setState(() {
-                                      _buttonAnimations["THEMES"] = true;
-                                    });
-                                  },
-                                  onTapUp: (_) {
-                                    setState(() {
-                                      _buttonAnimations["THEMES"] = false;
-                                    });
-                                    // BUTTON CODE
-                                    print("THEMESSS");
-                                    Navigator.push(
-                                      context,
-                                      PageRouteBuilder(
-                                        pageBuilder: (context, animation, secondaryAnimation) => const ListThemesPage(),
-                                        transitionDuration: const Duration(milliseconds: 100),
-                                        reverseTransitionDuration: const Duration(milliseconds: 100),
+                                        // Button code
+                                        Navigator.pop(
+                                          context,
+                                        );
+                                      },
+                                      onTapCancel: () {
+                                        setState(() {
+                                          _buttonAnimations["BACK ARROW"] = false;
+                                        });
+                                      },
+                                      child: Image.asset(
+                                        "assets/fleche.png",
+                                        height: MediaQuery.of(context).size.width * 0.05,
+                                        width: MediaQuery.of(context).size.width * 0.07,
                                       ),
-                                    );
-                                  },
-                                  onTapCancel: () {
-                                    setState(() {
-                                      _buttonAnimations["THEMES"] = false;
-                                    });
-                                  },
-                                  child: Container(
-                                    margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.40, 0, 0, 0),
-                                    child: CustomShapeThemes(
-                                      text: languagesTextsFile.texts["dialog_list_theme"]!,
-                                      image: 'assets/doubleFleche.png',
-                                      backgroundColor: const Color.fromRGBO(78, 237, 255, 1),
-                                      textColor: Colors.black,
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
+
+                                // Date
+                                Container(
+                                  margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.03, MediaQuery.of(context).size.height * 0.02, 0, 0),
+                                  child: Text(
+                                    "${formatWithTwoDigits(timeAndDate.day)}/${formatWithTwoDigits(timeAndDate.month)}/${timeAndDate.year}",
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w800,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ),
+
+                                // Time
+                                Container(
+                                  margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.03, 0, 0, 0),
+                                  child: Text(
+                                    "${formatWithTwoDigits(timeAndDate.hour)}:${formatWithTwoDigits(timeAndDate.minute)}:${formatWithTwoDigits(timeAndDate.second)}",
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w800,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )),
+
+                        // Title
+                        Container(
+                          margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.015, MediaQuery.of(context).size.height / 16, MediaQuery.of(context).size.width * 0.04, 0),
+                          child: CustomRemindersTitle(
+                            text: languagesTextsFile.texts["reminders_title"]!,
+                            image: 'assets/horloge.png',
+                            imageScale: 0.2,
+                            backgroundColor: Colors.white,
+                            textColor: const Color.fromRGBO(234, 104, 104, 1),
+                            width: MediaQuery.of(context).size.width * 0.63,
                           ),
                         ),
                       ],
                     ),
 
-                    // Text + Button
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.835,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Text
-                          Container(
-                            margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.04, 0, 0, MediaQuery.of(context).size.height * 0.02),
-                            child: Text(
-                              languagesTextsFile.texts["dialog_list_name"]!,
-                              style: GoogleFonts.josefinSans(
-                                fontSize: 18,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700,
-                                decoration: TextDecoration.underline,
-                                decorationColor: Colors.white,
-                                decorationThickness: 1.4,
-                              ),
+                    // Button
+                    AnimatedScale(
+                      scale: _buttonAnimations["NEW REMINDER"] == true ? 1.1 : 1.0,
+                      duration: const Duration(milliseconds: 100),
+                      curve: Curves.bounceOut,
+                      child: GestureDetector(
+                        // Animation management
+                        onTapDown: (_) {
+                          setState(() {
+                            _buttonAnimations["NEW REMINDER"] = true;
+                          });
+                        },
+                        onTapUp: (_) async {
+                          setState(() {
+                            _buttonAnimations["NEW REMINDER"] = false;
+                          });
+                          // BUTTON CODE
+                          Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                              pageBuilder: (context, animation, secondaryAnimation) => const NewReminderPage(),
+                              transitionDuration: const Duration(milliseconds: 100),
+                              reverseTransitionDuration: const Duration(milliseconds: 100),
                             ),
-                          ),
+                          ).then((_) => initialisation());
 
-                          // Button
-                          AnimatedScale(
-                            scale: _buttonAnimations["NEW DIALOG"] == true ? 1.1 : 1.0,
-                            duration: const Duration(milliseconds: 100),
-                            curve: Curves.bounceOut,
-                            child: GestureDetector(
-                              // Animation management
-                              onTapDown: (_) {
-                                setState(() {
-                                  _buttonAnimations["NEW DIALOG"] = true;
-                                });
-                              },
-                              onTapUp: (_) async {
-                                setState(() {
-                                  _buttonAnimations["NEW DIALOG"] = false;
-                                });
-                                // BUTTON CODE
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => DialogPage(
-                                            idDialog: -1,
-                                            initialTextDialog: "",
-                                          )),
-                                ).then((_) => initialisation());
-                              },
-                              onTapCancel: () {
-                                setState(() {
-                                  _buttonAnimations["NEW DIALOG"] = false;
-                                });
-                              },
-                              child: Container(
-                                margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.025, 0, 0, MediaQuery.of(context).size.height * 0.02),
-                                width: MediaQuery.of(context).size.width * 0.7,
-                                decoration: const BoxDecoration(
-                                  borderRadius: BorderRadius.all(Radius.circular(60)),
-                                  color: Color.fromRGBO(78, 237, 255, 1),
-                                ),
-                                padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.04, MediaQuery.of(context).size.width * 0.015, MediaQuery.of(context).size.width * 0.02, MediaQuery.of(context).size.width * 0.015),
-                                child: Text(
-                                  languagesTextsFile.texts["dialog_list_new"]!,
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
-                                  ),
-                                ),
+                        },
+                        onTapCancel: () {
+                          setState(() {
+                            _buttonAnimations["NEW REMINDER"] = false;
+                          });
+                        },
+                        child: Container(
+                          margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.025, MediaQuery.of(context).size.height * 0.025, 0, MediaQuery.of(context).size.height * 0.03),
+                          width: MediaQuery.of(context).size.width * 0.7,
+                          height: MediaQuery.of(context).size.width * 0.08,
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(60)),
+                            color: Color.fromRGBO(234, 104, 104, 1),
+                          ),
+                          padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.04, MediaQuery.of(context).size.width * 0.02, MediaQuery.of(context).size.width * 0.02, MediaQuery.of(context).size.width * 0.015),
+                          child: Align(
+                            alignment: const Alignment(-1, 0),
+                            child: AutoSizeText(
+                              languagesTextsFile.texts["reminders_new"]!,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
                               ),
+                              maxLines: 1,
+                              minFontSize: 5,
+                              maxFontSize: 20,
                             ),
                           ),
-                        ],
+                        ),
                       ),
                     ),
                   ],
@@ -363,42 +360,6 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                           ),
                         ),
                       ),
-                      AnimatedScale(
-                        scale: _buttonAnimations["RELAX"]! ? 1.1 : 1.0,
-                        duration: const Duration(milliseconds: 100),
-                        curve: Curves.bounceOut,
-                        child: GestureDetector(
-                          onTapDown: (_) {
-                            setState(() {
-                              _buttonAnimations["RELAX"] = true;
-                            });
-                          },
-                          onTapUp: (_) {
-                            setState(() {
-                              _buttonAnimations["RELAX"] = false;
-                            });
-                            // BUTTON CODE
-                            print("RELAAAAAAAAAX");
-                          },
-                          onTapCancel: () {
-                            setState(() {
-                              _buttonAnimations["RELAX"] = false;
-                            });
-                          },
-                          child: Container(
-                            height: MediaQuery.of(context).size.width * 0.060,
-                            width: MediaQuery.of(context).size.width * 0.060,
-                            padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.01),
-                            decoration: const BoxDecoration(
-                              color: Color.fromRGBO(160, 208, 86, 1),
-                              shape: BoxShape.circle,
-                            ),
-                            child: Image.asset(
-                              "assets/beach-chair.png",
-                            ),
-                          ),
-                        ),
-                      ),
                     ],
                   ),
                 ),
@@ -429,7 +390,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                           itemBuilder: (context, index) {
                             return Row(
                               children: [
-                                // Dialog + TTS
+                                // Reminders
                                 AnimatedScale(
                                   scale: _dialogsAnimations[index] && !_ttsButtonsAnimations[index] ? 1.05 : 1.0,
                                   duration: const Duration(milliseconds: 100),
@@ -446,10 +407,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                         _dialogsAnimations[index] = false;
                                       });
                                       // BUTTON CODE
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => DialogPage(idDialog: _listDialogs[index].id_dialog, initialTextDialog: _listDialogs[index].sentence, idTheme: _listDialogs[index].id_theme)),
-                                      ).then((_) => initialisation());
+
                                     },
                                     onTapCancel: () {
                                       setState(() {
@@ -458,73 +416,34 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                     },
                                     child: Container(
                                       margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.025, 0, 0, MediaQuery.of(context).size.height * 0.02),
-                                      width: MediaQuery.of(context).size.width * 0.82,
+                                      width: MediaQuery.of(context).size.width * 0.81,
+                                      height: MediaQuery.of(context).size.width * 0.08,
                                       decoration: const BoxDecoration(
                                         borderRadius: BorderRadius.all(Radius.circular(60)),
                                         color: Colors.white,
                                       ),
-                                      child: Row(
-                                        children: [
-                                          // Text
-                                          Expanded(
-                                            child: Container(
-                                              padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.04, MediaQuery.of(context).size.width * 0.015, MediaQuery.of(context).size.width * 0.02, MediaQuery.of(context).size.width * 0.015),
-                                              child: Text(
-                                                _listDialogs[index].sentence,
-                                                style: const TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 18,
-                                                ),
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
+                                      child: Container(
+                                        width: MediaQuery.of(context).size.width * 0.745,
+                                        padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.04, MediaQuery.of(context).size.width * 0.02, MediaQuery.of(context).size.width * 0.02, MediaQuery.of(context).size.width * 0.015),
+                                        child: Align(
+                                          alignment: const Alignment(-1, 0),
+                                          child: Text(
+                                            _listDialogs[index].sentence,
+                                            style: const TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20,
                                             ),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
                                           ),
-
-                                          // TTS
-                                          Container(
-                                            margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.02),
-                                            child: AnimatedScale(
-                                              scale: _ttsButtonsAnimations[index] ? 1.1 : 1.0,
-                                              duration: const Duration(milliseconds: 100),
-                                              curve: Curves.bounceOut,
-                                              child: GestureDetector(
-                                                // Animation management
-                                                onTapDown: (_) {
-                                                  setState(() {
-                                                    _ttsButtonsAnimations[index] = true;
-                                                  });
-                                                },
-                                                onTapUp: (_) {
-                                                  setState(() {
-                                                    _ttsButtonsAnimations[index] = false;
-                                                  });
-                                                  // BUTTON CODE
-                                                  // TTS
-                                                  ttsHandler.setText(_listDialogs[index].sentence);
-                                                  ttsHandler.speak();
-                                                },
-                                                onTapCancel: () {
-                                                  setState(() {
-                                                    _ttsButtonsAnimations[index] = false;
-                                                  });
-                                                },
-                                                child: Image.asset(
-                                                  'assets/sound.png',
-                                                  height: MediaQuery.of(context).size.height * 0.085,
-                                                  color: Colors.blue,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
 
-                                // Delete Dialog Buttons
+                                // Delete Reminders Buttons
                                 AnimatedScale(
                                   scale: _deleteButtonsAnimations[index] ? 1.1 : 1.0,
                                   duration: const Duration(milliseconds: 100),
@@ -636,6 +555,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                                                   //Close the popup
                                                                   Navigator.pop(context); // Close the dialog
                                                                 },
+
                                                                 onTapCancel: () {
                                                                   setState(() {
                                                                     _buttonAnimations["POPUP YES"] = false;
@@ -673,10 +593,10 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                       });
                                     },
                                     child: Container(
-                                      height: MediaQuery.of(context).size.width * 0.06,
-                                      width: MediaQuery.of(context).size.width * 0.06,
+                                      height: MediaQuery.of(context).size.width * 0.062,
+                                      width: MediaQuery.of(context).size.width * 0.062,
                                       padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.01),
-                                      margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.01, 0, 0, MediaQuery.of(context).size.height * 0.02),
+                                      margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.02, 0, 0, MediaQuery.of(context).size.height * 0.023),
                                       decoration: const BoxDecoration(
                                         color: Color.fromRGBO(244, 66, 56, 1),
                                         shape: BoxShape.circle,
@@ -737,12 +657,6 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                 });
                               },
 
-                              onTapCancel: () {
-                                setState(() {
-                                  _buttonAnimations["TOP ARROW"] = false;
-                                });
-                              },
-
                               child: Container(
                                 width: MediaQuery.of(context).size.height * 0.07,
                                 height: MediaQuery.of(context).size.height * 0.07,
@@ -763,20 +677,20 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                           ),
                           Expanded(
                               child: Container(
-                            width: MediaQuery.of(context).size.width * 0.01875,
-                            margin: MediaQuery.of(context).size.height > 600 ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.014) : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.011),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: const Color.fromRGBO(66, 89, 109, 1),
-                            ),
-                            child: Container(
-                              margin: EdgeInsets.all(MediaQuery.of(context).size.width * 0.00375),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: Colors.blue,
-                              ),
-                            ),
-                          )),
+                                width: MediaQuery.of(context).size.width * 0.01875,
+                                margin: MediaQuery.of(context).size.height > 600 ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.014) : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.011),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: const Color.fromRGBO(66, 89, 109, 1),
+                                ),
+                                child: Container(
+                                  margin: EdgeInsets.all(MediaQuery.of(context).size.width * 0.00375),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: Colors.blue,
+                                  ),
+                                ),
+                              )),
                           AnimatedScale(
                             scale: _buttonAnimations["BOT ARROW"]! ? 1.1 : 1.0,
                             duration: const Duration(milliseconds: 100),

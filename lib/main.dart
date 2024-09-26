@@ -11,6 +11,7 @@ import 'package:parkinson_com_v2/customHomePageTitle.dart';
 import 'package:parkinson_com_v2/customMenuButton.dart';
 import 'package:parkinson_com_v2/customShapeMenu.dart';
 import 'package:parkinson_com_v2/listDialogsPage.dart';
+import 'package:parkinson_com_v2/remindersPage.dart';
 import 'package:parkinson_com_v2/variables.dart';
 import 'package:battery_plus/battery_plus.dart';
 
@@ -188,7 +189,7 @@ class _HomePageState extends State<HomePage> {
 
                                   // Text
                                   Container(
-                                    margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.height * 0.08, MediaQuery.of(context).size.height * 0.04, MediaQuery.of(context).size.height * 0.02, 0),
+                                    margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.height * 0.08, MediaQuery.of(context).size.height * 0.04, MediaQuery.of(context).size.height * 0.019, 0),
                                     child: Text(
                                       "$batteryLevel%",
                                       style: const TextStyle(
@@ -471,6 +472,11 @@ class _HomePageState extends State<HomePage> {
                               });
                               // BUTTON CODE
                               print("REMINNNNNNDERS");
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const RemindersPage(),
+                                  )).then((_) => initialisation());
                             },
                             onTapCancel: () {
                               setState(() {

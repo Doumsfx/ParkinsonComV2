@@ -162,7 +162,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                 child: CustomTitle(
                                   text: languagesTextsFile.texts["theme_list_title"]!,
                                   image: 'assets/themeIcon.png',
-                                  scale: 1,
+                                  imageScale: 1,
                                   backgroundColor: Colors.white,
                                   textColor: const Color.fromRGBO(29, 52, 83, 1),
                                 ),
