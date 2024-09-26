@@ -203,7 +203,7 @@ class DatabaseManager {
     return result;
   }
 
-  ///Update a [theme] of the database (updating requires the right id_theme)
+  ///Update a [reminder] of the database (updating requires the right id_reminder)
   Future<int> updateReminder(Reminder reminder) async {
     int result = await db.update(
       'Reminder',
@@ -214,13 +214,13 @@ class DatabaseManager {
     return result;
   }
 
-  ///Retrieve the list of ThemeObject from the database
+  ///Retrieve the list of Reminder from the database
   Future<List<Reminder>> retrieveReminders() async {
     final List<Map<String, Object?>> queryResult = await db.query('Reminder');
     return queryResult.map((e) => Reminder.fromMap(e)).toList();
   }
 
-  ///Retrieve a specific ThemeObject from the database using its [id]
+  ///Retrieve a specific Reminder from the database using its [id]
   Future<Reminder> retrieveReminderFromId(int id) async {
     final List<Map<String, Object?>> queryResult = await db.query('Reminder', where: "id_reminder = ?", whereArgs: [id]);
     return Reminder.fromMap(queryResult[0]);
