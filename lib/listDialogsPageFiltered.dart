@@ -33,7 +33,7 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
     "TOP ARROW": false,
     "BOT ARROW": false,
     "POPUP NO": false,
-    "POPUP YES": true,
+    "POPUP YES": false,
   };
 
   List<DialogObject> _listDialogs = [];
@@ -160,7 +160,7 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                                 child: CustomTitle(
                                   text: languagesTextsFile.texts["dialog_list_filtered_title"]!,
                                   image: 'assets/themeIcon.png',
-                                  scale: 1,
+                                  imageScale: 1,
                                   backgroundColor: Colors.white,
                                   textColor: const Color.fromRGBO(29, 52, 83, 1),
                                 ),

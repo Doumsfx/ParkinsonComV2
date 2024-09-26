@@ -8,6 +8,7 @@ bool azerty = true; // true: azerty | false: abcde
 String language = "fr"; // "fr" | "nl"
 ValueNotifier<bool> dialogPageState = ValueNotifier<bool>(false); // true: keyboard page | false: page without keyboard
 ValueNotifier<bool> newThemePageState = ValueNotifier<bool>(false); // true: keyboard page | false: page without keyboard
+ValueNotifier<bool> newReminderPageState = ValueNotifier<bool>(false); // true: keyboard page | false: page without keyboard
 final Map<String, int> idDialogWithoutTheme = {
   "fr": 1,
   "nl": 13,
