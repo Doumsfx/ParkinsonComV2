@@ -1887,193 +1887,198 @@ class _DialogPageState extends State<DialogPage> {
   void _showContactList() async {
     //Get contact list
     List<Contact> contactsList = await databaseManager.retrieveContacts();
-    Contact? selectedContact = contactsList[0];
-    //Set directly on the principal contact
-    for(var c in contactsList) {
-      if(c.priority == 1) {
-        selectedContact = c;
-        break;
-      }
+    if(contactsList.isEmpty) {
+      _showGenericPopupOK(languagesTextsFile.texts["pop_up_contact_empty"]!);
     }
     //Popup to choose the contact
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        // Use StatefulBuilder to manage the state inside the dialog
-        return StatefulBuilder(
-          builder: (context, setState) {
-            double screenHeight = MediaQuery.of(context).size.height;
-            double screenWidth = MediaQuery.of(context).size.width;
-              return Dialog(
-                backgroundColor: Colors.black87,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  // Optional padding for aesthetics
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    // Ensures the dialog is as small as needed
-                    children: [
-                      // Title for theme selection
-                      Text(
-                        languagesTextsFile.texts["pop_up_contact_send"]!,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: screenHeight * 0.1),
-                      // Dropdown menu for themes
-                      Container(
-                        color: Colors.amber,
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton2<Contact>(
-                            value: selectedContact,
-                            dropdownStyleData: DropdownStyleData(
-                              maxHeight: screenHeight * 0.35,
-                              decoration: const BoxDecoration(color: Colors.amber),
+    else {
+      Contact? selectedContact = contactsList[0];
+      //Set directly on the principal contact
+      for(var c in contactsList) {
+        if(c.priority == 1) {
+          selectedContact = c;
+          break;
+        }
+      }
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          // Use StatefulBuilder to manage the state inside the dialog
+          return StatefulBuilder(
+            builder: (context, setState) {
+              double screenHeight = MediaQuery.of(context).size.height;
+              double screenWidth = MediaQuery.of(context).size.width;
+                return Dialog(
+                  backgroundColor: Colors.black87,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    // Optional padding for aesthetics
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      // Ensures the dialog is as small as needed
+                      children: [
+                        // Title for theme selection
+                        Text(
+                          languagesTextsFile.texts["pop_up_contact_send"]!,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(height: screenHeight * 0.1),
+                        // Dropdown menu for themes
+                        Container(
+                          color: Colors.amber,
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton2<Contact>(
+                              value: selectedContact,
+                              dropdownStyleData: DropdownStyleData(
+                                maxHeight: screenHeight * 0.35,
+                                decoration: const BoxDecoration(color: Colors.amber),
+                              ),
+                              style: const TextStyle(color: Color.fromRGBO(65, 65, 65, 1), fontWeight: FontWeight.bold, fontSize: 20),
+                              onChanged: (Contact? newValue) {
+                                setState(() {
+                                  selectedContact = newValue; // Update the selected contact
+                                });
+                              },
+                              items: contactsList.map((Contact contact) {
+                                return DropdownMenuItem<Contact>(
+                                  value: contact,
+                                  child: Text(
+                                    //Show "(last name) (first name) - (method for contacting)"
+                                    "${contact.last_name} ${contact.first_name} - ${contact.email != null ? languagesTextsFile.texts["list_contacts_mail"]! : languagesTextsFile.texts["list_contacts_phone"]!}",
+                                  ),
+                                );
+                              }).toList(),
                             ),
-                            style: const TextStyle(color: Color.fromRGBO(65, 65, 65, 1), fontWeight: FontWeight.bold, fontSize: 20),
-                            onChanged: (Contact? newValue) {
-                              setState(() {
-                                selectedContact = newValue; // Update the selected contact
-                              });
-                            },
-                            items: contactsList.map((Contact contact) {
-                              return DropdownMenuItem<Contact>(
-                                value: contact,
-                                child: Text(
-                                  //Show "(last name) (first name) - (method for contacting)"
-                                  "${contact.last_name} ${contact.first_name} - ${contact.email != null ? languagesTextsFile.texts["list_contacts_mail"]! : languagesTextsFile.texts["list_contacts_phone"]!}",
-                                ),
-                              );
-                            }).toList(),
                           ),
                         ),
-                      ),
-                      SizedBox(height: screenHeight * 0.2),
-                      //Buttons to cancel and validate
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          //Cancel button
-                          AnimatedScale(
-                            scale: _buttonAnimations["POPUP NO"]! ? 1.1 : 1.0,
-                            duration: const Duration(milliseconds: 100),
-                            curve: Curves.bounceOut,
-                            alignment: Alignment.center,
-                            child: GestureDetector(
-                              // Animation management
-                              onTapDown: (_) {
-                                setState(() {
-                                  _buttonAnimations["POPUP NO"] = true;
-                                });
-                              },
-                              onTapUp: (_) {
-                                setState(() {
-                                  _buttonAnimations["POPUP NO"] = false;
-                                });
-                                // BUTTON CODE
-                                Navigator.pop(context);
-                              },
-                              onTapCancel: () {
-                                setState(() {
-                                  _buttonAnimations["POPUP NO"] = false;
-                                });
-                              },
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                  borderRadius: BorderRadius.all(Radius.circular(60)),
-                                  color: Colors.red,
-                                ),
-                                padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
-                                child: Text(
-                                  languagesTextsFile.texts["pop_up_cancel"]!,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
+                        SizedBox(height: screenHeight * 0.2),
+                        //Buttons to cancel and validate
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            //Cancel button
+                            AnimatedScale(
+                              scale: _buttonAnimations["POPUP NO"]! ? 1.1 : 1.0,
+                              duration: const Duration(milliseconds: 100),
+                              curve: Curves.bounceOut,
+                              alignment: Alignment.center,
+                              child: GestureDetector(
+                                // Animation management
+                                onTapDown: (_) {
+                                  setState(() {
+                                    _buttonAnimations["POPUP NO"] = true;
+                                  });
+                                },
+                                onTapUp: (_) {
+                                  setState(() {
+                                    _buttonAnimations["POPUP NO"] = false;
+                                  });
+                                  // BUTTON CODE
+                                  Navigator.pop(context);
+                                },
+                                onTapCancel: () {
+                                  setState(() {
+                                    _buttonAnimations["POPUP NO"] = false;
+                                  });
+                                },
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                    borderRadius: BorderRadius.all(Radius.circular(60)),
+                                    color: Colors.red,
+                                  ),
+                                  padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
+                                  child: Text(
+                                    languagesTextsFile.texts["pop_up_cancel"]!,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                          //Blank space between the buttons
-                          SizedBox(width: screenWidth * 0.15),
-                          //Validate button
-                          AnimatedScale(
-                            scale: _buttonAnimations["POPUP YES"]! ? 1.1 : 1.0,
-                            duration: const Duration(milliseconds: 100),
-                            curve: Curves.bounceOut,
-                            alignment: Alignment.center,
-                            child: GestureDetector(
-                              // Animation management
-                              onTapDown: (_) {
-                                setState(() {
-                                  _buttonAnimations["POPUP YES"] = true;
-                                });
-                              },
-                              onTapUp: (_) async {
-                                //Send message to selectedContact
-                                Navigator.of(context).pop();
-                                if (_controller.text.isNotEmpty) {
-                                  //Send an E-Mail
-                                  if (selectedContact!.email != null) {
-                                    String content = "${languagesTextsFile.texts["mail_body_1"]!} ${selectedContact!.first_name}, ${selectedContact!.email}\n\n${_controller.text}\n\n${languagesTextsFile.texts["mail_body_2"]!} ${selectedContact!.email} ${languagesTextsFile.texts["mail_body_3"]!}";
-                                    final result = await emailHandler.sendMessage(selectedContact!.email!, content);
-                                    if(result == 1) {
-                                      String contactName = "${selectedContact!.last_name} ${selectedContact!.first_name}";
-                                      if(mounted) { //Protect from trying to display the popup when the context has changed (ex : going back to the menu)
-                                        _showGenericPopupOK("${languagesTextsFile.texts["pop_up_message_sended"]!}\n$contactName");
+                            //Blank space between the buttons
+                            SizedBox(width: screenWidth * 0.15),
+                            //Validate button
+                            AnimatedScale(
+                              scale: _buttonAnimations["POPUP YES"]! ? 1.1 : 1.0,
+                              duration: const Duration(milliseconds: 100),
+                              curve: Curves.bounceOut,
+                              alignment: Alignment.center,
+                              child: GestureDetector(
+                                // Animation management
+                                onTapDown: (_) {
+                                  setState(() {
+                                    _buttonAnimations["POPUP YES"] = true;
+                                  });
+                                },
+                                onTapUp: (_) async {
+                                  //Send message to selectedContact
+                                  Navigator.of(context).pop();
+                                  if (_controller.text.isNotEmpty) {
+                                    //Send an E-Mail
+                                    if (selectedContact!.email != null) {
+                                      String content = "${languagesTextsFile.texts["mail_body_1"]!} ${selectedContact!.first_name}, ${selectedContact!.email}\n\n${_controller.text}\n\n${languagesTextsFile.texts["mail_body_2"]!} ${selectedContact!.email} ${languagesTextsFile.texts["mail_body_3"]!}";
+                                      final result = await emailHandler.sendMessage(selectedContact!.email!, content);
+                                      if(result == 1) {
+                                        String contactName = "${selectedContact!.last_name} ${selectedContact!.first_name}";
+                                        if(mounted) { //Protect from trying to display the popup when the context has changed (ex : going back to the menu)
+                                          _showGenericPopupOK("${languagesTextsFile.texts["pop_up_message_sended"]!}\n$contactName");
+                                        }
+                                      }
+                                      else if(result < 0) {
+                                        if (mounted) { //Protect from trying to display the popup when the context has changed (ex : going back to the menu)
+                                          _showGenericPopupOK(languagesTextsFile.texts["popup_message_send_fail"]!);
+                                        }
                                       }
                                     }
-                                    else if(result < 0) {
-                                      if (mounted) { //Protect from trying to display the popup when the context has changed (ex : going back to the menu)
-                                        _showGenericPopupOK(languagesTextsFile.texts["popup_message_send_fail"]!);
-                                      }
+                                    //Send a SMS
+                                    else if(selectedContact!.phone != null) {
+                                      //todo send sms
                                     }
                                   }
-                                  //Send a SMS
-                                  else if(selectedContact!.phone != null) {
-                                    //todo send sms
+                                  else {
+                                    _showGenericPopupOK(languagesTextsFile.texts["pop_up_cant_send_empty_msg"]!);
                                   }
-                                }
-                                else {
-                                  _showGenericPopupOK(languagesTextsFile.texts["pop_up_cant_send_empty_msg"]!);
-                                }
 
-                              },
-                              onTapCancel: () {
-                                setState(() {
-                                  _buttonAnimations["POPUP YES"] = false;
-                                });
-                              },
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                  borderRadius: BorderRadius.all(Radius.circular(60)),
-                                  color: Colors.lightGreen,
-                                ),
-                                padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
-                                child: Text(
-                                  languagesTextsFile.texts["pop_up_validate"]!,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
+                                },
+                                onTapCancel: () {
+                                  setState(() {
+                                    _buttonAnimations["POPUP YES"] = false;
+                                  });
+                                },
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                    borderRadius: BorderRadius.all(Radius.circular(60)),
+                                    color: Colors.lightGreen,
+                                  ),
+                                  padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
+                                  child: Text(
+                                    languagesTextsFile.texts["pop_up_validate"]!,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: screenHeight * 0.03),
-                    ],
+                          ],
+                        ),
+                        SizedBox(height: screenHeight * 0.03),
+                      ],
+                    ),
                   ),
-                ),
-              );
+                );
 
-            },
-        );
-        },
-    );
+              },
+          );
+          },
+      );
+    }
   }
 
 

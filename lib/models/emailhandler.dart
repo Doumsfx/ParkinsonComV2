@@ -26,7 +26,8 @@ class EmailHandler {
         ..from = const Address("recherche@parkinsoncom.eu","ParkinsonCom")
         ..recipients.add(recipient)
         ..subject = languagesTextsFile.texts["mail_title"]!
-        ..text = content;
+        ..text = content
+      ;
       //Send the message
       try {
         final sendReport = await send(message, _smtpServer, timeout: const Duration(seconds: 10));
