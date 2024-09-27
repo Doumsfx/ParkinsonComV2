@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:parkinson_com_v2/models/emailhandler.dart';
 import 'package:parkinson_com_v2/models/fileHandler.dart';
+import 'package:parkinson_com_v2/models/smshandler.dart';
 import 'models/ttshandler.dart';
 import 'models/database/databasemanager.dart';
 
@@ -31,4 +32,6 @@ FileHandler languagesTextsFile = FileHandler();
 //E-Mail Handler
 EmailHandler emailHandler = EmailHandler();
 
+//SMS Handler
+SmsHandler smsHandler = SmsHandler();
 

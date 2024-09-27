@@ -2022,14 +2022,12 @@ class _DialogPageState extends State<DialogPage> {
                                     if (selectedContact!.email != null) {
                                       String content = "${languagesTextsFile.texts["mail_body_1"]!} ${selectedContact!.first_name}, ${selectedContact!.email}\n\n${_controller.text}\n\n${languagesTextsFile.texts["mail_body_2"]!} ${selectedContact!.email} ${languagesTextsFile.texts["mail_body_3"]!}";
                                       final result = await emailHandler.sendMessage(selectedContact!.email!, content);
-                                      if(result == 1) {
-                                        String contactName = "${selectedContact!.last_name} ${selectedContact!.first_name}";
-                                        if(mounted) { //Protect from trying to display the popup when the context has changed (ex : going back to the menu)
-                                          _showGenericPopupOK("${languagesTextsFile.texts["pop_up_message_sended"]!}\n$contactName");
+                                      if (mounted) { //Protect from trying to display the popup when the context has changed (ex : going back to the menu)
+                                        if(result == 1) {
+                                          String contactName = "${selectedContact!.last_name} ${selectedContact!.first_name}";
+                                          _showGenericPopupOK("${languagesTextsFile.texts["pop_up_message_sent"]!}\n$contactName");
                                         }
-                                      }
-                                      else if(result < 0) {
-                                        if (mounted) { //Protect from trying to display the popup when the context has changed (ex : going back to the menu)
+                                        else if(result < 0) {
                                           _showGenericPopupOK(languagesTextsFile.texts["popup_message_send_fail"]!);
                                         }
                                       }
@@ -2037,6 +2035,20 @@ class _DialogPageState extends State<DialogPage> {
                                     //Send a SMS
                                     else if(selectedContact!.phone != null) {
                                       //todo send sms
+                                      String phoneNumber = selectedContact!.phone as String;
+                                      final int result = await smsHandler.checkPermissionAndSendSMS(_controller.text, [phoneNumber]);
+                                      if (mounted) {
+                                        if(result == 1) {
+                                          String contactName = "${selectedContact!.last_name} ${selectedContact!.first_name}";
+                                          _showGenericPopupOK("${languagesTextsFile.texts["pop_up_message_sent"]!}\n$contactName");
+                                        }
+                                        else if(result == -1) {
+                                          _showGenericPopupOK(languagesTextsFile.texts["popup_message_send_fail"]!);
+                                        }
+                                        else if(result == -2){
+                                          _showGenericPopupOK(languagesTextsFile.texts["popup_message_permission_denied"]!);
+                                        }
+                                      }
                                     }
                                   }
                                   else {
