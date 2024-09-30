@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:parkinson_com_v2/models/fileHandler.dart';
+import 'models/notificationHandler.dart';
 import 'models/ttshandler.dart';
 import 'models/database/databasemanager.dart';
 
@@ -26,5 +27,8 @@ ValueNotifier<bool> isConnected = ValueNotifier<bool>(true);
 
 // Texts Manager
 FileHandler languagesTextsFile = FileHandler();
+
+// Notification Handler
+NotificationHandler notificationHandler = NotificationHandler();
 
 

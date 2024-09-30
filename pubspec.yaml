@@ -49,6 +49,17 @@ dependencies:
   battery_plus: ^6.0.3
   internet_connection_checker_plus: ^2.5.2
   diacritic: ^0.1.5
+  audioplayers: ^6.1.0
+  flutter_local_notifications: ^17.2.3
+  flutter_launcher_icons: ^0.14.1
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path_android: "assets/icon_app.png"
+  image_path_ios: "assets/icon_app.png"
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "assets/icon_app.png"
 
 dev_dependencies:
   flutter_test:
@@ -76,7 +87,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/
-
+    - assets/icon_app.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -9,12 +9,13 @@ import 'package:flutter/material.dart';
 import 'package:parkinson_com_v2/customRemindersTitle.dart';
 import 'package:parkinson_com_v2/keyboard.dart';
 import 'package:parkinson_com_v2/keyboardDigitOnly.dart';
+import 'package:parkinson_com_v2/models/database/reminder.dart';
 import 'package:parkinson_com_v2/variables.dart';
 
-import 'models/database/dialog.dart';
 
 class NewReminderPage extends StatefulWidget {
-  const NewReminderPage({super.key});
+  final int idReminder;
+  const NewReminderPage({super.key, this.idReminder = -1});
 
   @override
   State<NewReminderPage> createState() => _NewReminderPageState();
@@ -37,13 +38,12 @@ class _NewReminderPageState extends State<NewReminderPage> {
     "POPUP OK": false,
   };
 
-  List<DialogObject> _listDialogs = [];
-  String selectedThemeTitle = "";
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _firstController = TextEditingController();
   late CustomKeyboard firstCustomKeyboard;
   final TextEditingController _secondController = TextEditingController();
   late CustomKeyboard secondCustomKeyboard;
+  late Reminder reminder;
   bool alarmRing = false;
   bool everydayAlarm = false;
   bool boolFirstController = true;
@@ -76,35 +76,25 @@ class _NewReminderPageState extends State<NewReminderPage> {
 
     batteryLevel = await battery.batteryLevel;
 
-    _listDialogs = await databaseManager.retrieveDialogs();
+    reminder = await databaseManager.retrieveReminderFromId(widget.idReminder);
     setState(() {});
 
-    // Sorting the list
-    int i;
-    int endIndex;
-    List<DialogObject> firstPart = [];
-    List<DialogObject> secondPart = [];
+    // If it's not a new reminder, we adjust the interface
+    if(widget.idReminder != -1){
+      setState(() {
 
-    // Separate into two lists: firstPart with the dialogs of the user and secondPart with the base dialogs
-    if (_listDialogs.length > 1) {
-      for (i = _listDialogs.length - 1; i >= 0; i -= 1) {
-        if (_listDialogs[i].id_dialog > 146) {
-          firstPart.add(_listDialogs[i]);
-        } else {
-          endIndex = i;
-          secondPart = _listDialogs.sublist(0, endIndex + 1);
-
-          break;
+        _firstController.text = reminder.title;
+        _secondController.text = reminder.hour;
+        alarmRing = reminder.ring;
+        List<String> listDays = reminder.days.split(" ");
+        int i = 0;
+        for(i; i < listDays.length; i += 1){
+          daysAlarm[listDays[i]] = true;
         }
-      }
-
-      // Combine the two parts
-      _listDialogs = [];
-      _listDialogs = firstPart + secondPart;
-      setState(() {});
-      print(firstPart[0].id_theme);
-      print(firstPart[1].id_theme);
-
+        if(listDays.length == 7){
+          everydayAlarm = true;
+        }
+      });
     }
   }
 
@@ -112,7 +102,7 @@ class _NewReminderPageState extends State<NewReminderPage> {
     return number.toString().padLeft(2, '0');
   }
 
-  // Generic popup to display a specific [text] from the JSON and with an "OK" button
+  /// Generic popup to display a specific [text] from the JSON and with an "OK" button
   void _showGenericPopupOK(String text) {
     showDialog(
         context: context,
@@ -778,7 +768,7 @@ class _NewReminderPageState extends State<NewReminderPage> {
                                                       Container(
                                                         margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.04, 0, 0, 0),
                                                         child: Text(
-                                                          "- ${languagesTextsFile.texts["new_reminder_${days[index]}"]!}",
+                                                          "- ${languagesTextsFile.texts[days[index]]!}",
                                                           style: const TextStyle(
                                                             color: Colors.white,
                                                             fontSize: 20,
@@ -860,11 +850,6 @@ class _NewReminderPageState extends State<NewReminderPage> {
                                             daysString = "$daysString ${days[i]}";
                                           }
                                         }
-                                        print("name of medoc: ${_firstController.text}");
-                                        print("time : ${_secondController.text}");
-                                        print("ring: $alarmRing");
-                                        print("days: ${daysString.trim()}");
-
 
                                         if(_firstController.text.isEmpty){
                                           _showGenericPopupOK(languagesTextsFile.texts["new_reminder_error_name"]);
@@ -876,7 +861,28 @@ class _NewReminderPageState extends State<NewReminderPage> {
                                           _showGenericPopupOK(languagesTextsFile.texts["new_reminder_error_days"]);
                                         }
                                         else{
-                                          // ON ENVOIE A LA BASE DE DONNEES ET ON NAVIGATOR.POP
+                                          if(widget.idReminder == -1){
+                                            // Adding the reminder in the databse
+                                            await databaseManager.insertReminder(Reminder(
+                                              title: _firstController.text,
+                                              hour: _secondController.text,
+                                              ring: alarmRing,
+                                              days: daysString.trim(),
+                                            ));
+                                            Navigator.pop(context);
+                                          }
+
+                                          // Updating the old reminder
+                                          else{
+                                            await databaseManager.updateReminder(Reminder(
+                                              title: _firstController.text,
+                                              hour: _secondController.text,
+                                              ring: alarmRing,
+                                              days: daysString.trim(),
+                                              id_reminder: widget.idReminder
+                                            ));
+                                            Navigator.pop(context);
+                                          }
 
                                         }
 
@@ -896,7 +902,7 @@ class _NewReminderPageState extends State<NewReminderPage> {
                                         ),
                                         padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.02, MediaQuery.of(context).size.width * 0.01, MediaQuery.of(context).size.width * 0.02, MediaQuery.of(context).size.width * 0.01),
                                         child: Text(
-                                          languagesTextsFile.texts["new_reminder_add"],
+                                          widget.idReminder == -1 ? languagesTextsFile.texts["new_reminder_add"] : languagesTextsFile.texts["new_reminder_modify"],
                                           style: const TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.w800,

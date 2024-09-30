@@ -6,11 +6,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:parkinson_com_v2/customHomePageTitle.dart';
 import 'package:parkinson_com_v2/customMenuButton.dart';
 import 'package:parkinson_com_v2/customShapeMenu.dart';
 import 'package:parkinson_com_v2/listDialogsPage.dart';
-import 'package:parkinson_com_v2/remindersPage.dart';
+import 'package:parkinson_com_v2/listRemindersPage.dart';
 import 'package:parkinson_com_v2/variables.dart';
 import 'package:battery_plus/battery_plus.dart';
 
@@ -27,6 +28,7 @@ void main() {
   // Initialization of the TTS handler when launching the app
   ttsHandler.initTts();
 
+
   // Set the texts to the default language
   languagesTextsFile.setNewLanguage("fr");
 
@@ -36,6 +38,8 @@ void main() {
   ]).then((_) {
     runApp(const MyApp());
   });
+
+
 }
 
 class MyApp extends StatelessWidget {
@@ -61,7 +65,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
   late InternetAlert internetAlert;
   // Useful variables
   final Map<String, bool> _buttonAnimations = {
@@ -77,6 +81,7 @@ class _HomePageState extends State<HomePage> {
   int batteryLevel = 0;
   late Timer timer;
   var timeAndDate = DateTime.now();
+  var isMusicPaused = false;
 
   Future<void> initialisation() async {
     batteryLevel = await battery.batteryLevel;
@@ -91,6 +96,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     // Initialisation de nos variables
     initialisation();
+    WidgetsBinding.instance.addObserver(this);
 
     timer = Timer.periodic(const Duration(seconds: 1), (_) async {
       int newBatteryLevel = await battery.batteryLevel;
@@ -101,6 +107,7 @@ class _HomePageState extends State<HomePage> {
         batteryLevel = newBatteryLevel;
         timeAndDate = newTimeAndDate;
       });
+
     });
 
     //Internet Checker
@@ -108,13 +115,63 @@ class _HomePageState extends State<HomePage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       internetAlert.startCheckInternet(context);
     });
+
+    // Initilisation of our Notifications for Android
+    var initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
+    var initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid,
+    );
+    var flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    flutterLocalNotificationsPlugin.initialize(initializationSettings);
+
+    // Initialisation of our Notification Handler
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      notificationHandler.startCheck(context, flutterLocalNotificationsPlugin);
+    });
   }
+
 
   @override
   void dispose() {
     timer.cancel();
+    WidgetsBinding.instance.removeObserver(this);
+    notificationHandler.dispose();
     super.dispose();
   }
+
+  // Method to monitor application lifecycle changes
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    if (state == AppLifecycleState.paused || state == AppLifecycleState.inactive){
+      // If the app is minimized or put in the background, we stop the music if it's playing
+      if(notificationHandler.isMusicPlaying()){
+        notificationHandler.pauseMusic();
+        isMusicPaused = true;
+      }
+
+      // Otherwise we put the volume at 0
+      else{
+        notificationHandler.setVolume(0);
+      }
+
+    } else if (state == AppLifecycleState.resumed) {
+      // If the application returns to the foreground, we restart the music if it was paused
+      if(isMusicPaused){
+        notificationHandler.setVolume(1);
+        notificationHandler.resumeMusic();
+        isMusicPaused = false;
+      }
+
+      // Otherwise we just put the volume at 1
+      else{
+        notificationHandler.setVolume(1);
+        isMusicPaused = false;
+      }
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -193,7 +250,7 @@ class _HomePageState extends State<HomePage> {
 
                                   // Battery
                                   Container(
-                                    margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.03, MediaQuery.of(context).size.width * 0.015, 0),
+                                    margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.03, MediaQuery.of(context).size.width * 0.010, 0),
                                     child: Image.asset(
                                       'assets/batterie.png',
                                       width: MediaQuery.of(context).size.height * 0.07,
@@ -466,7 +523,7 @@ class _HomePageState extends State<HomePage> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => const RemindersPage(),
+                                    builder: (context) => const ListRemindersPage(),
                                   )).then((_) => initialisation());
                             },
                             onTapCancel: () {
