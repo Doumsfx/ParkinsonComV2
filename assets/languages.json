@@ -71,7 +71,7 @@
     "pop_up_message_sent" : "Votre message a été envoyé avec succès à ",
     "pop_up_cant_send_empty_msg" : "Vous ne pouvez pas envoyer un message vide !",
     "pop_up_contact_send" : "Veuillez choisir la personne à contacter :",
-    "pop_up_contact_empty" : "Vous n'avez aucun contact,\n veuillez en rajouter.",
+    "pop_up_contact_empty" : "Vous n'avez aucun contact,\n veuillez en ajouter.",
     "list_contacts_mail" : "Mail",
     "list_contacts_phone" : "Téléphone",
     "mail_title" : "Mail de ParkinsonCom v2",

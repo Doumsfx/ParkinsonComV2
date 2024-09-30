@@ -1,3 +1,7 @@
+// Global Variables
+// Code by Pagnon Alexis and Sanchez Adam
+// ParkinsonCom V2
+
 import 'package:flutter/material.dart';
 import 'package:parkinson_com_v2/models/emailhandler.dart';
 import 'package:parkinson_com_v2/models/fileHandler.dart';

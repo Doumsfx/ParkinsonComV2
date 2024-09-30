@@ -1,5 +1,5 @@
 // Dialog Page
-// Code by Alexis Pagnon and Sanchez Adam
+// Code by Pagnon Alexis and Sanchez Adam
 // ParkinsonCom V2
 
 import 'package:auto_size_text/auto_size_text.dart';

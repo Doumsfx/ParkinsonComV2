@@ -1,5 +1,5 @@
 // Internet Alert Popup
-// Code by Alexis Pagnon and Sanchez Adam
+// Code by Pagnon Alexis and Sanchez Adam
 // ParkinsonCom V2
 
 import 'dart:async';

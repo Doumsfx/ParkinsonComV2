@@ -1,7 +1,8 @@
+// SMS Handler Class
+// Code by Pagnon Alexis and Sanchez Adam
+// ParkinsonCom V2
 
 
-
-import 'package:flutter/material.dart';
 import 'package:flutter_sms/flutter_sms.dart';
 import 'package:permission_handler/permission_handler.dart';
 
