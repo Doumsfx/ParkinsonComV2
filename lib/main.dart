@@ -1,11 +1,12 @@
 // Main Page
-// Code by Alexis Pagnon and Sanchez Adam
+// Code by Pagnon Alexis and Sanchez Adam
 // ParkinsonCom V2
 
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:parkinson_com_v2/customHomePageTitle.dart';
 import 'package:parkinson_com_v2/customMenuButton.dart';
 import 'package:parkinson_com_v2/customShapeMenu.dart';
@@ -30,12 +31,20 @@ void main() {
   // Set the texts to the default language
   languagesTextsFile.setNewLanguage("fr");
 
+  //Load .env variables
+  loadEnvVariables();
+
   // We ensure that the phone preserve the landscape mode
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.landscapeLeft,
   ]).then((_) {
     runApp(const MyApp());
   });
+}
+
+///Load Environment Variables from the .env file
+void loadEnvVariables() async {
+  await dotenv.load(fileName: ".env");
 }
 
 class MyApp extends StatelessWidget {

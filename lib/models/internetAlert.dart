@@ -1,5 +1,5 @@
 // Internet Alert Popup
-// Code by Alexis Pagnon and Sanchez Adam
+// Code by Pagnon Alexis and Sanchez Adam
 // ParkinsonCom V2
 
 import 'dart:async';
@@ -16,7 +16,16 @@ class InternetAlert {
   bool buttonAnimation = false;
 
   void startCheckInternet(BuildContext context) {
-    _listener = InternetConnection().onStatusChange.listen((InternetStatus status) {
+    //Instance to check internet (try to connect to https://www.google.com/, can be changed to other website(s) )
+    InternetConnection connection = InternetConnection.createInstance(
+      useDefaultOptions: false, //Remove the check of the default websites of the package
+      customCheckOptions: [
+        InternetCheckOption(uri: Uri.parse('https://www.google.com/')),
+        //Can add more website to check here
+      ],
+    );
+    //Listener to detect changes and send the alert
+    _listener = connection.onStatusChange.listen((InternetStatus status) {
       switch (status) {
         case InternetStatus.connected:
           // The internet is now connected
