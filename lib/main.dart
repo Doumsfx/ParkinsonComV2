@@ -117,6 +117,8 @@ class _HomePageState extends State<HomePage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       internetAlert.startCheckInternet(context);
     });
+
+
   }
 
   @override
@@ -280,16 +282,8 @@ class _HomePageState extends State<HomePage> {
                               });
                               // BUTTON CODE
                               print("HELLLLLLLLLLP");
+                              emergencyRequest.sendEmergencyRequest(context);
 
-                              setState(() {
-                                if(language == "fr") {
-                                  language = "nl";
-                                } else {
-                                  language = "fr";
-                                }
-                                ttsHandler.setVoiceFrOrNl(language, 'female');
-                                languagesTextsFile.setNewLanguage(language);
-                              });
                             },
                             onTapCancel: () {
                               setState(() {
@@ -433,6 +427,16 @@ class _HomePageState extends State<HomePage> {
                             });
                             // BUTTON CODE
                             print("SETTINGGGGGGGGGS");
+
+                            setState(() {
+                              if(language == "fr") {
+                                language = "nl";
+                              } else {
+                                language = "fr";
+                              }
+                              ttsHandler.setVoiceFrOrNl(language, 'female');
+                              languagesTextsFile.setNewLanguage(language);
+                            });
                           },
                           onTapCancel: () {
                             setState(() {

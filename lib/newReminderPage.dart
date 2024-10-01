@@ -347,6 +347,7 @@ class _NewReminderPageState extends State<NewReminderPage> {
                                     });
                                     // BUTTON CODE
                                     print("HELLLLLLLLLLP");
+                                    emergencyRequest.sendEmergencyRequest(context);
                                   },
                                   onTapCancel: () {
                                     setState(() {
@@ -1121,6 +1122,7 @@ class _NewReminderPageState extends State<NewReminderPage> {
                                 });
                                 // BUTTON CODE
                                 print("HELLLLLLLLLLP");
+                                emergencyRequest.sendEmergencyRequest(context);
                               },
                               onTapCancel: () {
                                 setState(() {

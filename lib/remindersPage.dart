@@ -308,6 +308,7 @@ class _RemindersPageState extends State<RemindersPage> {
                             });
                             // BUTTON CODE
                             print("HELLLLLLLLLLP");
+                            emergencyRequest.sendEmergencyRequest(context);
                           },
                           onTapCancel: () {
                             setState(() {

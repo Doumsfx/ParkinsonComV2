@@ -272,6 +272,7 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                             });
                             // BUTTON CODE
                             print("HELLLLLLLLLLP");
+                            emergencyRequest.sendEmergencyRequest(context);
                           },
                           onTapCancel: () {
                             setState(() {

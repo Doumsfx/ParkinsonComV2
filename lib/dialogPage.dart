@@ -554,6 +554,7 @@ class _DialogPageState extends State<DialogPage> {
                                     });
                                     // BUTTON CODE
                                     print("HELLLLLLLLLLP");
+                                    emergencyRequest.sendEmergencyRequest(context);
                                   },
                                   onTapCancel: () {
                                     setState(() {
@@ -783,6 +784,8 @@ class _DialogPageState extends State<DialogPage> {
                                           });
                                           // BUTTON CODE
                                           print("HELLLLLLLLLLP");
+                                          emergencyRequest.sendEmergencyRequest(context);
+
                                         },
                                         onTapCancel: () {
                                           setState(() {
@@ -1218,11 +1221,8 @@ class _DialogPageState extends State<DialogPage> {
                                       _buttonAnimations["SEND"] = false;
                                     });
                                     // BUTTON CODE
-                                    //todo change recipient + popup select user
                                     print("SENDDDDDDDDDDD");
                                     _showContactList();
-
-
                                   },
                                   onTapCancel: () {
                                     setState(() {
@@ -2020,6 +2020,7 @@ class _DialogPageState extends State<DialogPage> {
                                   if (_controller.text.isNotEmpty) {
                                     //Send an E-Mail
                                     if (selectedContact!.email != null) {
+                                      //todo update info sender
                                       String content = "${languagesTextsFile.texts["mail_body_1"]!} ${selectedContact!.first_name}, ${selectedContact!.email}\n\n${_controller.text}\n\n${languagesTextsFile.texts["mail_body_2"]!} ${selectedContact!.email} ${languagesTextsFile.texts["mail_body_3"]!}";
                                       final result = await emailHandler.sendMessage(selectedContact!.email!, content);
                                       if (mounted) { //Protect from trying to display the popup when the context has changed (ex : going back to the menu)
@@ -2034,7 +2035,6 @@ class _DialogPageState extends State<DialogPage> {
                                     }
                                     //Send a SMS
                                     else if(selectedContact!.phone != null) {
-                                      //todo send sms
                                       String phoneNumber = selectedContact!.phone as String;
                                       final int result = await smsHandler.checkPermissionAndSendSMS(_controller.text, [phoneNumber]);
                                       if (mounted) {

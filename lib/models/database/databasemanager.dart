@@ -291,6 +291,20 @@ class DatabaseManager {
     );
   }
 
+  ///Count the number of contacts
+  Future<int> countContacts() async {
+    List<Map<String, Object?>> queryResult = await db.rawQuery('''
+    SELECT COUNT(*) FROM Contact;
+    ''');
+    return int.parse(queryResult[0]["COUNT(*)"].toString());
+  }
+
+  ///Retrieve a list of Contacts from the database using their [priority] (1 = primary, 2 = secondary, 3 = none)
+  Future<List<Contact>> retrieveContactFromPriority(int priority) async {
+    final List<Map<String, Object?>> queryResult = await db.query('Contact', where: "priority = ?", whereArgs: [priority]);
+    return queryResult.map((e) => Contact.fromMap(e)).toList();
+  }
+
   factory DatabaseManager() {
     return _databaseManager;
   }
@@ -298,5 +312,9 @@ class DatabaseManager {
 
   //todo delete this
   Future<void> _insertContacts(Database database) async {
+    await database.insert('Contact', {'last_name' : 'Sanchez', 'first_name' : 'Adam', 'email' : 'adam.sanchez@uphf.fr', 'priority' : 3});
+    await database.insert('Contact', {'last_name' : 'Pagnon', 'first_name' : 'Alexis', 'email' : 'alexis.pagnon@uphf.fr', 'priority' : 2});
+    await database.insert('Contact', {'last_name' : 'Sanchez', 'first_name' : 'Adam', 'phone' : '0781679137', 'priority' : 2});
+    await database.insert('Contact', {'last_name' : 'Pagnon', 'first_name' : 'Alexis', 'phone' : '0644940894', 'priority' : 1});
     }
 }

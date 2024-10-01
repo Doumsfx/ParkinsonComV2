@@ -77,7 +77,13 @@
     "mail_title" : "Mail de ParkinsonCom v2",
     "mail_body_1" : "De :",
     "mail_body_2" : "Veuillez ne pas répondre directement.\nPour répondre à ce message, vous devez écrire directement à",
-    "mail_body_3" : "à partir de votre serveur de messagerie."
+    "mail_body_3" : "à partir de votre serveur de messagerie.",
+    "emergency_message" : "J'ai besoin d'aide.",
+    "emergency_ask_1" : "Voulez vous vraiment appeler",
+    "emergency_ask_1.2" : "Voulez vous aussi appeler",
+    "emergency_ask_2" : "à l'aide ?",
+    "emergency_confirm" : "Un appel à l’aide a été envoyé à"
+
   },
   "nl" : {
     "main_title" : "Hoofdmenu",
@@ -139,6 +145,11 @@
     "mail_title" : "Mail van ParkinsonCom v2",
     "mail_body_1" : "Van:",
     "mail_body_2" : "Gelieve niet rechtstreeks te antwoorden.\nAls je dit bericht wilt beantwoorden, moet je rechtstreeks schrijven naar:",
-    "mail_body_3" : "van je mailserver."
+    "mail_body_3" : "van je mailserver.",
+    "emergency_message" : "Ik heb hulp nodig.",
+    "emergency_ask_1" : "Wil je echt",
+    "emergency_ask_1.2" : "Wil je ook",
+    "emergency_ask_2" : "om hulp vragen ?",
+    "emergency_confirm" : "Er is een oproep voor hulp gestuurd naar:"
   }
 }

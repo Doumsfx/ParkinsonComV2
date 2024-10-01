@@ -435,6 +435,7 @@ class _NewThemePageState extends State<NewThemePage> {
                                   });
                                   // BUTTON CODE
                                   print("HELLLLLLLLLLP");
+                                  emergencyRequest.sendEmergencyRequest(context);
                                 },
                                 onTapCancel: () {
                                   setState(() {

@@ -311,6 +311,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                             });
                             // BUTTON CODE
                             print("HELLLLLLLLLLP");
+                            emergencyRequest.sendEmergencyRequest(context);
                           },
                           onTapCancel: () {
                             setState(() {

@@ -315,6 +315,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
                             });
                             // BUTTON CODE
                             print("HELLLLLLLLLLP");
+                            emergencyRequest.sendEmergencyRequest(context);
                           },
                           onTapCancel: () {
                             setState(() {
