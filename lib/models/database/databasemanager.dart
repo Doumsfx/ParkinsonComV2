@@ -312,6 +312,5 @@ class DatabaseManager {
 
   //todo delete this
   Future<void> _insertContacts(Database database) async {
-
     }
 }

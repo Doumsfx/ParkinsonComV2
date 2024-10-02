@@ -270,8 +270,13 @@ class EmergencyRequest {
         });
   }
 
-  ///
+  ///Send an emergency request to the [primaryContact] and launch the process for the list of [secondaryContacts]
   Future<void> _sendEmergencyRequestPrimary(Contact primaryContact, BuildContext contextPage, BuildContext context, List<Contact> secondaryContacts ) async {
+
+    //TTS before sending the message so we don't have any delay for the tts
+    ttsHandler.setText(languagesTextsFile.texts["emergency_message"]!);
+    ttsHandler.speak();
+
     int result = 0;
     //If the primary contact has an email
     if (primaryContact.email != null) {
@@ -479,8 +484,9 @@ class EmergencyRequest {
 
     ///Send message to a contact
     Future<void> _sendMessageToContact(Contact contact, BuildContext contextPage) async {
-      int result = 0;
+      //tts can be added here if we want to speak for the main contact and for all the secondaries
 
+      int result = 0;
       // Send message via email or SMS
       if (contact.email != null) {
         //todo update info sender
