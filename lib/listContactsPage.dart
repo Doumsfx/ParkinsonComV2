@@ -988,7 +988,7 @@ class _ListContactsPageState extends State<ListContactsPage> {
                       },
                       child: Container(
                         width: MediaQuery.of(context).size.width * 0.3,
-                        height:MediaQuery.of(context).size.height * 0.1,
+                        height: MediaQuery.of(context).size.width * 0.06,
                         decoration: const BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(30)),
                           color: Color.fromRGBO(61, 192, 200, 1),
@@ -1041,7 +1041,7 @@ class _ListContactsPageState extends State<ListContactsPage> {
                       },
                       child: Container(
                         width: MediaQuery.of(context).size.width * 0.3,
-                        height: MediaQuery.of(context).size.height * 0.1,
+                        height: MediaQuery.of(context).size.width * 0.06,
                         decoration: const BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(30)),
                           color: Color.fromRGBO(61, 192, 200, 1),
