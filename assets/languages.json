@@ -82,7 +82,8 @@
     "emergency_ask_1" : "Voulez vous vraiment appeler",
     "emergency_ask_1.2" : "Voulez vous aussi appeler",
     "emergency_ask_2" : "à l'aide ?",
-    "emergency_confirm" : "Un appel à l’aide a été envoyé à"
+    "emergency_confirm" : "Un appel à l’aide a été envoyé à",
+    "emergency_timer_1" : "Envoi automatique dans :"
 
   },
   "nl" : {
@@ -150,6 +151,7 @@
     "emergency_ask_1" : "Wil je echt",
     "emergency_ask_1.2" : "Wil je ook",
     "emergency_ask_2" : "om hulp vragen ?",
-    "emergency_confirm" : "Er is een oproep voor hulp gestuurd naar:"
+    "emergency_confirm" : "Er is een oproep voor hulp gestuurd naar:",
+    "emergency_timer_1" : "Verstuurd binnen:"
   }
 }

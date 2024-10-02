@@ -2,6 +2,8 @@
 // Code by Pagnon Alexis and Sanchez Adam
 // ParkinsonCom V2
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:parkinson_com_v2/variables.dart';
 
@@ -14,8 +16,6 @@ class EmergencyRequest {
     "POPUP NO": false,
   };
 
-
-
   void sendEmergencyRequest(BuildContext contextPage) async {
     if ((await databaseManager.countContacts()) > 0) {
       Contact primaryContact = (await databaseManager.retrieveContactFromPriority(1))[0];
@@ -27,7 +27,47 @@ class EmergencyRequest {
           builder: (BuildContext context) {
             double screenHeight = MediaQuery.of(context).size.height;
             double screenWidth = MediaQuery.of(context).size.width;
+
+            Timer? _timer;
+            int _start = 90; // Countdown starts from 90 seconds
+
             return StatefulBuilder(builder: (context, setState) {
+              // Timer logic
+              void startTimer() {
+                const oneSec = Duration(seconds: 1);
+                _timer = Timer.periodic(oneSec, (Timer timer) {
+                  if (_start == 0) {
+                    setState(() {
+                      timer.cancel();
+                    });
+                    Navigator.of(context).pop();
+                    _sendEmergencyRequestPrimary(primaryContact, contextPage, context, secondaryContacts);
+
+
+                  } else {
+                    if (context.mounted) {
+                      setState(() {
+                        _start--;
+                      });
+                    } else {
+                      timer.cancel();
+                    }
+                  }
+                });
+              }
+
+              // Start the timer when the dialog is built
+              if (_timer == null) {
+                startTimer();
+              }
+
+              // Dispose of the timer when the dialog is closed
+              void stopTimer() {
+                if (_timer != null) {
+                  _timer!.cancel();
+                }
+              }
+
               return Dialog(
                 backgroundColor: Colors.black87,
                 child: Padding(
@@ -35,14 +75,20 @@ class EmergencyRequest {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.15),
+                      SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.13),
                       Text(
                         "${languagesTextsFile.texts["emergency_ask_1"]!}\n${primaryContact.last_name} ${primaryContact.first_name}\n${languagesTextsFile.texts["emergency_ask_2"]!}",
                         textAlign: TextAlign.center,
-                        style: const TextStyle(
-                            color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                        style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
                       ),
-                      SizedBox(height: screenHeight * 0.2),
+                      SizedBox(height: screenHeight * 0.08),
+                      //Timer
+                      Text(
+                        "${languagesTextsFile.texts["emergency_timer_1"]!} ${formatDuration(_start)}",
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: screenHeight * 0.08),
                       //Buttons
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -65,6 +111,7 @@ class EmergencyRequest {
                                   _buttonAnimations["POPUP NO"] = false;
                                 });
                                 // BUTTON CODE
+                                stopTimer();
                                 Navigator.pop(context);
                               },
                               onTapCancel: () {
@@ -77,8 +124,7 @@ class EmergencyRequest {
                                   borderRadius: BorderRadius.all(Radius.circular(60)),
                                   color: Colors.red,
                                 ),
-                                padding: EdgeInsets.fromLTRB(
-                                    screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
+                                padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
                                 child: Text(
                                   languagesTextsFile.texts["pop_up_no"]!,
                                   style: const TextStyle(
@@ -110,34 +156,9 @@ class EmergencyRequest {
                                 setState(() {
                                   _buttonAnimations["POPUP YES"] = false;
                                 });
+                                stopTimer();
 
-                                int result = 0;
-                                //If the primary contact has an email
-                                if (primaryContact.email != null) {
-                                  result = await emailHandler.sendMessage(
-                                      primaryContact.email as String,
-                                      languagesTextsFile.texts["emergency_message"]!);
-                                }
-                                //Or if the primary contact has a phone number
-                                else if (primaryContact.phone != null) {
-                                  result = await smsHandler.checkPermissionAndSendSMS(
-                                      languagesTextsFile.texts["emergency_message"]!,
-                                      [primaryContact.phone as String]);
-                                }
-
-                                //Check if the context from where we clicked on the emergency button still exist
-                                if (contextPage.mounted) {
-                                  //Error encountered
-                                  if (result < 0) {
-                                    _showGenericPopupOK(
-                                        languagesTextsFile.texts["popup_message_send_fail"]!,
-                                        contextPage);
-                                  }
-                                  //Ask for each of the secondary contacts
-                                  else {
-                                    _sendEmergencyRequestSecondary(secondaryContacts, contextPage);
-                                  }
-                                }
+                                _sendEmergencyRequestPrimary(primaryContact, contextPage, context, secondaryContacts);
                               },
                               onTapCancel: () {
                                 setState(() {
@@ -149,8 +170,7 @@ class EmergencyRequest {
                                   borderRadius: BorderRadius.all(Radius.circular(60)),
                                   color: Colors.lightGreen,
                                 ),
-                                padding: EdgeInsets.fromLTRB(
-                                    screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
+                                padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
                                 child: Text(
                                   languagesTextsFile.texts["pop_up_yes"]!,
                                   style: const TextStyle(
@@ -197,8 +217,7 @@ class EmergencyRequest {
                     Text(
                       text,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
-                          color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                      style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: screenHeight * 0.2),
                     //Button to quit
@@ -230,8 +249,7 @@ class EmergencyRequest {
                             borderRadius: BorderRadius.all(Radius.circular(60)),
                             color: Colors.lightGreen,
                           ),
-                          padding:
-                              EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
+                          padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
                           child: Text(
                             languagesTextsFile.texts["pop_up_ok"]!,
                             style: const TextStyle(
@@ -252,130 +270,209 @@ class EmergencyRequest {
         });
   }
 
+  ///
+  Future<void> _sendEmergencyRequestPrimary(Contact primaryContact, BuildContext contextPage, BuildContext context, List<Contact> secondaryContacts ) async {
+    int result = 0;
+    //If the primary contact has an email
+    if (primaryContact.email != null) {
+      String content =
+          "${languagesTextsFile.texts["mail_body_1"]!} TOCHANGE{account.name}, TOCHANGE{account.email}\n\n${languagesTextsFile.texts["emergency_message"]!}\n\n${languagesTextsFile.texts["mail_body_2"]!} TOCHANGE{account.email} ${languagesTextsFile.texts["mail_body_3"]!}";
+      result = await emailHandler.sendMessage(primaryContact.email as String, content);
+    }
+    //Or if the primary contact has a phone number
+    else if (primaryContact.phone != null) {
+      result = await smsHandler.checkPermissionAndSendSMS(languagesTextsFile.texts["emergency_message"]!, [primaryContact.phone as String]);
+    }
+
+    //Check if the context from where we clicked on the emergency button still exist
+    if (contextPage.mounted) {
+      //Error encountered
+      if (result < 0) {
+        _showGenericPopupOK(languagesTextsFile.texts["popup_message_send_fail"]!, contextPage);
+      }
+      //Ask for each of the secondary contacts
+      else {
+        _sendEmergencyRequestSecondary(secondaryContacts, contextPage);
+      }
+    }
+  }
+
+
   /// Send emergency request to the contacts from a [contactsList]
   void _sendEmergencyRequestSecondary(List<Contact> contactsList, BuildContext contextPage) {
     bool forceStop = false;
 
-    ///Popup
+    /// Popup
     Future<bool> _showEmergencyRequestDialog(Contact contact, BuildContext contextPage) async {
       return await showDialog(
         context: contextPage,
+        barrierDismissible: false, // Prevent dismissal by tapping outside
         builder: (BuildContext context) {
           double screenHeight = MediaQuery.of(context).size.height;
           double screenWidth = MediaQuery.of(context).size.width;
-          return StatefulBuilder(builder: (context, setState) {
-            return Dialog(
-              backgroundColor: Colors.black87,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.15),
-                    Text(
-                      "${languagesTextsFile.texts["emergency_ask_1.2"]!}\n${contact.last_name} ${contact.first_name}\n${languagesTextsFile.texts["emergency_ask_2"]!}", //todo change for 2nd contacts
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                          color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: screenHeight * 0.2),
-                    // Buttons
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // Cancel button
-                        AnimatedScale(
-                          scale: _buttonAnimations["POPUP NO"]! ? 1.1 : 1.0,
-                          duration: const Duration(milliseconds: 100),
-                          curve: Curves.bounceOut,
-                          alignment: Alignment.center,
-                          child: GestureDetector(
-                            onTapDown: (_) {
-                              setState(() {
-                                _buttonAnimations["POPUP NO"] = true;
-                              });
-                            },
-                            onTapUp: (_) {
-                              setState(() {
-                                _buttonAnimations["POPUP NO"] = false;
-                              });
-                              // Set forceStop to true (stop the dialogs for all the secondary contacts) + close the dialog
-                              forceStop = true;
-                              Navigator.pop(context, false);  // Return false for NO
-                            },
-                            onTapCancel: () {
-                              setState(() {
-                                _buttonAnimations["POPUP NO"] = false;
-                              });
-                            },
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(60)),
-                                color: Colors.red,
-                              ),
-                              padding: EdgeInsets.fromLTRB(
-                                  screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
-                              child: Text(
-                                languagesTextsFile.texts["pop_up_no"]!,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
+
+          Timer? _timer;
+          int _start = 90; // Countdown starts from 90 seconds
+
+          return StatefulBuilder(
+            builder: (context, setState) {
+              // Timer logic
+              void startTimer() {
+                const oneSec = Duration(seconds: 1);
+                _timer = Timer.periodic(oneSec, (Timer timer) {
+                  if (_start == 0) {
+                    setState(() {
+                      timer.cancel();
+                      //Automatically send message to contact
+                      Navigator.of(context).pop(true);
+                    });
+                  } else {
+                    if (context.mounted) {
+                      setState(() {
+                        _start--;
+                      });
+                    }
+                  }
+                });
+              }
+
+              // Start the timer when the dialog is built
+              if (_timer == null) {
+                startTimer();
+              }
+
+              // Dispose of the timer when the dialog is closed
+              void stopTimer() {
+                if (_timer != null) {
+                  _timer!.cancel();
+                }
+              }
+
+              return Dialog(
+                backgroundColor: Colors.black87,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.13),
+                      Text(
+                        "${languagesTextsFile.texts["emergency_ask_1.2"]!}\n${contact.last_name} ${contact.first_name}\n${languagesTextsFile.texts["emergency_ask_2"]!}", // Display contact info
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: screenHeight * 0.08),
+                      // Countdown timer
+                      Text(
+                        "${languagesTextsFile.texts["emergency_timer_1"]!} ${formatDuration(_start)}",
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: screenHeight * 0.08),
+                      // Buttons for Yes/No
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // Cancel button
+                          AnimatedScale(
+                            scale: _buttonAnimations["POPUP NO"]! ? 1.1 : 1.0,
+                            duration: const Duration(milliseconds: 100),
+                            curve: Curves.bounceOut,
+                            alignment: Alignment.center,
+                            child: GestureDetector(
+                              onTapDown: (_) {
+                                setState(() {
+                                  _buttonAnimations["POPUP NO"] = true;
+                                });
+                              },
+                              onTapUp: (_) {
+                                setState(() {
+                                  _buttonAnimations["POPUP NO"] = false;
+                                });
+                                stopTimer(); // Stop the timer
+                                Navigator.pop(context, false); // Return false for NO
+                              },
+                              onTapCancel: () {
+                                setState(() {
+                                  _buttonAnimations["POPUP NO"] = false;
+                                });
+                              },
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular(60)),
+                                  color: Colors.red,
+                                ),
+                                padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
+                                child: Text(
+                                  languagesTextsFile.texts["pop_up_no"]!,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                        SizedBox(width: screenWidth * 0.15),
-                        // Yes button
-                        AnimatedScale(
-                          scale: _buttonAnimations["POPUP YES"]! ? 1.1 : 1.0,
-                          duration: const Duration(milliseconds: 100),
-                          curve: Curves.bounceOut,
-                          alignment: Alignment.center,
-                          child: GestureDetector(
-                            onTapDown: (_) {
-                              setState(() {
-                                _buttonAnimations["POPUP YES"] = true;
-                              });
-                            },
-                            onTapUp: (_) {
-                              setState(() {
-                                _buttonAnimations["POPUP YES"] = false;
-                              });
-                              Navigator.of(context).pop(true);  // Return true for YES
-                            },
-                            onTapCancel: () {
-                              setState(() {
-                                _buttonAnimations["POPUP YES"] = false;
-                              });
-                            },
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(60)),
-                                color: Colors.lightGreen,
-                              ),
-                              padding: EdgeInsets.fromLTRB(
-                                  screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
-                              child: Text(
-                                languagesTextsFile.texts["pop_up_yes"]!,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
+                          SizedBox(width: screenWidth * 0.15),
+                          // Yes button
+                          AnimatedScale(
+                            scale: _buttonAnimations["POPUP YES"]! ? 1.1 : 1.0,
+                            duration: const Duration(milliseconds: 100),
+                            curve: Curves.bounceOut,
+                            alignment: Alignment.center,
+                            child: GestureDetector(
+                              onTapDown: (_) {
+                                setState(() {
+                                  _buttonAnimations["POPUP YES"] = true;
+                                });
+                              },
+                              onTapUp: (_) {
+                                setState(() {
+                                  _buttonAnimations["POPUP YES"] = false;
+                                });
+                                stopTimer(); // Stop the timer
+                                Navigator.of(context).pop(true); // Return true for YES
+                              },
+                              onTapCancel: () {
+                                setState(() {
+                                  _buttonAnimations["POPUP YES"] = false;
+                                });
+                              },
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular(60)),
+                                  color: Colors.lightGreen,
+                                ),
+                                padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
+                                child: Text(
+                                  languagesTextsFile.texts["pop_up_yes"]!,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: screenHeight * 0.03),
-                  ],
+                        ],
+                      ),
+                      SizedBox(height: screenHeight * 0.03),
+                    ],
+                  ),
                 ),
-              ),
-            );
-          });
+              );
+            },
+          );
         },
       );
     }
@@ -387,7 +484,8 @@ class EmergencyRequest {
       // Send message via email or SMS
       if (contact.email != null) {
         //todo update info sender
-        String content = "${languagesTextsFile.texts["mail_body_1"]!} TOCHANGE{account.name}, TOCHANGE{account.email}\n\n${languagesTextsFile.texts["emergency_message"]!}\n\n${languagesTextsFile.texts["mail_body_2"]!} TOCHANGE{account.email} ${languagesTextsFile.texts["mail_body_3"]!}";
+        String content =
+            "${languagesTextsFile.texts["mail_body_1"]!} TOCHANGE{account.name}, TOCHANGE{account.email}\n\n${languagesTextsFile.texts["emergency_message"]!}\n\n${languagesTextsFile.texts["mail_body_2"]!} TOCHANGE{account.email} ${languagesTextsFile.texts["mail_body_3"]!}";
         result = await emailHandler.sendMessage(contact.email as String, content);
       } else if (contact.phone != null) {
         result = await smsHandler.checkPermissionAndSendSMS(languagesTextsFile.texts["emergency_message"]!, [contact.phone as String]);
@@ -423,8 +521,7 @@ class EmergencyRequest {
             // User pressed NO or error encountered -> stop everything
             forceStop = true;
           }
-        }
-        else {
+        } else {
           //Page no more displayed -> stop the popups
           forceStop = true;
         }
@@ -437,4 +534,14 @@ class EmergencyRequest {
     }
   }
 
+  ///Convert a [totalSeconds] to "mm:ss" format
+  String formatDuration(int totalSeconds) {
+    final duration = Duration(seconds: totalSeconds);
+    final minutes = duration.inMinutes;
+    final seconds = totalSeconds % 60;
+
+    final minutesString = '$minutes'.padLeft(2, '0');
+    final secondsString = '$seconds'.padLeft(2, '0');
+    return '$minutesString:$secondsString';
+  }
 }

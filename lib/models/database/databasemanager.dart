@@ -312,9 +312,6 @@ class DatabaseManager {
 
   //todo delete this
   Future<void> _insertContacts(Database database) async {
-    await database.insert('Contact', {'last_name' : 'Sanchez', 'first_name' : 'Adam', 'email' : 'adam.sanchez@uphf.fr', 'priority' : 3});
-    await database.insert('Contact', {'last_name' : 'Pagnon', 'first_name' : 'Alexis', 'email' : 'alexis.pagnon@uphf.fr', 'priority' : 2});
-    await database.insert('Contact', {'last_name' : 'Sanchez', 'first_name' : 'Adam', 'phone' : '0781679137', 'priority' : 2});
-    await database.insert('Contact', {'last_name' : 'Pagnon', 'first_name' : 'Alexis', 'phone' : '0644940894', 'priority' : 1});
+
     }
 }

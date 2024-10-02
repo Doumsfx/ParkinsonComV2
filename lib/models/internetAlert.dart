@@ -20,7 +20,7 @@ class InternetAlert {
     InternetConnection connection = InternetConnection.createInstance(
       useDefaultOptions: false, //Remove the check of the default websites of the package
       customCheckOptions: [
-        InternetCheckOption(uri: Uri.parse('https://www.google.com/')),
+        InternetCheckOption(uri: Uri.parse('https://www.google.com/'), timeout: const Duration(seconds: 5)),
         //Can add more website to check here
       ],
     );
