@@ -88,6 +88,7 @@ flutter:
   assets:
     - assets/
     - assets/icon_app.png
+    - assets/edit.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -211,6 +211,8 @@ class _ListRemindersPageState extends State<ListRemindersPage> {
                             backgroundColor: Colors.white,
                             textColor: const Color.fromRGBO(234, 104, 104, 1),
                             width: MediaQuery.of(context).size.width * 0.63,
+                            fontWeight: FontWeight.w700,
+                            alignment: const Alignment(0, 0.3),
                           ),
                         ),
                       ],

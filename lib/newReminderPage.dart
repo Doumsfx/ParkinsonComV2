@@ -310,6 +310,7 @@ class _NewReminderPageState extends State<NewReminderPage> {
                                 backgroundColor: Colors.white,
                                 textColor: const Color.fromRGBO(234, 104, 104, 1),
                                 width: MediaQuery.of(context).size.width * 0.5,
+                                fontWeight: FontWeight.w700,
                               ),
                             ),
                           ],

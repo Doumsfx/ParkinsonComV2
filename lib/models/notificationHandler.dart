@@ -178,7 +178,7 @@ class NotificationHandler {
           for(i; i < _listReminders.length; i += 1){
             if(_listReminders[i].hour == currentTime){
               if(_listReminders[i].days.contains(currentDay)){
-                _showReminderPopUp(context, "Il est l'heure de vous prendre votre:\n ${_listReminders[i].title}");
+                _showReminderPopUp(context, "${languagesTextsFile.texts["notification_text"]}:\n ${_listReminders[i].title}");
                 _showNotification("${languagesTextsFile.texts["notification_text"]} ${_listReminders[i].title}",languagesTextsFile.texts["notification_title"], flutterLocalNotificationsPlugin);
                 if(_listReminders[i].ring && !isMusicPlaying()){
                   startMusic();

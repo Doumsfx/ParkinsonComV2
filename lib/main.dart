@@ -10,6 +10,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:parkinson_com_v2/customHomePageTitle.dart';
 import 'package:parkinson_com_v2/customMenuButton.dart';
 import 'package:parkinson_com_v2/customShapeMenu.dart';
+import 'package:parkinson_com_v2/listContactsPage.dart';
 import 'package:parkinson_com_v2/listDialogsPage.dart';
 import 'package:parkinson_com_v2/listRemindersPage.dart';
 import 'package:parkinson_com_v2/variables.dart';
@@ -565,6 +566,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                             });
                             // BUTTON CODE
                             print("CONTACTSSSSS");
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const ListContactsPage(),
+                                )).then((_) => initialisation());
                           },
                           onTapCancel: () {
                             setState(() {
