@@ -198,6 +198,7 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
         dialogPageState.value = false;
         newThemePageState.value = false;
         newReminderPageState.value = false;
+        newContactPageState.value = false;
       });
     }
 
@@ -385,7 +386,7 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
 
                         double fontSize = key.text == "?123" || key.text == "ABC" ? 17 : 20;
 
-                        Color couleurFond = key.text == "MAJ" || key.text == "?123" || key.text == "TIRET" || key.text == "," || key.text == "." || key.text == "ABC" || key.action == VirtualKeyboardKeyAction.Return
+                        Color backgroundColor = key.text == "MAJ" || key.text == "?123" || key.text == "TIRET" || key.text == "," || key.text == "." || key.text == "ABC" || key.action == VirtualKeyboardKeyAction.Return
                             ? const Color.fromRGBO(51, 56, 59, 1) // Dark Grey
                             : const Color.fromRGBO(69, 73, 76, 1); // Light Grey
 
@@ -417,7 +418,7 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(8.0),
                                   ),
-                                  backgroundColor: couleurFond,
+                                  backgroundColor: backgroundColor,
                                   fixedSize: keySize,
                                   minimumSize: const Size(0, 0),
                                   alignment: Alignment.center,

@@ -285,7 +285,7 @@ class _CustomKeyboardDigitState extends State<CustomKeyboardDigit> {
 
                         double fontSize = 20;
 
-                        Color couleurFond = const Color.fromRGBO(69, 73, 76, 1);
+                        Color backgroundColor = const Color.fromRGBO(69, 73, 76, 1);
 
                         return Container(
                           margin: MediaQuery.of(context).size.height > 600 ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.01) : EdgeInsets.zero,
@@ -315,7 +315,7 @@ class _CustomKeyboardDigitState extends State<CustomKeyboardDigit> {
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(8.0),
                                   ),
-                                  backgroundColor: couleurFond,
+                                  backgroundColor: backgroundColor,
                                   fixedSize: keySize,
                                   minimumSize: const Size(0, 0),
                                   alignment: Alignment.center,

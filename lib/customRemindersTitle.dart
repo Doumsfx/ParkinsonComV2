@@ -13,8 +13,10 @@ class CustomRemindersTitle extends StatelessWidget {
   final Color backgroundColor;
   final Color textColor;
   final double width;
+  final FontWeight fontWeight;
+  final Alignment alignment;
 
-  const CustomRemindersTitle({super.key, required this.text, required this.image, required this.imageScale, required this.backgroundColor, required this.textColor, required this.width});
+  const CustomRemindersTitle({super.key, required this.text, required this.image, required this.imageScale, required this.backgroundColor, required this.textColor, required this.width, required this.fontWeight, this.alignment = const Alignment(0, 0)});
 
   @override
   Widget build(BuildContext context) {
@@ -32,13 +34,13 @@ class CustomRemindersTitle extends StatelessWidget {
           ),
           padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.height * 0.085, 0, MediaQuery.of(context).size.height * 0.03, 0),
           child: Align(
-            alignment: const Alignment(-1, 0.1),
+            alignment: alignment,
             child: AutoSizeText(
               text,
               style: GoogleFonts.josefinSans(
                 color: textColor,
-                fontWeight: FontWeight.w700,
-                fontSize: 32,
+                fontWeight: fontWeight,
+                fontSize: MediaQuery.of(context).size.height > 600 ? 30 : 26,
               ),
               maxLines: 1,
               maxFontSize: 32,
