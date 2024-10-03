@@ -8,6 +8,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:parkinson_com_v2/customRemindersTitle.dart';
 import 'package:parkinson_com_v2/models/database/reminder.dart';
+import 'package:parkinson_com_v2/newContact.dart';
 import 'package:parkinson_com_v2/variables.dart';
 
 
@@ -383,6 +384,8 @@ class _ListContactsPageState extends State<ListContactsPage> {
 
                                         ),
                                       ),
+
+                                      // Second Checkbox
                                       SizedBox(
                                         width: MediaQuery.of(context).size.width * 0.1,
                                         height: MediaQuery.of(context).size.width * 0.05,
@@ -979,6 +982,12 @@ class _ListContactsPageState extends State<ListContactsPage> {
                           _buttonAnimations["ADD"] = false;
                         });
                         // BUTTON CODE
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const NewContactPage(),
+                            )
+                        ).then((_) => initialisation());
 
                       },
                       onTapCancel: () {

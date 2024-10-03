@@ -40,9 +40,7 @@ class _NewReminderPageState extends State<NewReminderPage> {
 
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _firstController = TextEditingController();
-  late CustomKeyboard firstCustomKeyboard;
   final TextEditingController _secondController = TextEditingController();
-  late CustomKeyboard secondCustomKeyboard;
   late Reminder reminder;
   bool alarmRing = false;
   bool everydayAlarm = false;
@@ -190,9 +188,6 @@ class _NewReminderPageState extends State<NewReminderPage> {
         timeAndDate = newTimeAndDate;
       });
     });
-
-    firstCustomKeyboard = CustomKeyboard(controller: _firstController, textPredictions: isConnected, forcedPredictionsOff: true);
-    secondCustomKeyboard = CustomKeyboard(controller: _secondController, textPredictions: isConnected, forcedPredictionsOff: true);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       FocusScope.of(context).requestFocus(_focusNode);

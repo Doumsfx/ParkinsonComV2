@@ -6,22 +6,22 @@ import 'package:flutter/material.dart';
 import 'package:parkinson_com_v2/variables.dart';
 import 'package:virtual_keyboard_custom_layout/virtual_keyboard_custom_layout.dart';
 
-class CustomKeyboardDigit extends StatefulWidget {
+class CustomKeyboardPhoneNumber extends StatefulWidget {
   final TextEditingController controller;
 
-  const CustomKeyboardDigit({super.key, required this.controller});
+  const CustomKeyboardPhoneNumber({super.key, required this.controller});
 
   @override
-  State<CustomKeyboardDigit> createState() => _CustomKeyboardDigitState();
+  State<CustomKeyboardPhoneNumber> createState() => _CustomKeyboardPhoneNumberState();
 }
 
-class _CustomKeyboardDigitState extends State<CustomKeyboardDigit> {
+class _CustomKeyboardPhoneNumberState extends State<CustomKeyboardPhoneNumber> {
   // Useful variables
   final List<List<String>> _keyboard = [
     ["7", "8", "9"],
     ["4", "5", "6"],
     ["1", "2", "3"],
-         ["0"]
+    ["", "0", "+"]
   ];
   final Map<String?, bool> _keyScales = {};
   final Map<String, bool> _buttonAnimations = {
@@ -115,18 +115,6 @@ class _CustomKeyboardDigitState extends State<CustomKeyboardDigit> {
         });
   }
 
-  // Function to check if the time is valid
-  bool isTimeValidOrNull(String input) {
-    if(input.isEmpty){
-      return true;
-    }
-    else{
-      final timeRegex = RegExp(r'^([01]?[0-9]|2[0-3]):[0-5][0-9]$');
-      return timeRegex.hasMatch(input);
-    }
-  }
-
-
   // Function that manages actions based on keys pressed
   void _onKeyPress(String? keyText) {
     print('Key pressed: $keyText');
@@ -156,8 +144,9 @@ class _CustomKeyboardDigitState extends State<CustomKeyboardDigit> {
       setState(() {
         dialogPageState.value = false;
         newThemePageState.value = false;
-        if(isTimeValidOrNull(widget.controller.text)){
-          newReminderPageState.value = false;
+        // On verifie le numero de tel
+        if(true){
+          newContactPageState.value = false;
         }
         else{
           _showGenericPopupOK("Le format de l'heure n'est pas correct");
@@ -167,88 +156,12 @@ class _CustomKeyboardDigitState extends State<CustomKeyboardDigit> {
     }
 
     // For any other keys
-    else {
+    else if(keyText != ""){
       int offset = widget.controller.selection.extentOffset;
-      print(offset);
 
       setState(() {
-        if(widget.controller.text.length >= 5){
-          print('rien');
-        }
-        else{
-          String oldText = widget.controller.text;
-
-          if(widget.controller.text.length >= 3){
-            if(!widget.controller.text.contains(":")){
-              widget.controller.text = "${widget.controller.text.substring(0, 2)}:${widget.controller.text.substring(2, widget.controller.text.length)}";
-            }
-          }
-
-          if(offset == 0){
-            if(int.parse(keyText!) < 3){
-              // Adding the number to the controller text
-              widget.controller.text = keyText + widget.controller.text.substring(offset, widget.controller.text.length);
-              widget.controller.selection = TextSelection.collapsed(offset: offset + 1);
-
-            }
-            else{
-              // Adding the number to the controller text
-              widget.controller.text = "0$keyText:";
-              widget.controller.selection = TextSelection.collapsed(offset: offset + 3);
-            }
-          }
-          else if(offset == 1){
-            if(int.parse(keyText!) <= 3 || widget.controller.text[0] == "0" || widget.controller.text[0] == "1"){
-              // Adding the number to the controller text
-              widget.controller.text = "${widget.controller.text.substring(0, offset)}$keyText${widget.controller.text.substring(offset, widget.controller.text.length)}:";
-              widget.controller.selection = TextSelection.collapsed(offset: offset + 2);
-            }
-          }
-          else if(widget.controller.text.indexOf(':') + 1 == offset || widget.controller.text.length <= 2){
-            if(int.parse(keyText!) <= 5){
-              // Adding the number to the controller text
-              widget.controller.text = "${widget.controller.text.substring(0, offset)}$keyText${widget.controller.text.substring(offset, widget.controller.text.length)}";
-              widget.controller.selection = TextSelection.collapsed(offset: offset + 1);
-            }
-            else if(widget.controller.text.length <= 2){
-              // Adding the number to the controller text
-              widget.controller.text = "${widget.controller.text.substring(0, offset)}:0$keyText${widget.controller.text.substring(offset, widget.controller.text.length)}";
-              widget.controller.selection = TextSelection.collapsed(offset: offset + 3);
-            }
-            else{
-              // Adding the number to the controller text
-              widget.controller.text = "${widget.controller.text.substring(0, offset)}0$keyText${widget.controller.text.substring(offset, widget.controller.text.length)}";
-              widget.controller.selection = TextSelection.collapsed(offset: offset + 2);
-            }
-          }
-          else if(offset == 4){
-            if(int.parse(widget.controller.text[3]) <= 5){
-              // Adding the number to the controller text
-              widget.controller.text = widget.controller.text.substring(0, offset) + keyText! + widget.controller.text.substring(offset, widget.controller.text.length);
-              widget.controller.selection = TextSelection.collapsed(offset: offset + 1);
-            }
-          }
-          else{
-            // Adding the number to the controller text
-            widget.controller.text = widget.controller.text.substring(0, offset) + keyText! + widget.controller.text.substring(offset, widget.controller.text.length);
-            widget.controller.selection = TextSelection.collapsed(offset: offset + 1);
-          }
-
-          if(widget.controller.text.length >= 3){
-            if(!widget.controller.text.contains(":")){
-              widget.controller.text = "${widget.controller.text.substring(0, 2)}:${widget.controller.text.substring(2, widget.controller.text.length)}";
-            }
-          }
-
-
-          if(widget.controller.text.length > 3){
-            if(widget.controller.text.split(":")[0].length != 2){
-              widget.controller.text = oldText;
-            }
-          }
-
-        }
-
+        widget.controller.text = widget.controller.text.substring(0, offset) + keyText! + widget.controller.text.substring(offset, widget.controller.text.length);
+        widget.controller.selection = TextSelection.collapsed(offset: offset + 1);
       });
     }
   }
@@ -285,7 +198,7 @@ class _CustomKeyboardDigitState extends State<CustomKeyboardDigit> {
 
                         double fontSize = 20;
 
-                        Color backgroundColor = const Color.fromRGBO(69, 73, 76, 1);
+                        Color backgroundColor = key.text == "" ? const Color.fromRGBO(34, 39, 42, 1) : const Color.fromRGBO(69, 73, 76, 1);
 
                         return Container(
                           margin: MediaQuery.of(context).size.height > 600 ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.01) : EdgeInsets.zero,
