@@ -608,12 +608,12 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                                                   });
                                                                 },
                                                                 onTapUp: (_) async {
-                                                                  setState(() {
-                                                                    _buttonAnimations["POPUP YES"] = false;
-                                                                  });
+                                                                  _buttonAnimations["POPUP YES"] = false;
+
                                                                   await databaseManager.deleteTheme(_listThemes[index].id_theme);
                                                                   //Refresh ui
                                                                   _listThemes.removeAt(index);
+                                                                  _updateParent();
                                                                   _updateParent();
                                                                   //Close the popup
                                                                   Navigator.pop(context); // Close the dialog

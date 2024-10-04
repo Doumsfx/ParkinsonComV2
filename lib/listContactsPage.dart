@@ -3,11 +3,10 @@
 // ParkinsonCom V2
 
 import 'dart:async';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:parkinson_com_v2/customRemindersTitle.dart';
-import 'package:parkinson_com_v2/models/database/reminder.dart';
+import 'package:parkinson_com_v2/models/database/contact.dart';
 import 'package:parkinson_com_v2/newContact.dart';
 import 'package:parkinson_com_v2/variables.dart';
 
@@ -30,11 +29,12 @@ class _ListContactsPageState extends State<ListContactsPage> {
     "BOT ARROW": false,
     "POPUP NO": false,
     "POPUP YES": false,
+    "POPUP OK": false,
     "ADD": false,
     "SAVE": false,
   };
 
-  List<Reminder> _listReminders = [];
+  List<Contact> _listContacts = [];
   String selectedThemeTitle = "";
   late List<bool> _contactsAnimations;
   late List<bool> _primaryContacts;
@@ -44,18 +44,43 @@ class _ListContactsPageState extends State<ListContactsPage> {
   final ScrollController _scrollController = ScrollController();
 
   Future<void> initialisation() async {
-    _listReminders = await databaseManager.retrieveReminders();
+    _listContacts = await databaseManager.retrieveContacts();
     setState(() {});
-    _contactsAnimations = List.filled(_listReminders.length, false);
-    _deleteButtonsAnimations = List.filled(_listReminders.length, false);
-    _modifyButtonsAnimations = List.filled(_listReminders.length, false);
-    _primaryContacts = List.filled(_listReminders.length, false);
-    _secondaryContacts = List.filled(_listReminders.length, false);
+    _contactsAnimations = List.filled(_listContacts.length, false);
+    _deleteButtonsAnimations = List.filled(_listContacts.length, false);
+    _modifyButtonsAnimations = List.filled(_listContacts.length, false);
+    _primaryContacts = List.filled(_listContacts.length, false);
+    _secondaryContacts = List.filled(_listContacts.length, false);
 
-    // Sorting list with hour
-    _listReminders.sort((a, b) => a.hour.compareTo(b.hour));
+    // Sorting list with first name
+    _listContacts.sort((a, b) => a.last_name.compareTo(b.last_name));
     setState(() {});
 
+    // If the list contains only one contact
+    if(_listContacts.length == 1){
+      await databaseManager.updateContact(Contact(
+        first_name: _listContacts[0].first_name,
+        last_name: _listContacts[0].last_name,
+        email: _listContacts[0].email,
+        phone: _listContacts[0].phone,
+        priority: 1,
+        id_contact: _listContacts[0].id_contact,
+      ));
+
+      _primaryContacts[0] = true;
+    }
+    setState(() {});
+
+    // Updating the lists of priority
+    int i = 0;
+    for(i; i < _listContacts.length; i += 1){
+      if(_listContacts[i].priority == 1){
+        _primaryContacts[i] = true;
+      }
+      else if(_listContacts[i].priority == 2){
+        _secondaryContacts[i] = true;
+      }
+    }
   }
 
   /// Function to update all values of primaryContacts
@@ -68,20 +93,78 @@ class _ListContactsPageState extends State<ListContactsPage> {
     _secondaryContacts.fillRange(0, _primaryContacts.length, value);
   }
 
-  String listDaysInGoodLanguage(String str){
-    List<String> list = str.split(" ");
-    //print(list);
-    String newList = "";
-    String day = "";
-    int i = 0;
-    for(i; i < list.length; i += 1){
-      day = languagesTextsFile.texts[list[i]];
-      newList += " ${day.substring(0, 3)}";
-    }
-
-
-    return newList;
+  /// Generic popup to display a specific [text] from the JSON and with an "OK" button
+  void _showGenericPopupOK(String text) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          double screenHeight = MediaQuery.of(context).size.height;
+          double screenWidth = MediaQuery.of(context).size.width;
+          return StatefulBuilder(builder: (context, setState) {
+            return Dialog(
+              backgroundColor: Colors.black87,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.15),
+                    Text(
+                      text,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: screenHeight * 0.2),
+                    //Button to quit
+                    AnimatedScale(
+                      scale: _buttonAnimations["POPUP OK"]! ? 1.1 : 1.0,
+                      duration: const Duration(milliseconds: 100),
+                      curve: Curves.bounceOut,
+                      child: GestureDetector(
+                        // Animation management
+                        onTapDown: (_) {
+                          setState(() {
+                            _buttonAnimations["POPUP OK"] = true;
+                          });
+                        },
+                        onTapUp: (_) {
+                          setState(() {
+                            _buttonAnimations["POPUP OK"] = false;
+                          });
+                          // BUTTON CODE
+                          Navigator.pop(context);
+                        },
+                        onTapCancel: () {
+                          setState(() {
+                            _buttonAnimations["POPUP OK"] = false;
+                          });
+                        },
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(60)),
+                            color: Colors.lightGreen,
+                          ),
+                          padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
+                          child: Text(
+                            languagesTextsFile.texts["pop_up_ok"]!,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: screenHeight * 0.03),
+                  ],
+                ),
+              ),
+            );
+          });
+        });
   }
+
 
   @override
   void initState() {
@@ -323,7 +406,7 @@ class _ListContactsPageState extends State<ListContactsPage> {
               ],
             ),
 
-            // List of reminders
+            // List of contacts
             Expanded(
               child: RawScrollbar(
                 thumbColor: Colors.blue,
@@ -343,7 +426,7 @@ class _ListContactsPageState extends State<ListContactsPage> {
                     Expanded(
                       child: ListView.builder(
                           controller: _scrollController,
-                          itemCount: _listReminders.length,
+                          itemCount: _listContacts.length,
                           itemBuilder: (context, index) {
                             return Row(
                               children: [
@@ -438,14 +521,12 @@ class _ListContactsPageState extends State<ListContactsPage> {
                                           _contactsAnimations[index] = false;
                                         });
                                         // BUTTON CODE
-                                        /*
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => NewReminderPage(idReminder: _listReminders[index].id_reminder),
+                                              builder: (context) => NewContactPage(idContact: _listContacts[index].id_contact),
                                             )
                                         ).then((_) => initialisation());
-                                        */
                                       },
                                       onTapCancel: () {
                                         setState(() {
@@ -464,14 +545,16 @@ class _ListContactsPageState extends State<ListContactsPage> {
                                           padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.04, MediaQuery.of(context).size.width * 0.02, MediaQuery.of(context).size.width * 0.02, MediaQuery.of(context).size.width * 0.015),
                                           child: Align(
                                             alignment: const Alignment(-1, 0),
-                                            child: Text(
-                                              "${_listReminders[index].title} - ${_listReminders[index].hour} - ${listDaysInGoodLanguage(_listReminders[index].days)}",
+                                            child: AutoSizeText(
+                                              "${_listContacts[index].last_name} ${_listContacts[index].first_name} - ${_listContacts[index].email ?? _listContacts[index].phone}",
                                               style: const TextStyle(
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 20,
                                               ),
                                               maxLines: 1,
+                                              maxFontSize: 20,
+                                              minFontSize: 5,
                                               overflow: TextOverflow.ellipsis,
                                             ),
                                           ),
@@ -516,7 +599,7 @@ class _ListContactsPageState extends State<ListContactsPage> {
                                                         SizedBox(height: screenHeight * 0.1),
                                                         //Suppression warning
                                                         Text(
-                                                          "${languagesTextsFile.texts["pop_up_delete_reminder"]!}:\n${_listReminders[index].title} ?",
+                                                          (languagesTextsFile.texts["pop_up_delete_contact"]).toString().replaceAll("...", "\n${_listContacts[index].first_name} ${_listContacts[index].last_name}\n"),
                                                           textAlign: TextAlign.center,
                                                           style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold,),
                                                         ),
@@ -584,15 +667,15 @@ class _ListContactsPageState extends State<ListContactsPage> {
                                                                   });
                                                                 },
                                                                 onTapUp: (_) async {
-                                                                  setState(() {
-                                                                    _buttonAnimations["POPUP YES"] = false;
-                                                                  });
-                                                                  await databaseManager.deleteReminder(_listReminders[index].id_reminder);
-                                                                  //Refresh ui
-                                                                  _listReminders.removeAt(index);
+                                                                  _buttonAnimations["POPUP YES"] = false;
+
+                                                                  await databaseManager.deleteContact(_listContacts[index].id_contact);
+                                                                  // Refresh ui
+                                                                  _listContacts.removeAt(index);
                                                                   _updateParent();
                                                                   //Close the popup
                                                                   Navigator.pop(context); // Close the dialog
+
                                                                 },
 
                                                                 onTapCancel: () {
@@ -682,7 +765,7 @@ class _ListContactsPageState extends State<ListContactsPage> {
                                                         SizedBox(height: screenHeight * 0.1),
                                                         //Suppression warning
                                                         Text(
-                                                          "${languagesTextsFile.texts["pop_up_delete_reminder"]!}:\n${_listReminders[index].title} ?",
+                                                          "${languagesTextsFile.texts["pop_up_delete_reminder"]!}:\n${_listContacts[index].first_name} ?",
                                                           textAlign: TextAlign.center,
                                                           style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold,),
                                                         ),
@@ -753,9 +836,9 @@ class _ListContactsPageState extends State<ListContactsPage> {
                                                                   setState(() {
                                                                     _buttonAnimations["POPUP YES"] = false;
                                                                   });
-                                                                  await databaseManager.deleteReminder(_listReminders[index].id_reminder);
+                                                                  await databaseManager.deleteContact(_listContacts[index].id_contact);
                                                                   //Refresh ui
-                                                                  _listReminders.removeAt(index);
+                                                                  _listContacts.removeAt(index);
                                                                   _updateParent();
                                                                   //Close the popup
                                                                   Navigator.pop(context); // Close the dialog
@@ -1041,6 +1124,57 @@ class _ListContactsPageState extends State<ListContactsPage> {
                           _buttonAnimations["SAVE"] = false;
                         });
                         // BUTTON CODE
+
+
+                        if(_listContacts.isNotEmpty){
+                          int i = 0;
+                          for(i; i < _listContacts.length; i += 1){
+                            if(_primaryContacts[i]){
+                              await databaseManager.updateContact(Contact(
+                                first_name: _listContacts[i].first_name,
+                                last_name: _listContacts[i].last_name,
+                                phone: _listContacts[i].phone,
+                                email: _listContacts[i].email,
+                                priority: 1,
+                                id_contact: _listContacts[i].id_contact,
+                              )
+
+                              );
+                            }
+
+                            else if(_secondaryContacts[i]){
+                              await databaseManager.updateContact(Contact(
+                                first_name: _listContacts[i].first_name,
+                                last_name: _listContacts[i].last_name,
+                                phone: _listContacts[i].phone,
+                                email: _listContacts[i].email,
+                                priority: 2,
+                                id_contact: _listContacts[i].id_contact,
+                              )
+
+                              );
+                            }
+
+                            else{
+                              await databaseManager.updateContact(Contact(
+                                first_name: _listContacts[i].first_name,
+                                last_name: _listContacts[i].last_name,
+                                phone: _listContacts[i].phone,
+                                email: _listContacts[i].email,
+                                priority: 3,
+                                id_contact: _listContacts[i].id_contact,
+                              )
+                              );
+
+                            }
+                          }
+
+                          _showGenericPopupOK(languagesTextsFile.texts["pop_up_contacts_save"]);
+                        }
+                        else{
+                          _showGenericPopupOK(languagesTextsFile.texts["pop_up_no_contacts"]);
+                        }
+
 
                       },
                       onTapCancel: () {

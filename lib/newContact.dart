@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:parkinson_com_v2/keyboard.dart';
 import 'package:parkinson_com_v2/keyboardPhoneNumber.dart';
-import 'package:parkinson_com_v2/models/database/reminder.dart';
+import 'package:parkinson_com_v2/models/database/contact.dart';
 import 'package:parkinson_com_v2/variables.dart';
 
 
@@ -41,8 +41,8 @@ class _NewContactPageState extends State<NewContactPage> {
   final TextEditingController _firstController = TextEditingController();
   final TextEditingController _secondController = TextEditingController();
   final TextEditingController _thirdController = TextEditingController();
-  late Reminder reminder;
-  bool mail = true;
+  late Contact contact;
+  bool mail = false;
   bool phone = false;
   final List<bool> _whichControllerIsActive = [false, false, false];
 
@@ -51,19 +51,34 @@ class _NewContactPageState extends State<NewContactPage> {
   final FocusNode _focusNode3 = FocusNode();
 
   Future<void> initialisation() async {
-    reminder = await databaseManager.retrieveReminderFromId(widget.idContact);
-    setState(() {});
-
     // If it's not a new contact, we adjust the interface
     if(widget.idContact != -1){
+      contact = await databaseManager.retrieveContactFromId(widget.idContact);
+      setState(() {});
+
+      // We update the interface with the information of the contact
       setState(() {
-        // mettre dans chaque controller le texte de base
+        _firstController.text = contact.first_name;
+        _secondController.text = contact.last_name;
+        if(contact.email != null){
+          _thirdController.text = contact.email!;
+          mail = true;
+        }
+        else{
+          _thirdController.text = contact.phone!;
+          phone = true;
+        }
+      });
+    }
+    else{
+      setState(() {
+        mail = true;
       });
     }
   }
 
   /// Generic popup to display a specific [text] from the JSON and with an "OK" button
-  void _showGenericPopupOK(String text) {
+  void _showGenericPopupOK(String text, int nbPopContext) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -101,7 +116,10 @@ class _NewContactPageState extends State<NewContactPage> {
                             _buttonAnimations["POPUP OK"] = false;
                           });
                           // BUTTON CODE
-                          Navigator.pop(context);
+                          int i = 0;
+                          for(i; i < nbPopContext; i += 1){
+                            Navigator.pop(context);
+                          }
                         },
                         onTapCancel: () {
                           setState(() {
@@ -164,172 +182,96 @@ class _NewContactPageState extends State<NewContactPage> {
           valueListenable: newContactPageState,
           builder: (context, value, child) {
             if(!value){
-              return Column(
+              return Row(
                 children: [
-                  // First part
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Back Arrow
-                      Container(
-                        margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.013, MediaQuery.of(context).size.width * 0.02, 0),
-                        child: AnimatedScale(
-                          scale: _buttonAnimations["BACK ARROW"]! ? 1.1 : 1.0,
-                          duration: const Duration(milliseconds: 100),
-                          curve: Curves.bounceOut,
-                          child: GestureDetector(
-                            onTapDown: (_) {
-                              setState(() {
-                                _buttonAnimations["BACK ARROW"] = true;
-                              });
-                            },
-                            onTapUp: (_) {
-                              setState(() {
-                                _buttonAnimations["BACK ARROW"] = false;
-                              });
-
-                              // Button code
-                              Navigator.pop(
-                                context,
-                              );
-                            },
-                            onTapCancel: () {
-                              setState(() {
-                                _buttonAnimations["BACK ARROW"] = false;
-                              });
-                            },
-                            child: Image.asset(
-                              "assets/fleche.png",
-                              height: MediaQuery.of(context).size.width * 0.05,
-                              width: MediaQuery.of(context).size.width * 0.07,
-                            ),
-                          ),
-                        ),
-                      ),
-
-                      // Title + Subtitle
-                      Expanded(
-                        child: Column(
-                          children: [
-                            // Title
-                            Container(
-                              margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.03),
-                              child: Text(
-                                languagesTextsFile.texts["new_contact_title"],
-                                style: GoogleFonts.josefinSans(
-                                  color: Colors.white,
-                                  fontSize: 35,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-
-                            // Subtitle
-                            Container(
-                              margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.03),
-                              child: Text(
-                                languagesTextsFile.texts["new_contact_subtitle2"],
-                                style: GoogleFonts.josefinSans(
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-
-                          ],
-                        )
-                      ),
-
-                      // Buttons at the right
-                      Container(
-                        margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.012),
-                        child: Column(
-                          children: [
-                            AnimatedScale(
-                              scale: _buttonAnimations["HELP"]! ? 1.1 : 1.0,
-                              duration: const Duration(milliseconds: 100),
-                              curve: Curves.bounceOut,
-                              child: GestureDetector(
-                                // Animation management
-                                onTapDown: (_) {
-                                  setState(() {
-                                    _buttonAnimations["HELP"] = true;
-                                  });
-                                },
-                                onTapUp: (_) {
-                                  setState(() {
-                                    _buttonAnimations["HELP"] = false;
-                                  });
-                                  // BUTTON CODE
-                                  print("HELLLLLLLLLLP");
-                                },
-                                onTapCancel: () {
-                                  setState(() {
-                                    _buttonAnimations["HELP"] = false;
-                                  });
-                                },
-
-                                child: Container(
-                                  margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.03, 0, MediaQuery.of(context).size.height * 0.03),
-                                  child: Image.asset(
-                                    "assets/helping_icon.png",
-                                    height: MediaQuery.of(context).size.width * 0.06,
-                                    width: MediaQuery.of(context).size.width * 0.06,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            AnimatedScale(
-                              scale: _buttonAnimations["HOME"]! ? 1.1 : 1.0,
-                              duration: const Duration(milliseconds: 100),
-                              curve: Curves.bounceOut,
-                              child: GestureDetector(
-                                onTapDown: (_) {
-                                  setState(() {
-                                    _buttonAnimations["HOME"] = true;
-                                  });
-                                },
-                                onTapUp: (_) {
-                                  setState(() {
-                                    _buttonAnimations["HOME"] = false;
-                                  });
-                                  // BUTTON CODE
-                                  Navigator.popUntil(
-                                    context,
-                                        (route) => route.isFirst,
-                                  );
-                                },
-                                onTapCancel: () {
-                                  setState(() {
-                                    _buttonAnimations["HOME"] = false;
-                                  });
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.fromLTRB(0, 0, 0, MediaQuery.of(context).size.height * 0.03),
-                                  child: Image.asset(
-                                    "assets/home.png",
-                                    height: MediaQuery.of(context).size.width * 0.06,
-                                    width: MediaQuery.of(context).size.width * 0.06,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  // Second part
                   Expanded(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
+                        // Back Arrow + Title + Subtitle
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Back Arrow
+                            SizedBox(
+                              child: Container(
+                                margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.013, 0, 0),
+                                child: AnimatedScale(
+                                  scale: _buttonAnimations["BACK ARROW"]! ? 1.1 : 1.0,
+                                  duration: const Duration(milliseconds: 100),
+                                  curve: Curves.bounceOut,
+                                  child: GestureDetector(
+                                    onTapDown: (_) {
+                                      setState(() {
+                                        _buttonAnimations["BACK ARROW"] = true;
+                                      });
+                                    },
+                                    onTapUp: (_) {
+                                      setState(() {
+                                        _buttonAnimations["BACK ARROW"] = false;
+                                      });
+
+                                      // Button code
+                                      Navigator.pop(
+                                        context,
+                                      );
+                                    },
+                                    onTapCancel: () {
+                                      setState(() {
+                                        _buttonAnimations["BACK ARROW"] = false;
+                                      });
+                                    },
+                                    child: Image.asset(
+                                      "assets/fleche.png",
+                                      height: MediaQuery.of(context).size.width * 0.05,
+                                      width: MediaQuery.of(context).size.width * 0.07,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+
+                            // Title + Subtitle
+                            Expanded(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  // Title
+                                  Container(
+                                    margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.03),
+                                    child: Text(
+                                      languagesTextsFile.texts["new_contact_title"],
+                                      style: GoogleFonts.josefinSans(
+                                        color: Colors.white,
+                                        fontSize: 35,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+
+                                  // Subtitle
+                                  Container(
+                                    margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.03, 0, MediaQuery.of(context).size.height * 0.05),
+                                    child: Text(
+                                      languagesTextsFile.texts["new_contact_subtitle2"],
+                                      style: GoogleFonts.josefinSans(
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+
                         // First TextField
                         Container(
                           width: MediaQuery.of(context).size.width * 0.4,
                           height: MediaQuery.of(context).size.height * 0.12,
+                          margin: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.06),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.all(
@@ -351,7 +293,7 @@ class _NewContactPageState extends State<NewContactPage> {
                                   color: Color.fromRGBO(50, 50, 50, 1),
                                   overflow: TextOverflow.ellipsis,
                                 ),
-
+                    
                                 focusNode: _focusNode,
                                 controller: _firstController,
                                 readOnly: true,
@@ -360,7 +302,7 @@ class _NewContactPageState extends State<NewContactPage> {
                                 maxLines: 1,
                                 textAlign: TextAlign.left,
                                 textAlignVertical: TextAlignVertical.center,
-
+                    
                                 decoration: InputDecoration(
                                     filled: true,
                                     fillColor: Colors.white,
@@ -399,14 +341,14 @@ class _NewContactPageState extends State<NewContactPage> {
                                       fontSize: 19,
                                     )
                                 ),
-
+                    
                                 onTap: () {
                                   setState(() {
                                     newContactPageState.value = true;
                                     _whichControllerIsActive[0] = true;
                                     _whichControllerIsActive[1] = false;
                                     _whichControllerIsActive[2] = false;
-
+                    
                                   });
                                   print("TOUCHEEEEEEEEEEEEEEE");
                                 },
@@ -414,170 +356,206 @@ class _NewContactPageState extends State<NewContactPage> {
                             ),
                           ),
                         ),
-
-                        // Second TextField
-                        Container(
-                          width: MediaQuery.of(context).size.width * 0.4,
-                          height: MediaQuery.of(context).size.height * 0.12,
-                          margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.015,),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(MediaQuery.of(context).size.width * 0.02),
-                            ),
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.fromLTRB(
-                              MediaQuery.of(context).size.width * 0.02,
-                              0,
-                              MediaQuery.of(context).size.width * 0.02,
-                              0,
-                            ),
-                            child: Center(
-                              child: TextField(
-                                style: const TextStyle(
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.w800,
-                                  color: Color.fromRGBO(50, 50, 50, 1),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-
-                                focusNode: _focusNode2,
-                                controller: _secondController,
-                                readOnly: true,
-                                showCursor: true,
-                                enableInteractiveSelection: true,
-                                maxLines: 1,
-                                textAlign: TextAlign.left,
-                                textAlignVertical: TextAlignVertical.center,
-
-                                decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                    iconColor: Colors.white,
-                                    focusColor: Colors.white,
-                                    hoverColor: Colors.white,
-                                    border: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                        color: Colors.white,
-                                      ),
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(MediaQuery.of(context).size.width * 0.02),
-                                      ),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                        color: Colors.white,
-                                      ),
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(MediaQuery.of(context).size.width * 0.02),
-                                      ),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                        color: Colors.white,
-                                      ),
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(MediaQuery.of(context).size.width * 0.02),
-                                      ),
-                                    ),
-                                    hintText: languagesTextsFile.texts["new_contact_last_name"],
-                                    hintStyle: const TextStyle(
-                                      color: Color.fromRGBO(147, 147, 147, 1),
-                                      fontStyle: FontStyle.italic,
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 19,
-                                    )
-                                ),
-
-                                onTap: () {
-                                  setState(() {
-                                    newContactPageState.value = true;
-                                    _whichControllerIsActive[0] = false;
-                                    _whichControllerIsActive[1] = true;
-                                    _whichControllerIsActive[2] = false;
-                                  });
-                                  print("TOUCHEEEEEEEEEEEEEEE");
-                                },
-                              ),
-                            ),
-                          ),
-                        ),
-
-                        // Choice between mail and phone
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.4,
-                          height: MediaQuery.of(context).size.height * 0.12,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              // Mail
-                              Text(
-                                languagesTextsFile.texts["new_contact_mail"],
+                    
+                        // Text + Second TextField + Mail/Phone Checkbox
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            // Text
+                            hasSimCard
+                            ? SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.29,
+                            )
+                            : Container(
+                              width: MediaQuery.of(context).size.width * 0.25,
+                              margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.02),
+                              child: Text(
+                                languagesTextsFile.texts["new_contact_message_left"]!,
                                 style: const TextStyle(
                                   color: Colors.white,
-                                  fontSize: 20,
+                                  fontSize: 12,
                                   fontWeight: FontWeight.w700,
                                 ),
+                                maxLines: 6,
                               ),
+                            ),
 
-                              // Mail Checkbox
-                              Transform.scale(
-                                scale: MediaQuery.of(context).size.width * 0.0025,
-                                child: Checkbox(
-                                  value: mail,
-                                  shape: const CircleBorder(side: BorderSide(color: Colors.white, width: 60, )),
-
-                                  checkColor: Colors.indigo,
-                                  activeColor: const Color.fromRGBO(240, 242, 239, 1),
-
-                                  onChanged: (value) {
-                                    setState(() {
-                                      phone = false;
-                                      mail = true;
-                                      _thirdController.clear();
-                                    });
-                                  },
+                            // Second TextField + Mail/Phone Checkbox
+                            Column(
+                              children: [
+                                // Second TextField
+                                Container(
+                                  width: MediaQuery.of(context).size.width * 0.4,
+                                  height: MediaQuery.of(context).size.height * 0.12,
+                                  margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.02,),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(MediaQuery.of(context).size.width * 0.02),
+                                    ),
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.fromLTRB(
+                                      MediaQuery.of(context).size.width * 0.02,
+                                      0,
+                                      MediaQuery.of(context).size.width * 0.02,
+                                      0,
+                                    ),
+                                    child: Center(
+                                      child: TextField(
+                                        style: const TextStyle(
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.w800,
+                                          color: Color.fromRGBO(50, 50, 50, 1),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                    
+                                        focusNode: _focusNode2,
+                                        controller: _secondController,
+                                        readOnly: true,
+                                        showCursor: true,
+                                        enableInteractiveSelection: true,
+                                        maxLines: 1,
+                                        textAlign: TextAlign.left,
+                                        textAlignVertical: TextAlignVertical.center,
+                    
+                                        decoration: InputDecoration(
+                                            filled: true,
+                                            fillColor: Colors.white,
+                                            iconColor: Colors.white,
+                                            focusColor: Colors.white,
+                                            hoverColor: Colors.white,
+                                            border: OutlineInputBorder(
+                                              borderSide: const BorderSide(
+                                                color: Colors.white,
+                                              ),
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(MediaQuery.of(context).size.width * 0.02),
+                                              ),
+                                            ),
+                                            enabledBorder: OutlineInputBorder(
+                                              borderSide: const BorderSide(
+                                                color: Colors.white,
+                                              ),
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(MediaQuery.of(context).size.width * 0.02),
+                                              ),
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderSide: const BorderSide(
+                                                color: Colors.white,
+                                              ),
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(MediaQuery.of(context).size.width * 0.02),
+                                              ),
+                                            ),
+                                            hintText: languagesTextsFile.texts["new_contact_last_name"],
+                                            hintStyle: const TextStyle(
+                                              color: Color.fromRGBO(147, 147, 147, 1),
+                                              fontStyle: FontStyle.italic,
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 19,
+                                            )
+                                        ),
+                    
+                                        onTap: () {
+                                          setState(() {
+                                            newContactPageState.value = true;
+                                            _whichControllerIsActive[0] = false;
+                                            _whichControllerIsActive[1] = true;
+                                            _whichControllerIsActive[2] = false;
+                                          });
+                                          print("TOUCHEEEEEEEEEEEEEEE");
+                                        },
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
-
-                              // Phone
-                              Text(
-                                languagesTextsFile.texts["new_contact_phone"],
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w700,
+                    
+                                // Choice between mail and phone
+                                hasSimCard
+                                    ? SizedBox(
+                                  width: MediaQuery.of(context).size.width * 0.4,
+                                  height: MediaQuery.of(context).size.width * 0.065,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    children: [
+                                      // Mail
+                                      Text(
+                                        languagesTextsFile.texts["new_contact_mail"],
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                    
+                                      // Mail Checkbox
+                                      Transform.scale(
+                                        scale: MediaQuery.of(context).size.width * 0.0025,
+                                        child: Checkbox(
+                                          value: mail,
+                                          shape: const CircleBorder(side: BorderSide(color: Colors.white, width: 60, )),
+                    
+                                          checkColor: Colors.indigo,
+                                          activeColor: const Color.fromRGBO(240, 242, 239, 1),
+                    
+                                          onChanged: (value) {
+                                            setState(() {
+                                              phone = false;
+                                              mail = true;
+                                              _thirdController.clear();
+                                            });
+                                          },
+                                        ),
+                                      ),
+                    
+                                      // Phone
+                                      Text(
+                                        languagesTextsFile.texts["new_contact_phone"],
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                    
+                                      // Phone Checkbox
+                                      Transform.scale(
+                                        scale: MediaQuery.of(context).size.width * 0.0025,
+                                        child: Checkbox(
+                                          value: phone,
+                                          shape: const CircleBorder(side: BorderSide(color: Colors.white, width: 60, )),
+                    
+                                          checkColor: Colors.indigo,
+                                          activeColor: const Color.fromRGBO(240, 242, 239, 1),
+                    
+                                          onChanged: (value) {
+                                            setState(() {
+                                              phone = true;
+                                              mail = false;
+                                              _thirdController.clear();
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                                    : SizedBox(
+                                  width: MediaQuery.of(context).size.width * 0.4,
+                                  height: MediaQuery.of(context).size.width * 0.065,
                                 ),
-                              ),
-
-                              // Phone Checkbox
-                              Transform.scale(
-                                scale: MediaQuery.of(context).size.width * 0.0025,
-                                child: Checkbox(
-                                  value: phone,
-                                  shape: const CircleBorder(side: BorderSide(color: Colors.white, width: 60, )),
-
-                                  checkColor: Colors.indigo,
-                                  activeColor: const Color.fromRGBO(240, 242, 239, 1),
-
-                                  onChanged: (value) {
-                                    setState(() {
-                                      phone = true;
-                                      mail = false;
-                                      _thirdController.clear();
-                                    });
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
+                              ],
+                            ),
+                          ],
                         ),
-
+                    
                         // Third TextField
                         Container(
                           width: MediaQuery.of(context).size.width * 0.4,
                           height: MediaQuery.of(context).size.height * 0.12,
+                          margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.06, MediaQuery.of(context).size.height * 0.002, 0, 0),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.all(
@@ -599,7 +577,7 @@ class _NewContactPageState extends State<NewContactPage> {
                                   color: Color.fromRGBO(50, 50, 50, 1),
                                   overflow: TextOverflow.ellipsis,
                                 ),
-
+                    
                                 focusNode: _focusNode3,
                                 controller: _thirdController,
                                 readOnly: true,
@@ -608,7 +586,7 @@ class _NewContactPageState extends State<NewContactPage> {
                                 maxLines: 1,
                                 textAlign: TextAlign.left,
                                 textAlignVertical: TextAlignVertical.center,
-
+                    
                                 decoration: InputDecoration(
                                     filled: true,
                                     fillColor: Colors.white,
@@ -647,7 +625,7 @@ class _NewContactPageState extends State<NewContactPage> {
                                       fontSize: 19,
                                     )
                                 ),
-
+                    
                                 onTap: () {
                                   setState(() {
                                     newContactPageState.value = true;
@@ -661,10 +639,10 @@ class _NewContactPageState extends State<NewContactPage> {
                             ),
                           ),
                         ),
-
+                    
                         // Add Button
                         Container(
-                          margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.02, 0, MediaQuery.of(context).size.height * 0.025),
+                          margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.06, MediaQuery.of(context).size.height * 0.02, 0, MediaQuery.of(context).size.height * 0.025),
                           child: AnimatedScale(
                             scale: _buttonAnimations["ADD"] == true ? 1.1 : 1.0,
                             duration: const Duration(milliseconds: 100),
@@ -682,48 +660,51 @@ class _NewContactPageState extends State<NewContactPage> {
                                 });
                                 // BUTTON CODE
                                 if(_firstController.text.isEmpty){
-                                  _showGenericPopupOK(languagesTextsFile.texts["new_contact_first_name_error"]);
+                                  _showGenericPopupOK(languagesTextsFile.texts["new_contact_first_name_error"], 1);
                                 }
                                 else if(_secondController.text.isEmpty){
-                                  _showGenericPopupOK(languagesTextsFile.texts["new_contact_last_name_error"]);
+                                  _showGenericPopupOK(languagesTextsFile.texts["new_contact_last_name_error"], 1);
+                                }
+                                else if(_thirdController.text.isNotEmpty && mail && !_thirdController.text.contains("@")){
+                                  _showGenericPopupOK(languagesTextsFile.texts["new_contact_mail_error_form"], 1);
                                 }
                                 else if(_thirdController.text.isEmpty && mail){
-                                  _showGenericPopupOK(languagesTextsFile.texts["new_contact_mail_error"]);
+                                  _showGenericPopupOK(languagesTextsFile.texts["new_contact_mail_error"], 1);
                                 }
                                 else if(_thirdController.text.isEmpty && phone){
-                                  _showGenericPopupOK(languagesTextsFile.texts["new_contact_phone_error"]);
+                                  _showGenericPopupOK(languagesTextsFile.texts["new_contact_phone_error"], 1);
                                 }
                                 else{
                                   if(widget.idContact == -1){
-                                    // Adding the reminder in the databse
-                                    /*
-                                    await databaseManager.insertReminder(Reminder(
-                                      title: _firstController.text,
-                                      hour: _secondController.text,
-                                      ring: alarmRing,
-                                      days: daysString.trim(),
+                                    // Adding the contact in the database
+                                    await databaseManager.insertContact(Contact(
+                                      first_name: _firstController.text,
+                                      last_name: _secondController.text,
+                                      email: mail ? _thirdController.text : null,
+                                      phone: phone ? _thirdController.text : null,
+                                      priority: 3,
                                     ));
-                                    */
-                                    Navigator.pop(context);
+                    
+                                    _showGenericPopupOK(languagesTextsFile.texts["new_contact_pop_up_success"], 2);
+                    
                                   }
-
-                                  // Updating the old reminder
+                    
+                                  // Updating the old contact
                                   else{
-                                    /*
-                                    await databaseManager.updateReminder(Reminder(
-                                        title: _firstController.text,
-                                        hour: _secondController.text,
-                                        ring: alarmRing,
-                                        days: daysString.trim(),
-                                        id_reminder: widget.idReminder
+                                    await databaseManager.updateContact(Contact(
+                                      first_name: _firstController.text,
+                                      last_name: _secondController.text,
+                                      email: mail ? _thirdController.text : null,
+                                      phone: phone ? _thirdController.text : null,
+                                      priority: contact.priority,
+                                      id_contact: widget.idContact,
                                     ));
-                                    */
-
+                    
                                     Navigator.pop(context);
                                   }
-
+                    
                                 }
-
+                    
                               },
                               onTapCancel: () {
                                 setState(() {
@@ -732,7 +713,7 @@ class _NewContactPageState extends State<NewContactPage> {
                               },
                               child: Container(
                                 width: MediaQuery.of(context).size.width * 0.3,
-                                height: MediaQuery.of(context).size.width * 0.06,
+                                height: MediaQuery.of(context).size.height > 600 ? MediaQuery.of(context).size.width * 0.06 : MediaQuery.of(context).size.width * 0.05,
                                 decoration: const BoxDecoration(
                                   borderRadius: BorderRadius.all(Radius.circular(30)),
                                   color: Color.fromRGBO(61, 192, 200, 1),
@@ -740,7 +721,7 @@ class _NewContactPageState extends State<NewContactPage> {
                                 padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.01),
                                 child: Center(
                                   child: AutoSizeText(
-                                    languagesTextsFile.texts["new_contact_add"],
+                                    widget.idContact == -1 ? languagesTextsFile.texts["new_contact_add"] : languagesTextsFile.texts["new_contact_modify"] ,
                                     style: const TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.w800,
@@ -757,9 +738,89 @@ class _NewContactPageState extends State<NewContactPage> {
                           ),
                         ),
                       ],
-                    )
-                  )
+                    ),
+                  ),
 
+                  // Buttons at the right
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.08,
+                    child: Container(
+                      margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.012),
+                      child: Column(
+                        children: [
+                          AnimatedScale(
+                            scale: _buttonAnimations["HELP"]! ? 1.1 : 1.0,
+                            duration: const Duration(milliseconds: 100),
+                            curve: Curves.bounceOut,
+                            child: GestureDetector(
+                              // Animation management
+                              onTapDown: (_) {
+                                setState(() {
+                                  _buttonAnimations["HELP"] = true;
+                                });
+                              },
+                              onTapUp: (_) {
+                                setState(() {
+                                  _buttonAnimations["HELP"] = false;
+                                });
+                                // BUTTON CODE
+                                print("HELLLLLLLLLLP");
+                              },
+                              onTapCancel: () {
+                                setState(() {
+                                  _buttonAnimations["HELP"] = false;
+                                });
+                              },
+
+                              child: Container(
+                                margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.03, 0, MediaQuery.of(context).size.height * 0.03),
+                                child: Image.asset(
+                                  "assets/helping_icon.png",
+                                  height: MediaQuery.of(context).size.width * 0.06,
+                                  width: MediaQuery.of(context).size.width * 0.06,
+                                ),
+                              ),
+                            ),
+                          ),
+                          AnimatedScale(
+                            scale: _buttonAnimations["HOME"]! ? 1.1 : 1.0,
+                            duration: const Duration(milliseconds: 100),
+                            curve: Curves.bounceOut,
+                            child: GestureDetector(
+                              onTapDown: (_) {
+                                setState(() {
+                                  _buttonAnimations["HOME"] = true;
+                                });
+                              },
+                              onTapUp: (_) {
+                                setState(() {
+                                  _buttonAnimations["HOME"] = false;
+                                });
+                                // BUTTON CODE
+                                Navigator.popUntil(
+                                  context,
+                                      (route) => route.isFirst,
+                                );
+                              },
+                              onTapCancel: () {
+                                setState(() {
+                                  _buttonAnimations["HOME"] = false;
+                                });
+                              },
+                              child: Container(
+                                margin: EdgeInsets.fromLTRB(0, 0, 0, MediaQuery.of(context).size.height * 0.03),
+                                child: Image.asset(
+                                  "assets/home.png",
+                                  height: MediaQuery.of(context).size.width * 0.06,
+                                  width: MediaQuery.of(context).size.width * 0.06,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               );
             }

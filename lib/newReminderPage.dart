@@ -74,13 +74,12 @@ class _NewReminderPageState extends State<NewReminderPage> {
 
     batteryLevel = await battery.batteryLevel;
 
-    reminder = await databaseManager.retrieveReminderFromId(widget.idReminder);
-    setState(() {});
-
     // If it's not a new reminder, we adjust the interface
     if(widget.idReminder != -1){
-      setState(() {
+      reminder = await databaseManager.retrieveReminderFromId(widget.idReminder);
+      setState(() {});
 
+      setState(() {
         _firstController.text = reminder.title;
         _secondController.text = reminder.hour;
         alarmRing = reminder.ring;
@@ -859,7 +858,7 @@ class _NewReminderPageState extends State<NewReminderPage> {
                                         }
                                         else{
                                           if(widget.idReminder == -1){
-                                            // Adding the reminder in the databse
+                                            // Adding the reminder in the database
                                             await databaseManager.insertReminder(Reminder(
                                               title: _firstController.text,
                                               hour: _secondController.text,

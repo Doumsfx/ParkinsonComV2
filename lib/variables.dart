@@ -14,6 +14,8 @@ import 'models/database/databasemanager.dart';
 // Global variables
 bool azerty = true; // true: azerty | false: abcde
 String language = "fr"; // "fr" | "nl"
+bool hasSimCard = false; // A MODIFIER
+
 ValueNotifier<bool> dialogPageState = ValueNotifier<bool>(false); // true: keyboard page | false: page without keyboard
 ValueNotifier<bool> newThemePageState = ValueNotifier<bool>(false); // true: keyboard page | false: page without keyboard
 ValueNotifier<bool> newReminderPageState = ValueNotifier<bool>(false); // true: keyboard page | false: page without keyboard

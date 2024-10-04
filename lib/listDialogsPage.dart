@@ -627,9 +627,8 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                                                   });
                                                                 },
                                                                 onTapUp: (_) async {
-                                                                  setState(() {
-                                                                    _buttonAnimations["POPUP YES"] = false;
-                                                                  });
+                                                                  _buttonAnimations["POPUP YES"] = false;
+
                                                                   await databaseManager.deleteDialog(_listDialogs[index].id_dialog);
                                                                   //Refresh ui
                                                                   _listDialogs.removeAt(index);
