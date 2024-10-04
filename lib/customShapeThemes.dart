@@ -15,46 +15,51 @@ class CustomShapeThemes extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      // Allows the circle to exceed the limits of the Stack
-      clipBehavior: Clip.none,
-      alignment: Alignment.centerLeft,
-      children: [
-        Container(
-          width: MediaQuery.of(context).size.width * 0.31,
-          height: MediaQuery.of(context).size.height * 0.067,
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(Radius.circular(60)),
-            color: backgroundColor,
-          ),
-          padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.height * 0.00625 * 5, MediaQuery.of(context).size.height * 0.00625, MediaQuery.of(context).size.height * 0.00625, MediaQuery.of(context).size.height * 0.00625),
-          child: Text(
-            text,
-            style: GoogleFonts.josefinSans(
-              color: textColor,
-              fontWeight: FontWeight.w600,
-              fontSize: 18,
-            ),
-          ),
-        ),
-        Positioned(
-          right: MediaQuery.of(context).size.height * 0.040 * -1,
-          child: Container(
-            width: MediaQuery.of(context).size.height * 0.1,
-            height: MediaQuery.of(context).size.height * 0.1,
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * 0.31,
+      height: MediaQuery.of(context).size.height * 0.095,
+      child: Stack(
+        // Allows the circle to exceed the limits of the Stack
+        clipBehavior: Clip.none,
+        alignment: Alignment.centerLeft,
+        children: [
+          Container(
+            width: MediaQuery.of(context).size.width * 0.31,
+            height: MediaQuery.of(context).size.height * 0.067,
             decoration: BoxDecoration(
-              shape: BoxShape.circle,
+              borderRadius: const BorderRadius.all(Radius.circular(60)),
               color: backgroundColor,
             ),
-            child: Padding(
-              padding: EdgeInsets.all(MediaQuery.of(context).size.height * 0.014),
-              child: Image.asset(
-                image,
+            padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.height * 0.00625 * 5, MediaQuery.of(context).size.height * 0.00625, MediaQuery.of(context).size.height * 0.00625, MediaQuery.of(context).size.height * 0.00625),
+            child: Text(
+              text,
+              style: GoogleFonts.josefinSans(
+                color: textColor,
+                fontWeight: FontWeight.w600,
+                fontSize: 18,
               ),
             ),
           ),
-        ),
-      ],
+          Positioned(
+            //right: MediaQuery.of(context).size.height * 0.040 * -1,
+            right: MediaQuery.of(context).size.height * 0.001 * -1,
+            child: Container(
+              width: MediaQuery.of(context).size.height * 0.1,
+              height: MediaQuery.of(context).size.height * 0.1,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: backgroundColor,
+              ),
+              child: Padding(
+                padding: EdgeInsets.all(MediaQuery.of(context).size.height * 0.014),
+                child: Image.asset(
+                  image,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
