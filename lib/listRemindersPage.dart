@@ -544,15 +544,17 @@ class _ListRemindersPageState extends State<ListRemindersPage> {
                                                                   });
                                                                 },
                                                                 onTapUp: (_) async {
-                                                                  setState(() {
-                                                                    _buttonAnimations["POPUP YES"] = false;
-                                                                  });
+                                                                  _buttonAnimations["POPUP YES"] = false;
+
                                                                   await databaseManager.deleteReminder(_listReminders[index].id_reminder);
+
                                                                   //Refresh ui
                                                                   _listReminders.removeAt(index);
                                                                   _updateParent();
+
                                                                   //Close the popup
                                                                   Navigator.pop(context); // Close the dialog
+
                                                                 },
 
                                                                 onTapCancel: () {
