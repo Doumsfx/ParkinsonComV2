@@ -85,6 +85,16 @@ class DatabaseManager {
     await db.execute('PRAGMA foreign_keys = ON');
   }
 
+  Future<bool> doesExist() async {
+    String path = await getDatabasesPath();
+    if(await databaseExists(join(path,"parkinsoncom2.db"))){
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
   /* CRUD Theme */
   ///Insert a [theme] into the database
   ///(the id_theme will be replaced by the autoincrement)
@@ -272,7 +282,7 @@ class DatabaseManager {
 
   ///Retrieve the list of Contact from the database
   Future<List<Contact>> retrieveContacts() async {
-    final List<Map<String, Object?>> queryResult = await db.query('Contact');
+    final List<Map<String, Object?>> queryResult = await db.query('Contact', where: "id_contact != 0");
     return queryResult.map((e) => Contact.fromMap(e)).toList();
   }
 
@@ -293,8 +303,10 @@ class DatabaseManager {
 
   ///Count the number of contacts
   Future<int> countContacts() async {
+    //id_contact = 0 --> not a contact but the user's info
     List<Map<String, Object?>> queryResult = await db.rawQuery('''
-    SELECT COUNT(*) FROM Contact;
+    SELECT COUNT(*) FROM Contact
+    WHERE id_contact != 0;
     ''');
     return int.parse(queryResult[0]["COUNT(*)"].toString());
   }
@@ -303,6 +315,12 @@ class DatabaseManager {
   Future<List<Contact>> retrieveContactFromPriority(int priority) async {
     final List<Map<String, Object?>> queryResult = await db.query('Contact', where: "priority = ?", whereArgs: [priority]);
     return queryResult.map((e) => Contact.fromMap(e)).toList();
+  }
+
+  ///Retrieve the User's info from the database
+  Future<Contact> retrieveUserInfo() async {
+    final List<Map<String, Object?>> queryResult = await db.query('Contact', where: "id_contact = 0");
+    return Contact.fromMap(queryResult[0]);
   }
 
   factory DatabaseManager() {

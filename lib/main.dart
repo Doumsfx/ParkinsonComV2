@@ -19,12 +19,15 @@ import 'package:battery_plus/battery_plus.dart';
 
 import 'models/internetAlert.dart';
 
-void main() {
+void main() async {
   // We put the game in full screen mode
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
-  // First initialization of the database manager when launching the app
+  // Detect if it is the first time we are launching the app using the existence of the database or not
+  bool isFirstLaunch = !(await databaseManager.doesExist()); //first time <=> no database existing
+
+  // Initialization of the database manager when launching the app (create or open the database)
   databaseManager.initDB();
 
   // Initialization of the TTS handler when launching the app
@@ -39,8 +42,16 @@ void main() {
 
   // We ensure that the phone preserve the landscape mode
   SystemChrome.setPreferredOrientations([
-    DeviceOrientation.landscapeLeft,
+    DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight
   ]).then((_) {
+
+    if(isFirstLaunch) {
+      print("premiere fois");
+    }
+    else {
+      print("pas premiere fois");
+    }
+
     runApp(const MyApp());
   });
 
@@ -48,7 +59,7 @@ void main() {
 }
 
 ///Load Environment Variables from the .env file
-void loadEnvVariables() async {
+Future<void> loadEnvVariables() async {
   await dotenv.load(fileName: ".env");
 }
 

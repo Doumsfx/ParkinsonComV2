@@ -39,7 +39,7 @@ class TtsHandler {
   TtsHandler();
 
   ///Initialization of the TTS
-  dynamic initTts() async {
+  Future<void> initTts() async {
     flutterTts = FlutterTts();
 
     _setAwaitOptions();

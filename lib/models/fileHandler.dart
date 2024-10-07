@@ -13,7 +13,7 @@ class FileHandler {
   }
 
   ///Load the texts for a specific [language] (available by default : FR and NL)
-  void setNewLanguage(String language) async {
+  Future<void> setNewLanguage(String language) async {
     try {
       //Open file
       Map<String, dynamic> file = jsonDecode(await rootBundle.loadString('assets/languages.json'));
