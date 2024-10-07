@@ -14,6 +14,7 @@ import 'package:parkinson_com_v2/customShapeMenu.dart';
 import 'package:parkinson_com_v2/listContactsPage.dart';
 import 'package:parkinson_com_v2/listDialogsPage.dart';
 import 'package:parkinson_com_v2/listRemindersPage.dart';
+import 'package:parkinson_com_v2/loginPage.dart';
 import 'package:parkinson_com_v2/variables.dart';
 import 'package:battery_plus/battery_plus.dart';
 
@@ -438,6 +439,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                             });
                             // BUTTON CODE
                             print("RELAAAAAAAAAAAAAX");
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => const LoginPage(),)
+                            );
                           },
                           onTapCancel: () {
                             setState(() {
