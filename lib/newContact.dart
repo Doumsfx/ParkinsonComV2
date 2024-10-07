@@ -252,7 +252,7 @@ class _NewContactPageState extends State<NewContactPage> {
                                   Container(
                                     margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.03, 0, MediaQuery.of(context).size.height * 0.05),
                                     child: Text(
-                                      languagesTextsFile.texts["new_contact_subtitle2"],
+                                      hasSimCard ? languagesTextsFile.texts["new_contact_subtitle2"] : languagesTextsFile.texts["new_contact_subtitle"],
                                       style: GoogleFonts.josefinSans(
                                         color: Colors.white,
                                         fontSize: 14,
