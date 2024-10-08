@@ -139,6 +139,10 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
       });
     }
 
+    else if (keyText == "MAJ" && widget.forcedLowerCase) {
+      // Do nothing
+    }
+
     // To change keyboard mode
     else if (keyText == "?123") {
       setState(() {

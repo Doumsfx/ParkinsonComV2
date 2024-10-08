@@ -971,7 +971,7 @@ class _NewContactPageState extends State<NewContactPage> {
                       return CustomKeyboard(controller: _secondController, textPredictions: isConnected, forcedPredictionsOff: true,);
                     }
                     else if(_whichControllerIsActive[2] && mail){
-                      return CustomKeyboard(controller: _thirdController, textPredictions: isConnected, forcedPredictionsOff: true,);
+                      return CustomKeyboard(controller: _thirdController, textPredictions: isConnected, forcedPredictionsOff: true, forcedLowerCase: true,);
                     }
                     else{
                       return CustomKeyboardPhoneNumber(controller: _thirdController);

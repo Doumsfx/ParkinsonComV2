@@ -5,6 +5,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:parkinson_com_v2/keyboard.dart';
+import 'package:parkinson_com_v2/main.dart';
 import 'package:parkinson_com_v2/models/database/contact.dart';
 import 'package:parkinson_com_v2/variables.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -463,11 +464,20 @@ class _LoginPageState extends State<LoginPage> {
                                         _showGenericPopupOK(languagesTextsFile.texts["login_page_error_form_mail"], 1);
                                       }
                                       else{
-                                        // MONTRER LA POP UP AVEC CODE DE VERIFICATION
                                         bool checks = await startChecks();
 
-                                        // SEULEMENT APRES ON AJOUTE A LA DATABASE UNE FOIS QUE LE CODE EST BON
                                         if(checks) {
+                                          isFirstLaunch = false;
+
+                                          // Initialization of the database manager when launching the app (create or open the database)
+                                          await databaseManager.initDB();
+
+                                          // Redirection
+                                          Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(builder: (context) => const HomePage(),)
+                                          );
+
                                           // Adding in the database
                                           await databaseManager.insertContact(Contact(
                                             first_name: _firstController.text,
@@ -477,7 +487,9 @@ class _LoginPageState extends State<LoginPage> {
                                             priority: 0,
                                             id_contact: 0,
                                           ));
-                                          //todo changer de page
+
+                                          print('contact ajouté + db initialise');
+
                                         }
 
                                       }

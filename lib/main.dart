@@ -26,14 +26,15 @@ void main() async {
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
   // Detect if it is the first time we are launching the app using the existence of the database or not
-  bool isFirstLaunch = !(await databaseManager.doesExist()); //first time <=> no database existing
-
-  // Initialization of the database manager when launching the app (create or open the database)
-  databaseManager.initDB();
+  isFirstLaunch = !(await databaseManager.doesExist()); //first time <=> no database existing
 
   // Initialization of the TTS handler when launching the app
   ttsHandler.initTts();
 
+  if(!isFirstLaunch) {
+    // Initialization of the database manager when launching the app (create or open the database)
+    databaseManager.initDB();
+  }
 
   // Set the texts to the default language
   languagesTextsFile.setNewLanguage("fr");
@@ -46,12 +47,7 @@ void main() async {
     DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight
   ]).then((_) {
 
-    if(isFirstLaunch) {
-      print("premiere fois");
-    }
-    else {
-      print("pas premiere fois");
-    }
+
 
     runApp(const MyApp());
   });
@@ -196,430 +192,436 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: const Color.fromRGBO(29, 52, 83, 1),
-        body: Column(
-          children: [
-            // First part
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.3,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Title and buttons
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+    return Builder(builder: (context) {
+      if(isFirstLaunch){
+        return const LoginPage();
+      }
+      else{
+        return Scaffold(
+            backgroundColor: const Color.fromRGBO(29, 52, 83, 1),
+            body: Column(
+              children: [
+                // First part
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * 0.3,
+                  child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Time + Date + Battery
-                      SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.24,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // Button + Battery %
-                              Row(
+                      // Title and buttons
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Time + Date + Battery
+                          SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.24,
+                              child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  // Power Button
-                                  AnimatedScale(
-                                    scale: _buttonAnimations["POWER"]! ? 1.1 : 1.0,
-                                    duration: const Duration(milliseconds: 100),
-                                    curve: Curves.bounceOut,
-                                    child: GestureDetector(
-                                      onTapDown: (_) {
-                                        setState(() {
-                                          _buttonAnimations["POWER"] = true;
-                                        });
-                                      },
-                                      onTapUp: (_) {
-                                        setState(() {
-                                          _buttonAnimations["POWER"] = false;
-                                        });
-                                        // BUTTON CODE
-                                        SystemNavigator.pop();
-                                      },
-                                      onTapCancel: () {
-                                        setState(() {
-                                          _buttonAnimations["POWER"] = false;
-                                        });
-                                      },
-                                      child: Container(
-                                        margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.01, MediaQuery.of(context).size.height * 0.015, 0, 0),
-                                        child: Image.asset(
-                                          'assets/power-button.png',
-                                          width: MediaQuery.of(context).size.height * 0.1,
-                                          height: MediaQuery.of(context).size.height * 0.1,
+                                  // Button + Battery %
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      // Power Button
+                                      AnimatedScale(
+                                        scale: _buttonAnimations["POWER"]! ? 1.1 : 1.0,
+                                        duration: const Duration(milliseconds: 100),
+                                        curve: Curves.bounceOut,
+                                        child: GestureDetector(
+                                          onTapDown: (_) {
+                                            setState(() {
+                                              _buttonAnimations["POWER"] = true;
+                                            });
+                                          },
+                                          onTapUp: (_) {
+                                            setState(() {
+                                              _buttonAnimations["POWER"] = false;
+                                            });
+                                            // BUTTON CODE
+                                            SystemNavigator.pop();
+                                          },
+                                          onTapCancel: () {
+                                            setState(() {
+                                              _buttonAnimations["POWER"] = false;
+                                            });
+                                          },
+                                          child: Container(
+                                            margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.01, MediaQuery.of(context).size.height * 0.015, 0, 0),
+                                            child: Image.asset(
+                                              'assets/power-button.png',
+                                              width: MediaQuery.of(context).size.height * 0.1,
+                                              height: MediaQuery.of(context).size.height * 0.1,
+                                            ),
+                                          ),
                                         ),
                                       ),
-                                    ),
+
+                                      // Text
+                                      Container(
+                                        margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.height * 0.08, MediaQuery.of(context).size.height * 0.04, MediaQuery.of(context).size.height * 0.019, 0),
+                                        child: Text(
+                                          "$batteryLevel%",
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 15,
+                                          ),
+                                        ),
+                                      ),
+
+                                      // Battery
+                                      Container(
+                                        margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.03, MediaQuery.of(context).size.width * 0.010, 0),
+                                        child: Image.asset(
+                                          'assets/batterie.png',
+                                          width: MediaQuery.of(context).size.height * 0.07,
+                                          height: MediaQuery.of(context).size.height * 0.07,
+                                        ),
+                                      ),
+
+                                      const Expanded(child: SizedBox()),
+                                    ],
                                   ),
 
-                                  // Text
+                                  // Date
                                   Container(
-                                    margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.height * 0.08, MediaQuery.of(context).size.height * 0.04, MediaQuery.of(context).size.height * 0.019, 0),
+                                    margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.03, MediaQuery.of(context).size.height * 0.02, 0, 0),
                                     child: Text(
-                                      "$batteryLevel%",
+                                      "${formatWithTwoDigits(timeAndDate.day)}/${formatWithTwoDigits(timeAndDate.month)}/${timeAndDate.year}",
                                       style: const TextStyle(
                                         color: Colors.white,
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 15,
+                                        fontWeight: FontWeight.w800,
+                                        fontSize: 18,
                                       ),
                                     ),
                                   ),
 
-                                  // Battery
+                                  // Time
                                   Container(
-                                    margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.03, MediaQuery.of(context).size.width * 0.010, 0),
-                                    child: Image.asset(
-                                      'assets/batterie.png',
-                                      width: MediaQuery.of(context).size.height * 0.07,
-                                      height: MediaQuery.of(context).size.height * 0.07,
+                                    margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.03, 0, 0, 0),
+                                    child: Text(
+                                      "${formatWithTwoDigits(timeAndDate.hour)}:${formatWithTwoDigits(timeAndDate.minute)}:${formatWithTwoDigits(timeAndDate.second)}",
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w800,
+                                        fontSize: 18,
+                                      ),
                                     ),
                                   ),
-
-                                  const Expanded(child: SizedBox()),
                                 ],
-                              ),
+                              )),
 
-                              // Date
-                              Container(
-                                margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.03, MediaQuery.of(context).size.height * 0.02, 0, 0),
-                                child: Text(
-                                  "${formatWithTwoDigits(timeAndDate.day)}/${formatWithTwoDigits(timeAndDate.month)}/${timeAndDate.year}",
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w800,
-                                    fontSize: 18,
-                                  ),
-                                ),
+                          // Title
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.685,
+                            child: Container(
+                              margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.04, MediaQuery.of(context).size.height / 16, 0, 0),
+                              child: CustomHomePageTitle(
+                                text: languagesTextsFile.texts["main_title"]!,
+                                image: 'assets/home.png',
+                                backgroundColor: const Color.fromRGBO(0, 204, 255, 1),
+                                textColor: Colors.white,
                               ),
-
-                              // Time
-                              Container(
-                                margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.03, 0, 0, 0),
-                                child: Text(
-                                  "${formatWithTwoDigits(timeAndDate.hour)}:${formatWithTwoDigits(timeAndDate.minute)}:${formatWithTwoDigits(timeAndDate.second)}",
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w800,
-                                    fontSize: 18,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          )),
-
-                      // Title
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.685,
-                        child: Container(
-                          margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.04, MediaQuery.of(context).size.height / 16, 0, 0),
-                          child: CustomHomePageTitle(
-                            text: languagesTextsFile.texts["main_title"]!,
-                            image: 'assets/home.png',
-                            backgroundColor: const Color.fromRGBO(0, 204, 255, 1),
-                            textColor: Colors.white,
+                            ),
                           ),
+                        ],
+                      ),
+
+                      // Help Button
+                      Container(
+                        margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.012),
+                        child: Column(
+                          children: [
+                            AnimatedScale(
+                              scale: _buttonAnimations["HELP"]! ? 1.1 : 1.0,
+                              duration: const Duration(milliseconds: 100),
+                              curve: Curves.bounceOut,
+                              child: GestureDetector(
+                                // Animation management
+                                onTapDown: (_) {
+                                  setState(() {
+                                    _buttonAnimations["HELP"] = true;
+                                  });
+                                },
+                                onTapUp: (_) {
+                                  setState(() {
+                                    _buttonAnimations["HELP"] = false;
+                                  });
+                                  // BUTTON CODE
+                                  print("HELLLLLLLLLLP");
+                                  emergencyRequest.sendEmergencyRequest(context);
+
+                                },
+                                onTapCancel: () {
+                                  setState(() {
+                                    _buttonAnimations["HELP"] = false;
+                                  });
+                                },
+
+                                child: Container(
+                                  margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.03, 0, MediaQuery.of(context).size.height * 0.03),
+                                  child: Image.asset(
+                                    "assets/helping_icon.png",
+                                    height: MediaQuery.of(context).size.width * 0.06,
+                                    width: MediaQuery.of(context).size.width * 0.06,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
                   ),
+                ),
 
-                  // Help Button
-                  Container(
-                    margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.012),
-                    child: Column(
+                // Middle part
+                SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 0.5,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        AnimatedScale(
-                          scale: _buttonAnimations["HELP"]! ? 1.1 : 1.0,
-                          duration: const Duration(milliseconds: 100),
-                          curve: Curves.bounceOut,
-                          child: GestureDetector(
-                            // Animation management
-                            onTapDown: (_) {
-                              setState(() {
-                                _buttonAnimations["HELP"] = true;
-                              });
-                            },
-                            onTapUp: (_) {
-                              setState(() {
-                                _buttonAnimations["HELP"] = false;
-                              });
-                              // BUTTON CODE
-                              print("HELLLLLLLLLLP");
-                              emergencyRequest.sendEmergencyRequest(context);
+                        // Dialog button
+                        Container(
+                          margin: MediaQuery.of(context).size.height > 600 ? EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.27) : EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.29),
+                          child: AnimatedScale(
+                            scale: _buttonAnimations["DIALOG"]! ? 1.1 : 1.0,
+                            duration: const Duration(milliseconds: 100),
+                            curve: Curves.bounceOut,
+                            alignment: Alignment.center,
+                            child: GestureDetector(
+                              // Animation management
+                              onTapDown: (_) {
+                                setState(() {
+                                  _buttonAnimations["DIALOG"] = true;
+                                });
+                              },
+                              onTapUp: (_) {
+                                setState(() {
+                                  _buttonAnimations["DIALOG"] = false;
+                                });
+                                // BUTTON CODE
+                                print("DIALOOOOOOOOOOG");
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const ListDialogsPage(),
+                                    )).then((_) => initialisation());
+                              },
+                              onTapCancel: () {
+                                setState(() {
+                                  _buttonAnimations["DIALOG"] = false;
+                                });
+                              },
+                              child: CustomMenuButton(
+                                backgroundColor: const Color.fromRGBO(61, 192, 200, 1),
+                                textColor: Colors.white,
+                                image: 'assets/dialog.png',
+                                text: languagesTextsFile.texts["main_dialog"]!,
+                                imageScale: 1,
+                                scale: MediaQuery.of(context).size.height > 600 ? 1 : 1.2,
+                              ),
+                            ),
+                          ),
+                        ),
 
-                            },
-                            onTapCancel: () {
-                              setState(() {
-                                _buttonAnimations["HELP"] = false;
-                              });
-                            },
+                        // Relax button
+                        Container(
+                          margin: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.12),
+                          child: AnimatedScale(
+                            scale: _buttonAnimations["RELAX"]! ? 1.1 : 1.0,
+                            duration: const Duration(milliseconds: 100),
+                            curve: Curves.bounceOut,
+                            alignment: Alignment.center,
+                            child: GestureDetector(
+                              // Animation management
+                              onTapDown: (_) {
+                                setState(() {
+                                  _buttonAnimations["RELAX"] = true;
+                                });
+                              },
+                              onTapUp: (_) {
+                                setState(() {
+                                  _buttonAnimations["RELAX"] = false;
+                                });
+                                // BUTTON CODE
+                                print("RELAAAAAAAAAAAAAX");
 
-                            child: Container(
-                              margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.03, 0, MediaQuery.of(context).size.height * 0.03),
-                              child: Image.asset(
-                                "assets/helping_icon.png",
-                                height: MediaQuery.of(context).size.width * 0.06,
-                                width: MediaQuery.of(context).size.width * 0.06,
+                                setState(() {
+                                  if(language == "fr") {
+                                    language = "nl";
+                                  } else {
+                                    language = "fr";
+                                  }
+                                  ttsHandler.setVoiceFrOrNl(language, 'female');
+                                  languagesTextsFile.setNewLanguage(language);
+                                });
+
+                              },
+                              onTapCancel: () {
+                                setState(() {
+                                  _buttonAnimations["RELAX"] = false;
+                                });
+                              },
+                              child: CustomMenuButton(
+                                backgroundColor: const Color.fromRGBO(160, 208, 86, 1),
+                                textColor: Colors.white,
+                                image: 'assets/beach-chair.png',
+                                text: languagesTextsFile.texts["main_relax"]!,
+                                imageScale: 1.4,
+                                scale: MediaQuery.of(context).size.height > 600 ? 1 : 1.2,
                               ),
                             ),
                           ),
                         ),
                       ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
+                    )),
 
-            // Middle part
-            SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height * 0.5,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Dialog button
-                    Container(
-                      margin: MediaQuery.of(context).size.height > 600 ? EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.27) : EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.29),
-                      child: AnimatedScale(
-                        scale: _buttonAnimations["DIALOG"]! ? 1.1 : 1.0,
-                        duration: const Duration(milliseconds: 100),
-                        curve: Curves.bounceOut,
-                        alignment: Alignment.center,
-                        child: GestureDetector(
-                          // Animation management
-                          onTapDown: (_) {
-                            setState(() {
-                              _buttonAnimations["DIALOG"] = true;
-                            });
-                          },
-                          onTapUp: (_) {
-                            setState(() {
-                              _buttonAnimations["DIALOG"] = false;
-                            });
-                            // BUTTON CODE
-                            print("DIALOOOOOOOOOOG");
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const ListDialogsPage(),
-                                )).then((_) => initialisation());
-                          },
-                          onTapCancel: () {
-                            setState(() {
-                              _buttonAnimations["DIALOG"] = false;
-                            });
-                          },
-                          child: CustomMenuButton(
-                            backgroundColor: const Color.fromRGBO(61, 192, 200, 1),
-                            textColor: Colors.white,
-                            image: 'assets/dialog.png',
-                            text: languagesTextsFile.texts["main_dialog"]!,
-                            imageScale: 1,
-                            scale: MediaQuery.of(context).size.height > 600 ? 1 : 1.2,
-                          ),
-                        ),
-                      ),
-                    ),
+                // Last part
+                SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 0.2,
+                    child: Row(
+                      children: [
+                        // Settings
+                        Container(
+                          margin: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.02),
+                          child: AnimatedScale(
+                            scale: _buttonAnimations["SETTINGS"]! ? 1.1 : 1.0,
+                            duration: const Duration(milliseconds: 100),
+                            curve: Curves.bounceOut,
+                            alignment: Alignment.center,
+                            child: GestureDetector(
+                              // Animation management
+                              onTapDown: (_) {
+                                setState(() {
+                                  _buttonAnimations["SETTINGS"] = true;
+                                });
+                              },
+                              onTapUp: (_) {
+                                setState(() {
+                                  _buttonAnimations["SETTINGS"] = false;
+                                });
+                                // BUTTON CODE
+                                print("SETTINGGGGGGGGGS");
 
-                    // Relax button
-                    Container(
-                      margin: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.12),
-                      child: AnimatedScale(
-                        scale: _buttonAnimations["RELAX"]! ? 1.1 : 1.0,
-                        duration: const Duration(milliseconds: 100),
-                        curve: Curves.bounceOut,
-                        alignment: Alignment.center,
-                        child: GestureDetector(
-                          // Animation management
-                          onTapDown: (_) {
-                            setState(() {
-                              _buttonAnimations["RELAX"] = true;
-                            });
-                          },
-                          onTapUp: (_) {
-                            setState(() {
-                              _buttonAnimations["RELAX"] = false;
-                            });
-                            // BUTTON CODE
-                            print("RELAAAAAAAAAAAAAX");
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => const LoginPage(),)
-                            );
-                          },
-                          onTapCancel: () {
-                            setState(() {
-                              _buttonAnimations["RELAX"] = false;
-                            });
-                          },
-                          child: CustomMenuButton(
-                            backgroundColor: const Color.fromRGBO(160, 208, 86, 1),
-                            textColor: Colors.white,
-                            image: 'assets/beach-chair.png',
-                            text: languagesTextsFile.texts["main_relax"]!,
-                            imageScale: 1.4,
-                            scale: MediaQuery.of(context).size.height > 600 ? 1 : 1.2,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                )),
 
-            // Last part
-            SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height * 0.2,
-                child: Row(
-                  children: [
-                    // Settings
-                    Container(
-                      margin: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.02),
-                      child: AnimatedScale(
-                        scale: _buttonAnimations["SETTINGS"]! ? 1.1 : 1.0,
-                        duration: const Duration(milliseconds: 100),
-                        curve: Curves.bounceOut,
-                        alignment: Alignment.center,
-                        child: GestureDetector(
-                          // Animation management
-                          onTapDown: (_) {
-                            setState(() {
-                              _buttonAnimations["SETTINGS"] = true;
-                            });
-                          },
-                          onTapUp: (_) {
-                            setState(() {
-                              _buttonAnimations["SETTINGS"] = false;
-                            });
-                            // BUTTON CODE
-                            print("SETTINGGGGGGGGGS");
-
-                            setState(() {
-                              if(language == "fr") {
-                                language = "nl";
-                              } else {
-                                language = "fr";
-                              }
-                              ttsHandler.setVoiceFrOrNl(language, 'female');
-                              languagesTextsFile.setNewLanguage(language);
-                            });
-                          },
-                          onTapCancel: () {
-                            setState(() {
-                              _buttonAnimations["SETTINGS"] = false;
-                            });
-                          },
-                          child: CustomShapeMenu(
-                            text: languagesTextsFile.texts["main_settings"]!,
-                            image: 'assets/profile-user.png',
-                            backgroundColor: const Color.fromRGBO(245, 107, 56, 1),
-                            textColor: const Color.fromRGBO(35, 55, 79, 1),
-                            imageScale: 5,
-                            scale: MediaQuery.of(context).size.height > 600 ? 1 : 0.85,
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    // Reminders
-                    Expanded(
-                      child: Center(
-                        child: AnimatedScale(
-                          scale: _buttonAnimations["REMINDERS"]! ? 1.1 : 1.0,
-                          duration: const Duration(milliseconds: 100),
-                          curve: Curves.bounceOut,
-                          alignment: Alignment.center,
-                          child: GestureDetector(
-                            // Animation management
-                            onTapDown: (_) {
-                              setState(() {
-                                _buttonAnimations["REMINDERS"] = true;
-                              });
-                            },
-                            onTapUp: (_) {
-                              setState(() {
-                                _buttonAnimations["REMINDERS"] = false;
-                              });
-                              // BUTTON CODE
-                              print("REMINNNNNNDERS");
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const ListRemindersPage(),
-                                  )).then((_) => initialisation());
-                            },
-                            onTapCancel: () {
-                              setState(() {
-                                _buttonAnimations["REMINDERS"] = false;
-                              });
-                            },
-                            child: CustomShapeMenu(
-                              text: languagesTextsFile.texts["main_reminders"]!,
-                              image: 'assets/horloge.png',
-                              backgroundColor: Colors.white,
-                              textColor: const Color.fromRGBO(224, 106, 109, 1),
-                              imageScale: 1,
-                              scale: MediaQuery.of(context).size.height > 600 ? 1 : 0.85,
+                              },
+                              onTapCancel: () {
+                                setState(() {
+                                  _buttonAnimations["SETTINGS"] = false;
+                                });
+                              },
+                              child: CustomShapeMenu(
+                                text: languagesTextsFile.texts["main_settings"]!,
+                                image: 'assets/profile-user.png',
+                                backgroundColor: const Color.fromRGBO(245, 107, 56, 1),
+                                textColor: const Color.fromRGBO(35, 55, 79, 1),
+                                imageScale: 5,
+                                scale: MediaQuery.of(context).size.height > 600 ? 1 : 0.85,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
 
-                    // Contacts
-                    Container(
-                      margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.07),
-                      child: AnimatedScale(
-                        scale: _buttonAnimations["CONTACTS"]! ? 1.1 : 1.0,
-                        duration: const Duration(milliseconds: 100),
-                        curve: Curves.bounceOut,
-                        alignment: Alignment.center,
-                        child: GestureDetector(
-                          // Animation management
-                          onTapDown: (_) {
-                            setState(() {
-                              _buttonAnimations["CONTACTS"] = true;
-                            });
-                          },
-                          onTapUp: (_) {
-                            setState(() {
-                              _buttonAnimations["CONTACTS"] = false;
-                            });
-                            // BUTTON CODE
-                            print("CONTACTSSSSS");
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const ListContactsPage(),
-                                )).then((_) => initialisation());
-                          },
-                          onTapCancel: () {
-                            setState(() {
-                              _buttonAnimations["CONTACTS"] = false;
-                            });
-                          },
-                          child: CustomShapeMenu(
-                            text: languagesTextsFile.texts["main_contacts"]!,
-                            image: 'assets/enveloppe.png',
-                            backgroundColor: const Color.fromRGBO(12, 178, 255, 1),
-                            textColor: const Color.fromRGBO(35, 55, 79, 1),
-                            imageScale: 0.9,
-                            scale: MediaQuery.of(context).size.height > 600 ? 1 : 0.85,
+                        // Reminders
+                        Expanded(
+                          child: Center(
+                            child: AnimatedScale(
+                              scale: _buttonAnimations["REMINDERS"]! ? 1.1 : 1.0,
+                              duration: const Duration(milliseconds: 100),
+                              curve: Curves.bounceOut,
+                              alignment: Alignment.center,
+                              child: GestureDetector(
+                                // Animation management
+                                onTapDown: (_) {
+                                  setState(() {
+                                    _buttonAnimations["REMINDERS"] = true;
+                                  });
+                                },
+                                onTapUp: (_) {
+                                  setState(() {
+                                    _buttonAnimations["REMINDERS"] = false;
+                                  });
+                                  // BUTTON CODE
+                                  print("REMINNNNNNDERS");
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const ListRemindersPage(),
+                                      )).then((_) => initialisation());
+                                },
+                                onTapCancel: () {
+                                  setState(() {
+                                    _buttonAnimations["REMINDERS"] = false;
+                                  });
+                                },
+                                child: CustomShapeMenu(
+                                  text: languagesTextsFile.texts["main_reminders"]!,
+                                  image: 'assets/horloge.png',
+                                  backgroundColor: Colors.white,
+                                  textColor: const Color.fromRGBO(224, 106, 109, 1),
+                                  imageScale: 1,
+                                  scale: MediaQuery.of(context).size.height > 600 ? 1 : 0.85,
+                                ),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                  ],
-                )),
-          ],
-        ));
+
+                        // Contacts
+                        Container(
+                          margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.07),
+                          child: AnimatedScale(
+                            scale: _buttonAnimations["CONTACTS"]! ? 1.1 : 1.0,
+                            duration: const Duration(milliseconds: 100),
+                            curve: Curves.bounceOut,
+                            alignment: Alignment.center,
+                            child: GestureDetector(
+                              // Animation management
+                              onTapDown: (_) {
+                                setState(() {
+                                  _buttonAnimations["CONTACTS"] = true;
+                                });
+                              },
+                              onTapUp: (_) {
+                                setState(() {
+                                  _buttonAnimations["CONTACTS"] = false;
+                                });
+                                // BUTTON CODE
+                                print("CONTACTSSSSS");
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const ListContactsPage(),
+                                    )).then((_) => initialisation());
+                              },
+                              onTapCancel: () {
+                                setState(() {
+                                  _buttonAnimations["CONTACTS"] = false;
+                                });
+                              },
+                              child: CustomShapeMenu(
+                                text: languagesTextsFile.texts["main_contacts"]!,
+                                image: 'assets/enveloppe.png',
+                                backgroundColor: const Color.fromRGBO(12, 178, 255, 1),
+                                textColor: const Color.fromRGBO(35, 55, 79, 1),
+                                imageScale: 0.9,
+                                scale: MediaQuery.of(context).size.height > 600 ? 1 : 0.85,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )),
+              ],
+            ));
+      }
+
+    },);
   }
 }
