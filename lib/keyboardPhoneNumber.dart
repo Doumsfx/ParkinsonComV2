@@ -71,11 +71,11 @@ class _CustomKeyboardPhoneNumberState extends State<CustomKeyboardPhoneNumber> {
     else if (keyText == "VALIDATE") {
       setState(() {
         newContactPageState.value = false;
+        verificationPopUpState.value = false;
       });
     }
-
     // For any other keys
-    else if(keyText != ""){
+    else if(keyText != "" && keyText != "BACKSPACE"){
       int offset = widget.controller.selection.extentOffset;
 
       setState(() {

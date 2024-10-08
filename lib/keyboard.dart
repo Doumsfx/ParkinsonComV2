@@ -199,6 +199,7 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
         newThemePageState.value = false;
         newReminderPageState.value = false;
         newContactPageState.value = false;
+        verificationPopUpState.value = false;
       });
     }
 

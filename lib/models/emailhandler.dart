@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
+import 'package:parkinson_com_v2/keyboardPhoneNumber.dart';
 import 'package:parkinson_com_v2/models/popupshandler.dart';
 
 import '../variables.dart';
@@ -94,141 +95,235 @@ class EmailHandler {
         return StatefulBuilder(builder: (context, setState) {
           double screenHeight = MediaQuery.of(context).size.height;
           double screenWidth = MediaQuery.of(context).size.width;
-          return Dialog(
-            backgroundColor: Colors.black87,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.12),
-                  Text(
-                    "L'e-mail de vérification a été envoyé à l'adresse\n$userMail\nVeuillez saisir le code de vérification :", //todo json
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: screenHeight * 0.1),
-                  //TextField for code input
-                  SizedBox(
-                    width: screenWidth*0.4,
-                    child: TextField(
-                      style: const TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w800,
-                        color: Color.fromRGBO(50, 50, 50, 1),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-
-                      //focusNode: _focusNode,
-                      controller: controller,
-                      readOnly: true,
-                      showCursor: true,
-                      enableInteractiveSelection: true,
-                      maxLines: 1,
-                      textAlign: TextAlign.left,
-                      textAlignVertical: TextAlignVertical.center,
-
-                      decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white,
-                          iconColor: Colors.white,
-                          focusColor: Colors.white,
-                          hoverColor: Colors.white,
-                          border: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Colors.white,
-                            ),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(MediaQuery.of(context).size.width * 0.02),
-                            ),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Colors.white,
-                            ),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(MediaQuery.of(context).size.width * 0.02),
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Colors.white,
-                            ),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(MediaQuery.of(context).size.width * 0.02),
-                            ),
-                          ),
-                          hintText: "Code de vérification", //todo json
-                          hintStyle: const TextStyle(
-                            color: Color.fromRGBO(147, 147, 147, 1),
-                            fontStyle: FontStyle.italic,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 19,
-                          )
-                      ),
-
-                      onTap: () {
-                        setState(() {
-
-                        });
-                        print("TOUCHEEEEEEEEEEEEEEE");
-                      },
-                    ),
-                  ),
-                  SizedBox(height: screenHeight * 0.1),
-                  //Button Check code
-                  AnimatedScale(
-                    scale: _buttonAnimations["POPUP OK"]! ? 1.1 : 1.0,
-                    duration: const Duration(milliseconds: 100),
-                    curve: Curves.bounceOut,
-                    alignment: Alignment.center,
-                    child: GestureDetector(
-                      // Animation management
-                      onTapDown: (_) {
-                        setState(() {
-                          _buttonAnimations["POPUP OK"] = true;
-                        });
-                      },
-                      onTapUp: (_) async {
-                        setState(() {
-                          _buttonAnimations["POPUP OK"] = false;
-                        });
-                        //BUTTON CODE
-                        if(newCode.toString() == controller.text) {
-                          //Right code
-                          Navigator.of(context).pop(true);
-                        }
-                        else {
-                          //Wrong code
-                          Navigator.of(context).pop(false);
-                        }
-                      },
-                      onTapCancel: () {
-                        setState(() {
-                          _buttonAnimations["POPUP OK"] = false;
-                        });
-                      },
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(60)),
-                          color: Colors.lightGreen,
+          return ValueListenableBuilder(
+            valueListenable: verificationPopUpState,
+            builder: (context, value, child) {
+              if(!value){
+                return Dialog(
+                  backgroundColor: Colors.black87,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.12),
+                        Text(
+                          "L'e-mail de vérification a été envoyé à l'adresse\n$userMail\nVeuillez saisir le code de vérification :", //todo json
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
                         ),
-                        padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
-                        child: Text(
-                          "Vérifier", //todo json
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
+                        SizedBox(height: screenHeight * 0.1),
+                        //TextField for code input
+                        SizedBox(
+                          width: screenWidth*0.4,
+                          child: TextField(
+                            style: const TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.w800,
+                              color: Color.fromRGBO(50, 50, 50, 1),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+
+                            //focusNode: _focusNode,
+                            controller: controller,
+                            readOnly: true,
+                            showCursor: true,
+                            enableInteractiveSelection: true,
+                            maxLines: 1,
+                            textAlign: TextAlign.left,
+                            textAlignVertical: TextAlignVertical.center,
+
+                            decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Colors.white,
+                                iconColor: Colors.white,
+                                focusColor: Colors.white,
+                                hoverColor: Colors.white,
+                                border: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                    color: Colors.white,
+                                  ),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(MediaQuery.of(context).size.width * 0.02),
+                                  ),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                    color: Colors.white,
+                                  ),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(MediaQuery.of(context).size.width * 0.02),
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                    color: Colors.white,
+                                  ),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(MediaQuery.of(context).size.width * 0.02),
+                                  ),
+                                ),
+                                hintText: "Code de vérification", //todo json
+                                hintStyle: const TextStyle(
+                                  color: Color.fromRGBO(147, 147, 147, 1),
+                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 19,
+                                )
+                            ),
+
+                            onTap: () {
+                              setState(() {
+                                verificationPopUpState.value = true;
+                              });
+                              print("TOUCHEEEEEEEEEEEEEEE");
+                            },
                           ),
                         ),
-                      ),
+                        SizedBox(height: screenHeight * 0.1),
+                        //Button Check code
+                        AnimatedScale(
+                          scale: _buttonAnimations["POPUP OK"]! ? 1.1 : 1.0,
+                          duration: const Duration(milliseconds: 100),
+                          curve: Curves.bounceOut,
+                          alignment: Alignment.center,
+                          child: GestureDetector(
+                            // Animation management
+                            onTapDown: (_) {
+                              setState(() {
+                                _buttonAnimations["POPUP OK"] = true;
+                              });
+                            },
+                            onTapUp: (_) async {
+                              setState(() {
+                                _buttonAnimations["POPUP OK"] = false;
+                              });
+                              //BUTTON CODE
+                              if(newCode.toString() == controller.text) {
+                                //Right code
+                                Navigator.of(context).pop(true);
+                              }
+                              else {
+                                //Wrong code
+                                Navigator.of(context).pop(false);
+                              }
+                            },
+                            onTapCancel: () {
+                              setState(() {
+                                _buttonAnimations["POPUP OK"] = false;
+                              });
+                            },
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(60)),
+                                color: Colors.lightGreen,
+                              ),
+                              padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
+                              child: Text(
+                                "Vérifier", //todo json
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: screenHeight * 0.03),
+                      ],
                     ),
                   ),
-                  SizedBox(height: screenHeight * 0.03),
-                ],
-              ),
-            ),
+                );
+              }
+              else{
+                return Dialog(
+                  backgroundColor: Colors.black87,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.12),
+                        //TextField for code input
+                        SizedBox(
+                          width: screenWidth*0.4,
+                          child: TextField(
+                            style: const TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.w800,
+                              color: Color.fromRGBO(50, 50, 50, 1),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+
+                            //focusNode: _focusNode,
+                            controller: controller,
+                            readOnly: true,
+                            showCursor: true,
+                            enableInteractiveSelection: true,
+                            maxLines: 1,
+                            textAlign: TextAlign.left,
+                            textAlignVertical: TextAlignVertical.center,
+
+                            decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Colors.white,
+                                iconColor: Colors.white,
+                                focusColor: Colors.white,
+                                hoverColor: Colors.white,
+                                border: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                    color: Colors.white,
+                                  ),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(MediaQuery.of(context).size.width * 0.02),
+                                  ),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                    color: Colors.white,
+                                  ),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(MediaQuery.of(context).size.width * 0.02),
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                    color: Colors.white,
+                                  ),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(MediaQuery.of(context).size.width * 0.02),
+                                  ),
+                                ),
+                                hintText: "Code de vérification", //todo json
+                                hintStyle: const TextStyle(
+                                  color: Color.fromRGBO(147, 147, 147, 1),
+                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 19,
+                                )
+                            ),
+
+                            onTap: () {
+                              setState(() {
+
+                              });
+                              print("TOUCHEEEEEEEEEEEEEEE");
+                            },
+                          ),
+                        ),
+                        SizedBox(height: screenHeight * 0.1),
+                        //Button Check code
+                        const Expanded(child: SizedBox()),
+                        Builder(builder: (context) {
+                          return CustomKeyboardPhoneNumber(controller: controller,);
+                        },)
+                      ],
+                    ),
+                  ),
+                );
+              }
+            },
           );
         });
       },);
