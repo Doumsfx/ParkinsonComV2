@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
+import 'package:parkinson_com_v2/models/popupshandler.dart';
 
 import '../variables.dart';
 
@@ -48,44 +49,196 @@ class EmailHandler {
   ///Send a code to the [userMail] and display a popup asking for the verification code.
   ///Return true if the code is right, and false if it is wrong or if the e-mail couldn't be sent.
   Future<bool> checkCode(BuildContext context, String userMail) async {
-    //todo check si cette fonction marche
-
     TextEditingController controller = TextEditingController();
 
-    int newCode = Random(DateTime.now().millisecondsSinceEpoch).nextInt(100000);
-    int resultSendMail = await sendMessage(userMail, "Code de vérification : $newCode");
+    //Popup displayed when trying to send the e-mail
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          double screenHeight = MediaQuery.of(context).size.height;
+          double screenWidth = MediaQuery.of(context).size.width;
+          return StatefulBuilder(builder: (context, setState) {
+            return Dialog(
+              backgroundColor: Colors.black87,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.3),
+                    Text(
+                      "Un e-mail va vous être envoyé avec un code de vérification...", //todo
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: screenHeight * 0.3),
+                  ],
+                ),
+              ),
+            );
+          });
+        });
 
+    //Generate and send the code
+    int newCode = Random(DateTime.now().millisecondsSinceEpoch).nextInt(100000);
+    int resultSendMail = await sendMessage(userMail, "Code de vérification : $newCode"); //todo mise en page mail
+    //Close the previous popup
+    Navigator.of(context).pop();
+    //If the e-mail sending is successful
     if (resultSendMail >= 0) {
       bool resultCode = await showDialog(context: context, barrierDismissible: false, builder: (context) {
+        Map<String, bool> _buttonAnimations = {
+          "POPUP OK": false,
+        };
         return StatefulBuilder(builder: (context, setState) {
+          double screenHeight = MediaQuery.of(context).size.height;
+          double screenWidth = MediaQuery.of(context).size.width;
           return Dialog(
-            child: Column(
-              children: [
-                const Text("Entrez votre code :"), //todo
-                const SizedBox(height: 10),
-                TextField(
-                  controller: controller,
-                ),
-                const SizedBox(height: 10),
-                TextButton(onPressed: () {
-                  if(newCode.toString() == controller.text) {
-                    //Right code
-                    Navigator.of(context).pop(true);
-                  }
-                  else {
-                    //Wrong code
-                    Navigator.of(context).pop(false);
-                  }
-                }, child: const Text("Vérifier")) //todo
-              ],
+            backgroundColor: Colors.black87,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.12),
+                  Text(
+                    "L'e-mail de vérification a été envoyé à l'adresse\n$userMail\nVeuillez saisir le code de vérification :", //todo json
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: screenHeight * 0.1),
+                  //TextField for code input
+                  SizedBox(
+                    width: screenWidth*0.4,
+                    child: TextField(
+                      style: const TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w800,
+                        color: Color.fromRGBO(50, 50, 50, 1),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+
+                      //focusNode: _focusNode,
+                      controller: controller,
+                      readOnly: true,
+                      showCursor: true,
+                      enableInteractiveSelection: true,
+                      maxLines: 1,
+                      textAlign: TextAlign.left,
+                      textAlignVertical: TextAlignVertical.center,
+
+                      decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white,
+                          iconColor: Colors.white,
+                          focusColor: Colors.white,
+                          hoverColor: Colors.white,
+                          border: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Colors.white,
+                            ),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(MediaQuery.of(context).size.width * 0.02),
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Colors.white,
+                            ),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(MediaQuery.of(context).size.width * 0.02),
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Colors.white,
+                            ),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(MediaQuery.of(context).size.width * 0.02),
+                            ),
+                          ),
+                          hintText: "Code de vérification", //todo json
+                          hintStyle: const TextStyle(
+                            color: Color.fromRGBO(147, 147, 147, 1),
+                            fontStyle: FontStyle.italic,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 19,
+                          )
+                      ),
+
+                      onTap: () {
+                        setState(() {
+
+                        });
+                        print("TOUCHEEEEEEEEEEEEEEE");
+                      },
+                    ),
+                  ),
+                  SizedBox(height: screenHeight * 0.1),
+                  //Button Check code
+                  AnimatedScale(
+                    scale: _buttonAnimations["POPUP OK"]! ? 1.1 : 1.0,
+                    duration: const Duration(milliseconds: 100),
+                    curve: Curves.bounceOut,
+                    alignment: Alignment.center,
+                    child: GestureDetector(
+                      // Animation management
+                      onTapDown: (_) {
+                        setState(() {
+                          _buttonAnimations["POPUP OK"] = true;
+                        });
+                      },
+                      onTapUp: (_) async {
+                        setState(() {
+                          _buttonAnimations["POPUP OK"] = false;
+                        });
+                        //BUTTON CODE
+                        if(newCode.toString() == controller.text) {
+                          //Right code
+                          Navigator.of(context).pop(true);
+                        }
+                        else {
+                          //Wrong code
+                          Navigator.of(context).pop(false);
+                        }
+                      },
+                      onTapCancel: () {
+                        setState(() {
+                          _buttonAnimations["POPUP OK"] = false;
+                        });
+                      },
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(60)),
+                          color: Colors.lightGreen,
+                        ),
+                        padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
+                        child: Text(
+                          "Vérifier", //todo json
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: screenHeight * 0.03),
+                ],
+              ),
             ),
           );
-        },);
+        });
       },);
       return resultCode;
     }
+    //E-mail sending failed
     else {
-      return false;
+      return await Popups.showPopupOk(context, text: "Une erreur a été rencontrée lors de l'envoi du mail.\nVeuillez vérifier l'adresse mail saisie,\nainsi que votre accès à internet.", textOk: "OK", functionOk: (p0) {
+        Navigator.of(p0).pop(false);
+      },);
     }
   }
 

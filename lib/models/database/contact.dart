@@ -10,7 +10,7 @@ class Contact {
   String? phone;
   int priority;
 
-  Contact({this.id_contact = 0, required this.last_name, required this.first_name, this.email, this.phone, required this.priority});
+  Contact({this.id_contact = -1, required this.last_name, required this.first_name, this.email, this.phone, required this.priority});
 
   Contact.fromMap(Map<String, dynamic> data)
       : id_contact = data["id_contact"],
@@ -21,7 +21,12 @@ class Contact {
         phone = data["phone"];
 
   Map<String, Object?> toMap() {
-    return {"last_name": last_name, "first_name": first_name, "priority": priority, "email": email, "phone": phone};
+    if(id_contact == -1) {
+      return {"last_name": last_name, "first_name": first_name, "priority": priority, "email": email, "phone": phone};
+    }
+    else {
+      return {"id_contact": id_contact, "last_name": last_name, "first_name": first_name, "priority": priority, "email": email, "phone": phone};
+    }
   }
 
 }

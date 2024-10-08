@@ -7,6 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:parkinson_com_v2/keyboard.dart';
 import 'package:parkinson_com_v2/models/database/contact.dart';
 import 'package:parkinson_com_v2/variables.dart';
+import 'package:parkinson_com_v2/models/emailhandler.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+import 'models/popupshandler.dart';
+
 
 
 class LoginPage extends StatefulWidget {
@@ -33,85 +38,17 @@ class _LoginPageState extends State<LoginPage> {
   final FocusNode _focusNode = FocusNode();
   final FocusNode _focusNode2 = FocusNode();
 
-  /// Generic popup to display a specific [text] from the JSON and with an "OK" button
-  void _showGenericPopupOK(String text, int nbPopContext) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          double screenHeight = MediaQuery.of(context).size.height;
-          double screenWidth = MediaQuery.of(context).size.width;
-          return StatefulBuilder(builder: (context, setState) {
-            return Dialog(
-              backgroundColor: Colors.black87,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.15),
-                    Text(
-                      text,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: screenHeight * 0.2),
-                    //Button to quit
-                    AnimatedScale(
-                      scale: _buttonAnimations["POPUP OK"]! ? 1.1 : 1.0,
-                      duration: const Duration(milliseconds: 100),
-                      curve: Curves.bounceOut,
-                      child: GestureDetector(
-                        // Animation management
-                        onTapDown: (_) {
-                          setState(() {
-                            _buttonAnimations["POPUP OK"] = true;
-                          });
-                        },
-                        onTapUp: (_) {
-                          setState(() {
-                            _buttonAnimations["POPUP OK"] = false;
-                          });
-                          // BUTTON CODE
-                          int i = 0;
-                          for(i; i < nbPopContext; i += 1){
-                            Navigator.pop(context);
-                          }
-                        },
-                        onTapCancel: () {
-                          setState(() {
-                            _buttonAnimations["POPUP OK"] = false;
-                          });
-                        },
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(60)),
-                            color: Colors.lightGreen,
-                          ),
-                          padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
-                          child: Text(
-                            languagesTextsFile.texts["pop_up_ok"]!,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: screenHeight * 0.03),
-                  ],
-                ),
-              ),
-            );
-          });
-        });
+  late PermissionStatus permissionPhone;
+
+  void initialisationAsync() async {
+    permissionPhone = await Permission.phone.status;
   }
 
   @override
   void initState() {
     super.initState();
     // Initialisation of our variables
+    initialisationAsync();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       FocusScope.of(context).requestFocus(_focusNode);
       FocusScope.of(context).requestFocus(_focusNode2);
@@ -125,6 +62,63 @@ class _LoginPageState extends State<LoginPage> {
     _focusNode2.dispose();
     super.dispose();
   }
+
+  //todo : Changer les textes avec le JSON
+  Future<bool> startChecks() async {
+    // SIM card presence check
+    if (phone) {
+      //Ask for the phone permissions in order to read the phone state
+      if (permissionPhone.isDenied) {
+        await _checkPermissionsPhone();
+      }
+      //Permission granted
+      if (permissionPhone.isGranted) {
+        //Check the sim card presence
+        bool sim = await smsHandler.checkSim();
+        if (!sim) {
+          phone = false;
+          Popups.showPopupOk(context, text: "Aucune SIM n'est présente", textOk: "OK", functionOk: Popups.functionToQuit);
+          return false;
+        }
+      }
+      //Permission denied
+      else {
+        phone = false;
+        Popups.showPopupOk(context, text: "Permission manquante", textOk: "OK", functionOk: Popups.functionToQuit);
+        return false;
+      }
+    }
+    // No error during SIM card verifications (or not needed to be checked)
+    // E-Mail Check
+    bool email = await emailHandler.checkCode(context, _secondController.text);
+    print("Email : $email");
+    if(email) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+  ///Check if the permissions to read the phone state are given, and ask for them if it's not the case
+  Future<bool> _checkPermissionsPhone() async {
+
+    ///Function that is used by the OK button of the popup
+    void askPermissions(BuildContext context) async {
+      permissionPhone = await Permission.phone.request();
+      if (permissionPhone.isGranted) {
+        Navigator.of(context).pop(true);
+      } else {
+        Navigator.of(context).pop(false);
+      }
+    }
+    //todo : Changer les textes avec le JSON
+    return await Popups.showPopupOk(context, text: "Veuillez autoriser la permission qui va s'afficher", textOk: "OK", functionOk: askPermissions);
+  }
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -467,17 +461,21 @@ class _LoginPageState extends State<LoginPage> {
                                       }
                                       else{
                                         // MONTRER LA POP UP AVEC CODE DE VERIFICATION
+                                        bool checks = await startChecks();
 
                                         // SEULEMENT APRES ON AJOUTE A LA DATABASE UNE FOIS QUE LE CODE EST BON
-                                        // Adding in the database
-                                        await databaseManager.insertContact(Contact(
-                                          first_name: _firstController.text,
-                                          last_name: "",
-                                          email: _secondController.text,
-                                          phone: phone ? null : "1",
-                                          priority: 0,
-                                          id_contact: 0,
-                                        ));
+                                        if(checks) {
+                                          // Adding in the database
+                                          await databaseManager.insertContact(Contact(
+                                            first_name: _firstController.text,
+                                            last_name: "",
+                                            email: _secondController.text,
+                                            phone: phone ? null : "1",
+                                            priority: 0,
+                                            id_contact: 0,
+                                          ));
+                                          //todo changer de page
+                                        }
 
                                       }
 
@@ -710,5 +708,81 @@ class _LoginPageState extends State<LoginPage> {
             }
 
           },));
+  }
+
+
+  /// Generic popup to display a specific [text] from the JSON and with an "OK" button
+  void _showGenericPopupOK(String text, int nbPopContext) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          double screenHeight = MediaQuery.of(context).size.height;
+          double screenWidth = MediaQuery.of(context).size.width;
+          return StatefulBuilder(builder: (context, setState) {
+            return Dialog(
+              backgroundColor: Colors.black87,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.15),
+                    Text(
+                      text,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: screenHeight * 0.2),
+                    //Button to quit
+                    AnimatedScale(
+                      scale: _buttonAnimations["POPUP OK"]! ? 1.1 : 1.0,
+                      duration: const Duration(milliseconds: 100),
+                      curve: Curves.bounceOut,
+                      child: GestureDetector(
+                        // Animation management
+                        onTapDown: (_) {
+                          setState(() {
+                            _buttonAnimations["POPUP OK"] = true;
+                          });
+                        },
+                        onTapUp: (_) {
+                          setState(() {
+                            _buttonAnimations["POPUP OK"] = false;
+                          });
+                          // BUTTON CODE
+                          int i = 0;
+                          for(i; i < nbPopContext; i += 1){
+                            Navigator.pop(context);
+                          }
+                        },
+                        onTapCancel: () {
+                          setState(() {
+                            _buttonAnimations["POPUP OK"] = false;
+                          });
+                        },
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(60)),
+                            color: Colors.lightGreen,
+                          ),
+                          padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
+                          child: Text(
+                            languagesTextsFile.texts["pop_up_ok"]!,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: screenHeight * 0.03),
+                  ],
+                ),
+              ),
+            );
+          });
+        });
   }
 }

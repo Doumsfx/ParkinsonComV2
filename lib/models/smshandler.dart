@@ -3,6 +3,7 @@
 // ParkinsonCom V2
 
 
+import 'package:flutter/services.dart';
 import 'package:flutter_sms/flutter_sms.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -41,6 +42,31 @@ class SmsHandler {
       print("SMS permission denied");
       return -2;
     }
+  }
+
+  ///Check if a SIM card is present or not using MethodChannel.
+  Future<bool> checkSim() async {
+    const platform = MethodChannel('sim_info_channel');
+    var permission = await Permission.phone.status;
+    if (permission.isDenied) {
+      permission = await Permission.phone.request();
+    }
+    if(permission.isGranted) {
+      try {
+        final bool simPresent = await platform.invokeMethod('isSimPresent');
+        if (simPresent) {
+          print("SIM présente");
+          return true;
+        } else {
+          print("SIM absente");
+          return false;
+        }
+      } on PlatformException catch (e) {
+        print("Failed to get SIM info: '${e.message}'");
+        return false;
+      }
+    }
+    return false;
   }
 
 
