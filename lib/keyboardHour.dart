@@ -6,22 +6,22 @@ import 'package:flutter/material.dart';
 import 'package:parkinson_com_v2/variables.dart';
 import 'package:virtual_keyboard_custom_layout/virtual_keyboard_custom_layout.dart';
 
-class CustomKeyboardDigit extends StatefulWidget {
+class CustomKeyboardHour extends StatefulWidget {
   final TextEditingController controller;
 
-  const CustomKeyboardDigit({super.key, required this.controller});
+  const CustomKeyboardHour({super.key, required this.controller});
 
   @override
-  State<CustomKeyboardDigit> createState() => _CustomKeyboardDigitState();
+  State<CustomKeyboardHour> createState() => _CustomKeyboardHourState();
 }
 
-class _CustomKeyboardDigitState extends State<CustomKeyboardDigit> {
+class _CustomKeyboardHourState extends State<CustomKeyboardHour> {
   // Useful variables
   final List<List<String>> _keyboard = [
     ["7", "8", "9"],
     ["4", "5", "6"],
     ["1", "2", "3"],
-         ["0"]
+    ["0"]
   ];
   final Map<String?, bool> _keyScales = {};
   final Map<String, bool> _buttonAnimations = {

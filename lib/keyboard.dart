@@ -12,8 +12,9 @@ class CustomKeyboard extends StatefulWidget {
   final ValueNotifier<bool> textPredictions;
   late final PredictionsHandler? predictionsHandler;
   final bool forcedPredictionsOff; //Turn to true if you want to disable the predictions (ex : Theme creation)
+  final bool forcedLowerCase; // Turn to true if you want to block the text in lower case
 
-  CustomKeyboard({super.key, required this.controller, required this.textPredictions, this.forcedPredictionsOff = false}) {
+  CustomKeyboard({super.key, required this.controller, required this.textPredictions, this.forcedPredictionsOff = false, this.forcedLowerCase = false}) {
     /*
     if (textPredictions.value) {
       predictionsHandler = PredictionsHandler(controller: controller, isFR: langFR);
@@ -53,6 +54,10 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
   @override
   void initState() {
     super.initState();
+
+    if(widget.forcedLowerCase){
+      _maj = false;
+    }
 
     // Initialisation of our keyboard
     _keyboard = _getKeyboardConfig(_maj, _modeAccent, azerty);
@@ -127,7 +132,7 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
       });
     }
 
-    if (keyText == "MAJ") {
+    if (keyText == "MAJ" && !widget.forcedLowerCase) {
       setState(() {
         _maj = !_maj;
         _keyboard = _getKeyboardConfig(_maj, _modeAccent, azerty);
@@ -179,7 +184,9 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
         }
         if (widget.controller.text.isEmpty) {
           _firstKey = true;
-          _maj = true;
+          if(!widget.forcedLowerCase){
+            _maj = true;
+          }
           _keyboard = _getKeyboardConfig(_maj, _modeAccent, azerty);
         }
       });
@@ -190,7 +197,9 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
         widget.controller.text = "${widget.controller.text.substring(0, offset1)}\n${widget.controller.text.substring(offset1, widget.controller.text.length)}";
         widget.controller.selection = TextSelection.collapsed(offset: offset1 + 1);
         _firstKey = true;
-        _maj = true;
+        if(!widget.forcedLowerCase){
+          _maj = true;
+        }
         _keyboard = _getKeyboardConfig(_maj, _modeAccent, azerty);
       });
     } else if (keyText == "VALIDATE") {

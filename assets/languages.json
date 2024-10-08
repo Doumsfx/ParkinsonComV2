@@ -253,14 +253,14 @@
     "pop_up_no_contacts": "Je hebt geen contacten,\nvoeg er een paar toe.",
     "pop_up_contacts_save": "Hoofdcontact opslaan !",
     "pop_up_delete_contact": "Weet u zeker dat u ... uit uw contacten wilt verwijderen ?",
-    "login_page_first_name": "...",
-    "login_page_mail": "...",
-    "login_page_phone": "...",
-    "login_page_text": "...",
-    "login_page_error_first_name": "...",
-    "login_page_error_mail": "...",
-    "login_page_error_form_mail": "...",
-    "login_page_start": "...",
+    "login_page_first_name": "Voer uw voornaam in",
+    "login_page_mail": "Voer uw e-mailadres in",
+    "login_page_phone": "Telefoon ?",
+    "login_page_text": "Met de steun van het Europees Fonds voor Regionale Ontwikkeling",
+    "login_page_error_first_name": "Voer uw naam in.",
+    "login_page_error_mail": "Voer uw e-mailadres in.",
+    "login_page_error_form_mail": "Geef een geldig e-mailadres op.",
+    "login_page_start": "Om te beginnen",
     "sim_card_absent" : "Er is geen SIM-kaart aanwezig.",
     "missing_permissions" : "Toestemmingen ontbreken om deze functie te gebruiken.",
     "ask_permissions" : "Sta de volgende rechten toe.",
@@ -270,4 +270,6 @@
     "hint_input_code" : "Verificatiecode",
     "error_sending_mail" : "Er is een fout opgetreden bij het verzenden van de e-mail.\nControleer het ingevoerde e-mailadres,\nevenals uw internettoegang."
 
-  }}
+  }
+
+}

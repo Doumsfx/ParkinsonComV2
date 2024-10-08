@@ -8,7 +8,7 @@ import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:parkinson_com_v2/customRemindersTitle.dart';
 import 'package:parkinson_com_v2/keyboard.dart';
-import 'package:parkinson_com_v2/keyboardDigitOnly.dart';
+import 'package:parkinson_com_v2/keyboardHour.dart';
 import 'package:parkinson_com_v2/models/database/reminder.dart';
 import 'package:parkinson_com_v2/variables.dart';
 
@@ -1237,7 +1237,7 @@ class _NewReminderPageState extends State<NewReminderPage> {
                         return CustomKeyboard(controller: _firstController, textPredictions: isConnected, forcedPredictionsOff: true,);
                       }
                       else{
-                        return CustomKeyboardDigit(controller: _secondController);
+                        return CustomKeyboardHour(controller: _secondController);
                       }
                     },)
 

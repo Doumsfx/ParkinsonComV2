@@ -27,6 +27,8 @@ class _LoginPageState extends State<LoginPage> {
     "POPUP YES": false,
     "POPUP OK": false,
     "START": false,
+    "FR": false,
+    "NL": false,
   };
 
   final TextEditingController _firstController = TextEditingController();
@@ -138,16 +140,18 @@ class _LoginPageState extends State<LoginPage> {
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.5,
                           child: Center(
-                            child: Image.asset(
-                              'assets/logo-Interreg.png',
-                              scale: 1.3,
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.35,
+                              child: Image.asset(
+                                'assets/logo-Interreg.png',
+                                scale: MediaQuery.of(context).size.width / 1025.64,
+                              ),
                             ),
                           ),
                         ),
 
                         // TextFields and Start Button
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.5,
+                        Expanded(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -512,9 +516,103 @@ class _LoginPageState extends State<LoginPage> {
                               ),
 
                             ],
-                          )
-
+                          ),
                         ),
+
+                        Container(
+                          margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.012),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // France
+                              AnimatedScale(
+                                scale: _buttonAnimations["FR"]! ? 1.1 : 1.0,
+                                duration: const Duration(milliseconds: 100),
+                                curve: Curves.bounceOut,
+                                child: GestureDetector(
+                                  // Animation management
+                                  onTapDown: (_) {
+                                    setState(() {
+                                      _buttonAnimations["FR"] = true;
+                                    });
+                                  },
+                                  onTapUp: (_) {
+                                    setState(() {
+                                      _buttonAnimations["FR"] = false;
+                                    });
+                                    // BUTTON CODE
+                                    print("FRAAAAAAAAAAAANCE");
+                                    language = "fr";
+                                    ttsHandler.setVoiceFrOrNl(language, 'female');
+                                    languagesTextsFile.setNewLanguage(language);
+
+                                  },
+                                  onTapCancel: () {
+                                    setState(() {
+                                      _buttonAnimations["FR"] = false;
+                                    });
+                                  },
+
+                                  child: Container(
+                                    margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.03, 0, MediaQuery.of(context).size.height * 0.03),
+                                    child: Image.asset(
+                                      "assets/france.png",
+                                      height: MediaQuery.of(context).size.width * 0.06,
+                                      width: MediaQuery.of(context).size.width * 0.06,
+                                    ),
+                                  ),
+                                ),
+                              ),
+
+                              // Netherlands
+                              AnimatedScale(
+                                scale: _buttonAnimations["NL"]! ? 1.1 : 1.0,
+                                duration: const Duration(milliseconds: 100),
+                                curve: Curves.bounceOut,
+                                child: GestureDetector(
+                                  // Animation management
+                                  onTapDown: (_) {
+                                    setState(() {
+                                      _buttonAnimations["NL"] = true;
+                                    });
+                                  },
+                                  onTapUp: (_) {
+                                    setState(() {
+                                      _buttonAnimations["NL"] = false;
+                                    });
+                                    // BUTTON CODE
+                                    print("NETHERLANDSSSSS");
+                                    setState(() {
+                                      language = "nl";
+                                      ttsHandler.setVoiceFrOrNl(language, 'female');
+                                      languagesTextsFile.setNewLanguage(language);
+                                    });
+
+                                  },
+                                  onTapCancel: () {
+                                    setState(() {
+                                      _buttonAnimations["NL"] = false;
+                                    });
+                                  },
+
+                                  child: Container(
+                                    margin: EdgeInsets.fromLTRB(0, 0, 0, MediaQuery.
+                                    of(context).size.height * 0.03),
+                                    child: Image.asset(
+                                      "assets/pays-bas.png",
+                                      height: MediaQuery.of(context).size.width * 0.06,
+                                      width: MediaQuery.of(context).size.width * 0.06,
+                                    ),
+                                  ),
+                                ),
+                              ),
+
+                            ],
+                          ),
+                        ),
+
+
                       ],
                     ),
                   ),
@@ -544,9 +642,12 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         Expanded(
                           child: Center(
-                            child: Image.asset(
-                              'assets/aviq.jpg',
-                              scale: 1.3,
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.325,
+                              child: Image.asset(
+                                'assets/aviq.jpg',
+                                scale: MediaQuery.of(context).size.width / 1025.64,
+                              ),
                             ),
                           ),
                         )
@@ -569,9 +670,12 @@ class _LoginPageState extends State<LoginPage> {
                           SizedBox(
                             width: MediaQuery.of(context).size.width * 0.5,
                             child: Center(
-                              child: Image.asset(
-                                'assets/logo-Interreg.png',
-                                scale: 1.3,
+                              child: SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.35,
+                                child: Image.asset(
+                                  'assets/logo-Interreg.png',
+                                  scale: MediaQuery.of(context).size.width / 1025.64,
+                                ),
                               ),
                             ),
                           ),
@@ -696,10 +800,10 @@ class _LoginPageState extends State<LoginPage> {
                   // Keyboard
                   Builder(builder: (context) {
                     if(_isFirstControllerActive){
-                      return CustomKeyboard(controller: _firstController, textPredictions: isConnected, forcedPredictionsOff: true,);
+                      return CustomKeyboard(controller: _firstController, textPredictions: isConnected, forcedPredictionsOff: true, );
                     }
                     else {
-                      return CustomKeyboard(controller: _secondController, textPredictions: isConnected, forcedPredictionsOff: true,);
+                      return CustomKeyboard(controller: _secondController, textPredictions: isConnected, forcedPredictionsOff: true, forcedLowerCase: true,);
                     }
                   },)
                 ],
