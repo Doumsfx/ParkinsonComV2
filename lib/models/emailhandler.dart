@@ -83,7 +83,8 @@ class EmailHandler {
 
     //Generate and send the code
     int newCode = Random(DateTime.now().millisecondsSinceEpoch).nextInt(100000);
-    int resultSendMail = await sendMessage(userMail, "Code de vérification : $newCode"); //todo mise en page mail
+    String contentMail = "${languagesTextsFile.texts["mail_code_check"]} $newCode";
+    int resultSendMail = await sendMessage(userMail, contentMail);
     //Close the previous popup
     Navigator.of(context).pop();
 
@@ -109,13 +110,13 @@ class EmailHandler {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.1),
+                        SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.06),
                         Text(
                           (languagesTextsFile.texts["input_code_mail"] as String).replaceAll("...", userMail),
                           textAlign: TextAlign.center,
                           style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
                         ),
-                        SizedBox(height: screenHeight * 0.08),
+                        SizedBox(height: screenHeight * 0.06),
                         //TextField for code input
                         SizedBox(
                           width: screenWidth*0.35,
@@ -183,7 +184,7 @@ class EmailHandler {
                             },
                           ),
                         ),
-                        SizedBox(height: screenHeight * 0.08),
+                        SizedBox(height: screenHeight * 0.06),
                         //Buttons
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -257,6 +258,7 @@ class EmailHandler {
                                   else {
                                     //Wrong code
                                     Navigator.of(context).pop(false);
+                                    Popups.showPopupOk(context, text: languagesTextsFile.texts["invalid_code"], textOk: languagesTextsFile.texts["pop_up_ok"], functionOk: Popups.functionToQuit);
                                   }
                                 },
                                 onTapCancel: () {

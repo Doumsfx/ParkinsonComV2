@@ -94,7 +94,6 @@ class _LoginPageState extends State<LoginPage> {
       return true;
     }
     else {
-      Popups.showPopupOk(context, text: languagesTextsFile.texts["invalid_code"], textOk: languagesTextsFile.texts["pop_up_ok"], functionOk: Popups.functionToQuit);
       return false;
     }
   }
@@ -111,7 +110,9 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.of(context).pop(false);
       }
     }
-    return await Popups.showPopupOk(context, text: languagesTextsFile.texts["ask_permissions"], textOk: languagesTextsFile.texts["pop_up_ok"], functionOk: askPermissions);
+    return await Popups.showPopupOk(context, text: languagesTextsFile.texts["ask_permissions"], textOk: languagesTextsFile.texts["pop_up_ok"], functionOk: askPermissions).then((value) {
+        return value ?? false;
+    },);
   }
 
 

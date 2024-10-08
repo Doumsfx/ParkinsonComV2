@@ -107,6 +107,7 @@
     "mail_body_1" : "De :",
     "mail_body_2" : "Veuillez ne pas répondre directement.\nPour répondre à ce message, vous devez écrire directement à",
     "mail_body_3" : "à partir de votre serveur de messagerie.",
+    "mail_code_check" : "Votre code de vérification pour ParkinsonCom est :",
     "emergency_message" : "J'ai besoin d'aide.",
     "emergency_ask_1" : "Voulez vous vraiment appeler",
     "emergency_ask_1.2" : "Voulez vous aussi appeler",
@@ -124,13 +125,12 @@
     "login_page_error_mail": "Merci de renseigner votre adresse mail.",
     "login_page_error_form_mail": "Merci de renseigner une adresse mail valide.",
     "login_page_start": "Commencer",
-
     "sim_card_absent" : "Aucune carte SIM n'est présente.",
     "missing_permissions" : "Des permissions sont manquantes pour utiliser cette fonctionnalité.",
-    "ask_permissions" : "Veuillez autoriser les autorisations qui vont s'afficher.",
+    "ask_permissions" : "Veuillez autoriser les permissions qui vont s'afficher.",
     "invalid_code" : "Le code de vérification saisi est invalide.",
     "sending_code_mail" : "Un e-mail va vous être envoyé avec un code de vérification.",
-    "input_code_mail" : "L'e-mail de vérification a été envoyé à l'adresse\n...\nVeuillez saisir le code de vérification :",
+    "input_code_mail" : "Un mail de vérification a été envoyé à ...\nVeuillez le consulter et entrer le code de validation.\nSi vous n'avez pas reçu l'e-mail, veuillez appuyer sur «Annuler» et corriger l’adresse email saisi.",
     "hint_input_code" : "Code de vérification",
     "error_sending_mail" : "Une erreur a été rencontrée lors de l'envoi du mail.\nVeuillez vérifier l'adresse mail saisie,\nainsi que votre accès à internet."
 
@@ -243,6 +243,7 @@
     "mail_body_1" : "Van:",
     "mail_body_2" : "Gelieve niet rechtstreeks te antwoorden.\nAls je dit bericht wilt beantwoorden, moet je rechtstreeks schrijven naar:",
     "mail_body_3" : "van je mailserver.",
+    "mail_code_check" : "Uw verificatiecode voor ParkinsonCom is:",
     "emergency_message" : "Ik heb hulp nodig.",
     "emergency_ask_1" : "Wil je echt",
     "emergency_ask_1.2" : "Wil je ook",
@@ -260,14 +261,13 @@
     "login_page_error_mail": "...",
     "login_page_error_form_mail": "...",
     "login_page_start": "...",
-
-    "sim_card_absent" : "...",
-    "missing_permissions" : "...",
-    "ask_permissions" : "...",
-    "invalid_code" : "...",
-    "sending_code_mail" : "...",
-    "input_code_mail" : "...",
-    "hint_input_code" : "...",
-    "error_sending_mail" : "..."
+    "sim_card_absent" : "Er is geen SIM-kaart aanwezig.",
+    "missing_permissions" : "Toestemmingen ontbreken om deze functie te gebruiken.",
+    "ask_permissions" : "Sta de volgende rechten toe.",
+    "invalid_code" : "De ingevoerde verificatiecode is ongeldig.",
+    "sending_code_mail" : "Er wordt een e-mail naar u gestuurd met een verificatiecode.",
+    "input_code_mail" : "Er is een verificatiemail verzonden naar ...\nLees deze en voer de validatiecode in.\nAls u de e-mail niet hebt ontvangen, drukt u op “Annuleren” en corrigeert u het ingevoerde e-mailadres.",
+    "hint_input_code" : "Verificatiecode",
+    "error_sending_mail" : "Er is een fout opgetreden bij het verzenden van de e-mail.\nControleer het ingevoerde e-mailadres,\nevenals uw internettoegang."
 
   }}
