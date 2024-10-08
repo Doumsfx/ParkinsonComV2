@@ -69,7 +69,7 @@ class EmailHandler {
                   children: [
                     SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.3),
                     Text(
-                      "Un e-mail va vous être envoyé avec un code de vérification...", //todo
+                      languagesTextsFile.texts["sending_code_mail"],
                       textAlign: TextAlign.center,
                       style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
                     ),
@@ -86,12 +86,15 @@ class EmailHandler {
     int resultSendMail = await sendMessage(userMail, "Code de vérification : $newCode"); //todo mise en page mail
     //Close the previous popup
     Navigator.of(context).pop();
+
     //If the e-mail sending is successful
     if (resultSendMail >= 0) {
       bool resultCode = await showDialog(context: context, barrierDismissible: false, builder: (context) {
         Map<String, bool> _buttonAnimations = {
           "POPUP OK": false,
+          "POPUP CANCEL": false,
         };
+
         return StatefulBuilder(builder: (context, setState) {
           double screenHeight = MediaQuery.of(context).size.height;
           double screenWidth = MediaQuery.of(context).size.width;
@@ -106,16 +109,16 @@ class EmailHandler {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.12),
+                        SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.1),
                         Text(
-                          "L'e-mail de vérification a été envoyé à l'adresse\n$userMail\nVeuillez saisir le code de vérification :", //todo json
+                          (languagesTextsFile.texts["input_code_mail"] as String).replaceAll("...", userMail),
                           textAlign: TextAlign.center,
                           style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
                         ),
-                        SizedBox(height: screenHeight * 0.1),
+                        SizedBox(height: screenHeight * 0.08),
                         //TextField for code input
                         SizedBox(
-                          width: screenWidth*0.4,
+                          width: screenWidth*0.35,
                           child: TextField(
                             style: const TextStyle(
                               fontSize: 22,
@@ -163,7 +166,7 @@ class EmailHandler {
                                     Radius.circular(MediaQuery.of(context).size.width * 0.02),
                                   ),
                                 ),
-                                hintText: "Code de vérification", //todo json
+                                hintText: languagesTextsFile.texts["hint_input_code"],
                                 hintStyle: const TextStyle(
                                   color: Color.fromRGBO(147, 147, 147, 1),
                                   fontStyle: FontStyle.italic,
@@ -180,56 +183,107 @@ class EmailHandler {
                             },
                           ),
                         ),
-                        SizedBox(height: screenHeight * 0.1),
-                        //Button Check code
-                        AnimatedScale(
-                          scale: _buttonAnimations["POPUP OK"]! ? 1.1 : 1.0,
-                          duration: const Duration(milliseconds: 100),
-                          curve: Curves.bounceOut,
-                          alignment: Alignment.center,
-                          child: GestureDetector(
-                            // Animation management
-                            onTapDown: (_) {
-                              setState(() {
-                                _buttonAnimations["POPUP OK"] = true;
-                              });
-                            },
-                            onTapUp: (_) async {
-                              setState(() {
-                                _buttonAnimations["POPUP OK"] = false;
-                              });
-                              //BUTTON CODE
-                              if(newCode.toString() == controller.text) {
-                                //Right code
-                                Navigator.of(context).pop(true);
-                              }
-                              else {
-                                //Wrong code
-                                Navigator.of(context).pop(false);
-                              }
-                            },
-                            onTapCancel: () {
-                              setState(() {
-                                _buttonAnimations["POPUP OK"] = false;
-                              });
-                            },
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(60)),
-                                color: Colors.lightGreen,
-                              ),
-                              padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
-                              child: Text(
-                                "Vérifier", //todo json
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
+                        SizedBox(height: screenHeight * 0.08),
+                        //Buttons
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            //Button to cancel
+                            AnimatedScale(
+                              scale: _buttonAnimations["POPUP CANCEL"]! ? 1.1 : 1.0,
+                              duration: const Duration(milliseconds: 100),
+                              curve: Curves.bounceOut,
+                              alignment: Alignment.center,
+                              child: GestureDetector(
+                                // Animation management
+                                onTapDown: (_) {
+                                  setState(() {
+                                    _buttonAnimations["POPUP CANCEL"] = true;
+                                  });
+                                },
+                                onTapUp: (_) async {
+                                  setState(() {
+                                    _buttonAnimations["POPUP CANCEL"] = false;
+                                  });
+                                  //BUTTON CODE
+                                  Navigator.of(context).pop(false);
+                                },
+                                onTapCancel: () {
+                                  setState(() {
+                                    _buttonAnimations["POPUP CANCEL"] = false;
+                                  });
+                                },
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                    borderRadius: BorderRadius.all(Radius.circular(60)),
+                                    color: Colors.red,
+                                  ),
+                                  padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
+                                  child: Text(
+                                    languagesTextsFile.texts["pop_up_cancel"],
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
+                            SizedBox(width: screenHeight*0.1),
+                            //Button Check code
+                            AnimatedScale(
+                              scale: _buttonAnimations["POPUP OK"]! ? 1.1 : 1.0,
+                              duration: const Duration(milliseconds: 100),
+                              curve: Curves.bounceOut,
+                              alignment: Alignment.center,
+                              child: GestureDetector(
+                                // Animation management
+                                onTapDown: (_) {
+                                  setState(() {
+                                    _buttonAnimations["POPUP OK"] = true;
+                                  });
+                                },
+                                onTapUp: (_) async {
+                                  setState(() {
+                                    _buttonAnimations["POPUP OK"] = false;
+                                  });
+                                  //BUTTON CODE
+                                  if(newCode.toString() == controller.text) {
+                                    //Right code
+                                    Navigator.of(context).pop(true);
+                                  }
+                                  else {
+                                    //Wrong code
+                                    Navigator.of(context).pop(false);
+                                  }
+                                },
+                                onTapCancel: () {
+                                  setState(() {
+                                    _buttonAnimations["POPUP OK"] = false;
+                                  });
+                                },
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                    borderRadius: BorderRadius.all(Radius.circular(60)),
+                                    color: Colors.lightGreen,
+                                  ),
+                                  padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
+                                  child: Text(
+                                    languagesTextsFile.texts["pop_up_check"],
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
+
                         SizedBox(height: screenHeight * 0.03),
                       ],
                     ),
@@ -237,102 +291,116 @@ class EmailHandler {
                 );
               }
               else{
-                return Dialog(
-                  backgroundColor: Colors.black87,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.12),
-                        //TextField for code input
-                        SizedBox(
-                          width: screenWidth*0.4,
-                          child: TextField(
-                            style: const TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.w800,
-                              color: Color.fromRGBO(50, 50, 50, 1),
-                              overflow: TextOverflow.ellipsis,
+                return Stack(children: [
+
+                  Dialog(
+                    backgroundColor: Colors.black87,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.08),
+                          //TextField for code input
+                          SizedBox(
+                            width: screenWidth*0.35,
+                            child: TextField(
+                              style: const TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.w800,
+                                color: Color.fromRGBO(50, 50, 50, 1),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+
+                              //focusNode: _focusNode,
+                              controller: controller,
+                              readOnly: true,
+                              showCursor: true,
+                              enableInteractiveSelection: true,
+                              maxLines: 1,
+                              textAlign: TextAlign.left,
+                              textAlignVertical: TextAlignVertical.center,
+
+                              decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  iconColor: Colors.white,
+                                  focusColor: Colors.white,
+                                  hoverColor: Colors.white,
+                                  border: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                      color: Colors.white,
+                                    ),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(MediaQuery.of(context).size.width * 0.02),
+                                    ),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                      color: Colors.white,
+                                    ),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(MediaQuery.of(context).size.width * 0.02),
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                      color: Colors.white,
+                                    ),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(MediaQuery.of(context).size.width * 0.02),
+                                    ),
+                                  ),
+                                  hintText: languagesTextsFile.texts["hint_input_code"],
+                                  hintStyle: const TextStyle(
+                                    color: Color.fromRGBO(147, 147, 147, 1),
+                                    fontStyle: FontStyle.italic,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 19,
+                                  )
+                              ),
+
+                              onTap: () {
+                                setState(() {
+
+                                });
+                                print("TOUCHEEEEEEEEEEEEEEE");
+                              },
                             ),
-
-                            //focusNode: _focusNode,
-                            controller: controller,
-                            readOnly: true,
-                            showCursor: true,
-                            enableInteractiveSelection: true,
-                            maxLines: 1,
-                            textAlign: TextAlign.left,
-                            textAlignVertical: TextAlignVertical.center,
-
-                            decoration: InputDecoration(
-                                filled: true,
-                                fillColor: Colors.white,
-                                iconColor: Colors.white,
-                                focusColor: Colors.white,
-                                hoverColor: Colors.white,
-                                border: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                    color: Colors.white,
-                                  ),
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(MediaQuery.of(context).size.width * 0.02),
-                                  ),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                    color: Colors.white,
-                                  ),
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(MediaQuery.of(context).size.width * 0.02),
-                                  ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                    color: Colors.white,
-                                  ),
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(MediaQuery.of(context).size.width * 0.02),
-                                  ),
-                                ),
-                                hintText: "Code de vérification", //todo json
-                                hintStyle: const TextStyle(
-                                  color: Color.fromRGBO(147, 147, 147, 1),
-                                  fontStyle: FontStyle.italic,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 19,
-                                )
-                            ),
-
-                            onTap: () {
-                              setState(() {
-
-                              });
-                              print("TOUCHEEEEEEEEEEEEEEE");
-                            },
                           ),
-                        ),
-                        SizedBox(height: screenHeight * 0.1),
-                        //Button Check code
-                        const Expanded(child: SizedBox()),
-                        Builder(builder: (context) {
-                          return CustomKeyboardPhoneNumber(controller: controller,);
-                        },)
-                      ],
+                          const Expanded(child: SizedBox())
+                        ],
+                      ),
                     ),
                   ),
+                  Positioned(
+                      bottom: 0,
+                      left: 0,
+
+                      child: Builder(builder: (context) {
+                    return CustomKeyboardPhoneNumber(controller: controller,);
+                  },))
+
+                ],
                 );
               }
             },
           );
         });
+      },).then((value) {
+        //Return the bool, or false by default if the user succeed in closing the dialog without clicking on any buttons
+        return value ?? false;
       },);
       return resultCode;
     }
     //E-mail sending failed
     else {
-      return await Popups.showPopupOk(context, text: "Une erreur a été rencontrée lors de l'envoi du mail.\nVeuillez vérifier l'adresse mail saisie,\nainsi que votre accès à internet.", textOk: "OK", functionOk: (p0) {
+      return await Popups.showPopupOk(context, text: languagesTextsFile.texts["error_sending_mail"], textOk: languagesTextsFile.texts["pop_up_ok"], dismissible: false,
+        functionOk: (p0) {
         Navigator.of(p0).pop(false);
+      },).then((value) {
+        //Return the bool, or false by default if the user succeed in closing the dialog without clicking on any buttons
+        return value ?? false;
       },);
     }
   }

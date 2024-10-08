@@ -137,12 +137,13 @@ class Popups {
         });
   }
 
-  static Future<dynamic> showPopupOk(BuildContext context, {required String text, required String textOk, required Function(BuildContext) functionOk, int numberOfExecutionsOk = 1}) {
+  static Future<dynamic> showPopupOk(BuildContext context, {required String text, required String textOk, required Function(BuildContext) functionOk, int numberOfExecutionsOk = 1, bool dismissible = true}) {
     final Map<String, bool> _buttonAnimations = {
       "POPUP OK": false,
     };
     return showDialog(
         context: context,
+        barrierDismissible: dismissible,
         builder: (BuildContext context) {
           double screenHeight = MediaQuery.of(context).size.height;
           double screenWidth = MediaQuery.of(context).size.width;

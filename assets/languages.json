@@ -78,6 +78,7 @@
     "pop_up_ok" : "OK",
     "pop_up_cancel" : "Annuler",
     "pop_up_validate" : "Valider",
+    "pop_up_check" : "Vérifier",
     "pop_up_internet" : "Vous n'avez pas de connexion internet.\nCela peut désactiver certaines fonctionnalités\n(autocomplétion, e-mail, etc).\nMerci de réactiver internet\nsi vous souhaitez utiliser ces fonctionnalités.",
     "pop_up_continue_without_internet" : "Continuer sans internet",
     "pop_up_delete_dialog" : "Voulez vous vraiment supprimer ce dialogue ?",
@@ -122,7 +123,16 @@
     "login_page_error_first_name": "Merci de renseigner votre nom.",
     "login_page_error_mail": "Merci de renseigner votre adresse mail.",
     "login_page_error_form_mail": "Merci de renseigner une adresse mail valide.",
-    "login_page_start": "Commencer"
+    "login_page_start": "Commencer",
+
+    "sim_card_absent" : "Aucune carte SIM n'est présente.",
+    "missing_permissions" : "Des permissions sont manquantes pour utiliser cette fonctionnalité.",
+    "ask_permissions" : "Veuillez autoriser les autorisations qui vont s'afficher.",
+    "invalid_code" : "Le code de vérification saisi est invalide.",
+    "sending_code_mail" : "Un e-mail va vous être envoyé avec un code de vérification.",
+    "input_code_mail" : "L'e-mail de vérification a été envoyé à l'adresse\n...\nVeuillez saisir le code de vérification :",
+    "hint_input_code" : "Code de vérification",
+    "error_sending_mail" : "Une erreur a été rencontrée lors de l'envoi du mail.\nVeuillez vérifier l'adresse mail saisie,\nainsi que votre accès à internet."
 
   },
   "nl" : {
@@ -204,6 +214,7 @@
     "pop_up_ok" : "OK",
     "pop_up_cancel" : "Annuleren",
     "pop_up_validate" : "Bevestigen",
+    "pop_up_check" : "Controleer",
     "pop_up_internet" : "U heeft geen internetverbinding.\nDit kan sommige functies uitschakelen\n(automatisch aanvullen, e-mail, enz.).\nReactiveer internet\n als u deze functies wilt gebruiken.",
     "pop_up_continue_without_internet" : "Ga verder zonder internet",
     "pop_up_delete_dialog" : "Wil je deze dialoog echt verwijderen ?",
@@ -248,5 +259,15 @@
     "login_page_error_first_name": "...",
     "login_page_error_mail": "...",
     "login_page_error_form_mail": "...",
-    "login_page_start": "..."
-}}
+    "login_page_start": "...",
+
+    "sim_card_absent" : "...",
+    "missing_permissions" : "...",
+    "ask_permissions" : "...",
+    "invalid_code" : "...",
+    "sending_code_mail" : "...",
+    "input_code_mail" : "...",
+    "hint_input_code" : "...",
+    "error_sending_mail" : "..."
+
+  }}

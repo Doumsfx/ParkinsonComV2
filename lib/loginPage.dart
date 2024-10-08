@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:parkinson_com_v2/keyboard.dart';
 import 'package:parkinson_com_v2/models/database/contact.dart';
 import 'package:parkinson_com_v2/variables.dart';
-import 'package:parkinson_com_v2/models/emailhandler.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'models/popupshandler.dart';
@@ -63,7 +62,6 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  //todo : Changer les textes avec le JSON
   Future<bool> startChecks() async {
     // SIM card presence check
     if (phone) {
@@ -77,14 +75,14 @@ class _LoginPageState extends State<LoginPage> {
         bool sim = await smsHandler.checkSim();
         if (!sim) {
           phone = false;
-          Popups.showPopupOk(context, text: "Aucune SIM n'est présente", textOk: "OK", functionOk: Popups.functionToQuit);
+          Popups.showPopupOk(context, text: languagesTextsFile.texts["sim_card_absent"], textOk: languagesTextsFile.texts["pop_up_ok"], functionOk: Popups.functionToQuit);
           return false;
         }
       }
       //Permission denied
       else {
         phone = false;
-        Popups.showPopupOk(context, text: "Permission manquante", textOk: "OK", functionOk: Popups.functionToQuit);
+        Popups.showPopupOk(context, text: languagesTextsFile.texts["missing_permissions"], textOk: languagesTextsFile.texts["pop_up_ok"], functionOk: Popups.functionToQuit);
         return false;
       }
     }
@@ -96,6 +94,7 @@ class _LoginPageState extends State<LoginPage> {
       return true;
     }
     else {
+      Popups.showPopupOk(context, text: languagesTextsFile.texts["invalid_code"], textOk: languagesTextsFile.texts["pop_up_ok"], functionOk: Popups.functionToQuit);
       return false;
     }
   }
@@ -112,8 +111,7 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.of(context).pop(false);
       }
     }
-    //todo : Changer les textes avec le JSON
-    return await Popups.showPopupOk(context, text: "Veuillez autoriser la permission qui va s'afficher", textOk: "OK", functionOk: askPermissions);
+    return await Popups.showPopupOk(context, text: languagesTextsFile.texts["ask_permissions"], textOk: languagesTextsFile.texts["pop_up_ok"], functionOk: askPermissions);
   }
 
 
