@@ -135,19 +135,20 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
     });
 
 
+    if(!isFirstLaunch) {
+      // Initialization of our Notifications for Android
+      var initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
+      var initializationSettings = InitializationSettings(
+        android: initializationSettingsAndroid,
+      );
+      var flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+      flutterLocalNotificationsPlugin.initialize(initializationSettings);
+      // Initialisation of our Notification Handler
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        notificationHandler.startCheck(context, flutterLocalNotificationsPlugin);
+      });
+    }
 
-    // Initilisation of our Notifications for Android
-    var initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
-    var initializationSettings = InitializationSettings(
-      android: initializationSettingsAndroid,
-    );
-    var flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-    flutterLocalNotificationsPlugin.initialize(initializationSettings);
-
-    // Initialisation of our Notification Handler
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      notificationHandler.startCheck(context, flutterLocalNotificationsPlugin);
-    });
   }
 
 

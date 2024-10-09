@@ -4,6 +4,8 @@
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:parkinson_com_v2/customtextfield.dart';
 import 'package:parkinson_com_v2/keyboard.dart';
 import 'package:parkinson_com_v2/main.dart';
 import 'package:parkinson_com_v2/models/database/contact.dart';
@@ -189,7 +191,10 @@ class _LoginPageState extends State<LoginPage> {
 
                                         // TextField
                                         Expanded(
-                                          child: TextField(
+                                          child: CustomTextField(
+                                            width: 300, //todo changer largeur
+                                            context: context,
+                                            maxFontSize: 22,
                                             style: const TextStyle(
                                               fontSize: 22,
                                               fontWeight: FontWeight.w800,
@@ -292,7 +297,10 @@ class _LoginPageState extends State<LoginPage> {
 
                                         // TextField
                                         Expanded(
-                                          child: TextField(
+                                          child: CustomTextField(
+                                            width: 300, //todo changer largeur
+                                            context: context,
+                                            maxFontSize: 22,
                                             style: const TextStyle(
                                               fontSize: 22,
                                               fontWeight: FontWeight.w800,
@@ -471,6 +479,18 @@ class _LoginPageState extends State<LoginPage> {
 
                                           // Initialization of the database manager when launching the app (create or open the database)
                                           await databaseManager.initDB();
+
+                                          // Initilisation of our Notifications for Android
+                                          var initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
+                                          var initializationSettings = InitializationSettings(
+                                            android: initializationSettingsAndroid,
+                                          );
+                                          var flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+                                          flutterLocalNotificationsPlugin.initialize(initializationSettings);
+                                          // Initialisation of our Notification Handler
+                                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                                            notificationHandler.startCheck(context, flutterLocalNotificationsPlugin);
+                                          });
 
                                           // Redirection
                                           Navigator.pushReplacement(
@@ -730,7 +750,10 @@ class _LoginPageState extends State<LoginPage> {
                     
                                             // TextField
                                             Expanded(
-                                              child: TextField(
+                                              child: CustomTextField(
+                                                width: 300, //todo changer largeur
+                                                context: context,
+                                                maxFontSize: 22,
                                                 style: const TextStyle(
                                                   fontSize: 22,
                                                   fontWeight: FontWeight.w800,
