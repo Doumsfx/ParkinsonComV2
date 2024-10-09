@@ -19,15 +19,16 @@ class PredictionsHandler {
   String prediLanguage;
   late ValueNotifier<List<String>> suggestedWordsList;
   late Dico _dictionnary;
+  late final  bool forceDisable;
 
   Timer? _debounce; //This will prevent the the predictions request to trigger twice (because of the controller and event listener)
 
-  PredictionsHandler({required this.controller, this.prediLanguage = "fr"}) {
+  PredictionsHandler({required this.controller, this.prediLanguage = "fr", this.forceDisable = false}) {
     suggestedWordsList = ValueNotifier(List<String>.empty());
     controller.addListener(_onTextChanged);
     isConnected.addListener(_refreshPredictions);
     //Initialization with empty query for the starting words
-    if (isConnected.value) {
+    if (isConnected.value && !forceDisable) {
       if (prediLanguage == "fr") {
         predictFR(controller.text); //FR
       } else if(prediLanguage == "nl") {
@@ -47,7 +48,7 @@ class PredictionsHandler {
   }
 
   void _refreshPredictions() {
-    if (isConnected.value) {
+    if (isConnected.value  && !forceDisable) {
       if (prediLanguage == "fr") {
         predictFR(controller.text); //FR
       } else if(prediLanguage == "nl"){
@@ -65,7 +66,7 @@ class PredictionsHandler {
     controller.clear(); // Clear the text field
 
     //Prediction with empty sentence
-    if (isConnected.value) {
+    if (isConnected.value && !forceDisable) {
       if (prediLanguage == "fr") {
         predictFR(""); //FR
       } else if(prediLanguage == "nl"){
@@ -85,7 +86,7 @@ class PredictionsHandler {
 
   ///Event listener that will update the [suggestedWordsList] based on the new text of the [PredictionsHandler.controller]
   void _onTextChanged() {
-    if(isConnected.value) {
+    if(isConnected.value && !forceDisable) {
       //Debouncing, avoid to be triggered twice
       if (_debounce?.isActive ?? false) _debounce?.cancel();
       _debounce = Timer(const Duration(milliseconds: 400), () {
@@ -117,7 +118,7 @@ class PredictionsHandler {
       'languages': ["fr"],
       'correctTypoInPartialWord': 'true'
     });
-    //Get JSON Data (Typewise not available for NL)
+    //Get JSON Data
     final response = await http.post(Uri.parse(url), headers: headers, body: body);
 
     if (response.statusCode == 200) {

@@ -166,22 +166,25 @@ class NotificationHandler {
       timeAndDate = newTimeAndDate;
 
       if(timeAndDate.second == 0){
-        // Update our list of reminders
-        _listReminders = await databaseManager.retrieveReminders();
+        //Check the reminders only if the database has been created (avoid checks when on login page)
+        if(await databaseManager.doesExist()) {
+          // Update our list of reminders
+          _listReminders = await databaseManager.retrieveReminders();
 
-        // Checking if it's not empty
-        if(_listReminders.isNotEmpty){
-          // Getting current time and current day
-          String currentTime = "${formatWithTwoDigits(timeAndDate.hour)}:${formatWithTwoDigits(timeAndDate.minute)}";
-          String currentDay = days[timeAndDate.weekday - 1];
-          int i = 0;
-          for(i; i < _listReminders.length; i += 1){
-            if(_listReminders[i].hour == currentTime){
-              if(_listReminders[i].days.contains(currentDay)){
-                _showReminderPopUp(context, "${languagesTextsFile.texts["notification_text"]}:\n ${_listReminders[i].title}");
-                _showNotification("${languagesTextsFile.texts["notification_text"]} ${_listReminders[i].title}",languagesTextsFile.texts["notification_title"], flutterLocalNotificationsPlugin);
-                if(_listReminders[i].ring && !isMusicPlaying()){
-                  startMusic();
+          // Checking if it's not empty
+          if(_listReminders.isNotEmpty){
+            // Getting current time and current day
+            String currentTime = "${formatWithTwoDigits(timeAndDate.hour)}:${formatWithTwoDigits(timeAndDate.minute)}";
+            String currentDay = days[timeAndDate.weekday - 1];
+            int i = 0;
+            for(i; i < _listReminders.length; i += 1){
+              if(_listReminders[i].hour == currentTime){
+                if(_listReminders[i].days.contains(currentDay)){
+                  _showReminderPopUp(context, "${languagesTextsFile.texts["notification_text"]}:\n ${_listReminders[i].title}");
+                  _showNotification("${languagesTextsFile.texts["notification_text"]} ${_listReminders[i].title}",languagesTextsFile.texts["notification_title"], flutterLocalNotificationsPlugin);
+                  if(_listReminders[i].ring && !isMusicPlaying()){
+                    startMusic();
+                  }
                 }
               }
             }

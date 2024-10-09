@@ -46,9 +46,6 @@ void main() async {
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight
   ]).then((_) {
-
-
-
     runApp(const MyApp());
   });
 
@@ -112,7 +109,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
   @override
   void initState() {
     super.initState();
-    // Initialisation de nos variables
+    // Initialization of the variables
     initialisation();
     WidgetsBinding.instance.addObserver(this);
 
@@ -120,7 +117,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
       int newBatteryLevel = await battery.batteryLevel;
       DateTime newTimeAndDate = DateTime.now();
 
-      // Update of our variables
+      // Updates of our variables
       setState(() {
         batteryLevel = newBatteryLevel;
         timeAndDate = newTimeAndDate;
@@ -134,20 +131,17 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
       internetAlert.startCheckInternet(context);
     });
 
-
-    if(!isFirstLaunch) {
-      // Initialization of our Notifications for Android
-      var initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
-      var initializationSettings = InitializationSettings(
-        android: initializationSettingsAndroid,
-      );
-      var flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-      flutterLocalNotificationsPlugin.initialize(initializationSettings);
-      // Initialisation of our Notification Handler
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        notificationHandler.startCheck(context, flutterLocalNotificationsPlugin);
-      });
-    }
+    // Initialization of our Notifications for Android
+    var initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
+    var initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid,
+    );
+    var flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    // Initialisation of our Notification Handler
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      notificationHandler.startCheck(context, flutterLocalNotificationsPlugin);
+    });
 
   }
 
@@ -193,11 +187,17 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
     }
   }
 
+  void _handleLoginSuccess() {
+    setState(() {
+      isFirstLaunch = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Builder(builder: (context) {
       if(isFirstLaunch){
-        return const LoginPage();
+        return LoginPage(onLoginSuccess: _handleLoginSuccess);
       }
       else{
         return Scaffold(

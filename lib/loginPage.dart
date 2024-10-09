@@ -4,7 +4,6 @@
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:parkinson_com_v2/customtextfield.dart';
 import 'package:parkinson_com_v2/keyboard.dart';
 import 'package:parkinson_com_v2/main.dart';
@@ -17,7 +16,9 @@ import 'models/popupshandler.dart';
 
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  final VoidCallback onLoginSuccess;
+
+  const LoginPage({super.key, required this.onLoginSuccess});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -480,23 +481,15 @@ class _LoginPageState extends State<LoginPage> {
                                           // Initialization of the database manager when launching the app (create or open the database)
                                           await databaseManager.initDB();
 
-                                          // Initilisation of our Notifications for Android
-                                          var initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
-                                          var initializationSettings = InitializationSettings(
-                                            android: initializationSettingsAndroid,
-                                          );
-                                          var flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-                                          flutterLocalNotificationsPlugin.initialize(initializationSettings);
-                                          // Initialisation of our Notification Handler
-                                          WidgetsBinding.instance.addPostFrameCallback((_) {
-                                            notificationHandler.startCheck(context, flutterLocalNotificationsPlugin);
-                                          });
-
                                           // Redirection
+                                          /*
                                           Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(builder: (context) => const HomePage(),)
                                           );
+
+                                           */
+                                          widget.onLoginSuccess();
 
                                           // Adding in the database
                                           await databaseManager.insertContact(Contact(
@@ -507,8 +500,6 @@ class _LoginPageState extends State<LoginPage> {
                                             priority: 0,
                                             id_contact: 0,
                                           ));
-
-                                          print('contact ajouté + db initialise');
 
                                         }
 
