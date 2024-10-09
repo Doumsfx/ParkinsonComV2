@@ -5,7 +5,7 @@
 import 'dart:async';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:parkinson_com_v2/customRemindersTitle.dart';
+import 'package:parkinson_com_v2/customTitle.dart';
 import 'package:parkinson_com_v2/models/database/contact.dart';
 import 'package:parkinson_com_v2/newContact.dart';
 import 'package:parkinson_com_v2/variables.dart';
@@ -309,13 +309,18 @@ class _ListContactsPageState extends State<ListContactsPage> {
                         // Title
                         Container(
                           margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.060, MediaQuery.of(context).size.height / 16, MediaQuery.of(context).size.width * 0.125, 0),
-                          child: CustomRemindersTitle(
+                          child: CustomTitle(
                             text: languagesTextsFile.texts["contact_list_title"]!,
                             image: 'assets/enveloppe.png',
                             imageScale: 0.15,
                             backgroundColor: const Color.fromRGBO(12, 178, 255, 1),
                             textColor: Colors.white,
-                            width: MediaQuery.of(context).size.width * 0.50,
+                            containerWidth: MediaQuery.of(context).size.width * 0.50,
+                            containerHeight: MediaQuery.of(context).size.height * 0.12,
+                            containerPadding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.height * 0.085, 0, MediaQuery.of(context).size.height * 0.03, 0),
+                            circleSize: MediaQuery.of(context).size.height * 0.1875,
+                            circlePositionedLeft: MediaQuery.of(context).size.height * 0.1 * -1,
+                            fontSize: MediaQuery.of(context).size.height > 600 ? 30 : 26,
                             fontWeight: FontWeight.w600,
                             alignment: const Alignment(-0.2, 0.6),
                           ),

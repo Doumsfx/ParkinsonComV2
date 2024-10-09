@@ -36,7 +36,7 @@ class CustomShapeThemes extends StatelessWidget {
               style: GoogleFonts.josefinSans(
                 color: textColor,
                 fontWeight: FontWeight.w600,
-                fontSize: 18,
+                fontSize: MediaQuery.of(context).size.height > 600 ? 18 : 17,
               ),
             ),
           ),

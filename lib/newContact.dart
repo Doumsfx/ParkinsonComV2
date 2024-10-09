@@ -182,643 +182,630 @@ class _NewContactPageState extends State<NewContactPage> {
           valueListenable: newContactPageState,
           builder: (context, value, child) {
             if(!value){
-              return Row(
+              return Stack(
                 children: [
-                  Expanded(
-                    child: Column(
-                      children: [
-                        // Back Arrow + Title + Subtitle
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Back Arrow
-                            SizedBox(
-                              child: Container(
-                                margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.013, 0, 0),
-                                child: AnimatedScale(
-                                  scale: _buttonAnimations["BACK ARROW"]! ? 1.1 : 1.0,
-                                  duration: const Duration(milliseconds: 100),
-                                  curve: Curves.bounceOut,
-                                  child: GestureDetector(
-                                    onTapDown: (_) {
-                                      setState(() {
-                                        _buttonAnimations["BACK ARROW"] = true;
-                                      });
-                                    },
-                                    onTapUp: (_) {
-                                      setState(() {
-                                        _buttonAnimations["BACK ARROW"] = false;
-                                      });
-
-                                      // Button code
-                                      Navigator.pop(
-                                        context,
-                                      );
-                                    },
-                                    onTapCancel: () {
-                                      setState(() {
-                                        _buttonAnimations["BACK ARROW"] = false;
-                                      });
-                                    },
-                                    child: Image.asset(
-                                      "assets/fleche.png",
-                                      height: MediaQuery.of(context).size.width * 0.05,
-                                      width: MediaQuery.of(context).size.width * 0.07,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-
-                            // Title + Subtitle
-                            Expanded(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  // Title
-                                  Container(
-                                    margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.03),
-                                    child: Text(
-                                      languagesTextsFile.texts["new_contact_title"],
-                                      style: GoogleFonts.josefinSans(
-                                        color: Colors.white,
-                                        fontSize: 35,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ),
-
-                                  // Subtitle
-                                  Container(
-                                    margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.03, 0, MediaQuery.of(context).size.height * 0.05),
-                                    child: Text(
-                                      hasSimCard ? languagesTextsFile.texts["new_contact_subtitle2"] : languagesTextsFile.texts["new_contact_subtitle"],
-                                      style: GoogleFonts.josefinSans(
-                                        color: Colors.white,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ),
-
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        // First TextField
-                        Container(
-                          width: MediaQuery.of(context).size.width * 0.4,
-                          height: MediaQuery.of(context).size.height * 0.12,
-                          margin: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.06),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(MediaQuery.of(context).size.width * 0.02),
-                            ),
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.fromLTRB(
-                              MediaQuery.of(context).size.width * 0.02,
-                              0,
-                              MediaQuery.of(context).size.width * 0.02,
-                              0,
-                            ),
-                            child: Center(
-                              child: TextField(
-                                style: const TextStyle(
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.w800,
-                                  color: Color.fromRGBO(50, 50, 50, 1),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                    
-                                focusNode: _focusNode,
-                                controller: _firstController,
-                                readOnly: true,
-                                showCursor: true,
-                                enableInteractiveSelection: true,
-                                maxLines: 1,
-                                textAlign: TextAlign.left,
-                                textAlignVertical: TextAlignVertical.center,
-                    
-                                decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                    iconColor: Colors.white,
-                                    focusColor: Colors.white,
-                                    hoverColor: Colors.white,
-                                    border: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                        color: Colors.white,
-                                      ),
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(MediaQuery.of(context).size.width * 0.02),
-                                      ),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                        color: Colors.white,
-                                      ),
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(MediaQuery.of(context).size.width * 0.02),
-                                      ),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                        color: Colors.white,
-                                      ),
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(MediaQuery.of(context).size.width * 0.02),
-                                      ),
-                                    ),
-                                    hintText: languagesTextsFile.texts["new_contact_first_name"],
-                                    hintStyle: const TextStyle(
-                                      color: Color.fromRGBO(147, 147, 147, 1),
-                                      fontStyle: FontStyle.italic,
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 19,
-                                    )
-                                ),
-                    
-                                onTap: () {
-                                  setState(() {
-                                    newContactPageState.value = true;
-                                    _whichControllerIsActive[0] = true;
-                                    _whichControllerIsActive[1] = false;
-                                    _whichControllerIsActive[2] = false;
-                    
-                                  });
-                                  print("TOUCHEEEEEEEEEEEEEEE");
-                                },
-                              ),
-                            ),
-                          ),
-                        ),
-                    
-                        // Text + Second TextField + Mail/Phone Checkbox
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            // Text
-                            hasSimCard
-                            ? SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.29,
-                            )
-                            : Container(
-                              width: MediaQuery.of(context).size.width * 0.25,
-                              margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.02),
-                              child: Text(
-                                languagesTextsFile.texts["new_contact_message_left"]!,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                                maxLines: 6,
-                              ),
-                            ),
-
-                            // Second TextField + Mail/Phone Checkbox
-                            Column(
-                              children: [
-                                // Second TextField
-                                Container(
-                                  width: MediaQuery.of(context).size.width * 0.4,
-                                  height: MediaQuery.of(context).size.height * 0.12,
-                                  margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.02,),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(MediaQuery.of(context).size.width * 0.02),
-                                    ),
-                                  ),
-                                  child: Padding(
-                                    padding: EdgeInsets.fromLTRB(
-                                      MediaQuery.of(context).size.width * 0.02,
-                                      0,
-                                      MediaQuery.of(context).size.width * 0.02,
-                                      0,
-                                    ),
-                                    child: Center(
-                                      child: TextField(
-                                        style: const TextStyle(
-                                          fontSize: 22,
-                                          fontWeight: FontWeight.w800,
-                                          color: Color.fromRGBO(50, 50, 50, 1),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                    
-                                        focusNode: _focusNode2,
-                                        controller: _secondController,
-                                        readOnly: true,
-                                        showCursor: true,
-                                        enableInteractiveSelection: true,
-                                        maxLines: 1,
-                                        textAlign: TextAlign.left,
-                                        textAlignVertical: TextAlignVertical.center,
-                    
-                                        decoration: InputDecoration(
-                                            filled: true,
-                                            fillColor: Colors.white,
-                                            iconColor: Colors.white,
-                                            focusColor: Colors.white,
-                                            hoverColor: Colors.white,
-                                            border: OutlineInputBorder(
-                                              borderSide: const BorderSide(
-                                                color: Colors.white,
-                                              ),
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(MediaQuery.of(context).size.width * 0.02),
-                                              ),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                              borderSide: const BorderSide(
-                                                color: Colors.white,
-                                              ),
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(MediaQuery.of(context).size.width * 0.02),
-                                              ),
-                                            ),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderSide: const BorderSide(
-                                                color: Colors.white,
-                                              ),
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(MediaQuery.of(context).size.width * 0.02),
-                                              ),
-                                            ),
-                                            hintText: languagesTextsFile.texts["new_contact_last_name"],
-                                            hintStyle: const TextStyle(
-                                              color: Color.fromRGBO(147, 147, 147, 1),
-                                              fontStyle: FontStyle.italic,
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: 19,
-                                            )
-                                        ),
-                    
-                                        onTap: () {
-                                          setState(() {
-                                            newContactPageState.value = true;
-                                            _whichControllerIsActive[0] = false;
-                                            _whichControllerIsActive[1] = true;
-                                            _whichControllerIsActive[2] = false;
-                                          });
-                                          print("TOUCHEEEEEEEEEEEEEEE");
-                                        },
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                    
-                                // Choice between mail and phone
-                                hasSimCard
-                                    ? SizedBox(
-                                  width: MediaQuery.of(context).size.width * 0.4,
-                                  height: MediaQuery.of(context).size.width * 0.065,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                    children: [
-                                      // Mail
-                                      Text(
-                                        languagesTextsFile.texts["new_contact_mail"],
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      ),
-                    
-                                      // Mail Checkbox
-                                      Transform.scale(
-                                        scale: MediaQuery.of(context).size.width * 0.0025,
-                                        child: Checkbox(
-                                          value: mail,
-                                          shape: const CircleBorder(side: BorderSide(color: Colors.white, width: 60, )),
-                    
-                                          checkColor: Colors.indigo,
-                                          activeColor: const Color.fromRGBO(240, 242, 239, 1),
-                    
-                                          onChanged: (value) {
-                                            setState(() {
-                                              phone = false;
-                                              mail = true;
-                                              _thirdController.clear();
-                                            });
-                                          },
-                                        ),
-                                      ),
-                    
-                                      // Phone
-                                      Text(
-                                        languagesTextsFile.texts["new_contact_phone"],
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      ),
-                    
-                                      // Phone Checkbox
-                                      Transform.scale(
-                                        scale: MediaQuery.of(context).size.width * 0.0025,
-                                        child: Checkbox(
-                                          value: phone,
-                                          shape: const CircleBorder(side: BorderSide(color: Colors.white, width: 60, )),
-                    
-                                          checkColor: Colors.indigo,
-                                          activeColor: const Color.fromRGBO(240, 242, 239, 1),
-                    
-                                          onChanged: (value) {
-                                            setState(() {
-                                              phone = true;
-                                              mail = false;
-                                              _thirdController.clear();
-                                            });
-                                          },
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                                    : SizedBox(
-                                  width: MediaQuery.of(context).size.width * 0.4,
-                                  height: MediaQuery.of(context).size.width * 0.065,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                    
-                        // Third TextField
-                        Container(
-                          width: MediaQuery.of(context).size.width * 0.4,
-                          height: MediaQuery.of(context).size.height * 0.12,
-                          margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.06, MediaQuery.of(context).size.height * 0.002, 0, 0),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(MediaQuery.of(context).size.width * 0.02),
-                            ),
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.fromLTRB(
-                              MediaQuery.of(context).size.width * 0.02,
-                              0,
-                              MediaQuery.of(context).size.width * 0.02,
-                              0,
-                            ),
-                            child: Center(
-                              child: TextField(
-                                style: const TextStyle(
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.w800,
-                                  color: Color.fromRGBO(50, 50, 50, 1),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                    
-                                focusNode: _focusNode3,
-                                controller: _thirdController,
-                                readOnly: true,
-                                showCursor: true,
-                                enableInteractiveSelection: true,
-                                maxLines: 1,
-                                textAlign: TextAlign.left,
-                                textAlignVertical: TextAlignVertical.center,
-                    
-                                decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                    iconColor: Colors.white,
-                                    focusColor: Colors.white,
-                                    hoverColor: Colors.white,
-                                    border: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                        color: Colors.white,
-                                      ),
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(MediaQuery.of(context).size.width * 0.02),
-                                      ),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                        color: Colors.white,
-                                      ),
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(MediaQuery.of(context).size.width * 0.02),
-                                      ),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                        color: Colors.white,
-                                      ),
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(MediaQuery.of(context).size.width * 0.02),
-                                      ),
-                                    ),
-                                    hintText: mail ? languagesTextsFile.texts["new_contact_hint_mail"] : languagesTextsFile.texts["new_contact_hint_phone"],
-                                    hintStyle: const TextStyle(
-                                      color: Color.fromRGBO(147, 147, 147, 1),
-                                      fontStyle: FontStyle.italic,
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 19,
-                                    )
-                                ),
-                    
-                                onTap: () {
-                                  setState(() {
-                                    newContactPageState.value = true;
-                                    _whichControllerIsActive[0] = false;
-                                    _whichControllerIsActive[1] = false;
-                                    _whichControllerIsActive[2] = true;
-                                  });
-                                  print("TOUCHEEEEEEEEEEEEEEE");
-                                },
-                              ),
-                            ),
-                          ),
-                        ),
-                    
-                        // Add Button
-                        Container(
-                          margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.06, MediaQuery.of(context).size.height * 0.02, 0, MediaQuery.of(context).size.height * 0.025),
+                  // The entire page
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Back Arrow
+                      SizedBox(
+                        child: Container(
+                          margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.013, 0, 0),
                           child: AnimatedScale(
-                            scale: _buttonAnimations["ADD"] == true ? 1.1 : 1.0,
+                            scale: _buttonAnimations["BACK ARROW"]! ? 1.1 : 1.0,
                             duration: const Duration(milliseconds: 100),
                             curve: Curves.bounceOut,
                             child: GestureDetector(
-                              // Animation management
                               onTapDown: (_) {
                                 setState(() {
-                                  _buttonAnimations["ADD"] = true;
-                                });
-                              },
-                              onTapUp: (_) async {
-                                setState(() {
-                                  _buttonAnimations["ADD"] = false;
-                                });
-                                // BUTTON CODE
-                                if(_firstController.text.isEmpty){
-                                  _showGenericPopupOK(languagesTextsFile.texts["new_contact_first_name_error"], 1);
-                                }
-                                else if(_secondController.text.isEmpty){
-                                  _showGenericPopupOK(languagesTextsFile.texts["new_contact_last_name_error"], 1);
-                                }
-                                else if(_thirdController.text.isNotEmpty && mail && !_thirdController.text.contains("@")){
-                                  _showGenericPopupOK(languagesTextsFile.texts["new_contact_mail_error_form"], 1);
-                                }
-                                else if(_thirdController.text.isEmpty && mail){
-                                  _showGenericPopupOK(languagesTextsFile.texts["new_contact_mail_error"], 1);
-                                }
-                                else if(_thirdController.text.isEmpty && phone){
-                                  _showGenericPopupOK(languagesTextsFile.texts["new_contact_phone_error"], 1);
-                                }
-                                else{
-                                  if(widget.idContact == -1){
-                                    // Adding the contact in the database
-                                    await databaseManager.insertContact(Contact(
-                                      first_name: _firstController.text,
-                                      last_name: _secondController.text,
-                                      email: mail ? _thirdController.text : null,
-                                      phone: phone ? _thirdController.text : null,
-                                      priority: 3,
-                                    ));
-                    
-                                    _showGenericPopupOK(languagesTextsFile.texts["new_contact_pop_up_success"], 2);
-                    
-                                  }
-                    
-                                  // Updating the old contact
-                                  else{
-                                    await databaseManager.updateContact(Contact(
-                                      first_name: _firstController.text,
-                                      last_name: _secondController.text,
-                                      email: mail ? _thirdController.text : null,
-                                      phone: phone ? _thirdController.text : null,
-                                      priority: contact.priority,
-                                      id_contact: widget.idContact,
-                                    ));
-                    
-                                    Navigator.pop(context);
-                                  }
-                    
-                                }
-                    
-                              },
-                              onTapCancel: () {
-                                setState(() {
-                                  _buttonAnimations["ADD"] = false;
-                                });
-                              },
-                              child: Container(
-                                width: MediaQuery.of(context).size.width * 0.3,
-                                height: MediaQuery.of(context).size.height > 600 ? MediaQuery.of(context).size.width * 0.06 : MediaQuery.of(context).size.width * 0.05,
-                                decoration: const BoxDecoration(
-                                  borderRadius: BorderRadius.all(Radius.circular(30)),
-                                  color: Color.fromRGBO(61, 192, 200, 1),
-                                ),
-                                padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.01),
-                                child: Center(
-                                  child: AutoSizeText(
-                                    widget.idContact == -1 ? languagesTextsFile.texts["new_contact_add"] : languagesTextsFile.texts["new_contact_modify"] ,
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w800,
-                                      fontSize: 18,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                    maxLines: 1,
-                                    minFontSize: 5,
-                                    maxFontSize: 18,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  // Buttons at the right
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.08,
-                    child: Container(
-                      margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.012),
-                      child: Column(
-                        children: [
-                          AnimatedScale(
-                            scale: _buttonAnimations["HELP"]! ? 1.1 : 1.0,
-                            duration: const Duration(milliseconds: 100),
-                            curve: Curves.bounceOut,
-                            child: GestureDetector(
-                              // Animation management
-                              onTapDown: (_) {
-                                setState(() {
-                                  _buttonAnimations["HELP"] = true;
+                                  _buttonAnimations["BACK ARROW"] = true;
                                 });
                               },
                               onTapUp: (_) {
                                 setState(() {
-                                  _buttonAnimations["HELP"] = false;
+                                  _buttonAnimations["BACK ARROW"] = false;
                                 });
-                                // BUTTON CODE
-                                print("HELLLLLLLLLLP");
-                              },
-                              onTapCancel: () {
-                                setState(() {
-                                  _buttonAnimations["HELP"] = false;
-                                });
-                              },
 
-                              child: Container(
-                                margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.03, 0, MediaQuery.of(context).size.height * 0.03),
-                                child: Image.asset(
-                                  "assets/helping_icon.png",
-                                  height: MediaQuery.of(context).size.width * 0.06,
-                                  width: MediaQuery.of(context).size.width * 0.06,
-                                ),
-                              ),
-                            ),
-                          ),
-                          AnimatedScale(
-                            scale: _buttonAnimations["HOME"]! ? 1.1 : 1.0,
-                            duration: const Duration(milliseconds: 100),
-                            curve: Curves.bounceOut,
-                            child: GestureDetector(
-                              onTapDown: (_) {
-                                setState(() {
-                                  _buttonAnimations["HOME"] = true;
-                                });
-                              },
-                              onTapUp: (_) {
-                                setState(() {
-                                  _buttonAnimations["HOME"] = false;
-                                });
-                                // BUTTON CODE
-                                Navigator.popUntil(
+                                // Button code
+                                Navigator.pop(
                                   context,
-                                      (route) => route.isFirst,
                                 );
                               },
                               onTapCancel: () {
                                 setState(() {
-                                  _buttonAnimations["HOME"] = false;
+                                  _buttonAnimations["BACK ARROW"] = false;
                                 });
                               },
-                              child: Container(
-                                margin: EdgeInsets.fromLTRB(0, 0, 0, MediaQuery.of(context).size.height * 0.03),
-                                child: Image.asset(
-                                  "assets/home.png",
-                                  height: MediaQuery.of(context).size.width * 0.06,
-                                  width: MediaQuery.of(context).size.width * 0.06,
-                                ),
+                              child: Image.asset(
+                                "assets/fleche.png",
+                                height: MediaQuery.of(context).size.width * 0.05,
+                                width: MediaQuery.of(context).size.width * 0.07,
                               ),
                             ),
                           ),
-                        ],
+                        ),
                       ),
+
+                      // The middle column
+                      Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              // Title
+                              Container(
+                                margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.03),
+                                child: Text(
+                                  languagesTextsFile.texts["new_contact_title"],
+                                  style: GoogleFonts.josefinSans(
+                                    color: Colors.white,
+                                    fontSize: 35,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+
+                              // Subtitle
+                              Container(
+                                margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.03, 0, MediaQuery.of(context).size.height * 0.05),
+                                child: Text(
+                                  hasSimCard ? languagesTextsFile.texts["new_contact_subtitle2"] : languagesTextsFile.texts["new_contact_subtitle"],
+                                  style: GoogleFonts.josefinSans(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+
+                              // First TextField
+                              Container(
+                                width: MediaQuery.of(context).size.width * 0.4,
+                                height: MediaQuery.of(context).size.height * 0.12,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(MediaQuery.of(context).size.width * 0.02),
+                                  ),
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsets.fromLTRB(
+                                    MediaQuery.of(context).size.width * 0.02,
+                                    0,
+                                    MediaQuery.of(context).size.width * 0.02,
+                                    0,
+                                  ),
+                                  child: Center(
+                                    child: TextField(
+                                      style: const TextStyle(
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.w800,
+                                        color: Color.fromRGBO(50, 50, 50, 1),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+
+                                      focusNode: _focusNode,
+                                      controller: _firstController,
+                                      readOnly: true,
+                                      showCursor: true,
+                                      enableInteractiveSelection: true,
+                                      maxLines: 1,
+                                      textAlign: TextAlign.left,
+                                      textAlignVertical: TextAlignVertical.center,
+
+                                      decoration: InputDecoration(
+                                          filled: true,
+                                          fillColor: Colors.white,
+                                          iconColor: Colors.white,
+                                          focusColor: Colors.white,
+                                          hoverColor: Colors.white,
+                                          border: OutlineInputBorder(
+                                            borderSide: const BorderSide(
+                                              color: Colors.white,
+                                            ),
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(MediaQuery.of(context).size.width * 0.02),
+                                            ),
+                                          ),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: const BorderSide(
+                                              color: Colors.white,
+                                            ),
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(MediaQuery.of(context).size.width * 0.02),
+                                            ),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: const BorderSide(
+                                              color: Colors.white,
+                                            ),
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(MediaQuery.of(context).size.width * 0.02),
+                                            ),
+                                          ),
+                                          hintText: languagesTextsFile.texts["new_contact_first_name"],
+                                          hintStyle: const TextStyle(
+                                            color: Color.fromRGBO(147, 147, 147, 1),
+                                            fontStyle: FontStyle.italic,
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 19,
+                                          )
+                                      ),
+
+                                      onTap: () {
+                                        setState(() {
+                                          newContactPageState.value = true;
+                                          _whichControllerIsActive[0] = true;
+                                          _whichControllerIsActive[1] = false;
+                                          _whichControllerIsActive[2] = false;
+
+                                        });
+                                        print("TOUCHEEEEEEEEEEEEEEE");
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ),
+
+                              // Second TextField
+                              Container(
+                                width: MediaQuery.of(context).size.width * 0.4,
+                                height: MediaQuery.of(context).size.height * 0.12,
+                                margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.02),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(MediaQuery.of(context).size.width * 0.02),
+                                  ),
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsets.fromLTRB(
+                                    MediaQuery.of(context).size.width * 0.02,
+                                    0,
+                                    MediaQuery.of(context).size.width * 0.02,
+                                    0,
+                                  ),
+                                  child: Center(
+                                    child: TextField(
+                                      style: const TextStyle(
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.w800,
+                                        color: Color.fromRGBO(50, 50, 50, 1),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+
+                                      focusNode: _focusNode2,
+                                      controller: _secondController,
+                                      readOnly: true,
+                                      showCursor: true,
+                                      enableInteractiveSelection: true,
+                                      maxLines: 1,
+                                      textAlign: TextAlign.left,
+                                      textAlignVertical: TextAlignVertical.center,
+
+                                      decoration: InputDecoration(
+                                          filled: true,
+                                          fillColor: Colors.white,
+                                          iconColor: Colors.white,
+                                          focusColor: Colors.white,
+                                          hoverColor: Colors.white,
+                                          border: OutlineInputBorder(
+                                            borderSide: const BorderSide(
+                                              color: Colors.white,
+                                            ),
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(MediaQuery.of(context).size.width * 0.02),
+                                            ),
+                                          ),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: const BorderSide(
+                                              color: Colors.white,
+                                            ),
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(MediaQuery.of(context).size.width * 0.02),
+                                            ),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: const BorderSide(
+                                              color: Colors.white,
+                                            ),
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(MediaQuery.of(context).size.width * 0.02),
+                                            ),
+                                          ),
+                                          hintText: languagesTextsFile.texts["new_contact_last_name"],
+                                          hintStyle: const TextStyle(
+                                            color: Color.fromRGBO(147, 147, 147, 1),
+                                            fontStyle: FontStyle.italic,
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 19,
+                                          )
+                                      ),
+
+                                      onTap: () {
+                                        setState(() {
+                                          newContactPageState.value = true;
+                                          _whichControllerIsActive[0] = false;
+                                          _whichControllerIsActive[1] = true;
+                                          _whichControllerIsActive[2] = false;
+                                        });
+                                        print("TOUCHEEEEEEEEEEEEEEE");
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ),
+
+                              // Choice between mail and phone
+                              hasSimCard
+                                  ? SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.4,
+                                height: MediaQuery.of(context).size.width * 0.065,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    // Mail
+                                    Text(
+                                      languagesTextsFile.texts["new_contact_mail"],
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+
+                                    // Mail Checkbox
+                                    Transform.scale(
+                                      scale: MediaQuery.of(context).size.width * 0.0025,
+                                      child: Checkbox(
+                                        value: mail,
+                                        shape: const CircleBorder(side: BorderSide(color: Colors.white, width: 60, )),
+
+                                        checkColor: Colors.indigo,
+                                        activeColor: const Color.fromRGBO(240, 242, 239, 1),
+
+                                        onChanged: (value) {
+                                          setState(() {
+                                            phone = false;
+                                            mail = true;
+                                            _thirdController.clear();
+                                          });
+                                        },
+                                      ),
+                                    ),
+
+                                    // Phone
+                                    Text(
+                                      languagesTextsFile.texts["new_contact_phone"],
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+
+                                    // Phone Checkbox
+                                    Transform.scale(
+                                      scale: MediaQuery.of(context).size.width * 0.0025,
+                                      child: Checkbox(
+                                        value: phone,
+                                        shape: const CircleBorder(side: BorderSide(color: Colors.white, width: 60, )),
+
+                                        checkColor: Colors.indigo,
+                                        activeColor: const Color.fromRGBO(240, 242, 239, 1),
+
+                                        onChanged: (value) {
+                                          setState(() {
+                                            phone = true;
+                                            mail = false;
+                                            _thirdController.clear();
+                                          });
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                                  : SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.4,
+                                height: MediaQuery.of(context).size.width * 0.065,
+                              ),
+
+                              // Third TextField
+                              Container(
+                                width: MediaQuery.of(context).size.width * 0.4,
+                                height: MediaQuery.of(context).size.height * 0.12,
+                                margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.002),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(MediaQuery.of(context).size.width * 0.02),
+                                  ),
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsets.fromLTRB(
+                                    MediaQuery.of(context).size.width * 0.02,
+                                    0,
+                                    MediaQuery.of(context).size.width * 0.02,
+                                    0,
+                                  ),
+                                  child: Center(
+                                    child: TextField(
+                                      style: const TextStyle(
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.w800,
+                                        color: Color.fromRGBO(50, 50, 50, 1),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+
+                                      focusNode: _focusNode3,
+                                      controller: _thirdController,
+                                      readOnly: true,
+                                      showCursor: true,
+                                      enableInteractiveSelection: true,
+                                      maxLines: 1,
+                                      textAlign: TextAlign.left,
+                                      textAlignVertical: TextAlignVertical.center,
+
+                                      decoration: InputDecoration(
+                                          filled: true,
+                                          fillColor: Colors.white,
+                                          iconColor: Colors.white,
+                                          focusColor: Colors.white,
+                                          hoverColor: Colors.white,
+                                          border: OutlineInputBorder(
+                                            borderSide: const BorderSide(
+                                              color: Colors.white,
+                                            ),
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(MediaQuery.of(context).size.width * 0.02),
+                                            ),
+                                          ),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: const BorderSide(
+                                              color: Colors.white,
+                                            ),
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(MediaQuery.of(context).size.width * 0.02),
+                                            ),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: const BorderSide(
+                                              color: Colors.white,
+                                            ),
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(MediaQuery.of(context).size.width * 0.02),
+                                            ),
+                                          ),
+                                          hintText: mail ? languagesTextsFile.texts["new_contact_hint_mail"] : languagesTextsFile.texts["new_contact_hint_phone"],
+                                          hintStyle: const TextStyle(
+                                            color: Color.fromRGBO(147, 147, 147, 1),
+                                            fontStyle: FontStyle.italic,
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 19,
+                                          )
+                                      ),
+
+                                      onTap: () {
+                                        setState(() {
+                                          newContactPageState.value = true;
+                                          _whichControllerIsActive[0] = false;
+                                          _whichControllerIsActive[1] = false;
+                                          _whichControllerIsActive[2] = true;
+                                        });
+                                        print("TOUCHEEEEEEEEEEEEEEE");
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ),
+
+                              // Add Button
+                              Container(
+                                margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.02,),
+                                child: AnimatedScale(
+                                  scale: _buttonAnimations["ADD"] == true ? 1.1 : 1.0,
+                                  duration: const Duration(milliseconds: 100),
+                                  curve: Curves.bounceOut,
+                                  child: GestureDetector(
+                                    // Animation management
+                                    onTapDown: (_) {
+                                      setState(() {
+                                        _buttonAnimations["ADD"] = true;
+                                      });
+                                    },
+                                    onTapUp: (_) async {
+                                      setState(() {
+                                        _buttonAnimations["ADD"] = false;
+                                      });
+                                      // BUTTON CODE
+                                      if(_firstController.text.isEmpty){
+                                        _showGenericPopupOK(languagesTextsFile.texts["new_contact_first_name_error"], 1);
+                                      }
+                                      else if(_secondController.text.isEmpty){
+                                        _showGenericPopupOK(languagesTextsFile.texts["new_contact_last_name_error"], 1);
+                                      }
+                                      else if(_thirdController.text.isNotEmpty && mail && !_thirdController.text.contains("@")){
+                                        _showGenericPopupOK(languagesTextsFile.texts["new_contact_mail_error_form"], 1);
+                                      }
+                                      else if(_thirdController.text.isEmpty && mail){
+                                        _showGenericPopupOK(languagesTextsFile.texts["new_contact_mail_error"], 1);
+                                      }
+                                      else if(_thirdController.text.isEmpty && phone){
+                                        _showGenericPopupOK(languagesTextsFile.texts["new_contact_phone_error"], 1);
+                                      }
+                                      else{
+                                        if(widget.idContact == -1){
+                                          // Adding the contact in the database
+                                          await databaseManager.insertContact(Contact(
+                                            first_name: _firstController.text,
+                                            last_name: _secondController.text,
+                                            email: mail ? _thirdController.text : null,
+                                            phone: phone ? _thirdController.text : null,
+                                            priority: 3,
+                                          ));
+
+                                          _showGenericPopupOK(languagesTextsFile.texts["new_contact_pop_up_success"], 2);
+
+                                        }
+
+                                        // Updating the old contact
+                                        else{
+                                          await databaseManager.updateContact(Contact(
+                                            first_name: _firstController.text,
+                                            last_name: _secondController.text,
+                                            email: mail ? _thirdController.text : null,
+                                            phone: phone ? _thirdController.text : null,
+                                            priority: contact.priority,
+                                            id_contact: widget.idContact,
+                                          ));
+
+                                          Navigator.pop(context);
+                                        }
+
+                                      }
+
+                                    },
+                                    onTapCancel: () {
+                                      setState(() {
+                                        _buttonAnimations["ADD"] = false;
+                                      });
+                                    },
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width * 0.3,
+                                      height: MediaQuery.of(context).size.height > 600 ? MediaQuery.of(context).size.width * 0.06 : MediaQuery.of(context).size.width * 0.05,
+                                      decoration: const BoxDecoration(
+                                        borderRadius: BorderRadius.all(Radius.circular(30)),
+                                        color: Color.fromRGBO(61, 192, 200, 1),
+                                      ),
+                                      padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.01),
+                                      child: Center(
+                                        child: AutoSizeText(
+                                          widget.idContact == -1 ? languagesTextsFile.texts["new_contact_add"] : languagesTextsFile.texts["new_contact_modify"] ,
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w800,
+                                            fontSize: 18,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                          maxLines: 1,
+                                          minFontSize: 5,
+                                          maxFontSize: 18,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                      ),
+
+                      // Buttons at the right
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.08,
+                        child: Container(
+                          margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.012),
+                          child: Column(
+                            children: [
+                              AnimatedScale(
+                                scale: _buttonAnimations["HELP"]! ? 1.1 : 1.0,
+                                duration: const Duration(milliseconds: 100),
+                                curve: Curves.bounceOut,
+                                child: GestureDetector(
+                                  // Animation management
+                                  onTapDown: (_) {
+                                    setState(() {
+                                      _buttonAnimations["HELP"] = true;
+                                    });
+                                  },
+                                  onTapUp: (_) {
+                                    setState(() {
+                                      _buttonAnimations["HELP"] = false;
+                                    });
+                                    // BUTTON CODE
+                                    print("HELLLLLLLLLLP");
+                                  },
+                                  onTapCancel: () {
+                                    setState(() {
+                                      _buttonAnimations["HELP"] = false;
+                                    });
+                                  },
+
+                                  child: Container(
+                                    margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.03, 0, MediaQuery.of(context).size.height * 0.03),
+                                    child: Image.asset(
+                                      "assets/helping_icon.png",
+                                      height: MediaQuery.of(context).size.width * 0.06,
+                                      width: MediaQuery.of(context).size.width * 0.06,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              AnimatedScale(
+                                scale: _buttonAnimations["HOME"]! ? 1.1 : 1.0,
+                                duration: const Duration(milliseconds: 100),
+                                curve: Curves.bounceOut,
+                                child: GestureDetector(
+                                  onTapDown: (_) {
+                                    setState(() {
+                                      _buttonAnimations["HOME"] = true;
+                                    });
+                                  },
+                                  onTapUp: (_) {
+                                    setState(() {
+                                      _buttonAnimations["HOME"] = false;
+                                    });
+                                    // BUTTON CODE
+                                    Navigator.popUntil(
+                                      context,
+                                          (route) => route.isFirst,
+                                    );
+                                  },
+                                  onTapCancel: () {
+                                    setState(() {
+                                      _buttonAnimations["HOME"] = false;
+                                    });
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.fromLTRB(0, 0, 0, MediaQuery.of(context).size.height * 0.03),
+                                    child: Image.asset(
+                                      "assets/home.png",
+                                      height: MediaQuery.of(context).size.width * 0.06,
+                                      width: MediaQuery.of(context).size.width * 0.06,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  // Text at the left
+                  Positioned(
+                    left: 0,
+                    bottom: MediaQuery.of(context).size.height * 0.38,
+                    child: hasSimCard
+                        ? SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.29,
+                    )
+                        : Container(
+                      width: MediaQuery.of(context).size.width * 0.26,
+                      margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.02),
+                      child: Text(
+                        languagesTextsFile.texts["new_contact_message_left"]!,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                        ),
+                        maxLines: 6,
+                      ),
+
                     ),
                   ),
                 ],
@@ -883,7 +870,7 @@ class _NewContactPageState extends State<NewContactPage> {
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.all(
-                        Radius.circular(MediaQuery.of(context).size.width * 0.045),
+                        Radius.circular(MediaQuery.of(context).size.width * 0.02),
                       ),
                     ),
                     child: Padding(
@@ -922,7 +909,7 @@ class _NewContactPageState extends State<NewContactPage> {
                                   color: Colors.white,
                                 ),
                                 borderRadius: BorderRadius.all(
-                                  Radius.circular(MediaQuery.of(context).size.width * 0.045),
+                                  Radius.circular(MediaQuery.of(context).size.width * 0.02),
                                 ),
                               ),
                               enabledBorder: OutlineInputBorder(
@@ -930,7 +917,7 @@ class _NewContactPageState extends State<NewContactPage> {
                                   color: Colors.white,
                                 ),
                                 borderRadius: BorderRadius.all(
-                                  Radius.circular(MediaQuery.of(context).size.width * 0.045),
+                                  Radius.circular(MediaQuery.of(context).size.width * 0.02),
                                 ),
                               ),
                               focusedBorder: OutlineInputBorder(
@@ -938,7 +925,7 @@ class _NewContactPageState extends State<NewContactPage> {
                                   color: Colors.white,
                                 ),
                                 borderRadius: BorderRadius.all(
-                                  Radius.circular(MediaQuery.of(context).size.width * 0.045),
+                                  Radius.circular(MediaQuery.of(context).size.width * 0.02),
                                 ),
                               ),
                               hintText: _whichControllerIsActive[0] ? languagesTextsFile.texts["new_contact_first_name"] : _whichControllerIsActive[1] ? languagesTextsFile.texts["new_contact_last_name"] : mail ? languagesTextsFile.texts["new_contact_hint_mail"] : languagesTextsFile.texts["new_contact_hint_phone"],

@@ -7,7 +7,7 @@ import 'dart:async';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:parkinson_com_v2/customRemindersTitle.dart';
+import 'package:parkinson_com_v2/customTitle.dart';
 import 'package:parkinson_com_v2/models/database/reminder.dart';
 import 'package:parkinson_com_v2/newReminderPage.dart';
 import 'package:parkinson_com_v2/variables.dart';
@@ -204,13 +204,18 @@ class _ListRemindersPageState extends State<ListRemindersPage> {
                         // Title
                         Container(
                           margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.015, MediaQuery.of(context).size.height / 16, MediaQuery.of(context).size.width * 0.04, 0),
-                          child: CustomRemindersTitle(
+                          child: CustomTitle(
                             text: languagesTextsFile.texts["reminders_title"]!,
                             image: 'assets/horloge.png',
                             imageScale: 0.2,
                             backgroundColor: Colors.white,
                             textColor: const Color.fromRGBO(234, 104, 104, 1),
-                            width: MediaQuery.of(context).size.width * 0.63,
+                            containerWidth: MediaQuery.of(context).size.width * 0.63,
+                            containerHeight: MediaQuery.of(context).size.height * 0.12,
+                            containerPadding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.height * 0.085, 0, MediaQuery.of(context).size.height * 0.03, 0),
+                            circleSize: MediaQuery.of(context).size.height * 0.1875,
+                            circlePositionedLeft: MediaQuery.of(context).size.height * 0.1 * -1,
+                            fontSize: MediaQuery.of(context).size.height > 600 ? 30 : 26,
                             fontWeight: FontWeight.w700,
                             alignment: const Alignment(0, 0.3),
                           ),

@@ -10,11 +10,11 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:parkinson_com_v2/customHomePageTitle.dart';
 import 'package:parkinson_com_v2/customMenuButton.dart';
-import 'package:parkinson_com_v2/customShapeMenu.dart';
 import 'package:parkinson_com_v2/listContactsPage.dart';
 import 'package:parkinson_com_v2/listDialogsPage.dart';
 import 'package:parkinson_com_v2/listRemindersPage.dart';
 import 'package:parkinson_com_v2/loginPage.dart';
+import 'package:parkinson_com_v2/CustomShape.dart';
 import 'package:parkinson_com_v2/variables.dart';
 import 'package:battery_plus/battery_plus.dart';
 
@@ -516,13 +516,25 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                   _buttonAnimations["SETTINGS"] = false;
                                 });
                               },
-                              child: CustomShapeMenu(
+                              child: CustomShape(
                                 text: languagesTextsFile.texts["main_settings"]!,
                                 image: 'assets/profile-user.png',
                                 backgroundColor: const Color.fromRGBO(245, 107, 56, 1),
                                 textColor: const Color.fromRGBO(35, 55, 79, 1),
-                                imageScale: 5,
+                                imageScale: 3,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700,
+                                containerWidth: MediaQuery.of(context).size.width * 0.23,
+                                containerHeight: MediaQuery.of(context).size.width * 0.05,
+                                containerPadding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.01, 0, MediaQuery.of(context).size.width * 0.035, 0),
+                                circlePositionedRight: MediaQuery.of(context).size.width * 0.001 * -1,
+                                circleSize: MediaQuery.of(context).size.width * 0.085,
+                                sizedBoxHeight: MediaQuery.of(context).size.width * 0.085,
+                                sizedBoxWidth: MediaQuery.of(context).size.width * 0.2725,
                                 scale: MediaQuery.of(context).size.height > 600 ? 1 : 0.85,
+
+
+
                               ),
                             ),
                           ),
@@ -560,12 +572,21 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                     _buttonAnimations["REMINDERS"] = false;
                                   });
                                 },
-                                child: CustomShapeMenu(
+                                child: CustomShape(
                                   text: languagesTextsFile.texts["main_reminders"]!,
                                   image: 'assets/horloge.png',
                                   backgroundColor: Colors.white,
                                   textColor: const Color.fromRGBO(224, 106, 109, 1),
-                                  imageScale: 1,
+                                  imageScale: 1.1,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w700,
+                                  containerWidth: MediaQuery.of(context).size.width * 0.23,
+                                  containerHeight: MediaQuery.of(context).size.width * 0.05,
+                                  containerPadding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.01, 0, MediaQuery.of(context).size.width * 0.035, 0),
+                                  circlePositionedRight: MediaQuery.of(context).size.width * 0.001 * -1,
+                                  circleSize: MediaQuery.of(context).size.width * 0.085,
+                                  sizedBoxHeight: MediaQuery.of(context).size.width * 0.085,
+                                  sizedBoxWidth: MediaQuery.of(context).size.width * 0.2725,
                                   scale: MediaQuery.of(context).size.height > 600 ? 1 : 0.85,
                                 ),
                               ),
@@ -605,12 +626,21 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                   _buttonAnimations["CONTACTS"] = false;
                                 });
                               },
-                              child: CustomShapeMenu(
+                              child: CustomShape(
                                 text: languagesTextsFile.texts["main_contacts"]!,
                                 image: 'assets/enveloppe.png',
                                 backgroundColor: const Color.fromRGBO(12, 178, 255, 1),
                                 textColor: const Color.fromRGBO(35, 55, 79, 1),
                                 imageScale: 0.9,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700,
+                                containerWidth: MediaQuery.of(context).size.width * 0.23,
+                                containerHeight: MediaQuery.of(context).size.width * 0.05,
+                                containerPadding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.01, 0, MediaQuery.of(context).size.width * 0.035, 0),
+                                circlePositionedRight: MediaQuery.of(context).size.width * 0.001 * -1,
+                                circleSize: MediaQuery.of(context).size.width * 0.085,
+                                sizedBoxHeight: MediaQuery.of(context).size.width * 0.085,
+                                sizedBoxWidth: MediaQuery.of(context).size.width * 0.2725,
                                 scale: MediaQuery.of(context).size.height > 600 ? 1 : 0.85,
                               ),
                             ),

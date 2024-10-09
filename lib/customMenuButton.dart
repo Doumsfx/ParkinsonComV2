@@ -1,6 +1,5 @@
 // CustomHomePageTitle Widget
 // Code by Alexis Pagnon and Sanchez Adam
-// ParkinsonCom V2
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';

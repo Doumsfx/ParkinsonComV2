@@ -61,6 +61,7 @@ class _DialogPageState extends State<DialogPage> {
     super.initState();
     customKeyboard = CustomKeyboard(controller: _controller, textPredictions: isConnected);
     _controller.text = widget.initialTextDialog;
+    dialogPageState.value = false;
   }
 
   @override
@@ -827,6 +828,8 @@ class _DialogPageState extends State<DialogPage> {
                                                   (route) => route.isFirst,
                                             );
                                           }
+
+                                          dialogPageState.value = false;
                                         },
                                         onTapCancel: () {
                                           setState(() {
@@ -1234,9 +1237,20 @@ class _DialogPageState extends State<DialogPage> {
                                     child: CustomShape(
                                       image: "assets/enveloppe.png",
                                       text: languagesTextsFile.texts["dialog_send"]!,
-                                      scale: MediaQuery.of(context).size.width * 0.0013,
                                       backgroundColor: const Color.fromRGBO(12, 178, 255, 1),
                                       textColor: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      containerWidth: MediaQuery.of(context).size.width * 0.34,
+                                      containerHeight: MediaQuery.of(context).size.width * 0.065,
+                                      containerPadding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.013, MediaQuery.of(context).size.width * 0.013 , MediaQuery.of(context).size.width * 0.065 , MediaQuery.of(context).size.width * 0.013 ),
+                                      circleSize: MediaQuery.of(context).size.width * 0.104,
+                                      imageScale: 0.9,
+                                      circlePositionedRight: MediaQuery.of(context).size.width * 0.0013 * -30,
+                                      sizedBoxWidth: MediaQuery.of(context).size.width * 0.34,
+                                      sizedBoxHeight: MediaQuery.of(context).size.width * 0.065,
+                                      scale: 1,
+
                                     ),
                                   ),
                                 ),
