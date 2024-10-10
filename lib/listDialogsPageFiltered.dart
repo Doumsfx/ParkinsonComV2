@@ -166,7 +166,7 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                                   containerWidth: MediaQuery.of(context).size.width * 0.50,
                                   containerHeight: MediaQuery.of(context).size.height * 0.12,
                                   containerPadding: EdgeInsets.all(MediaQuery.of(context).size.height * 0.0),
-                                  fontSize: MediaQuery.of(context).size.height > 600 ? 32 : 28,
+                                  fontSize: isThisDeviceATablet ? 32 : 28,
                                   circleSize: MediaQuery.of(context).size.height * 0.1875,
                                   circlePositionedLeft: MediaQuery.of(context).size.height * 0.0625 * -1,
                                   fontWeight: FontWeight.w700,
@@ -388,7 +388,7 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                 crossAxisMargin: MediaQuery.of(context).size.width * 0.00375,
                 mainAxisMargin: MediaQuery.of(context).size.width * 0.00375,
                 trackRadius: const Radius.circular(20),
-                padding: MediaQuery.of(context).size.height > 600 ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.085, MediaQuery.of(context).size.width * 0.0315, MediaQuery.of(context).size.height * 0.11) : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.085, MediaQuery.of(context).size.width * 0.027, MediaQuery.of(context).size.height * 0.11),
+                padding: isThisDeviceATablet ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.085, MediaQuery.of(context).size.width * 0.0315, MediaQuery.of(context).size.height * 0.11) : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.085, MediaQuery.of(context).size.width * 0.027, MediaQuery.of(context).size.height * 0.11),
                 child: Row(
                   children: [
                     // List of dialogs
@@ -735,7 +735,7 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                           Expanded(
                               child: Container(
                             width: MediaQuery.of(context).size.width * 0.01875,
-                            margin: MediaQuery.of(context).size.height > 600 ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.014) : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.011),
+                            margin: isThisDeviceATablet ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.014) : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.011),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
                               color: const Color.fromRGBO(66, 89, 109, 1),

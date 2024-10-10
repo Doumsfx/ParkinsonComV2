@@ -4,6 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:parkinson_com_v2/variables.dart';
 
 class CustomShapeThemes extends StatelessWidget {
   final String text;
@@ -36,7 +37,7 @@ class CustomShapeThemes extends StatelessWidget {
               style: GoogleFonts.josefinSans(
                 color: textColor,
                 fontWeight: FontWeight.w600,
-                fontSize: MediaQuery.of(context).size.height > 600 ? 18 : 17,
+                fontSize: isThisDeviceATablet ? 18 : 17,
               ),
             ),
           ),

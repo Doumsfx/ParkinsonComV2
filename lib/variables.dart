@@ -16,6 +16,7 @@ bool azerty = true; // true: azerty | false: abcde
 String language = "fr"; // "fr" | "nl"
 bool hasSimCard = true; // A MODIFIER
 bool isFirstLaunch = false;
+bool isThisDeviceATablet = true; // true: tablet | false: phone
 
 ValueNotifier<bool> dialogPageState = ValueNotifier<bool>(false); // true: keyboard page | false: page without keyboard
 ValueNotifier<bool> newThemePageState = ValueNotifier<bool>(false); // true: keyboard page | false: page without keyboard

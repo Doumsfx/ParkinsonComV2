@@ -87,7 +87,7 @@ class _DialogPageState extends State<DialogPage> {
                   trackRadius: const Radius.circular(20),
                   padding: value
                       ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.1, MediaQuery.of(context).size.width * 0.0807, MediaQuery.of(context).size.width * 0.0640 * -1)
-                      : MediaQuery.of(context).size.height > 600
+                      : isThisDeviceATablet
                           ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.23, MediaQuery.of(context).size.width * 0.1, MediaQuery.of(context).size.width * 0.034 * -1)
                           : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.24, MediaQuery.of(context).size.width * 0.104, MediaQuery.of(context).size.width * 0.047 * -1),
                   child: Row(
@@ -98,8 +98,8 @@ class _DialogPageState extends State<DialogPage> {
                         children: [
                           // Titles
                           SizedBox(
-                            height: MediaQuery.of(context).size.height > 600 ? MediaQuery.of(context).size.height * 0.11 : MediaQuery.of(context).size.height * 0.13,
-                            width: MediaQuery.of(context).size.height > 600 ? MediaQuery.of(context).size.width * 0.86 : MediaQuery.of(context).size.width * 0.86,
+                            height: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.11 : MediaQuery.of(context).size.height * 0.13,
+                            width: isThisDeviceATablet ? MediaQuery.of(context).size.width * 0.86 : MediaQuery.of(context).size.width * 0.86,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
@@ -215,14 +215,14 @@ class _DialogPageState extends State<DialogPage> {
 
                           // TextField
                           SizedBox(
-                            height: MediaQuery.of(context).size.height > 600
+                            height: isThisDeviceATablet
                                 ? value
                                     ? MediaQuery.of(context).size.height * 0.34
                                     : MediaQuery.of(context).size.height * 0.58
                                 : value
                                     ? MediaQuery.of(context).size.height * 0.29
                                     : MediaQuery.of(context).size.height * 0.50,
-                            width: MediaQuery.of(context).size.height > 600 ? MediaQuery.of(context).size.width * 0.86 : MediaQuery.of(context).size.width * 0.85,
+                            width: isThisDeviceATablet ? MediaQuery.of(context).size.width * 0.86 : MediaQuery.of(context).size.width * 0.85,
                             child: Padding(
                               padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.03, 0, 0, MediaQuery.of(context).size.height * 0.03),
                               child: Container(
@@ -244,7 +244,7 @@ class _DialogPageState extends State<DialogPage> {
                                           decelerationRate: ScrollDecelerationRate.normal,
                                         ),
                                         style: TextStyle(
-                                          fontSize: MediaQuery.of(context).size.height > 600 ? MediaQuery.of(context).size.height * 0.026 : MediaQuery.of(context).size.height * 0.058,
+                                          fontSize: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.026 : MediaQuery.of(context).size.height * 0.058,
                                           fontWeight: FontWeight.bold,
                                           color: const Color.fromRGBO(50, 50, 50, 1),
                                         ),
@@ -258,9 +258,9 @@ class _DialogPageState extends State<DialogPage> {
                                           print("TOUCHEEEEEEEEEEEEEEE");
                                         },
                                         enableInteractiveSelection: true,
-                                        minLines: MediaQuery.of(context).size.height > 600 ? 3 : 2,
+                                        minLines: isThisDeviceATablet ? 3 : 2,
                                         maxLines: null,
-                                        cursorWidth: MediaQuery.of(context).size.height > 600 ? 3 : 2,
+                                        cursorWidth: isThisDeviceATablet ? 3 : 2,
                                         cursorColor: const Color.fromRGBO(0, 0, 0, 1),
                                         decoration: InputDecoration(
                                           filled: true,
@@ -457,7 +457,7 @@ class _DialogPageState extends State<DialogPage> {
                                   ),
                                 ),
                                 Container(
-                                  height: MediaQuery.of(context).size.height > 600 ? MediaQuery.of(context).size.height * 0.257 : MediaQuery.of(context).size.height * 0.22,
+                                  height: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.257 : MediaQuery.of(context).size.height * 0.22,
                                   width: MediaQuery.of(context).size.width * 0.01875,
                                   margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.01),
                                   decoration: BoxDecoration(
@@ -687,7 +687,7 @@ class _DialogPageState extends State<DialogPage> {
                                         ),
                                       ),
                                       Container(
-                                        height: MediaQuery.of(context).size.height > 600 ? MediaQuery.of(context).size.height * 0.3 : MediaQuery.of(context).size.height * 0.25,
+                                        height: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.3 : MediaQuery.of(context).size.height * 0.25,
                                         width: MediaQuery.of(context).size.width * 0.01875,
                                         margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.01),
                                         decoration: BoxDecoration(

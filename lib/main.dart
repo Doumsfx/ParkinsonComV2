@@ -109,6 +109,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
     return number.toString().padLeft(2, '0');
   }
 
+  bool isTablet() {
+    // The threshold is generally set at 600 to separate phones from tablets.
+    var shortestSide = MediaQuery.of(context).size.shortestSide;
+    return shortestSide >= 600;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -134,8 +140,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
       internetAlert.startCheckInternet(context);
     });
 
-
-
     // Initilisation of our Notifications for Android
     var initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
     var initializationSettings = InitializationSettings(
@@ -147,6 +151,13 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
     // Initialisation of our Notification Handler
     WidgetsBinding.instance.addPostFrameCallback((_) {
       notificationHandler.startCheck(context, flutterLocalNotificationsPlugin);
+
+      if(isTablet()){
+        isThisDeviceATablet = true;
+      }
+      else{
+        isThisDeviceATablet = false;
+      }
     });
   }
 
@@ -387,7 +398,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                       children: [
                         // Dialog button
                         Container(
-                          margin: MediaQuery.of(context).size.height > 600 ? EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.27) : EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.29),
+                          margin: isThisDeviceATablet ? EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.27) : EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.29),
                           child: AnimatedScale(
                             scale: _buttonAnimations["DIALOG"]! ? 1.1 : 1.0,
                             duration: const Duration(milliseconds: 100),
@@ -423,7 +434,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                 image: 'assets/dialog.png',
                                 text: languagesTextsFile.texts["main_dialog"]!,
                                 imageScale: 1,
-                                scale: MediaQuery.of(context).size.height > 600 ? 1 : 1.2,
+                                scale: isThisDeviceATablet ? 1 : 1.2,
                               ),
                             ),
                           ),
@@ -473,7 +484,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                 image: 'assets/beach-chair.png',
                                 text: languagesTextsFile.texts["main_relax"]!,
                                 imageScale: 1.4,
-                                scale: MediaQuery.of(context).size.height > 600 ? 1 : 1.2,
+                                scale: isThisDeviceATablet ? 1 : 1.2,
                               ),
                             ),
                           ),
@@ -531,7 +542,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                 circleSize: MediaQuery.of(context).size.width * 0.085,
                                 sizedBoxHeight: MediaQuery.of(context).size.width * 0.085,
                                 sizedBoxWidth: MediaQuery.of(context).size.width * 0.2725,
-                                scale: MediaQuery.of(context).size.height > 600 ? 1 : 0.85,
+                                scale: isThisDeviceATablet ? 1 : 0.85,
 
 
 
@@ -587,7 +598,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                   circleSize: MediaQuery.of(context).size.width * 0.085,
                                   sizedBoxHeight: MediaQuery.of(context).size.width * 0.085,
                                   sizedBoxWidth: MediaQuery.of(context).size.width * 0.2725,
-                                  scale: MediaQuery.of(context).size.height > 600 ? 1 : 0.85,
+                                  scale: isThisDeviceATablet ? 1 : 0.85,
                                 ),
                               ),
                             ),
@@ -641,7 +652,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                 circleSize: MediaQuery.of(context).size.width * 0.085,
                                 sizedBoxHeight: MediaQuery.of(context).size.width * 0.085,
                                 sizedBoxWidth: MediaQuery.of(context).size.width * 0.2725,
-                                scale: MediaQuery.of(context).size.height > 600 ? 1 : 0.85,
+                                scale: isThisDeviceATablet ? 1 : 0.85,
                               ),
                             ),
                           ),

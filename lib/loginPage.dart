@@ -502,7 +502,7 @@ class _LoginPageState extends State<LoginPage> {
                                     },
                                     child: Container(
                                       width: MediaQuery.of(context).size.width * 0.37,
-                                      height: MediaQuery.of(context).size.height > 600 ? MediaQuery.of(context).size.width * 0.06 : MediaQuery.of(context).size.width * 0.05,
+                                      height: isThisDeviceATablet ? MediaQuery.of(context).size.width * 0.06 : MediaQuery.of(context).size.width * 0.05,
                                       decoration: const BoxDecoration(
                                         borderRadius: BorderRadius.all(Radius.circular(30)),
                                         color: Color.fromRGBO(61, 192, 200, 1),

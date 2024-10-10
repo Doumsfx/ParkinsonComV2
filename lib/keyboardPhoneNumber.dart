@@ -88,7 +88,7 @@ class _CustomKeyboardPhoneNumberState extends State<CustomKeyboardPhoneNumber> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height > 600 ? MediaQuery.of(context).size.height * 0.55 : MediaQuery.of(context).size.height * 0.58,
+      height: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.55 : MediaQuery.of(context).size.height * 0.58,
       width: MediaQuery.of(context).size.width,
       child: Container(
         color: const Color.fromRGBO(34, 39, 42, 1),
@@ -105,7 +105,7 @@ class _CustomKeyboardPhoneNumberState extends State<CustomKeyboardPhoneNumber> {
                   margin: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.3),
                   width: MediaQuery.of(context).size.width * 0.3,
                   child: VirtualKeyboard(
-                      height: MediaQuery.of(context).size.height > 600 ? MediaQuery.of(context).size.height * (0.55 - 0.077) : MediaQuery.of(context).size.height * (0.58 - 0.13),
+                      height: isThisDeviceATablet ? MediaQuery.of(context).size.height * (0.55 - 0.077) : MediaQuery.of(context).size.height * (0.58 - 0.13),
                       width: MediaQuery.of(context).size.width * 0.887,
                       textColor: Colors.white,
                       defaultLayouts: const [VirtualKeyboardDefaultLayouts.Custom],
@@ -120,7 +120,7 @@ class _CustomKeyboardPhoneNumberState extends State<CustomKeyboardPhoneNumber> {
                         Color backgroundColor = key.text == "" ? const Color.fromRGBO(34, 39, 42, 1) : const Color.fromRGBO(69, 73, 76, 1);
 
                         return Container(
-                          margin: MediaQuery.of(context).size.height > 600 ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.01) : EdgeInsets.zero,
+                          margin: isThisDeviceATablet ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.01) : EdgeInsets.zero,
                           child: GestureDetector(
                             onTapDown: (_) {
                               setState(() {
@@ -174,7 +174,7 @@ class _CustomKeyboardPhoneNumberState extends State<CustomKeyboardPhoneNumber> {
                 ),
                 Container(
                   color: const Color.fromRGBO(34, 39, 42, 1),
-                  height: MediaQuery.of(context).size.height > 600 ? MediaQuery.of(context).size.height * (0.55 - 0.08) : MediaQuery.of(context).size.height * (0.58 - 0.08),
+                  height: isThisDeviceATablet ? MediaQuery.of(context).size.height * (0.55 - 0.08) : MediaQuery.of(context).size.height * (0.58 - 0.08),
                   width: MediaQuery.of(context).size.width * (1 - 0.887),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,

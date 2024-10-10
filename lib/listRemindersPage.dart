@@ -215,7 +215,7 @@ class _ListRemindersPageState extends State<ListRemindersPage> {
                             containerPadding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.height * 0.085, 0, MediaQuery.of(context).size.height * 0.03, 0),
                             circleSize: MediaQuery.of(context).size.height * 0.1875,
                             circlePositionedLeft: MediaQuery.of(context).size.height * 0.1 * -1,
-                            fontSize: MediaQuery.of(context).size.height > 600 ? 30 : 26,
+                            fontSize: isThisDeviceATablet ? 30 : 26,
                             fontWeight: FontWeight.w700,
                             alignment: const Alignment(0, 0.3),
                           ),
@@ -376,7 +376,7 @@ class _ListRemindersPageState extends State<ListRemindersPage> {
                 crossAxisMargin: MediaQuery.of(context).size.width * 0.00375,
                 mainAxisMargin: MediaQuery.of(context).size.width * 0.00375,
                 trackRadius: const Radius.circular(20),
-                padding: MediaQuery.of(context).size.height > 600 ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.085, MediaQuery.of(context).size.width * 0.0315, MediaQuery.of(context).size.height * 0.11) : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.085, MediaQuery.of(context).size.width * 0.027, MediaQuery.of(context).size.height * 0.11),
+                padding: isThisDeviceATablet ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.085, MediaQuery.of(context).size.width * 0.0315, MediaQuery.of(context).size.height * 0.11) : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.085, MediaQuery.of(context).size.width * 0.027, MediaQuery.of(context).size.height * 0.11),
                 child: Row(
                   children: [
                     // List of reminders
@@ -684,7 +684,7 @@ class _ListRemindersPageState extends State<ListRemindersPage> {
                           Expanded(
                               child: Container(
                                 width: MediaQuery.of(context).size.width * 0.01875,
-                                margin: MediaQuery.of(context).size.height > 600 ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.014) : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.011),
+                                margin: isThisDeviceATablet ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.014) : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.011),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20),
                                   color: const Color.fromRGBO(66, 89, 109, 1),
