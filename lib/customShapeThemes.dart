@@ -1,4 +1,4 @@
-// CustomShape Widget
+// Custom Shape Themes Widget
 // Code by Alexis Pagnon and Sanchez Adam
 // ParkinsonCom V2
 
@@ -24,6 +24,7 @@ class CustomShapeThemes extends StatelessWidget {
         clipBehavior: Clip.none,
         alignment: Alignment.centerLeft,
         children: [
+          // Text
           Container(
             width: MediaQuery.of(context).size.width * 0.31,
             height: MediaQuery.of(context).size.height * 0.067,
@@ -41,6 +42,8 @@ class CustomShapeThemes extends StatelessWidget {
               ),
             ),
           ),
+
+          // Image
           Positioned(
             //right: MediaQuery.of(context).size.height * 0.040 * -1,
             right: MediaQuery.of(context).size.height * 0.001 * -1,

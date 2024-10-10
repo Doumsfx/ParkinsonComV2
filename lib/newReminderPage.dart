@@ -1,4 +1,4 @@
-// List of dialogs filtered by themes Page
+// New Reminder Page
 // Code by Alexis Pagnon and Sanchez Adam
 // ParkinsonCom V2
 
@@ -60,16 +60,17 @@ class _NewReminderPageState extends State<NewReminderPage> {
   final FocusNode _focusNode = FocusNode();
   final FocusNode _focusNode2 = FocusNode();
 
-  // Function to update all values
-  void updateAllAlarms(bool value) {
-    daysAlarm.updateAll((key, oldValue) => value);
-  }
-
   var battery = Battery();
   int batteryLevel = 0;
   late Timer timer;
   var timeAndDate = DateTime.now();
 
+  /// Function to update all values of daysAlarm
+  void updateAllAlarms(bool value) {
+    daysAlarm.updateAll((key, oldValue) => value);
+  }
+
+  /// Function to initialise our variables
   Future<void> initialisation() async {
 
     batteryLevel = await battery.batteryLevel;
@@ -95,6 +96,7 @@ class _NewReminderPageState extends State<NewReminderPage> {
     }
   }
 
+  /// Function to format a [number] into a two format digit, for example '2' becomes '02'
   String formatWithTwoDigits(int number) {
     return number.toString().padLeft(2, '0');
   }
@@ -137,7 +139,7 @@ class _NewReminderPageState extends State<NewReminderPage> {
                           setState(() {
                             _buttonAnimations["POPUP OK"] = false;
                           });
-                          // BUTTON CODE
+                          // Button Code
                           Navigator.pop(context);
                         },
                         onTapCancel: () {
@@ -321,6 +323,7 @@ class _NewReminderPageState extends State<NewReminderPage> {
                           margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.012),
                           child: Column(
                             children: [
+                              // Help Button
                               AnimatedScale(
                                 scale: _buttonAnimations["HELP"]! ? 1.1 : 1.0,
                                 duration: const Duration(milliseconds: 100),
@@ -336,7 +339,7 @@ class _NewReminderPageState extends State<NewReminderPage> {
                                     setState(() {
                                       _buttonAnimations["HELP"] = false;
                                     });
-                                    // BUTTON CODE
+                                    // Button Code
                                     print("HELLLLLLLLLLP");
                                     emergencyRequest.sendEmergencyRequest(context);
                                   },
@@ -356,6 +359,8 @@ class _NewReminderPageState extends State<NewReminderPage> {
                                   ),
                                 ),
                               ),
+
+                              // Home Button
                               AnimatedScale(
                                 scale: _buttonAnimations["HOME"]! ? 1.1 : 1.0,
                                 duration: const Duration(milliseconds: 100),
@@ -370,7 +375,7 @@ class _NewReminderPageState extends State<NewReminderPage> {
                                     setState(() {
                                       _buttonAnimations["HOME"] = false;
                                     });
-                                    // BUTTON CODE
+                                    // Button Code
                                     Navigator.popUntil(
                                       context,
                                           (route) => route.isFirst,
@@ -596,8 +601,7 @@ class _NewReminderPageState extends State<NewReminderPage> {
                                           ),
                                         ),
 
-
-                                        // Ring
+                                        // Ring Checkbox
                                         Container(
                                             width: MediaQuery.of(context).size.width * 0.7,
                                             height: MediaQuery.of(context).size.height * 0.1,
@@ -685,7 +689,7 @@ class _NewReminderPageState extends State<NewReminderPage> {
                                             )
                                         ),
 
-                                        // Everyday
+                                        // Everyday Checkbox
                                         Container(
                                             width: MediaQuery.of(context).size.width * 0.7,
                                             height: MediaQuery.of(context).size.height * 0.1,
@@ -744,7 +748,7 @@ class _NewReminderPageState extends State<NewReminderPage> {
                                             )
                                         ),
 
-                                        // Days of the week
+                                        // Days of the week Checkbox
                                         SizedBox(
                                           height: MediaQuery.of(context).size.height * 0.13 * 7,
                                           width: MediaQuery.of(context).size.width * 0.71,
@@ -843,7 +847,7 @@ class _NewReminderPageState extends State<NewReminderPage> {
                                         setState(() {
                                           _buttonAnimations["ADD"] = false;
                                         });
-                                        // BUTTON CODE
+                                        // Button Code
 
                                         int i = 0;
                                         String daysString = "";
@@ -927,6 +931,7 @@ class _NewReminderPageState extends State<NewReminderPage> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
+                                  // Top Arrow
                                   AnimatedScale(
                                     scale: _buttonAnimations["TOP ARROW"]! ? 1.1 : 1.0,
                                     duration: const Duration(milliseconds: 100),
@@ -985,6 +990,8 @@ class _NewReminderPageState extends State<NewReminderPage> {
                                       ),
                                     ),
                                   ),
+
+                                  // Container for when the scrollbar is empty
                                   Expanded(
                                       child: Container(
                                         width: MediaQuery.of(context).size.width * 0.01875,
@@ -993,7 +1000,10 @@ class _NewReminderPageState extends State<NewReminderPage> {
                                           borderRadius: BorderRadius.circular(20),
                                           color: const Color.fromRGBO(66, 89, 109, 1),
                                         ),
-                                      )),
+                                      )
+                                  ),
+
+                                  // Bottom Arrow
                                   AnimatedScale(
                                     scale: _buttonAnimations["BOT ARROW"]! ? 1.1 : 1.0,
                                     duration: const Duration(milliseconds: 100),
@@ -1127,7 +1137,7 @@ class _NewReminderPageState extends State<NewReminderPage> {
                                 setState(() {
                                   _buttonAnimations["HELP"] = false;
                                 });
-                                // BUTTON CODE
+                                // Button Code
                                 print("HELLLLLLLLLLP");
                                 emergencyRequest.sendEmergencyRequest(context);
                               },
@@ -1236,8 +1246,10 @@ class _NewReminderPageState extends State<NewReminderPage> {
                       ),
                     ),
 
+                    // Spacing
                     const Expanded(child: SizedBox()),
 
+                    // Keyboard
                     Builder(builder: (context) {
                       if(boolFirstController){
                         return CustomKeyboard(controller: _firstController, textPredictions: isConnected, forcedPredictionsOff: true,);

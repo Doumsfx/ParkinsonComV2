@@ -1,4 +1,4 @@
-// List of themes Page
+// New Theme Page
 // Code by Alexis Pagnon and Sanchez Adam
 // ParkinsonCom V2
 
@@ -190,7 +190,6 @@ class _NewThemePageState extends State<NewThemePage> {
                                   setState(() {
                                     newThemePageState.value = true;
                                   });
-                                  print("TOUCHEEEEEEEEEEEEEEE");
                                 },
                               ),
                             ),
@@ -214,7 +213,7 @@ class _NewThemePageState extends State<NewThemePage> {
                                   setState(() {
                                     _buttonAnimations["SAVE"] = false;
                                   });
-                                  // BUTTON CODE
+                                  // Button Code
                                   // Save button
                                   showDialog(
                                     context: context,
@@ -258,7 +257,7 @@ class _NewThemePageState extends State<NewThemePage> {
                                                           setState(() {
                                                             _buttonAnimations["POPUP OK"] = false;
                                                           });
-                                                          // BUTTON CODE
+                                                          // Button Code
                                                           Navigator.pop(context);
                                                         },
                                                         onTapCancel: () {
@@ -396,21 +395,13 @@ class _NewThemePageState extends State<NewThemePage> {
                               ),
                             ),
                           ),
-
-                          // Space
-                          value ? const Expanded(child: SizedBox()) : const SizedBox(),
-
-                          // Keyboard
-                          value ? customKeyboard : const SizedBox(),
                         ],
                       ),
                     ),
                   ),
 
                   // Buttons at the right
-                  value
-                      ? const SizedBox()
-                      : Container(
+                  Container(
                     margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.012),
                     child: Column(
                       children: [
@@ -429,8 +420,7 @@ class _NewThemePageState extends State<NewThemePage> {
                               setState(() {
                                 _buttonAnimations["HELP"] = false;
                               });
-                              // BUTTON CODE
-                              print("HELLLLLLLLLLP");
+                              // Button Code
                               emergencyRequest.sendEmergencyRequest(context);
                             },
                             onTapCancel: () {
@@ -463,7 +453,7 @@ class _NewThemePageState extends State<NewThemePage> {
                               setState(() {
                                 _buttonAnimations["HOME"] = false;
                               });
-                              // BUTTON CODE
+                              // Button Code
                               Navigator.popUntil(
                                 context,
                                     (route) => route.isFirst,
@@ -498,8 +488,7 @@ class _NewThemePageState extends State<NewThemePage> {
                               setState(() {
                                 _buttonAnimations["RELAX"] = false;
                               });
-                              // BUTTON CODE
-                              print("RELAAAAAAAAAX");
+                              // Button Code
                             },
                             onTapCancel: () {
                               setState(() {
@@ -612,7 +601,6 @@ class _NewThemePageState extends State<NewThemePage> {
                                       setState(() {
                                         newThemePageState.value = true;
                                       });
-                                      print("TOUCHEEEEEEEEEEEEEEE");
                                     },
                                   ),
                                 ),
@@ -636,7 +624,7 @@ class _NewThemePageState extends State<NewThemePage> {
                                       setState(() {
                                         _buttonAnimations["SAVE"] = false;
                                       });
-                                      // BUTTON CODE
+                                      // Button Code
                                       // Save button
                                       showDialog(
                                         context: context,
@@ -680,7 +668,7 @@ class _NewThemePageState extends State<NewThemePage> {
                                                               setState(() {
                                                                 _buttonAnimations["POPUP OK"] = false;
                                                               });
-                                                              // BUTTON CODE
+                                                              // Button Code
                                                               Navigator.pop(context);
                                                             },
                                                             onTapCancel: () {
@@ -845,8 +833,7 @@ class _NewThemePageState extends State<NewThemePage> {
                                     setState(() {
                                       _buttonAnimations["HELP"] = false;
                                     });
-                                    // BUTTON CODE
-                                    print("HELLLLLLLLLLP");
+                                    // Button Code
                                     emergencyRequest.sendEmergencyRequest(context);
                                   },
                                   onTapCancel: () {
@@ -879,7 +866,7 @@ class _NewThemePageState extends State<NewThemePage> {
                                     setState(() {
                                       _buttonAnimations["HOME"] = false;
                                     });
-                                    // BUTTON CODE
+                                    // Button Code
                                     Navigator.popUntil(
                                       context,
                                           (route) => route.isFirst,

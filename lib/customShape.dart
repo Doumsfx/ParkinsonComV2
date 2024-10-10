@@ -1,4 +1,4 @@
-// CustomShape Widget
+// Custom Shape Widget
 // Code by Alexis Pagnon and Sanchez Adam
 // ParkinsonCom V2
 
@@ -34,6 +34,7 @@ class CustomShape extends StatelessWidget {
         clipBehavior: Clip.none,
         alignment: Alignment.centerLeft,
         children: [
+          // Text
           Container(
             height: containerHeight * scale,
             width: containerWidth * scale,
@@ -58,6 +59,8 @@ class CustomShape extends StatelessWidget {
               ),
             ),
           ),
+
+          // Image
           Positioned(
             right: circlePositionedRight * scale,
             child: Container(

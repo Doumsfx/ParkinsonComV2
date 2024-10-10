@@ -1,4 +1,4 @@
-// Main Page
+// Home Page
 // Code by Pagnon Alexis and Sanchez Adam
 // ParkinsonCom V2
 
@@ -26,7 +26,7 @@ void main() async {
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
   // Detect if it is the first time we are launching the app using the existence of the database or not
-  isFirstLaunch = !(await databaseManager.doesExist()); //first time <=> no database existing
+  isFirstLaunch = !(await databaseManager.doesExist()); // first time <=> no database existing
 
   // Initialization of the TTS handler when launching the app
   ttsHandler.initTts();
@@ -39,7 +39,7 @@ void main() async {
   // Set the texts to the default language
   languagesTextsFile.setNewLanguage("fr");
 
-  //Load .env variables
+  // Load .env variables
   loadEnvVariables();
 
   // We ensure that the phone preserve the landscape mode
@@ -47,15 +47,11 @@ void main() async {
     DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight
   ]).then((_) {
 
-
-
-    runApp(const MyApp());
-  });
-
-
+  // Launch the app
+  runApp(const MyApp());});
 }
 
-///Load Environment Variables from the .env file
+/// Load Environment Variables from the .env file
 Future<void> loadEnvVariables() async {
   await dotenv.load(fileName: ".env");
 }
@@ -84,8 +80,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
-  late InternetAlert internetAlert;
   // Useful variables
+  late InternetAlert internetAlert;
   final Map<String, bool> _buttonAnimations = {
     "POWER": false,
     "HELP": false,
@@ -101,14 +97,17 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
   var timeAndDate = DateTime.now();
   var isMusicPaused = false;
 
+  /// Function to initialise our variables
   Future<void> initialisation() async {
     batteryLevel = await battery.batteryLevel;
   }
 
+  /// Function to format a [number] into a two format digit, for example '2' becomes '02'
   String formatWithTwoDigits(int number) {
     return number.toString().padLeft(2, '0');
   }
 
+  /// Function to check if the device is a tablet or not, true: tablet, false: phone
   bool isTablet() {
     // The threshold is generally set at 600 to separate phones from tablets.
     var shortestSide = MediaQuery.of(context).size.shortestSide;
@@ -134,14 +133,14 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
 
     });
 
-    //Internet Checker
+    // Internet Checker
     internetAlert = InternetAlert();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       internetAlert.startCheckInternet(context);
     });
 
-    // Initilisation of our Notifications for Android
-    var initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
+    // Initialisation of our Notifications for Android
+    var initializationSettingsAndroid = const AndroidInitializationSettings('@mipmap/ic_launcher');
     var initializationSettings = InitializationSettings(
       android: initializationSettingsAndroid,
     );
@@ -170,7 +169,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
     super.dispose();
   }
 
-  // Method to monitor application lifecycle changes
+  /// Method to monitor application lifecycle changes
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
@@ -251,7 +250,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                             setState(() {
                                               _buttonAnimations["POWER"] = false;
                                             });
-                                            // BUTTON CODE
+                                            // Button Code
                                             SystemNavigator.pop();
                                           },
                                           onTapCancel: () {
@@ -361,7 +360,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                   setState(() {
                                     _buttonAnimations["HELP"] = false;
                                   });
-                                  // BUTTON CODE
+                                  // Button Code
                                   print("HELLLLLLLLLLP");
                                   emergencyRequest.sendEmergencyRequest(context);
 
@@ -415,7 +414,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                 setState(() {
                                   _buttonAnimations["DIALOG"] = false;
                                 });
-                                // BUTTON CODE
+                                // Button Code
                                 print("DIALOOOOOOOOOOG");
                                 Navigator.push(
                                     context,
@@ -459,7 +458,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                 setState(() {
                                   _buttonAnimations["RELAX"] = false;
                                 });
-                                // BUTTON CODE
+                                // Button Code
                                 print("RELAAAAAAAAAAAAAX");
 
                                 setState(() {
@@ -517,7 +516,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                 setState(() {
                                   _buttonAnimations["SETTINGS"] = false;
                                 });
-                                // BUTTON CODE
+                                // Button Code
                                 print("SETTINGGGGGGGGGS");
 
 
@@ -570,7 +569,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                   setState(() {
                                     _buttonAnimations["REMINDERS"] = false;
                                   });
-                                  // BUTTON CODE
+                                  // Button Code
                                   print("REMINNNNNNDERS");
                                   Navigator.push(
                                       context,
@@ -624,7 +623,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                 setState(() {
                                   _buttonAnimations["CONTACTS"] = false;
                                 });
-                                // BUTTON CODE
+                                // Button Code
                                 print("CONTACTSSSSS");
                                 Navigator.push(
                                     context,

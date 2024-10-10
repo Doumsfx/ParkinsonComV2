@@ -1,5 +1,6 @@
-// CustomHomePageTitle Widget
+// Custom Menu Button Widget
 // Code by Alexis Pagnon and Sanchez Adam
+// ParkinsonCom V2
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ class CustomMenuButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        // Image
         Container(
           height: MediaQuery.of(context).size.height * 0.28 * scale,
           width: MediaQuery.of(context).size.height * 0.28 * scale,
@@ -29,9 +31,13 @@ class CustomMenuButton extends StatelessWidget {
             ),
           ),
         ),
+
+        // Spacing
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.015 * scale,
         ),
+
+        // Text
         Container(
           height: MediaQuery.of(context).size.height * 0.09 * scale,
           width: MediaQuery.of(context).size.height * 0.28 * scale,

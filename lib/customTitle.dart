@@ -1,4 +1,4 @@
-// CustomTitle Widget
+// Custom Title Widget
 // Code by Alexis Pagnon and Sanchez Adam
 // ParkinsonCom V2
 
@@ -30,6 +30,7 @@ class CustomTitle extends StatelessWidget {
       clipBehavior: Clip.none,
       alignment: Alignment.centerLeft,
       children: [
+        // Text
         Container(
           width: containerWidth,
           height: containerHeight,
@@ -53,6 +54,8 @@ class CustomTitle extends StatelessWidget {
             ),
           ),
         ),
+
+        // Image
         Positioned(
           left: circlePositionedLeft,
           child: Container(

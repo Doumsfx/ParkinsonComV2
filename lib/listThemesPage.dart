@@ -45,6 +45,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
   final ScrollController _scrollController = ScrollController();
 
   Future<void> initialisation() async {
+    // We retrieve all the themes of the database
     _listThemes = await databaseManager.retrieveThemesFromLanguage(language);
     setState(() {});
     _dialogsAnimations = List.filled(_listThemes.length, false);
@@ -92,7 +93,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
     super.initState();
   }
 
-  ///Used to refresh the UI from the StatefulBuilder
+  /// Used to refresh the UI from the StatefulBuilder
   void _updateParent() {
     setState(() {});
   }
@@ -193,8 +194,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                     setState(() {
                                       _buttonAnimations["THEMES"] = false;
                                     });
-                                    // BUTTON CODE
-                                    print("DIALOGUEEEE");
+                                    // Button Code
                                     Navigator.pushReplacement(
                                       context,
                                       PageRouteBuilder(
@@ -264,7 +264,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                 setState(() {
                                   _buttonAnimations["NEW DIALOG"] = false;
                                 });
-                                // BUTTON CODE
+                                // Button Code
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -306,6 +306,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
                   margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.012),
                   child: Column(
                     children: [
+                      // Help Button
                       AnimatedScale(
                         scale: _buttonAnimations["HELP"]! ? 1.1 : 1.0,
                         duration: const Duration(milliseconds: 100),
@@ -321,8 +322,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
                             setState(() {
                               _buttonAnimations["HELP"] = false;
                             });
-                            // BUTTON CODE
-                            print("HELLLLLLLLLLP");
+                            // Button Code
                             emergencyRequest.sendEmergencyRequest(context);
                           },
                           onTapCancel: () {
@@ -341,6 +341,8 @@ class _ListThemesPageState extends State<ListThemesPage> {
                           ),
                         ),
                       ),
+
+                      // Home Button
                       AnimatedScale(
                         scale: _buttonAnimations["HOME"]! ? 1.1 : 1.0,
                         duration: const Duration(milliseconds: 100),
@@ -355,7 +357,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
                             setState(() {
                               _buttonAnimations["HOME"] = false;
                             });
-                            // BUTTON CODE
+                            // Button Code
                             Navigator.popUntil(
                               context,
                                   (route) => route.isFirst,
@@ -376,6 +378,8 @@ class _ListThemesPageState extends State<ListThemesPage> {
                           ),
                         ),
                       ),
+
+                      // Relax Button
                       AnimatedScale(
                         scale: _buttonAnimations["RELAX"]! ? 1.1 : 1.0,
                         duration: const Duration(milliseconds: 100),
@@ -390,8 +394,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
                             setState(() {
                               _buttonAnimations["RELAX"] = false;
                             });
-                            // BUTTON CODE
-                            print("RELAAAAAAAAAX");
+                            // Button Code
                           },
                           onTapCancel: () {
                             setState(() {
@@ -458,7 +461,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                       setState(() {
                                         _dialogsAnimations[index] = false;
                                       });
-                                      // BUTTON CODE
+                                      // Button Code
                                       Navigator.push(
                                         context,
                                         PageRouteBuilder(
@@ -510,7 +513,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                       });
                                     },
                                     onTapUp: (_) {
-                                      // BUTTON CODE
+                                      // Button Code
                                       setState(() {
                                         _deleteButtonsAnimations[index] = false;
                                       });
@@ -575,7 +578,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                                                   setState(() {
                                                                     _buttonAnimations["POPUP NO"] = false;
                                                                   });
-                                                                  // BUTTON CODE
+                                                                  // Button Code
                                                                   Navigator.pop(context);
                                                                 },
                                                                 onTapCancel: () {
@@ -689,6 +692,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
+                          // Top Arrow
                           AnimatedScale(
                             scale: _buttonAnimations["TOP ARROW"]! ? 1.1 : 1.0,
                             duration: const Duration(milliseconds: 100),
@@ -747,6 +751,8 @@ class _ListThemesPageState extends State<ListThemesPage> {
                               ),
                             ),
                           ),
+
+                          // Container for when the scrollbar is empty
                           Expanded(
                               child: Container(
                             width: MediaQuery.of(context).size.width * 0.01875,
@@ -763,6 +769,8 @@ class _ListThemesPageState extends State<ListThemesPage> {
                               ),
                             ),
                           )),
+
+                          // Bot Arrow
                           AnimatedScale(
                             scale: _buttonAnimations["BOT ARROW"]! ? 1.1 : 1.0,
                             duration: const Duration(milliseconds: 100),

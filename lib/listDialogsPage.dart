@@ -43,7 +43,9 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
   late List<bool> _ttsButtonsAnimations;
   final ScrollController _scrollController = ScrollController();
 
+  /// Function that initialise our variables
   Future<void> initialisation() async {
+    // We retrieve all the dialogs from the database
     _listDialogs = await databaseManager.retrieveDialogsFromLanguage(language);
     setState(() {});
     _dialogsAnimations = List.filled(_listDialogs.length, false);
@@ -82,7 +84,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
     super.initState();
   }
 
-  ///Used to refresh the UI from the StatefulBuilder
+  /// Used to refresh the UI from the StatefulBuilder
   void _updateParent() {
     setState(() {});
   }
@@ -187,7 +189,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                     setState(() {
                                       _buttonAnimations["THEMES"] = false;
                                     });
-                                    // BUTTON CODE
+                                    // Button Code
                                     print("THEMESSS");
                                     Navigator.push(
                                       context,
@@ -258,7 +260,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                 setState(() {
                                   _buttonAnimations["NEW DIALOG"] = false;
                                 });
-                                // BUTTON CODE
+                                // Button Code
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -303,6 +305,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                   margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.012),
                   child: Column(
                     children: [
+                      // Help Button
                       AnimatedScale(
                         scale: _buttonAnimations["HELP"]! ? 1.1 : 1.0,
                         duration: const Duration(milliseconds: 100),
@@ -318,7 +321,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                             setState(() {
                               _buttonAnimations["HELP"] = false;
                             });
-                            // BUTTON CODE
+                            // Button Code
                             print("HELLLLLLLLLLP");
                             emergencyRequest.sendEmergencyRequest(context);
                           },
@@ -338,6 +341,8 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                           ),
                         ),
                       ),
+
+                      // Home Button
                       AnimatedScale(
                         scale: _buttonAnimations["HOME"]! ? 1.1 : 1.0,
                         duration: const Duration(milliseconds: 100),
@@ -352,7 +357,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                             setState(() {
                               _buttonAnimations["HOME"] = false;
                             });
-                            // BUTTON CODE
+                            // Button Code
                             Navigator.popUntil(
                               context,
                                   (route) => route.isFirst,
@@ -373,6 +378,8 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                           ),
                         ),
                       ),
+
+                      // Relax Button
                       AnimatedScale(
                         scale: _buttonAnimations["RELAX"]! ? 1.1 : 1.0,
                         duration: const Duration(milliseconds: 100),
@@ -387,7 +394,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                             setState(() {
                               _buttonAnimations["RELAX"] = false;
                             });
-                            // BUTTON CODE
+                            // Button Code
                             print("RELAAAAAAAAAX");
                           },
                           onTapCancel: () {
@@ -455,7 +462,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                       setState(() {
                                         _dialogsAnimations[index] = false;
                                       });
-                                      // BUTTON CODE
+                                      // Button Code
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(builder: (context) => DialogPage(idDialog: _listDialogs[index].id_dialog, initialTextDialog: _listDialogs[index].sentence, idTheme: _listDialogs[index].id_theme)),
@@ -510,7 +517,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                                   setState(() {
                                                     _ttsButtonsAnimations[index] = false;
                                                   });
-                                                  // BUTTON CODE
+                                                  // Button Code
                                                   // TTS
                                                   ttsHandler.setText(_listDialogs[index].sentence);
                                                   ttsHandler.speak();
@@ -546,7 +553,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                       });
                                     },
                                     onTapUp: (_) {
-                                      // BUTTON CODE
+                                      // Button Code
                                       setState(() {
                                         _deleteButtonsAnimations[index] = false;
                                       });
@@ -595,7 +602,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                                                   setState(() {
                                                                     _buttonAnimations["POPUP NO"] = false;
                                                                   });
-                                                                  // BUTTON CODE
+                                                                  // Button Code
                                                                   Navigator.pop(context);
                                                                 },
                                                                 onTapCancel: () {
@@ -700,12 +707,14 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                             );
                           }),
                     ),
+
                     // ScrollWidgets
                     Container(
                       margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.02),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
+                          // Top Arrow
                           AnimatedScale(
                             scale: _buttonAnimations["TOP ARROW"]! ? 1.1 : 1.0,
                             duration: const Duration(milliseconds: 100),
@@ -770,22 +779,27 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                               ),
                             ),
                           ),
+
+                          // Container for when the scrollbar is empty
                           Expanded(
                               child: Container(
-                            width: MediaQuery.of(context).size.width * 0.01875,
-                            margin: isThisDeviceATablet ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.014) : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.011),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: const Color.fromRGBO(66, 89, 109, 1),
-                            ),
-                            child: Container(
-                              margin: EdgeInsets.all(MediaQuery.of(context).size.width * 0.00375),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: Colors.blue,
-                              ),
-                            ),
-                          )),
+                                width: MediaQuery.of(context).size.width * 0.01875,
+                                margin: isThisDeviceATablet ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.014) : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.011),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: const Color.fromRGBO(66, 89, 109, 1),
+                                ),
+                                child: Container(
+                                  margin: EdgeInsets.all(MediaQuery.of(context).size.width * 0.00375),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: Colors.blue,
+                                  ),
+                                ),
+                            )
+                          ),
+
+                          // Bot Arrow
                           AnimatedScale(
                             scale: _buttonAnimations["BOT ARROW"]! ? 1.1 : 1.0,
                             duration: const Duration(milliseconds: 100),

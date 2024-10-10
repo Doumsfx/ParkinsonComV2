@@ -43,9 +43,14 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
   late List<bool> _ttsButtonsAnimations;
   final ScrollController _scrollController = ScrollController();
 
+  /// Function to initialise our variables
   Future<void> initialisation() async {
+    // We retrieve all the dialogs from the database
     _listDialogs = await databaseManager.retrieveDialogsFromTheme(widget.idTheme);
+
+    // We retrieve the title of the selected theme to display it
     selectedThemeTitle = (await databaseManager.retrieveThemeFromId(widget.idTheme)).title;
+
     setState(() {});
     _dialogsAnimations = List.filled(_listDialogs.length, false);
     _deleteButtonsAnimations = List.filled(_listDialogs.length, false);
@@ -74,8 +79,6 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
       _listDialogs = [];
       _listDialogs = firstPart + secondPart;
       setState(() {});
-      print(firstPart[0].id_theme);
-      print(firstPart[1].id_theme);
     }
   }
 
@@ -217,7 +220,7 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                                 setState(() {
                                   _buttonAnimations["NEW DIALOG"] = false;
                                 });
-                                // BUTTON CODE
+                                // Button Code
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -263,6 +266,7 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                   margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.012),
                   child: Column(
                     children: [
+                      // Help Button
                       AnimatedScale(
                         scale: _buttonAnimations["HELP"]! ? 1.1 : 1.0,
                         duration: const Duration(milliseconds: 100),
@@ -278,8 +282,7 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                             setState(() {
                               _buttonAnimations["HELP"] = false;
                             });
-                            // BUTTON CODE
-                            print("HELLLLLLLLLLP");
+                            // Button Code
                             emergencyRequest.sendEmergencyRequest(context);
                           },
                           onTapCancel: () {
@@ -298,6 +301,8 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                           ),
                         ),
                       ),
+
+                      // Home Button
                       AnimatedScale(
                         scale: _buttonAnimations["HOME"]! ? 1.1 : 1.0,
                         duration: const Duration(milliseconds: 100),
@@ -312,7 +317,7 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                             setState(() {
                               _buttonAnimations["HOME"] = false;
                             });
-                            // BUTTON CODE
+                            // Button Code
                             Navigator.popUntil(
                               context,
                                   (route) => route.isFirst,
@@ -333,6 +338,8 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                           ),
                         ),
                       ),
+
+                      // Relax Button
                       AnimatedScale(
                         scale: _buttonAnimations["RELAX"]! ? 1.1 : 1.0,
                         duration: const Duration(milliseconds: 100),
@@ -347,8 +354,7 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                             setState(() {
                               _buttonAnimations["RELAX"] = false;
                             });
-                            // BUTTON CODE
-                            print("RELAAAAAAAAAX");
+                            // Button Code
                           },
                           onTapCancel: () {
                             setState(() {
@@ -415,7 +421,7 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                                       setState(() {
                                         _dialogsAnimations[index] = false;
                                       });
-                                      // BUTTON CODE
+                                      // Button Code
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -477,7 +483,7 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                                                   setState(() {
                                                     _ttsButtonsAnimations[index] = false;
                                                   });
-                                                  // BUTTON CODE
+                                                  // Button Code
                                                   // TTS
                                                   ttsHandler.setText(_listDialogs[index].sentence);
                                                   ttsHandler.speak();
@@ -513,7 +519,7 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                                       });
                                     },
                                     onTapUp: (_) {
-                                      // BUTTON CODE
+                                      // Button Code
                                       setState(() {
                                         _deleteButtonsAnimations[index] = false;
                                       });
@@ -562,7 +568,7 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                                                                   setState(() {
                                                                     _buttonAnimations["POPUP NO"] = false;
                                                                   });
-                                                                  // BUTTON CODE
+                                                                  // Button Code
                                                                   Navigator.pop(context);
                                                                 },
                                                                 onTapCancel: () {
@@ -668,12 +674,14 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                             );
                           }),
                     ),
+
                     // ScrollWidgets
                     Container(
                       margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.02),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
+                          // Top Arrow
                           AnimatedScale(
                             scale: _buttonAnimations["TOP ARROW"]! ? 1.1 : 1.0,
                             duration: const Duration(milliseconds: 100),
@@ -732,6 +740,8 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                               ),
                             ),
                           ),
+
+                          // Container for when the scrollbar is empty
                           Expanded(
                               child: Container(
                             width: MediaQuery.of(context).size.width * 0.01875,
@@ -748,6 +758,8 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                               ),
                             ),
                           )),
+
+                          // Bot Arrow
                           AnimatedScale(
                             scale: _buttonAnimations["BOT ARROW"]! ? 1.1 : 1.0,
                             duration: const Duration(milliseconds: 100),

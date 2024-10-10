@@ -59,6 +59,7 @@ class _DialogPageState extends State<DialogPage> {
   @override
   void initState() {
     super.initState();
+    // Initialisation of our variables
     customKeyboard = CustomKeyboard(controller: _controller, textPredictions: isConnected);
     _controller.text = widget.initialTextDialog;
     dialogPageState.value = false;
@@ -124,7 +125,7 @@ class _DialogPageState extends State<DialogPage> {
                                               setState(() {
                                                 _buttonAnimations["BACK ARROW"] = false;
                                               });
-                                              //BUTTON CODE
+                                              //Button Code
                                               if(_controller.text != widget.initialTextDialog) {
                                                 _showTextUnsavedBackArrow();
                                               }
@@ -255,7 +256,6 @@ class _DialogPageState extends State<DialogPage> {
                                           setState(() {
                                             dialogPageState.value = true;
                                           });
-                                          print("TOUCHEEEEEEEEEEEEEEE");
                                         },
                                         enableInteractiveSelection: true,
                                         minLines: isThisDeviceATablet ? 3 : 2,
@@ -387,237 +387,243 @@ class _DialogPageState extends State<DialogPage> {
 
                       // Buttons at the right
                       value
-                          // Scroll Widget
+                          // Scroll Widgets + Navigation Icons
                           ? Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Scroll widgets
-                          Container(
-                            margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.01, MediaQuery.of(context).size.height * 0.00, MediaQuery.of(context).size.width * 0.015, 0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                AnimatedScale(
-                                  scale: _buttonAnimations["TOP ARROW"]! ? 1.1 : 1.0,
-                                  duration: const Duration(milliseconds: 100),
-                                  curve: Curves.bounceOut,
-                                  child: GestureDetector(
-                                    // Animation management
-                                    onTap: () {
-                                      _scrollController.animateTo(
-                                        _scrollController.offset - 50,
-                                        duration: const Duration(milliseconds: 500),
-                                        curve: Curves.easeIn,
-                                      );
-                                    },
-
-                                    onLongPress: () {
-                                      _scrollController.animateTo(
-                                        _scrollController.position.minScrollExtent,
-                                        duration: const Duration(milliseconds: 1),
-                                        curve: Curves.easeIn,
-                                      );
-                                    },
-
-                                    onTapDown: (_) {
-                                      setState(() {
-                                        _buttonAnimations["TOP ARROW"] = true;
-                                      });
-                                    },
-
-                                    onTapUp: (_) {
-                                      setState(() {
-                                        _buttonAnimations["TOP ARROW"] = false;
-                                      });
-                                    },
-
-                                    onLongPressEnd: (_) {
-                                      setState(() {
-                                        _buttonAnimations["TOP ARROW"] = false;
-                                      });
-                                    },
-
-                                    child: Container(
-                                      margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.005),
-                                      width: MediaQuery.of(context).size.height * 0.07,
-                                      height: MediaQuery.of(context).size.height * 0.07,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * 0.01),
-                                        color: const Color.fromRGBO(101, 72, 254, 1),
-                                      ),
-                                      child: Transform.rotate(
-                                        angle: 1.5708,
-                                        child: Icon(
-                                          Icons.arrow_back_ios_new_rounded,
-                                          color: Colors.white,
-                                          size: MediaQuery.of(context).size.height * 0.063,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  height: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.257 : MediaQuery.of(context).size.height * 0.22,
-                                  width: MediaQuery.of(context).size.width * 0.01875,
-                                  margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.01),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: const Color.fromRGBO(66, 89, 109, 1),
-                                  ),
-                                  child: Container(
-                                    margin: EdgeInsets.all(MediaQuery.of(context).size.width * 0.00375),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: Colors.blue,
-                                    ),
-                                  ),
-                                ),
-                                AnimatedScale(
-                                  scale: _buttonAnimations["BOT ARROW"]! ? 1.1 : 1.0,
-                                  duration: const Duration(milliseconds: 100),
-                                  curve: Curves.bounceOut,
-                                  child: GestureDetector(
-                                    // Animation management
-                                    onTap: () {
-                                      _scrollController.animateTo(
-                                        _scrollController.offset + 50,
-                                        duration: const Duration(milliseconds: 500),
-                                        curve: Curves.easeIn,
-                                      );
-                                    },
-
-                                    onLongPress: () {
-                                      _scrollController.animateTo(
-                                        _scrollController.position.maxScrollExtent,
-                                        duration: const Duration(milliseconds: 1),
-                                        curve: Curves.easeIn,
-                                      );
-                                    },
-
-                                    onTapDown: (_) {
-                                      setState(() {
-                                        _buttonAnimations["BOT ARROW"] = true;
-                                      });
-                                    },
-
-                                    onTapUp: (_) {
-                                      setState(() {
-                                        _buttonAnimations["BOT ARROW"] = false;
-                                      });
-                                    },
-
-                                    onLongPressEnd: (_) {
-                                      setState(() {
-                                        _buttonAnimations["BOT ARROW"] = false;
-                                      });
-                                    },
-
-                                    child: Container(
-                                      width: MediaQuery.of(context).size.height * 0.07,
-                                      height: MediaQuery.of(context).size.height * 0.07,
-                                      margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.005, 0, MediaQuery.of(context).size.height * 0.01),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * 0.01),
-                                        color: const Color.fromRGBO(101, 72, 254, 1),
-                                      ),
-                                      child: Transform.rotate(
-                                        angle: -1.5708,
-                                        child: Icon(
-                                          Icons.arrow_back_ios_new_rounded,
-                                          color: Colors.white,
-                                          size: MediaQuery.of(context).size.height * 0.063,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-
-                          // Navigation Icons
-                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              AnimatedScale(
-                                scale: _buttonAnimations["HELP"]! ? 1.1 : 1.0,
-                                duration: const Duration(milliseconds: 100),
-                                curve: Curves.bounceOut,
-                                child: GestureDetector(
-                                  // Animation management
-                                  onTapDown: (_) {
-                                    setState(() {
-                                      _buttonAnimations["HELP"] = true;
-                                    });
-                                  },
-                                  onTapUp: (_) {
-                                    setState(() {
-                                      _buttonAnimations["HELP"] = false;
-                                    });
-                                    // BUTTON CODE
-                                    print("HELLLLLLLLLLP");
-                                    emergencyRequest.sendEmergencyRequest(context);
-                                  },
-                                  onTapCancel: () {
-                                    setState(() {
-                                      _buttonAnimations["HELP"] = false;
-                                    });
-                                  },
+                              // Scroll widgets
+                              Container(
+                                margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.01, MediaQuery.of(context).size.height * 0.00, MediaQuery.of(context).size.width * 0.015, 0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    // Top Arrow
+                                    AnimatedScale(
+                                      scale: _buttonAnimations["TOP ARROW"]! ? 1.1 : 1.0,
+                                      duration: const Duration(milliseconds: 100),
+                                      curve: Curves.bounceOut,
+                                      child: GestureDetector(
+                                        // Animation management
+                                        onTap: () {
+                                          _scrollController.animateTo(
+                                            _scrollController.offset - 50,
+                                            duration: const Duration(milliseconds: 500),
+                                            curve: Curves.easeIn,
+                                          );
+                                        },
 
-                                  child: Container(
-                                    margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.03, 0, MediaQuery.of(context).size.height * 0.03),
-                                    child: Image.asset(
-                                      "assets/helping_icon.png",
-                                      height: MediaQuery.of(context).size.width * 0.06,
-                                      width: MediaQuery.of(context).size.width * 0.06,
+                                        onLongPress: () {
+                                          _scrollController.animateTo(
+                                            _scrollController.position.minScrollExtent,
+                                            duration: const Duration(milliseconds: 1),
+                                            curve: Curves.easeIn,
+                                          );
+                                        },
+
+                                        onTapDown: (_) {
+                                          setState(() {
+                                            _buttonAnimations["TOP ARROW"] = true;
+                                          });
+                                        },
+
+                                        onTapUp: (_) {
+                                          setState(() {
+                                            _buttonAnimations["TOP ARROW"] = false;
+                                          });
+                                        },
+
+                                        onLongPressEnd: (_) {
+                                          setState(() {
+                                            _buttonAnimations["TOP ARROW"] = false;
+                                          });
+                                        },
+
+                                        child: Container(
+                                          margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.005),
+                                          width: MediaQuery.of(context).size.height * 0.07,
+                                          height: MediaQuery.of(context).size.height * 0.07,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * 0.01),
+                                            color: const Color.fromRGBO(101, 72, 254, 1),
+                                          ),
+                                          child: Transform.rotate(
+                                            angle: 1.5708,
+                                            child: Icon(
+                                              Icons.arrow_back_ios_new_rounded,
+                                              color: Colors.white,
+                                              size: MediaQuery.of(context).size.height * 0.063,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                  ),
+
+                                    // Container for when the scrollbar is empty
+                                    Container(
+                                      height: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.257 : MediaQuery.of(context).size.height * 0.22,
+                                      width: MediaQuery.of(context).size.width * 0.01875,
+                                      margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.01),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        color: const Color.fromRGBO(66, 89, 109, 1),
+                                      ),
+                                      child: Container(
+                                        margin: EdgeInsets.all(MediaQuery.of(context).size.width * 0.00375),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(20),
+                                          color: Colors.blue,
+                                        ),
+                                      ),
+                                    ),
+
+                                    // Bot Arrow
+                                    AnimatedScale(
+                                      scale: _buttonAnimations["BOT ARROW"]! ? 1.1 : 1.0,
+                                      duration: const Duration(milliseconds: 100),
+                                      curve: Curves.bounceOut,
+                                      child: GestureDetector(
+                                        // Animation management
+                                        onTap: () {
+                                          _scrollController.animateTo(
+                                            _scrollController.offset + 50,
+                                            duration: const Duration(milliseconds: 500),
+                                            curve: Curves.easeIn,
+                                          );
+                                        },
+
+                                        onLongPress: () {
+                                          _scrollController.animateTo(
+                                            _scrollController.position.maxScrollExtent,
+                                            duration: const Duration(milliseconds: 1),
+                                            curve: Curves.easeIn,
+                                          );
+                                        },
+
+                                        onTapDown: (_) {
+                                          setState(() {
+                                            _buttonAnimations["BOT ARROW"] = true;
+                                          });
+                                        },
+
+                                        onTapUp: (_) {
+                                          setState(() {
+                                            _buttonAnimations["BOT ARROW"] = false;
+                                          });
+                                        },
+
+                                        onLongPressEnd: (_) {
+                                          setState(() {
+                                            _buttonAnimations["BOT ARROW"] = false;
+                                          });
+                                        },
+
+                                        child: Container(
+                                          width: MediaQuery.of(context).size.height * 0.07,
+                                          height: MediaQuery.of(context).size.height * 0.07,
+                                          margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.005, 0, MediaQuery.of(context).size.height * 0.01),
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * 0.01),
+                                            color: const Color.fromRGBO(101, 72, 254, 1),
+                                          ),
+                                          child: Transform.rotate(
+                                            angle: -1.5708,
+                                            child: Icon(
+                                              Icons.arrow_back_ios_new_rounded,
+                                              color: Colors.white,
+                                              size: MediaQuery.of(context).size.height * 0.063,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              AnimatedScale(
-                                scale: _buttonAnimations["HOME"]! ? 1.1 : 1.0,
-                                duration: const Duration(milliseconds: 100),
-                                curve: Curves.bounceOut,
-                                child: GestureDetector(
-                                  onTapDown: (_) {
-                                    setState(() {
-                                      _buttonAnimations["HOME"] = true;
-                                    });
-                                  },
-                                  onTapUp: (_) {
-                                    setState(() {
-                                      _buttonAnimations["HOME"] = false;
-                                    });
-                                    // BUTTON CODE
-                                    if(_controller.text != widget.initialTextDialog) {
-                                      _showTextUnsavedHomeButton();
-                                    }
-                                    else {
-                                      Navigator.popUntil(
-                                        context,
-                                            (route) => route.isFirst,
-                                      );
-                                    }
-                                  },
-                                  onTapCancel: () {
-                                    setState(() {
-                                      _buttonAnimations["HOME"] = false;
-                                    });
-                                  },
-                                  child: Container(
-                                    margin: EdgeInsets.fromLTRB(0, 0, 0, MediaQuery.of(context).size.height * 0.03),
-                                    child: Image.asset(
-                                      "assets/home.png",
-                                      height: MediaQuery.of(context).size.width * 0.06,
-                                      width: MediaQuery.of(context).size.width * 0.06,
+
+                              // Navigation Icons
+                              Column(
+                                children: [
+                                  // Help Button
+                                  AnimatedScale(
+                                    scale: _buttonAnimations["HELP"]! ? 1.1 : 1.0,
+                                    duration: const Duration(milliseconds: 100),
+                                    curve: Curves.bounceOut,
+                                    child: GestureDetector(
+                                      // Animation management
+                                      onTapDown: (_) {
+                                        setState(() {
+                                          _buttonAnimations["HELP"] = true;
+                                        });
+                                      },
+                                      onTapUp: (_) {
+                                        setState(() {
+                                          _buttonAnimations["HELP"] = false;
+                                        });
+                                        // Button Code
+                                        emergencyRequest.sendEmergencyRequest(context);
+                                      },
+                                      onTapCancel: () {
+                                        setState(() {
+                                          _buttonAnimations["HELP"] = false;
+                                        });
+                                      },
+
+                                      child: Container(
+                                        margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.03, 0, MediaQuery.of(context).size.height * 0.03),
+                                        child: Image.asset(
+                                          "assets/helping_icon.png",
+                                          height: MediaQuery.of(context).size.width * 0.06,
+                                          width: MediaQuery.of(context).size.width * 0.06,
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ),
 
+                                  // Home Button
+                                  AnimatedScale(
+                                    scale: _buttonAnimations["HOME"]! ? 1.1 : 1.0,
+                                    duration: const Duration(milliseconds: 100),
+                                    curve: Curves.bounceOut,
+                                    child: GestureDetector(
+                                      onTapDown: (_) {
+                                        setState(() {
+                                          _buttonAnimations["HOME"] = true;
+                                        });
+                                      },
+                                      onTapUp: (_) {
+                                        setState(() {
+                                          _buttonAnimations["HOME"] = false;
+                                        });
+                                        // Button Code
+                                        if(_controller.text != widget.initialTextDialog) {
+                                          _showTextUnsavedHomeButton();
+                                        }
+                                        else {
+                                          Navigator.popUntil(
+                                            context,
+                                                (route) => route.isFirst,
+                                          );
+                                        }
+                                      },
+                                      onTapCancel: () {
+                                        setState(() {
+                                          _buttonAnimations["HOME"] = false;
+                                        });
+                                      },
+                                      child: Container(
+                                        margin: EdgeInsets.fromLTRB(0, 0, 0, MediaQuery.of(context).size.height * 0.03),
+                                        child: Image.asset(
+                                          "assets/home.png",
+                                          height: MediaQuery.of(context).size.width * 0.06,
+                                          width: MediaQuery.of(context).size.width * 0.06,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ],
-                          ),
-                        ],
-                      )
+                          )
                           : Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -768,6 +774,7 @@ class _DialogPageState extends State<DialogPage> {
                                 // Navigation Icons
                                 Column(
                                   children: [
+                                    // Help Button
                                     AnimatedScale(
                                       scale: _buttonAnimations["HELP"]! ? 1.1 : 1.0,
                                       duration: const Duration(milliseconds: 100),
@@ -783,8 +790,7 @@ class _DialogPageState extends State<DialogPage> {
                                           setState(() {
                                             _buttonAnimations["HELP"] = false;
                                           });
-                                          // BUTTON CODE
-                                          print("HELLLLLLLLLLP");
+                                          // Button Code
                                           emergencyRequest.sendEmergencyRequest(context);
 
                                         },
@@ -804,6 +810,8 @@ class _DialogPageState extends State<DialogPage> {
                                         ),
                                       ),
                                     ),
+
+                                    // Home Button
                                     AnimatedScale(
                                       scale: _buttonAnimations["HOME"]! ? 1.1 : 1.0,
                                       duration: const Duration(milliseconds: 100),
@@ -818,7 +826,7 @@ class _DialogPageState extends State<DialogPage> {
                                           setState(() {
                                             _buttonAnimations["HOME"] = false;
                                           });
-                                          // BUTTON CODE
+                                          // Button Code
                                           if(_controller.text != widget.initialTextDialog) {
                                             _showTextUnsavedHomeButton();
                                           }
@@ -846,6 +854,8 @@ class _DialogPageState extends State<DialogPage> {
                                         ),
                                       ),
                                     ),
+
+                                    // Relax Button
                                     AnimatedScale(
                                       scale: _buttonAnimations["RELAX"]! ? 1.1 : 1.0,
                                       duration: const Duration(milliseconds: 100),
@@ -860,8 +870,7 @@ class _DialogPageState extends State<DialogPage> {
                                           setState(() {
                                             _buttonAnimations["RELAX"] = false;
                                           });
-                                          // BUTTON CODE
-                                          print("RELAAAAAAAAAX");
+                                          // Button Code
                                         },
                                         onTapCancel: () {
                                           setState(() {
@@ -919,7 +928,7 @@ class _DialogPageState extends State<DialogPage> {
                                     setState(() {
                                       _buttonAnimations["SAVE"] = false;
                                     });
-                                    // BUTTON CODE
+                                    // Button Code
                                     //Empty dialog can't be saved
                                     if (_controller.text.isNotEmpty) {
                                       //Retrieve the list of the themes for the actual language
@@ -1013,7 +1022,7 @@ class _DialogPageState extends State<DialogPage> {
                                                                   setState(() {
                                                                     _buttonAnimations["POPUP NO"] = false;
                                                                   });
-                                                                  // BUTTON CODE
+                                                                  // Button Code
                                                                   Navigator.pop(context);
                                                                 },
                                                                 onTapCancel: () {
@@ -1126,7 +1135,7 @@ class _DialogPageState extends State<DialogPage> {
                                                               setState(() {
                                                                 _buttonAnimations["POPUP OK"] = false;
                                                               });
-                                                              // BUTTON CODE
+                                                              // Button Code
                                                               Navigator.pop(context); // Quit popup
                                                               Navigator.pop(context); // Get back to list
                                                             },
@@ -1223,8 +1232,7 @@ class _DialogPageState extends State<DialogPage> {
                                     setState(() {
                                       _buttonAnimations["SEND"] = false;
                                     });
-                                    // BUTTON CODE
-                                    print("SENDDDDDDDDDDD");
+                                    // Button Code
                                     _showContactList();
                                   },
                                   onTapCancel: () {
@@ -1257,7 +1265,7 @@ class _DialogPageState extends State<DialogPage> {
                               ),
                             ],
                           ),
-                          //Existing Dialog
+                          // Existing Dialog
                           if (widget.idDialog != -1)
                             AnimatedScale(
                               scale: _buttonAnimations["MODIFY"] == true ? 1.1 : 1.0,
@@ -1274,10 +1282,10 @@ class _DialogPageState extends State<DialogPage> {
                                   setState(() {
                                     _buttonAnimations["MODIFY"] = false;
                                   });
-                                  // BUTTON CODE
-                                  //Can't save the modified dialog if it is empty
+                                  // Button Code
+                                  // Can't save the modified dialog if it is empty
                                   if (_controller.text.isNotEmpty) {
-                                    //Retrieve the list of the themes for the actual language
+                                    // Retrieve the list of the themes for the actual language
                                     List<ThemeObject> themesList = await databaseManager.retrieveThemesFromLanguage(language);
 
                                     // Sorting list in alphabetic order
@@ -1288,13 +1296,13 @@ class _DialogPageState extends State<DialogPage> {
                                     });
 
                                     ThemeObject? selectedTheme = themesList[0];
-                                    //Select by default the actual theme of the dialog
+                                    // Select by default the actual theme of the dialog
                                     for (var t in themesList) {
                                       if (t.id_theme == widget.idTheme) {
                                         selectedTheme = t;
                                       }
                                     }
-                                    //Popup for choosing a theme
+                                    // Popup for choosing a theme
                                     showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
@@ -1347,11 +1355,11 @@ class _DialogPageState extends State<DialogPage> {
                                                         ),
                                                       ),
                                                       SizedBox(height: screenHeight * 0.2),
-                                                      //Buttons to cancel and validate
+                                                      // Buttons to cancel and validate
                                                       Row(
                                                         mainAxisAlignment: MainAxisAlignment.center,
                                                         children: [
-                                                          //Cancel button
+                                                          // Cancel button
                                                           AnimatedScale(
                                                             scale: _buttonAnimations["POPUP NO"]! ? 1.1 : 1.0,
                                                             duration: const Duration(milliseconds: 100),
@@ -1368,7 +1376,7 @@ class _DialogPageState extends State<DialogPage> {
                                                                 setState(() {
                                                                   _buttonAnimations["POPUP NO"] = false;
                                                                 });
-                                                                // BUTTON CODE
+                                                                // Button Code
                                                                 Navigator.pop(context);
                                                                 Navigator.pop(context);
                                                               },
@@ -1394,9 +1402,9 @@ class _DialogPageState extends State<DialogPage> {
                                                               ),
                                                             ),
                                                           ),
-                                                          //Blank space between the buttons
+                                                          // Blank space between the buttons
                                                           SizedBox(width: screenWidth * 0.15),
-                                                          //Validate button
+                                                          // Validate button
                                                           AnimatedScale(
                                                             scale: _buttonAnimations["POPUP YES"]! ? 1.1 : 1.0,
                                                             duration: const Duration(milliseconds: 100),
@@ -1416,7 +1424,7 @@ class _DialogPageState extends State<DialogPage> {
                                                                   language: language,
                                                                   id_theme: selectedTheme!.id_theme,
                                                                 ));
-                                                                //Refresh the UI to display the success of modification
+                                                                // Refresh the UI to display the success of modification
                                                                 setState(() {
                                                                   isModified = true;
                                                                   _buttonAnimations["POPUP YES"] = false;
@@ -1469,7 +1477,7 @@ class _DialogPageState extends State<DialogPage> {
                                                         style: TextStyle(color: Colors.white, fontSize: screenHeight * 0.03, fontWeight: FontWeight.bold),
                                                       ),
                                                       SizedBox(height: screenHeight * 0.2),
-                                                      //Button to quit
+                                                      // Button to quit
                                                       AnimatedScale(
                                                         scale: _buttonAnimations["POPUP OK"]! ? 1.1 : 1.0,
                                                         duration: const Duration(milliseconds: 100),
@@ -1486,7 +1494,7 @@ class _DialogPageState extends State<DialogPage> {
                                                             setState(() {
                                                               _buttonAnimations["POPUP OK"] = false;
                                                             });
-                                                            // BUTTON CODE
+                                                            // Button Code
                                                             Navigator.pop(context); // Quit popup
                                                             Navigator.pop(context); // Get back to list
                                                           },
@@ -1571,7 +1579,7 @@ class _DialogPageState extends State<DialogPage> {
     );
   }
 
-  ///Popup when the user try to quit without saving his modifications
+  /// Popup when the user try to quit without saving his modifications
   void _showTextUnsavedBackArrow() {
     showDialog(
         context: context,
@@ -1614,7 +1622,7 @@ class _DialogPageState extends State<DialogPage> {
                               setState(() {
                                 _buttonAnimations["POPUP NO"] = false;
                               });
-                              // BUTTON CODE
+                              // Button Code
                               Navigator.pop(context);
                             },
                             onTapCancel: () {
@@ -1697,7 +1705,7 @@ class _DialogPageState extends State<DialogPage> {
         });
   }
 
-  ///Popup when the user try to quit without saving his modifications
+  /// Popup when the user try to quit without saving his modifications
   void _showTextUnsavedHomeButton() {
     showDialog(
         context: context,
@@ -1740,7 +1748,7 @@ class _DialogPageState extends State<DialogPage> {
                               setState(() {
                                 _buttonAnimations["POPUP NO"] = false;
                               });
-                              // BUTTON CODE
+                              // Button Code
                               Navigator.pop(context);
                             },
                             onTapCancel: () {
@@ -1824,7 +1832,7 @@ class _DialogPageState extends State<DialogPage> {
         });
   }
 
-  ///Generic popup to display a specific [text] from the JSON and with an "OK" button
+  /// Generic popup to display a specific [text] from the JSON and with an "OK" button
   void _showGenericPopupOK(String text) {
     showDialog(
         context: context,
@@ -1862,7 +1870,7 @@ class _DialogPageState extends State<DialogPage> {
                           setState(() {
                             _buttonAnimations["POPUP OK"] = false;
                           });
-                          // BUTTON CODE
+                          // Button Code
                           Navigator.pop(context);
                         },
                         onTapCancel: () {
@@ -1896,8 +1904,7 @@ class _DialogPageState extends State<DialogPage> {
         });
   }
 
-
-  ///Popup that display the list of contact and let choose to who we are sending the message
+  /// Popup that display the list of contact and let choose to who we are sending the message
   void _showContactList() async {
     //Get contact list
     List<Contact> contactsList = await databaseManager.retrieveContacts();
@@ -1988,7 +1995,7 @@ class _DialogPageState extends State<DialogPage> {
                                   setState(() {
                                     _buttonAnimations["POPUP NO"] = false;
                                   });
-                                  // BUTTON CODE
+                                  // Button Code
                                   Navigator.pop(context);
                                 },
                                 onTapCancel: () {

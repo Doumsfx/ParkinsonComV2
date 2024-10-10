@@ -14,8 +14,8 @@ import 'models/database/databasemanager.dart';
 // Global variables
 bool azerty = true; // true: azerty | false: abcde
 String language = "fr"; // "fr" | "nl"
-bool hasSimCard = true; // A MODIFIER
-bool isFirstLaunch = false;
+bool hasSimCard = true; // true: the device has a sim card | false: it doesn't have one
+bool isFirstLaunch = false; // true: before user registers | false: after registration
 bool isThisDeviceATablet = true; // true: tablet | false: phone
 
 ValueNotifier<bool> dialogPageState = ValueNotifier<bool>(false); // true: keyboard page | false: page without keyboard
@@ -30,7 +30,7 @@ final Map<String, int> idDialogWithoutTheme = {
 };
 
 
-// Databases
+// Database
 DatabaseManager databaseManager = DatabaseManager();
 
 // TTS
@@ -45,12 +45,12 @@ FileHandler languagesTextsFile = FileHandler();
 // Notification Handler
 NotificationHandler notificationHandler = NotificationHandler();
 
-//E-Mail Handler
+// E-Mail Handler
 EmailHandler emailHandler = EmailHandler();
 
-//SMS Handler
+// SMS Handler
 SmsHandler smsHandler = SmsHandler();
 
-//Emergency Requester
+// Emergency Requester
 EmergencyRequest emergencyRequest = EmergencyRequest();
 

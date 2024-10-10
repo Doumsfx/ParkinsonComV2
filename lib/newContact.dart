@@ -1,4 +1,4 @@
-// List of dialogs filtered by themes Page
+// New Contact Page
 // Code by Alexis Pagnon and Sanchez Adam
 // ParkinsonCom V2
 
@@ -24,18 +24,13 @@ class NewContactPage extends StatefulWidget {
 class _NewContactPageState extends State<NewContactPage> {
   // Useful variables
   final Map<String, bool> _buttonAnimations = {
-    "NEW DIALOG": false,
-    "THEMES": false,
-    "DIALOGS": false,
     "BACK ARROW": false,
     "HELP": false,
     "HOME": false,
-    "RELAX": false,
-    "TOP ARROW": false,
-    "BOT ARROW": false,
     "POPUP NO": false,
     "POPUP YES": false,
     "POPUP OK": false,
+    "ADD": false,
   };
 
   final TextEditingController _firstController = TextEditingController();
@@ -53,6 +48,7 @@ class _NewContactPageState extends State<NewContactPage> {
   Future<void> initialisation() async {
     // If it's not a new contact, we adjust the interface
     if(widget.idContact != -1){
+      // We retrieve all the contacts from the database
       contact = await databaseManager.retrieveContactFromId(widget.idContact);
       setState(() {});
 
@@ -70,6 +66,7 @@ class _NewContactPageState extends State<NewContactPage> {
         }
       });
     }
+
     else{
       setState(() {
         mail = true;
@@ -115,7 +112,7 @@ class _NewContactPageState extends State<NewContactPage> {
                           setState(() {
                             _buttonAnimations["POPUP OK"] = false;
                           });
-                          // BUTTON CODE
+                          // Button Code
                           int i = 0;
                           for(i; i < nbPopContext; i += 1){
                             Navigator.pop(context);
@@ -440,77 +437,77 @@ class _NewContactPageState extends State<NewContactPage> {
                               // Choice between mail and phone
                               hasSimCard
                                   ? SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.4,
-                                height: MediaQuery.of(context).size.width * 0.065,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    // Mail
-                                    Text(
-                                      languagesTextsFile.texts["new_contact_mail"],
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w700,
-                                      ),
+                                    width: MediaQuery.of(context).size.width * 0.4,
+                                    height: MediaQuery.of(context).size.width * 0.065,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                      children: [
+                                        // Mail
+                                        Text(
+                                          languagesTextsFile.texts["new_contact_mail"],
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+
+                                        // Mail Checkbox
+                                        Transform.scale(
+                                          scale: MediaQuery.of(context).size.width * 0.0025,
+                                          child: Checkbox(
+                                            value: mail,
+                                            shape: const CircleBorder(side: BorderSide(color: Colors.white, width: 60, )),
+
+                                            checkColor: Colors.indigo,
+                                            activeColor: const Color.fromRGBO(240, 242, 239, 1),
+
+                                            onChanged: (value) {
+                                              setState(() {
+                                                phone = false;
+                                                mail = true;
+                                                _thirdController.clear();
+                                              });
+                                            },
+                                          ),
+                                        ),
+
+                                        // Phone
+                                        Text(
+                                          languagesTextsFile.texts["new_contact_phone"],
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+
+                                        // Phone Checkbox
+                                        Transform.scale(
+                                          scale: MediaQuery.of(context).size.width * 0.0025,
+                                          child: Checkbox(
+                                            value: phone,
+                                            shape: const CircleBorder(side: BorderSide(color: Colors.white, width: 60, )),
+
+                                            checkColor: Colors.indigo,
+                                            activeColor: const Color.fromRGBO(240, 242, 239, 1),
+
+                                            onChanged: (value) {
+                                              setState(() {
+                                                phone = true;
+                                                mail = false;
+                                                _thirdController.clear();
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                      ],
                                     ),
-
-                                    // Mail Checkbox
-                                    Transform.scale(
-                                      scale: MediaQuery.of(context).size.width * 0.0025,
-                                      child: Checkbox(
-                                        value: mail,
-                                        shape: const CircleBorder(side: BorderSide(color: Colors.white, width: 60, )),
-
-                                        checkColor: Colors.indigo,
-                                        activeColor: const Color.fromRGBO(240, 242, 239, 1),
-
-                                        onChanged: (value) {
-                                          setState(() {
-                                            phone = false;
-                                            mail = true;
-                                            _thirdController.clear();
-                                          });
-                                        },
-                                      ),
-                                    ),
-
-                                    // Phone
-                                    Text(
-                                      languagesTextsFile.texts["new_contact_phone"],
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
-
-                                    // Phone Checkbox
-                                    Transform.scale(
-                                      scale: MediaQuery.of(context).size.width * 0.0025,
-                                      child: Checkbox(
-                                        value: phone,
-                                        shape: const CircleBorder(side: BorderSide(color: Colors.white, width: 60, )),
-
-                                        checkColor: Colors.indigo,
-                                        activeColor: const Color.fromRGBO(240, 242, 239, 1),
-
-                                        onChanged: (value) {
-                                          setState(() {
-                                            phone = true;
-                                            mail = false;
-                                            _thirdController.clear();
-                                          });
-                                        },
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              )
+                                  )
                                   : SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.4,
-                                height: MediaQuery.of(context).size.width * 0.065,
-                              ),
+                                    width: MediaQuery.of(context).size.width * 0.4,
+                                    height: MediaQuery.of(context).size.width * 0.065,
+                                  ),
 
                               // Third TextField
                               Container(
@@ -619,7 +616,7 @@ class _NewContactPageState extends State<NewContactPage> {
                                       setState(() {
                                         _buttonAnimations["ADD"] = false;
                                       });
-                                      // BUTTON CODE
+                                      // Button Code
                                       if(_firstController.text.isEmpty){
                                         _showGenericPopupOK(languagesTextsFile.texts["new_contact_first_name_error"], 1);
                                       }
@@ -709,6 +706,7 @@ class _NewContactPageState extends State<NewContactPage> {
                           margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.012),
                           child: Column(
                             children: [
+                              // Help Button
                               AnimatedScale(
                                 scale: _buttonAnimations["HELP"]! ? 1.1 : 1.0,
                                 duration: const Duration(milliseconds: 100),
@@ -724,7 +722,7 @@ class _NewContactPageState extends State<NewContactPage> {
                                     setState(() {
                                       _buttonAnimations["HELP"] = false;
                                     });
-                                    // BUTTON CODE
+                                    // Button Code
                                     print("HELLLLLLLLLLP");
                                   },
                                   onTapCancel: () {
@@ -743,6 +741,8 @@ class _NewContactPageState extends State<NewContactPage> {
                                   ),
                                 ),
                               ),
+
+                              // Home Button
                               AnimatedScale(
                                 scale: _buttonAnimations["HOME"]! ? 1.1 : 1.0,
                                 duration: const Duration(milliseconds: 100),
@@ -757,7 +757,7 @@ class _NewContactPageState extends State<NewContactPage> {
                                     setState(() {
                                       _buttonAnimations["HOME"] = false;
                                     });
-                                    // BUTTON CODE
+                                    // Button Code
                                     Navigator.popUntil(
                                       context,
                                           (route) => route.isFirst,
@@ -821,7 +821,7 @@ class _NewContactPageState extends State<NewContactPage> {
                       // Space between
                       const Expanded(child: SizedBox()),
 
-                      // Button at the right
+                      // Button at the right (Help Button)
                       Container(
                         margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.015),
                         child: AnimatedScale(
@@ -839,7 +839,7 @@ class _NewContactPageState extends State<NewContactPage> {
                               setState(() {
                                 _buttonAnimations["HELP"] = false;
                               });
-                              // BUTTON CODE
+                              // Button Code
                               print("HELLLLLLLLLLP");
                             },
                             onTapCancel: () {
@@ -964,7 +964,6 @@ class _NewContactPageState extends State<NewContactPage> {
                       return CustomKeyboardPhoneNumber(controller: _thirdController);
                     }
                   },)
-
 
                 ],
               );

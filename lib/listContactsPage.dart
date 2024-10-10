@@ -1,4 +1,4 @@
-// List of dialogs filtered by themes Page
+// List of contacts Page
 // Code by Alexis Pagnon and Sanchez Adam
 // ParkinsonCom V2
 
@@ -35,7 +35,6 @@ class _ListContactsPageState extends State<ListContactsPage> {
   };
 
   List<Contact> _listContacts = [];
-  String selectedThemeTitle = "";
   late List<bool> _contactsAnimations;
   late List<bool> _primaryContacts;
   late List<bool> _secondaryContacts;
@@ -43,7 +42,9 @@ class _ListContactsPageState extends State<ListContactsPage> {
   late List<bool> _modifyButtonsAnimations;
   final ScrollController _scrollController = ScrollController();
 
+  /// Function that initialise our variables
   Future<void> initialisation() async {
+    // We retrieve all the contacts of the database
     _listContacts = await databaseManager.retrieveContacts();
     setState(() {});
     _contactsAnimations = List.filled(_listContacts.length, false);
@@ -169,7 +170,7 @@ class _ListContactsPageState extends State<ListContactsPage> {
   @override
   void initState() {
     super.initState();
-    // Initialisation de nos variables
+    // Initialisation of our variables
     initialisation();
   }
 
@@ -254,7 +255,7 @@ class _ListContactsPageState extends State<ListContactsPage> {
                                     child: Text(
                                       languagesTextsFile.texts["contact_list_contacts"],
                                       textAlign: TextAlign.center,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.w600,
                                       ),
@@ -275,7 +276,7 @@ class _ListContactsPageState extends State<ListContactsPage> {
                                           child: Text(
                                             languagesTextsFile.texts["contact_list_principal"],
                                             textAlign: TextAlign.center,
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               color: Colors.white,
                                               fontWeight: FontWeight.w500,
                                               fontSize: 12,
@@ -290,7 +291,7 @@ class _ListContactsPageState extends State<ListContactsPage> {
                                           child: Text(
                                             languagesTextsFile.texts["contact_list_secondary"],
                                             textAlign: TextAlign.center,
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               color: Colors.white,
                                               fontWeight: FontWeight.w500,
                                               fontSize: 12,
@@ -336,6 +337,7 @@ class _ListContactsPageState extends State<ListContactsPage> {
                   margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.012),
                   child: Column(
                     children: [
+                      // Help Button
                       AnimatedScale(
                         scale: _buttonAnimations["HELP"]! ? 1.1 : 1.0,
                         duration: const Duration(milliseconds: 100),
@@ -352,7 +354,6 @@ class _ListContactsPageState extends State<ListContactsPage> {
                               _buttonAnimations["HELP"] = false;
                             });
                             // BUTTON CODE
-                            print("HELLLLLLLLLLP");
                           },
                           onTapCancel: () {
                             setState(() {
@@ -370,6 +371,8 @@ class _ListContactsPageState extends State<ListContactsPage> {
                           ),
                         ),
                       ),
+
+                      // Home Button
                       AnimatedScale(
                         scale: _buttonAnimations["HOME"]! ? 1.1 : 1.0,
                         duration: const Duration(milliseconds: 100),
@@ -458,8 +461,6 @@ class _ListContactsPageState extends State<ListContactsPage> {
                                                 activeColor: const Color.fromRGBO(240, 242, 239, 1),
 
                                                 onChanged: (value) {
-                                                  print('changement');
-                                                  print(value);
                                                   setState(() {
                                                     updateAllPrimaryContacts(false);
                                                     _primaryContacts[index] = true;
@@ -490,8 +491,6 @@ class _ListContactsPageState extends State<ListContactsPage> {
                                                 activeColor: const Color.fromRGBO(240, 242, 239, 1),
 
                                                 onChanged: (value) {
-                                                  print('changement');
-                                                  print(value);
                                                   setState(() {
                                                     if(!_primaryContacts[index]){
                                                       _secondaryContacts[index] = !_secondaryContacts[index];
@@ -751,134 +750,13 @@ class _ListContactsPageState extends State<ListContactsPage> {
                                       setState(() {
                                         _modifyButtonsAnimations[index] = false;
                                       });
-                                      //Popup to confirm the deletion
-                                      showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            // Use StatefulBuilder to manage the state inside the dialog
-                                            return StatefulBuilder(builder: (context, setState) {
-                                              double screenHeight = MediaQuery.of(context).size.height;
-                                              double screenWidth = MediaQuery.of(context).size.width;
 
-                                              return Dialog(
-                                                backgroundColor: Colors.black87,
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(16.0), // Optional padding for aesthetics
-                                                  child: Column(
-                                                      mainAxisSize: MainAxisSize.min, // Ensures the dialog is as small as needed
-                                                      children: [
-                                                        SizedBox(height: screenHeight * 0.1),
-                                                        //Suppression warning
-                                                        Text(
-                                                          "${languagesTextsFile.texts["pop_up_delete_reminder"]!}:\n${_listContacts[index].first_name} ?",
-                                                          textAlign: TextAlign.center,
-                                                          style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold,),
-                                                        ),
-
-                                                        SizedBox(height: screenHeight * 0.2),
-                                                        //Buttons to cancel and validate
-                                                        Row(
-                                                          mainAxisAlignment: MainAxisAlignment.center,
-                                                          children: [
-                                                            //Cancel button
-                                                            AnimatedScale(
-                                                              scale: _buttonAnimations["POPUP NO"]! ? 1.1 : 1.0,
-                                                              duration: const Duration(milliseconds: 100),
-                                                              curve: Curves.bounceOut,
-                                                              alignment: Alignment.center,
-                                                              child: GestureDetector(
-                                                                // Animation management
-                                                                onTapDown: (_) {
-                                                                  setState(() {
-                                                                    _buttonAnimations["POPUP NO"] = true;
-                                                                  });
-                                                                },
-                                                                onTapUp: (_) {
-                                                                  setState(() {
-                                                                    _buttonAnimations["POPUP NO"] = false;
-                                                                  });
-                                                                  // BUTTON CODE
-                                                                  Navigator.pop(context);
-                                                                },
-                                                                onTapCancel: () {
-                                                                  setState(() {
-                                                                    _buttonAnimations["POPUP NO"] = false;
-                                                                  });
-                                                                },
-                                                                child: Container(
-                                                                  decoration: const BoxDecoration(
-                                                                    borderRadius: BorderRadius.all(Radius.circular(60)),
-                                                                    color: Colors.red,
-                                                                  ),
-                                                                  padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
-                                                                  child: Text(
-                                                                    languagesTextsFile.texts["pop_up_no"]!,
-                                                                    style: const TextStyle(
-                                                                      color: Colors.white,
-                                                                      fontWeight: FontWeight.bold,
-                                                                      fontSize: 20,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            //Blank space between the buttons
-                                                            SizedBox(width: screenWidth * 0.15),
-                                                            //Validate button
-                                                            AnimatedScale(
-                                                              scale: _buttonAnimations["POPUP YES"]! ? 1.1 : 1.0,
-                                                              duration: const Duration(milliseconds: 100),
-                                                              curve: Curves.bounceOut,
-                                                              alignment: Alignment.center,
-                                                              child: GestureDetector(
-                                                                // Animation management
-                                                                onTapDown: (_) {
-                                                                  setState(() {
-                                                                    _buttonAnimations["POPUP YES"] = true;
-                                                                  });
-                                                                },
-                                                                onTapUp: (_) async {
-                                                                  setState(() {
-                                                                    _buttonAnimations["POPUP YES"] = false;
-                                                                  });
-                                                                  await databaseManager.deleteContact(_listContacts[index].id_contact);
-                                                                  //Refresh ui
-                                                                  _listContacts.removeAt(index);
-                                                                  _updateParent();
-                                                                  //Close the popup
-                                                                  Navigator.pop(context); // Close the dialog
-                                                                },
-
-                                                                onTapCancel: () {
-                                                                  setState(() {
-                                                                    _buttonAnimations["POPUP YES"] = false;
-                                                                  });
-                                                                },
-                                                                child: Container(
-                                                                  decoration: const BoxDecoration(
-                                                                    borderRadius: BorderRadius.all(Radius.circular(60)),
-                                                                    color: Colors.lightGreen,
-                                                                  ),
-                                                                  padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
-                                                                  child: Text(
-                                                                    languagesTextsFile.texts["pop_up_yes"]!,
-                                                                    style: const TextStyle(
-                                                                      color: Colors.white,
-                                                                      fontWeight: FontWeight.bold,
-                                                                      fontSize: 20,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        SizedBox(height: screenHeight * 0.03),
-                                                      ]),
-                                                ),
-                                              );
-                                            });
-                                          });
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => NewContactPage(idContact: _listContacts[index].id_contact),
+                                          )
+                                      ).then((_) => initialisation());
                                     },
                                     onTapCancel: () {
                                       setState(() {
@@ -901,12 +779,14 @@ class _ListContactsPageState extends State<ListContactsPage> {
                             );
                           }),
                     ),
+
                     // ScrollWidgets
                     Container(
                       margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.02),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
+                          // Top Arrow
                           AnimatedScale(
                             scale: _buttonAnimations["TOP ARROW"]! ? 1.1 : 1.0,
                             duration: const Duration(milliseconds: 100),
@@ -965,6 +845,8 @@ class _ListContactsPageState extends State<ListContactsPage> {
                               ),
                             ),
                           ),
+
+                          // Container for when the scrollbar is empty
                           Expanded(
                               child: Container(
                                 width: MediaQuery.of(context).size.width * 0.01875,
@@ -981,6 +863,8 @@ class _ListContactsPageState extends State<ListContactsPage> {
                                   ),
                                 ),
                               )),
+
+                          // Bot Arrow
                           AnimatedScale(
                             scale: _buttonAnimations["BOT ARROW"]! ? 1.1 : 1.0,
                             duration: const Duration(milliseconds: 100),

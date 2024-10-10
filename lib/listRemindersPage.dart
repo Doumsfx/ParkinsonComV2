@@ -1,4 +1,4 @@
-// List of dialogs filtered by themes Page
+// List of reminders Page
 // Code by Alexis Pagnon and Sanchez Adam
 // ParkinsonCom V2
 
@@ -37,7 +37,6 @@ class _ListRemindersPageState extends State<ListRemindersPage> {
   };
 
   List<Reminder> _listReminders = [];
-  String selectedThemeTitle = "";
   late List<bool> _remindersAnimations;
   late List<bool> _deleteButtonsAnimations;
   final ScrollController _scrollController = ScrollController();
@@ -47,10 +46,12 @@ class _ListRemindersPageState extends State<ListRemindersPage> {
   late Timer timer;
   var timeAndDate = DateTime.now();
 
+  /// Function to initialise our variables
   Future<void> initialisation() async {
 
     batteryLevel = await battery.batteryLevel;
 
+    // We retrieve all the reminders from the database
     _listReminders = await databaseManager.retrieveReminders();
     setState(() {});
     _remindersAnimations = List.filled(_listReminders.length, false);
@@ -62,13 +63,14 @@ class _ListRemindersPageState extends State<ListRemindersPage> {
 
     }
 
+  /// Function to format a [number] into a two format digit, for example '2' becomes '02'
   String formatWithTwoDigits(int number) {
     return number.toString().padLeft(2, '0');
   }
 
+  /// Function to retrieve the list of days in the good language
   String listDaysInGoodLanguage(String str){
     List<String> list = str.split(" ");
-    //print(list);
     String newList = "";
     String day = "";
     int i = 0;
@@ -77,14 +79,13 @@ class _ListRemindersPageState extends State<ListRemindersPage> {
       newList += " ${day.substring(0, 3)}";
     }
 
-
     return newList;
   }
 
   @override
   void initState() {
     super.initState();
-    // Initialisation de nos variables
+    // Initialisation of our variables
     initialisation();
 
     timer = Timer.periodic(const Duration(seconds: 1), (_) async {
@@ -131,6 +132,7 @@ class _ListRemindersPageState extends State<ListRemindersPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
 
+                        // Back Arrow + Date + Time
                         SizedBox(
                             width: MediaQuery.of(context).size.width * 0.24,
                             child: Column(
@@ -239,7 +241,7 @@ class _ListRemindersPageState extends State<ListRemindersPage> {
                           setState(() {
                             _buttonAnimations["NEW REMINDER"] = false;
                           });
-                          // BUTTON CODE
+                          // Button Code
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -287,6 +289,7 @@ class _ListRemindersPageState extends State<ListRemindersPage> {
                   margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.012),
                   child: Column(
                     children: [
+                      // Help Button
                       AnimatedScale(
                         scale: _buttonAnimations["HELP"]! ? 1.1 : 1.0,
                         duration: const Duration(milliseconds: 100),
@@ -302,8 +305,7 @@ class _ListRemindersPageState extends State<ListRemindersPage> {
                             setState(() {
                               _buttonAnimations["HELP"] = false;
                             });
-                            // BUTTON CODE
-                            print("HELLLLLLLLLLP");
+                            // Button Code
                             emergencyRequest.sendEmergencyRequest(context);
                           },
                           onTapCancel: () {
@@ -322,6 +324,8 @@ class _ListRemindersPageState extends State<ListRemindersPage> {
                           ),
                         ),
                       ),
+
+                      // Home Button
                       AnimatedScale(
                         scale: _buttonAnimations["HOME"]! ? 1.1 : 1.0,
                         duration: const Duration(milliseconds: 100),
@@ -336,7 +340,7 @@ class _ListRemindersPageState extends State<ListRemindersPage> {
                             setState(() {
                               _buttonAnimations["HOME"] = false;
                             });
-                            // BUTTON CODE
+                            // Button Code
                             Navigator.popUntil(
                               context,
                                   (route) => route.isFirst,
@@ -403,7 +407,7 @@ class _ListRemindersPageState extends State<ListRemindersPage> {
                                       setState(() {
                                         _remindersAnimations[index] = false;
                                       });
-                                      // BUTTON CODE
+                                      // Button Code
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
@@ -458,7 +462,7 @@ class _ListRemindersPageState extends State<ListRemindersPage> {
                                       });
                                     },
                                     onTapUp: (_) {
-                                      // BUTTON CODE
+                                      // Button Code
                                       setState(() {
                                         _deleteButtonsAnimations[index] = false;
                                       });
@@ -508,7 +512,7 @@ class _ListRemindersPageState extends State<ListRemindersPage> {
                                                                   setState(() {
                                                                     _buttonAnimations["POPUP NO"] = false;
                                                                   });
-                                                                  // BUTTON CODE
+                                                                  // Button Code
                                                                   Navigator.pop(context);
                                                                 },
                                                                 onTapCancel: () {
@@ -617,12 +621,14 @@ class _ListRemindersPageState extends State<ListRemindersPage> {
                             );
                           }),
                     ),
+
                     // ScrollWidgets
                     Container(
                       margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.02),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
+                          // Top Arrow
                           AnimatedScale(
                             scale: _buttonAnimations["TOP ARROW"]! ? 1.1 : 1.0,
                             duration: const Duration(milliseconds: 100),
@@ -681,6 +687,8 @@ class _ListRemindersPageState extends State<ListRemindersPage> {
                               ),
                             ),
                           ),
+
+                          // Container for when the scrollbar is empty
                           Expanded(
                               child: Container(
                                 width: MediaQuery.of(context).size.width * 0.01875,
@@ -697,6 +705,8 @@ class _ListRemindersPageState extends State<ListRemindersPage> {
                                   ),
                                 ),
                               )),
+
+                          // Bot Arrow
                           AnimatedScale(
                             scale: _buttonAnimations["BOT ARROW"]! ? 1.1 : 1.0,
                             duration: const Duration(milliseconds: 100),
