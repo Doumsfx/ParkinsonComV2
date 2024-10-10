@@ -247,7 +247,7 @@ class _NewContactPageState extends State<NewContactPage> {
                               Container(
                                 margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.03, 0, MediaQuery.of(context).size.height * 0.05),
                                 child: Text(
-                                  hasSimCard ? languagesTextsFile.texts["new_contact_subtitle2"] : languagesTextsFile.texts["new_contact_subtitle"],
+                                  hasSimCard && wantPhoneFonctionnality ? languagesTextsFile.texts["new_contact_subtitle2"] : languagesTextsFile.texts["new_contact_subtitle"],
                                   style: GoogleFonts.josefinSans(
                                     color: Colors.white,
                                     fontSize: 14,
@@ -435,7 +435,7 @@ class _NewContactPageState extends State<NewContactPage> {
                               ),
 
                               // Choice between mail and phone
-                              hasSimCard
+                              hasSimCard && wantPhoneFonctionnality
                                   ? SizedBox(
                                     width: MediaQuery.of(context).size.width * 0.4,
                                     height: MediaQuery.of(context).size.width * 0.065,
@@ -789,7 +789,7 @@ class _NewContactPageState extends State<NewContactPage> {
                   Positioned(
                     left: 0,
                     bottom: MediaQuery.of(context).size.height * 0.38,
-                    child: hasSimCard
+                    child: hasSimCard && wantPhoneFonctionnality
                         ? SizedBox(
                       width: MediaQuery.of(context).size.width * 0.29,
                     )
