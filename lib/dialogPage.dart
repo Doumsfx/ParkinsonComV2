@@ -14,6 +14,7 @@ import 'package:parkinson_com_v2/variables.dart';
 import 'models/database/contact.dart';
 import 'models/database/dialog.dart';
 import 'models/database/theme.dart';
+import 'models/popupshandler.dart';
 
 class DialogPage extends StatefulWidget {
   final int idDialog;
@@ -588,7 +589,12 @@ class _DialogPageState extends State<DialogPage> {
                                     });
                                     // BUTTON CODE
                                     if(_controller.text != widget.initialTextDialog) {
-                                      _showTextUnsavedHomeButton();
+                                      Popups.showPopupYesOrNo(context, text: languagesTextsFile.texts["pop_up_dialog_unsaved"]!, textYes: languagesTextsFile.texts["pop_up_yes"]!, textNo: languagesTextsFile.texts["pop_up_no"]!, functionYes: (p0) {
+                                        Navigator.popUntil(
+                                          context,
+                                              (route) => route.isFirst,
+                                        );
+                                      }, functionNo: Popups.functionToQuit);
                                     }
                                     else {
                                       Navigator.popUntil(
@@ -819,7 +825,13 @@ class _DialogPageState extends State<DialogPage> {
                                           });
                                           // BUTTON CODE
                                           if(_controller.text != widget.initialTextDialog) {
-                                            _showTextUnsavedHomeButton();
+                                            //Popup quit without saving
+                                            Popups.showPopupYesOrNo(context, text: languagesTextsFile.texts["pop_up_dialog_unsaved"]!, textYes: languagesTextsFile.texts["pop_up_yes"]!, textNo: languagesTextsFile.texts["pop_up_no"]!, functionYes: (p0) {
+                                              Navigator.popUntil(
+                                                context,
+                                                    (route) => route.isFirst,
+                                              );
+                                            }, functionNo: Popups.functionToQuit);
                                           }
                                           else {
                                             Navigator.popUntil(
@@ -1167,7 +1179,7 @@ class _DialogPageState extends State<DialogPage> {
                                       });
                                     } else {
                                       //Popup can't save an empty dialog
-                                      _showGenericPopupOK(languagesTextsFile.texts["pop_up_cant_save_dialog"]!);
+                                      Popups.showPopupOk(context, text: languagesTextsFile.texts["pop_up_cant_save_dialog"]!, textOk: languagesTextsFile.texts["pop_up_ok"]!, functionOk: Popups.functionToQuit);
                                     }
                                   },
                                   onTapCancel: () {
@@ -1280,7 +1292,7 @@ class _DialogPageState extends State<DialogPage> {
                                         selectedTheme = t;
                                       }
                                     }
-                                    //Popup for choosing a theme
+                                    //Popup for choosing a theme (can't use our Popups class because of the drop down menu)
                                     showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
@@ -1452,7 +1464,7 @@ class _DialogPageState extends State<DialogPage> {
                                                       // Title for theme selection
                                                       Text(
                                                         languagesTextsFile.texts["pop_up_modify_dialog_succes"]!,
-                                                        style: TextStyle(color: Colors.white, fontSize: screenHeight * 0.03, fontWeight: FontWeight.bold),
+                                                        style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
                                                       ),
                                                       SizedBox(height: screenHeight * 0.2),
                                                       //Button to quit
@@ -1489,10 +1501,10 @@ class _DialogPageState extends State<DialogPage> {
                                                             padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
                                                             child: Text(
                                                               languagesTextsFile.texts["pop_up_ok"]!,
-                                                              style: TextStyle(
+                                                              style: const TextStyle(
                                                                 color: Colors.white,
                                                                 fontWeight: FontWeight.bold,
-                                                                fontSize: screenHeight * 0.025,
+                                                                fontSize: 20,
                                                               ),
                                                             ),
                                                           ),
@@ -1516,7 +1528,7 @@ class _DialogPageState extends State<DialogPage> {
                                     });
                                   } else {
                                     //Popup can't save an empty dialog
-                                    _showGenericPopupOK(languagesTextsFile.texts["pop_up_cant_save_dialog"]!);
+                                    Popups.showPopupOk(context, text: languagesTextsFile.texts["pop_up_cant_save_dialog"]!, textOk: languagesTextsFile.texts["pop_up_ok"]!, functionOk: Popups.functionToQuit);
                                   }
                                 },
                                 onTapCancel: () {
@@ -1683,133 +1695,6 @@ class _DialogPageState extends State<DialogPage> {
         });
   }
 
-  ///Popup when the user try to quit without saving his modifications
-  void _showTextUnsavedHomeButton() {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          double screenHeight = MediaQuery.of(context).size.height;
-          double screenWidth = MediaQuery.of(context).size.width;
-          return StatefulBuilder(builder: (context, setState) {
-            return Dialog(
-              backgroundColor: Colors.black87,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.15),
-                    Text(
-                      languagesTextsFile.texts["pop_up_dialog_unsaved"]!,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: screenHeight * 0.2),
-                    //Buttons
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        //Cancel button
-                        AnimatedScale(
-                          scale: _buttonAnimations["POPUP NO"]! ? 1.1 : 1.0,
-                          duration: const Duration(milliseconds: 100),
-                          curve: Curves.bounceOut,
-                          alignment: Alignment.center,
-                          child: GestureDetector(
-                            // Animation management
-                            onTapDown: (_) {
-                              setState(() {
-                                _buttonAnimations["POPUP NO"] = true;
-                              });
-                            },
-                            onTapUp: (_) {
-                              setState(() {
-                                _buttonAnimations["POPUP NO"] = false;
-                              });
-                              // BUTTON CODE
-                              Navigator.pop(context);
-                            },
-                            onTapCancel: () {
-                              setState(() {
-                                _buttonAnimations["POPUP NO"] = false;
-                              });
-                            },
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(60)),
-                                color: Colors.red,
-                              ),
-                              padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
-                              child: Text(
-                                languagesTextsFile.texts["pop_up_no"]!,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        //Blank space between the buttons
-                        SizedBox(width: screenWidth * 0.15),
-                        //Yes button
-                        AnimatedScale(
-                          scale: _buttonAnimations["POPUP YES"]! ? 1.1 : 1.0,
-                          duration: const Duration(milliseconds: 100),
-                          curve: Curves.bounceOut,
-                          alignment: Alignment.center,
-                          child: GestureDetector(
-                            // Animation management
-                            onTapDown: (_) {
-                              setState(() {
-                                _buttonAnimations["POPUP YES"] = true;
-                              });
-                            },
-                            onTapUp: (_) async {
-                              setState(() {
-                                _buttonAnimations["POPUP YES"] = false;
-                              });
-                              //Close the popup
-                              Navigator.popUntil(
-                                context,
-                                    (route) => route.isFirst,
-                              );
-                            },
-                            onTapCancel: () {
-                              setState(() {
-                                _buttonAnimations["POPUP YES"] = false;
-                              });
-                            },
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(60)),
-                                color: Colors.lightGreen,
-                              ),
-                              padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
-                              child: Text(
-                                languagesTextsFile.texts["pop_up_yes"]!,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    SizedBox(height: screenHeight * 0.03),
-                  ],
-                ),
-              ),
-            );
-          });
-        });
-  }
-
   ///Generic popup to display a specific [text] from the JSON and with an "OK" button
   void _showGenericPopupOK(String text) {
     showDialog(
@@ -1888,7 +1773,7 @@ class _DialogPageState extends State<DialogPage> {
     //Get contact list
     List<Contact> contactsList = await databaseManager.retrieveContacts();
     if(contactsList.isEmpty) {
-      _showGenericPopupOK(languagesTextsFile.texts["pop_up_contact_empty"]!);
+      Popups.showPopupOk(context, text: languagesTextsFile.texts["pop_up_contact_empty"]!, textOk: languagesTextsFile.texts["pop_up_ok"]!, functionOk: Popups.functionToQuit);
     }
     //Popup to choose the contact
     else {
@@ -1902,12 +1787,12 @@ class _DialogPageState extends State<DialogPage> {
       }
       showDialog(
         context: context,
-        builder: (BuildContext context) {
+        builder: (BuildContext contextPopup) {
           // Use StatefulBuilder to manage the state inside the dialog
           return StatefulBuilder(
-            builder: (context, setState) {
-              double screenHeight = MediaQuery.of(context).size.height;
-              double screenWidth = MediaQuery.of(context).size.width;
+            builder: (contextPopup, setState) {
+              double screenHeight = MediaQuery.of(contextPopup).size.height;
+              double screenWidth = MediaQuery.of(contextPopup).size.width;
                 return Dialog(
                   backgroundColor: Colors.black87,
                   child: Padding(
@@ -1975,7 +1860,7 @@ class _DialogPageState extends State<DialogPage> {
                                     _buttonAnimations["POPUP NO"] = false;
                                   });
                                   // BUTTON CODE
-                                  Navigator.pop(context);
+                                  Navigator.pop(contextPopup);
                                 },
                                 onTapCancel: () {
                                   setState(() {
@@ -2016,7 +1901,7 @@ class _DialogPageState extends State<DialogPage> {
                                 },
                                 onTapUp: (_) async {
                                   //Send message to selectedContact
-                                  Navigator.of(context).pop();
+                                  Navigator.of(contextPopup).pop();
                                   if (_controller.text.isNotEmpty) {
                                     //Send an E-Mail
                                     if (selectedContact!.email != null) {
@@ -2026,10 +1911,11 @@ class _DialogPageState extends State<DialogPage> {
                                       if (mounted) { //Protect from trying to display the popup when the context has changed (ex : going back to the menu)
                                         if(result == 1) {
                                           String contactName = "${selectedContact!.last_name} ${selectedContact!.first_name}";
-                                          _showGenericPopupOK("${languagesTextsFile.texts["pop_up_message_sent"]!}\n$contactName");
+                                          Popups.showPopupOk(context, text: "${languagesTextsFile.texts["pop_up_message_sent"]!}\n$contactName", textOk: languagesTextsFile.texts["pop_up_ok"]!, functionOk: Popups.functionToQuit);
+
                                         }
                                         else if(result < 0) {
-                                          _showGenericPopupOK(languagesTextsFile.texts["popup_message_send_fail"]!);
+                                          Popups.showPopupOk(context, text: languagesTextsFile.texts["popup_message_send_fail"]!, textOk: languagesTextsFile.texts["pop_up_ok"]!, functionOk: Popups.functionToQuit);
                                         }
                                       }
                                     }
@@ -2037,22 +1923,23 @@ class _DialogPageState extends State<DialogPage> {
                                     else if(selectedContact!.phone != null) {
                                       String phoneNumber = selectedContact!.phone as String;
                                       final int result = await smsHandler.checkPermissionAndSendSMS(_controller.text, [phoneNumber]);
+                                      //Show result of the SMS
                                       if (mounted) {
                                         if(result == 1) {
                                           String contactName = "${selectedContact!.last_name} ${selectedContact!.first_name}";
-                                          _showGenericPopupOK("${languagesTextsFile.texts["pop_up_message_sent"]!}\n$contactName");
+                                          Popups.showPopupOk(context, text: "${languagesTextsFile.texts["pop_up_message_sent"]!}\n$contactName", textOk: languagesTextsFile.texts["pop_up_ok"]!, functionOk: Popups.functionToQuit);
                                         }
                                         else if(result == -1) {
-                                          _showGenericPopupOK(languagesTextsFile.texts["popup_message_send_fail"]!);
+                                          Popups.showPopupOk(context, text: languagesTextsFile.texts["popup_message_send_fail"]!, textOk: languagesTextsFile.texts["pop_up_ok"]!, functionOk: Popups.functionToQuit);
                                         }
                                         else if(result == -2){
-                                          _showGenericPopupOK(languagesTextsFile.texts["popup_message_permission_denied"]!);
+                                          Popups.showPopupOk(context, text: languagesTextsFile.texts["popup_message_permission_denied"]!, textOk: languagesTextsFile.texts["pop_up_ok"]!, functionOk: Popups.functionToQuit);
                                         }
                                       }
                                     }
                                   }
                                   else {
-                                    _showGenericPopupOK(languagesTextsFile.texts["pop_up_cant_send_empty_msg"]!);
+                                    Popups.showPopupOk(context, text: languagesTextsFile.texts["pop_up_cant_send_empty_msg"]!, textOk: languagesTextsFile.texts["pop_up_ok"]!, functionOk: Popups.functionToQuit);
                                   }
 
                                 },

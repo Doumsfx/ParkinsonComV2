@@ -4,6 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:parkinson_com_v2/customtextfield.dart';
 import 'package:parkinson_com_v2/keyboard.dart';
 import 'package:parkinson_com_v2/models/database/theme.dart';
 import 'package:parkinson_com_v2/variables.dart';
@@ -141,7 +142,11 @@ class _NewThemePageState extends State<NewThemePage> {
                               MediaQuery.of(context).size.width * 0.02,
                               0,
                             ),
-                            child: TextField(
+                            child: CustomTextField(
+                              context: context,
+                              width: MediaQuery.of(context).size.width * 0.5,
+                              maxFontSize: 20,
+                              minFontSize: 5,
                               style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w800,

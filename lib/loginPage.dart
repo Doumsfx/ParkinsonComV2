@@ -6,7 +6,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:parkinson_com_v2/customtextfield.dart';
 import 'package:parkinson_com_v2/keyboard.dart';
-import 'package:parkinson_com_v2/main.dart';
 import 'package:parkinson_com_v2/models/database/contact.dart';
 import 'package:parkinson_com_v2/variables.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -193,8 +192,9 @@ class _LoginPageState extends State<LoginPage> {
                                         // TextField
                                         Expanded(
                                           child: CustomTextField(
-                                            width: 300, //todo changer largeur
+                                            width: MediaQuery.of(context).size.width * 0.3,
                                             context: context,
+                                            minFontSize: 5,
                                             maxFontSize: 22,
                                             style: const TextStyle(
                                               fontSize: 22,
@@ -299,9 +299,10 @@ class _LoginPageState extends State<LoginPage> {
                                         // TextField
                                         Expanded(
                                           child: CustomTextField(
-                                            width: 300, //todo changer largeur
+                                            width: MediaQuery.of(context).size.width * 0.3,
                                             context: context,
                                             maxFontSize: 22,
+                                            minFontSize: 5,
                                             style: const TextStyle(
                                               fontSize: 22,
                                               fontWeight: FontWeight.w800,
@@ -742,9 +743,10 @@ class _LoginPageState extends State<LoginPage> {
                                             // TextField
                                             Expanded(
                                               child: CustomTextField(
-                                                width: 300, //todo changer largeur
+                                                width: MediaQuery.of(context).size.width * 0.3,
                                                 context: context,
                                                 maxFontSize: 22,
+                                                minFontSize: 5,
                                                 style: const TextStyle(
                                                   fontSize: 22,
                                                   fontWeight: FontWeight.w800,
