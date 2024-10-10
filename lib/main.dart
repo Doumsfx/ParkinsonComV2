@@ -14,7 +14,7 @@ import 'package:parkinson_com_v2/views/contacts/listContactsPage.dart';
 import 'package:parkinson_com_v2/views/dialogs/listDialogsPage.dart';
 import 'package:parkinson_com_v2/views/reminders/listRemindersPage.dart';
 import 'package:parkinson_com_v2/loginPage.dart';
-import 'package:parkinson_com_v2/CustomShape.dart';
+import 'package:parkinson_com_v2/views/customWidgets/CustomShape.dart';
 import 'package:parkinson_com_v2/models/variables.dart';
 import 'package:battery_plus/battery_plus.dart';
 
@@ -140,7 +140,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
     });
 
     // Initialization of our Notifications for Android
-    var initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
+    var initializationSettingsAndroid = const AndroidInitializationSettings('@mipmap/ic_launcher');
     var initializationSettings = InitializationSettings(
       android: initializationSettingsAndroid,
     );
