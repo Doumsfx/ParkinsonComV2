@@ -1,3 +1,7 @@
+// New Theme Page
+// Code by Pagnon Alexis and Sanchez Adam
+// ParkinsonCom V2
+
 import 'dart:ui' as ui;
 
 import 'package:flutter/gestures.dart';

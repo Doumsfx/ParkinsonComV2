@@ -1,5 +1,5 @@
-// CustomKeyboard Widget
-// Code by Alexis Pagnon and Sanchez Adam
+// Custom Keyboard Widget
+// Code by Pagnon Alexis and Sanchez Adam
 // ParkinsonCom V2
 
 import 'package:flutter/material.dart';
@@ -35,7 +35,7 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
     ["", "", "", "", "", "", "", "", "", ""],
     ["", "", "", "", "", "", "", "", "", ""],
     ["MAJ", "", "", "", "", "", "", "'", "?", "!"],
-    ["?123", "TIRET", "ESPACE", ",", "."]
+    ["?123", "TIRET", languagesTextsFile.texts["keyboard_space"], ",", "."]
   ];
   final Map<String?, bool> _keyScales = {};
   final Map<String, bool> _buttonAnimations = {
@@ -70,7 +70,7 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
     }
   }
 
-  // Utility function to get the keyboard configuration
+  /// Utility function to get the keyboard configuration base on [maj], [modeAccent], [azerty]
   List<List<String>> _getKeyboardConfig(bool maj, bool modeAccent, bool azerty) {
     if (modeAccent) {
       return maj
@@ -78,13 +78,13 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
               ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
               ["À", "É", "È", "Ê", "Ï", "Ô", "Û", "Ç", '"', ":"],
               ["MAJ", "@", "/", "=", "-", "+", "*", "'", "?", "!"],
-              ["ABC", "TIRET", "ESPACE", ",", "."]
+              ["ABC", "TIRET", languagesTextsFile.texts["keyboard_space"], ",", "."]
             ]
           : [
               ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
               ["à", "é", "è", "ê", "ï", "ô", "û", "ç", '"', ":"],
               ["MAJ", "@", "/", "=", "-", "+", "*", "'", "?", "!"],
-              ["ABC", "TIRET", "ESPACE", ",", "."]
+              ["ABC", "TIRET", languagesTextsFile.texts["keyboard_space"], ",", "."]
             ];
     } else {
       if (azerty) {
@@ -93,13 +93,13 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
                 ["A", "Z", "E", "R", "T", "Y", "U", "I", "O", "P"],
                 ["Q", "S", "D", "F", "G", "H", "J", "K", "L", "M"],
                 ["MAJ", "W", "X", "C", "V", "B", "N", "'", "?", "!"],
-                ["?123", "TIRET", "ESPACE", ",", "."]
+                ["?123", "TIRET", languagesTextsFile.texts["keyboard_space"], ",", "."]
               ]
             : [
                 ["a", "z", "e", "r", "t", "y", "u", "i", "o", "p"],
                 ["q", "s", "d", "f", "g", "h", "j", "k", "l", "m"],
                 ["MAJ", "w", "x", "c", "v", "b", "n", "'", "?", "!"],
-                ["?123", "TIRET", "ESPACE", ",", "."]
+                ["?123", "TIRET", languagesTextsFile.texts["keyboard_space"], ",", "."]
               ];
       } else {
         return maj
@@ -107,21 +107,20 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
                 ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"],
                 ["K", "L", "M", "N", "O", "P", "Q", "R", "S", "T"],
                 ["MAJ", "U", "V", "W", "X", "Y", "Z", "'", "?", "!"],
-                ["?123", "TIRET", "ESPACE", ",", "."]
+                ["?123", "TIRET", languagesTextsFile.texts["keyboard_space"], ",", "."]
               ]
             : [
                 ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"],
                 ["k", "l", "m", "n", "o", "p", "q", "r", "s", "t"],
                 ["MAJ", "u", "v", "w", "x", "y", "z", "'", "?", "!"],
-                ["?123", "TIRET", "ESPACE", ",", "."]
+                ["?123", "TIRET", languagesTextsFile.texts["keyboard_space"], ",", "."]
               ];
       }
     }
   }
 
-  // Function that manages actions based on keys pressed
+  /// Function that manages actions based on keys pressed
   void _onKeyPress(String? keyText) {
-    print('Key pressed: $keyText');
 
     // If it's the first key
     if (_firstKey && keyText != "MAJ" && keyText != "VALIDATE") {
@@ -160,14 +159,17 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
     }
 
     // If the key space is pressed
-    else if (keyText == "ESPACE") {
+    else if (keyText == languagesTextsFile.texts["keyboard_space"]) {
       int offset = widget.controller.selection.extentOffset;
 
       setState(() {
         widget.controller.text = "${widget.controller.text.substring(0, offset)} ${widget.controller.text.substring(offset, widget.controller.text.length)}";
         widget.controller.selection = TextSelection.collapsed(offset: offset + 1);
       });
-    } else if (keyText == "RETURN") {
+    }
+
+    // If the key
+    else if (keyText == "RETURN") {
       setState(() {
         if (widget.controller.text.isNotEmpty) {
           int offset0 = widget.controller.selection.extentOffset;
@@ -179,7 +181,8 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
               widget.controller.text = widget.controller.text.substring(0, offset0 - 1) + widget.controller.text.substring(offset0, widget.controller.text.length);
               widget.controller.selection = TextSelection.collapsed(offset: offset0 - 1);
             });
-          } else {
+          }
+          else {
             setState(() {
               widget.controller.text = widget.controller.text.substring(0, start) + widget.controller.text.substring(end, widget.controller.text.length);
               widget.controller.selection = TextSelection.collapsed(offset: start);
@@ -194,7 +197,9 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
           _keyboard = _getKeyboardConfig(_maj, _modeAccent, azerty);
         }
       });
-    } else if (keyText == "BACKSPACE") {
+    }
+
+    else if (keyText == "BACKSPACE") {
       int offset1 = widget.controller.selection.extentOffset;
 
       setState(() {
@@ -206,7 +211,10 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
         }
         _keyboard = _getKeyboardConfig(_maj, _modeAccent, azerty);
       });
-    } else if (keyText == "VALIDATE") {
+    }
+
+    else if (keyText == "VALIDATE") {
+      // We simply put on the origin page (without the keyboard)
       setState(() {
         dialogPageState.value = false;
         newThemePageState.value = false;
@@ -240,7 +248,7 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height > 600 ? MediaQuery.of(context).size.height * 0.55 : MediaQuery.of(context).size.height * 0.58,
+      height: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.55 : MediaQuery.of(context).size.height * 0.58,
       width: MediaQuery.of(context).size.width,
       child: Container(
         color: const Color.fromRGBO(34, 39, 42, 1),
@@ -249,9 +257,10 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
             // Text Predictions
             widget.forcedPredictionsOff
                 ?
-                //Force the predictions to be turned off
+                // Force the predictions to be turned off
                 Container(height: MediaQuery.of(context).size.height * 0.077, width: MediaQuery.of(context).size.width, color: const Color.fromRGBO(69, 73, 76, 1))
-                : //Predictions can be turned on
+                :
+                // Predictions can be turned on
                 // Detect when disconnected from internet
                 ValueListenableBuilder(
                     valueListenable: widget.textPredictions,
@@ -381,10 +390,11 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                // First part of the keyboard
                 Container(
                   color: const Color.fromRGBO(34, 39, 42, 1),
                   child: VirtualKeyboard(
-                      height: MediaQuery.of(context).size.height > 600 ? MediaQuery.of(context).size.height * (0.55 - 0.077) : MediaQuery.of(context).size.height * (0.58 - 0.13),
+                      height: isThisDeviceATablet ? MediaQuery.of(context).size.height * (0.55 - 0.077) : MediaQuery.of(context).size.height * (0.58 - 0.13),
                       width: MediaQuery.of(context).size.width * 0.887,
                       textColor: Colors.white,
                       defaultLayouts: const [VirtualKeyboardDefaultLayouts.Custom],
@@ -392,7 +402,7 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
                       keys: _keyboard,
                       builder: (context, key) {
                         // We define the size of the keys as well as the font size
-                        Size keySize = key.text == "ESPACE"
+                        Size keySize = key.text == languagesTextsFile.texts["keyboard_space"]
                             ? Size(MediaQuery.of(context).size.width / 2.2, MediaQuery.of(context).size.height / 11)
                             : key.text == "?123" || key.text == "ABC"
                                 ? Size(MediaQuery.of(context).size.width / 11.5, MediaQuery.of(context).size.height / 11)
@@ -405,7 +415,7 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
                             : const Color.fromRGBO(69, 73, 76, 1); // Light Grey
 
                         return Container(
-                          margin: MediaQuery.of(context).size.height > 600 ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.01) : EdgeInsets.zero,
+                          margin: isThisDeviceATablet ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.01) : EdgeInsets.zero,
                           child: GestureDetector(
                             onTapDown: (_) {
                               setState(() {
@@ -463,13 +473,16 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
                       },
                       onKeyPress: _onKeyPress),
                 ),
+
+                // Second part of the keyboard (the 3 keys on the right)
                 Container(
                   color: const Color.fromRGBO(34, 39, 42, 1),
-                  height: MediaQuery.of(context).size.height > 600 ? MediaQuery.of(context).size.height * (0.55 - 0.08) : MediaQuery.of(context).size.height * (0.58 - 0.08),
+                  height: isThisDeviceATablet ? MediaQuery.of(context).size.height * (0.55 - 0.08) : MediaQuery.of(context).size.height * (0.58 - 0.08),
                   width: MediaQuery.of(context).size.width * (1 - 0.887),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
+                      // Return Key
                       AnimatedScale(
                         scale: _buttonAnimations["RETURN"] == true ? 1.1 : 1.0,
                         duration: const Duration(milliseconds: 100),
@@ -508,6 +521,8 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
                               )),
                         ),
                       ),
+
+                      // Backspace Key
                       AnimatedScale(
                         scale: _buttonAnimations["BACKSPACE"] == true ? 1.1 : 1.0,
                         duration: const Duration(milliseconds: 100),
@@ -547,6 +562,8 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
                               )),
                         ),
                       ),
+
+                      // Validate Key
                       AnimatedScale(
                         scale: _buttonAnimations["VALIDATE"] == true ? 1.1 : 1.0,
                         duration: const Duration(milliseconds: 100),

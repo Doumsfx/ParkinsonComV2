@@ -1,4 +1,4 @@
-// Main Page
+// Home Page
 // Code by Pagnon Alexis and Sanchez Adam
 // ParkinsonCom V2
 
@@ -10,11 +10,11 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:parkinson_com_v2/customHomePageTitle.dart';
 import 'package:parkinson_com_v2/customMenuButton.dart';
-import 'package:parkinson_com_v2/customShapeMenu.dart';
 import 'package:parkinson_com_v2/listContactsPage.dart';
 import 'package:parkinson_com_v2/listDialogsPage.dart';
 import 'package:parkinson_com_v2/listRemindersPage.dart';
 import 'package:parkinson_com_v2/loginPage.dart';
+import 'package:parkinson_com_v2/CustomShape.dart';
 import 'package:parkinson_com_v2/variables.dart';
 import 'package:battery_plus/battery_plus.dart';
 
@@ -26,7 +26,7 @@ void main() async {
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
   // Detect if it is the first time we are launching the app using the existence of the database or not
-  isFirstLaunch = !(await databaseManager.doesExist()); //first time <=> no database existing
+  isFirstLaunch = !(await databaseManager.doesExist()); // first time <=> no database existing
 
   // Initialization of the TTS handler when launching the app
   ttsHandler.initTts();
@@ -39,20 +39,19 @@ void main() async {
   // Set the texts to the default language
   languagesTextsFile.setNewLanguage("fr");
 
-  //Load .env variables
+  // Load .env variables
   loadEnvVariables();
 
   // We ensure that the phone preserve the landscape mode
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight
   ]).then((_) {
-    runApp(const MyApp());
-  });
 
-
+  // Launch the app
+  runApp(const MyApp());});
 }
 
-///Load Environment Variables from the .env file
+/// Load Environment Variables from the .env file
 Future<void> loadEnvVariables() async {
   await dotenv.load(fileName: ".env");
 }
@@ -81,8 +80,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
-  late InternetAlert internetAlert;
   // Useful variables
+  late InternetAlert internetAlert;
   final Map<String, bool> _buttonAnimations = {
     "POWER": false,
     "HELP": false,
@@ -98,12 +97,21 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
   var timeAndDate = DateTime.now();
   var isMusicPaused = false;
 
+  /// Function to initialise our variables
   Future<void> initialisation() async {
     batteryLevel = await battery.batteryLevel;
   }
 
+  /// Function to format a [number] into a two format digit, for example '2' becomes '02'
   String formatWithTwoDigits(int number) {
     return number.toString().padLeft(2, '0');
+  }
+
+  /// Function to check if the device is a tablet or not, true: tablet, false: phone
+  bool isTablet() {
+    // The threshold is generally set at 600 to separate phones from tablets.
+    var shortestSide = MediaQuery.of(context).size.shortestSide;
+    return shortestSide >= 600;
   }
 
   @override
@@ -125,7 +133,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
 
     });
 
-    //Internet Checker
+    // Internet Checker
     internetAlert = InternetAlert();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       internetAlert.startCheckInternet(context);
@@ -141,6 +149,13 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
     // Initialisation of our Notification Handler
     WidgetsBinding.instance.addPostFrameCallback((_) {
       notificationHandler.startCheck(context, flutterLocalNotificationsPlugin);
+
+      if(isTablet()){
+        isThisDeviceATablet = true;
+      }
+      else{
+        isThisDeviceATablet = false;
+      }
     });
 
   }
@@ -154,7 +169,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
     super.dispose();
   }
 
-  // Method to monitor application lifecycle changes
+  /// Method to monitor application lifecycle changes
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
@@ -241,7 +256,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                             setState(() {
                                               _buttonAnimations["POWER"] = false;
                                             });
-                                            // BUTTON CODE
+                                            // Button Code
                                             SystemNavigator.pop();
                                           },
                                           onTapCancel: () {
@@ -351,7 +366,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                   setState(() {
                                     _buttonAnimations["HELP"] = false;
                                   });
-                                  // BUTTON CODE
+                                  // Button Code
                                   print("HELLLLLLLLLLP");
                                   emergencyRequest.sendEmergencyRequest(context);
 
@@ -388,7 +403,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                       children: [
                         // Dialog button
                         Container(
-                          margin: MediaQuery.of(context).size.height > 600 ? EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.27) : EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.29),
+                          margin: isThisDeviceATablet ? EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.27) : EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.29),
                           child: AnimatedScale(
                             scale: _buttonAnimations["DIALOG"]! ? 1.1 : 1.0,
                             duration: const Duration(milliseconds: 100),
@@ -405,7 +420,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                 setState(() {
                                   _buttonAnimations["DIALOG"] = false;
                                 });
-                                // BUTTON CODE
+                                // Button Code
                                 print("DIALOOOOOOOOOOG");
                                 Navigator.push(
                                     context,
@@ -424,7 +439,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                 image: 'assets/dialog.png',
                                 text: languagesTextsFile.texts["main_dialog"]!,
                                 imageScale: 1,
-                                scale: MediaQuery.of(context).size.height > 600 ? 1 : 1.2,
+                                scale: isThisDeviceATablet ? 1 : 1.2,
                               ),
                             ),
                           ),
@@ -449,7 +464,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                 setState(() {
                                   _buttonAnimations["RELAX"] = false;
                                 });
-                                // BUTTON CODE
+                                // Button Code
                                 print("RELAAAAAAAAAAAAAX");
 
                                 setState(() {
@@ -474,7 +489,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                 image: 'assets/beach-chair.png',
                                 text: languagesTextsFile.texts["main_relax"]!,
                                 imageScale: 1.4,
-                                scale: MediaQuery.of(context).size.height > 600 ? 1 : 1.2,
+                                scale: isThisDeviceATablet ? 1 : 1.2,
                               ),
                             ),
                           ),
@@ -507,7 +522,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                 setState(() {
                                   _buttonAnimations["SETTINGS"] = false;
                                 });
-                                // BUTTON CODE
+                                // Button Code
                                 print("SETTINGGGGGGGGGS");
 
 
@@ -517,13 +532,25 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                   _buttonAnimations["SETTINGS"] = false;
                                 });
                               },
-                              child: CustomShapeMenu(
+                              child: CustomShape(
                                 text: languagesTextsFile.texts["main_settings"]!,
                                 image: 'assets/profile-user.png',
                                 backgroundColor: const Color.fromRGBO(245, 107, 56, 1),
                                 textColor: const Color.fromRGBO(35, 55, 79, 1),
-                                imageScale: 5,
-                                scale: MediaQuery.of(context).size.height > 600 ? 1 : 0.85,
+                                imageScale: 3,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700,
+                                containerWidth: MediaQuery.of(context).size.width * 0.23,
+                                containerHeight: MediaQuery.of(context).size.width * 0.05,
+                                containerPadding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.01, 0, MediaQuery.of(context).size.width * 0.035, 0),
+                                circlePositionedRight: MediaQuery.of(context).size.width * 0.001 * -1,
+                                circleSize: MediaQuery.of(context).size.width * 0.085,
+                                sizedBoxHeight: MediaQuery.of(context).size.width * 0.085,
+                                sizedBoxWidth: MediaQuery.of(context).size.width * 0.2725,
+                                scale: isThisDeviceATablet ? 1 : 0.85,
+
+
+
                               ),
                             ),
                           ),
@@ -548,7 +575,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                   setState(() {
                                     _buttonAnimations["REMINDERS"] = false;
                                   });
-                                  // BUTTON CODE
+                                  // Button Code
                                   print("REMINNNNNNDERS");
                                   Navigator.push(
                                       context,
@@ -561,13 +588,22 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                     _buttonAnimations["REMINDERS"] = false;
                                   });
                                 },
-                                child: CustomShapeMenu(
+                                child: CustomShape(
                                   text: languagesTextsFile.texts["main_reminders"]!,
                                   image: 'assets/horloge.png',
                                   backgroundColor: Colors.white,
                                   textColor: const Color.fromRGBO(224, 106, 109, 1),
-                                  imageScale: 1,
-                                  scale: MediaQuery.of(context).size.height > 600 ? 1 : 0.85,
+                                  imageScale: 1.1,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w700,
+                                  containerWidth: MediaQuery.of(context).size.width * 0.23,
+                                  containerHeight: MediaQuery.of(context).size.width * 0.05,
+                                  containerPadding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.01, 0, MediaQuery.of(context).size.width * 0.035, 0),
+                                  circlePositionedRight: MediaQuery.of(context).size.width * 0.001 * -1,
+                                  circleSize: MediaQuery.of(context).size.width * 0.085,
+                                  sizedBoxHeight: MediaQuery.of(context).size.width * 0.085,
+                                  sizedBoxWidth: MediaQuery.of(context).size.width * 0.2725,
+                                  scale: isThisDeviceATablet ? 1 : 0.85,
                                 ),
                               ),
                             ),
@@ -593,7 +629,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                 setState(() {
                                   _buttonAnimations["CONTACTS"] = false;
                                 });
-                                // BUTTON CODE
+                                // Button Code
                                 print("CONTACTSSSSS");
                                 Navigator.push(
                                     context,
@@ -606,13 +642,22 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                   _buttonAnimations["CONTACTS"] = false;
                                 });
                               },
-                              child: CustomShapeMenu(
+                              child: CustomShape(
                                 text: languagesTextsFile.texts["main_contacts"]!,
                                 image: 'assets/enveloppe.png',
                                 backgroundColor: const Color.fromRGBO(12, 178, 255, 1),
                                 textColor: const Color.fromRGBO(35, 55, 79, 1),
                                 imageScale: 0.9,
-                                scale: MediaQuery.of(context).size.height > 600 ? 1 : 0.85,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700,
+                                containerWidth: MediaQuery.of(context).size.width * 0.23,
+                                containerHeight: MediaQuery.of(context).size.width * 0.05,
+                                containerPadding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.01, 0, MediaQuery.of(context).size.width * 0.035, 0),
+                                circlePositionedRight: MediaQuery.of(context).size.width * 0.001 * -1,
+                                circleSize: MediaQuery.of(context).size.width * 0.085,
+                                sizedBoxHeight: MediaQuery.of(context).size.width * 0.085,
+                                sizedBoxWidth: MediaQuery.of(context).size.width * 0.2725,
+                                scale: isThisDeviceATablet ? 1 : 0.85,
                               ),
                             ),
                           ),

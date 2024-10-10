@@ -1,5 +1,5 @@
 // List of themes Page
-// Code by Alexis Pagnon and Sanchez Adam
+// Code by Pagnon Alexis and Sanchez Adam
 // ParkinsonCom V2
 
 import 'dart:async';
@@ -47,6 +47,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
   final ScrollController _scrollController = ScrollController();
 
   Future<void> initialisation() async {
+    // We retrieve all the themes of the database
     _listThemes = await databaseManager.retrieveThemesFromLanguage(language);
     setState(() {});
     _dialogsAnimations = List.filled(_listThemes.length, false);
@@ -94,7 +95,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
     super.initState();
   }
 
-  ///Used to refresh the UI from the StatefulBuilder
+  /// Used to refresh the UI from the StatefulBuilder
   void _updateParent() {
     setState(() {});
   }
@@ -167,6 +168,14 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                   imageScale: 1,
                                   backgroundColor: Colors.white,
                                   textColor: const Color.fromRGBO(29, 52, 83, 1),
+                                  containerWidth: MediaQuery.of(context).size.width * 0.50,
+                                  containerHeight: MediaQuery.of(context).size.height * 0.12,
+                                  containerPadding: EdgeInsets.all(MediaQuery.of(context).size.height * 0.0),
+                                  fontSize: isThisDeviceATablet ? 32 : 28,
+                                  circleSize: MediaQuery.of(context).size.height * 0.1875,
+                                  circlePositionedLeft: MediaQuery.of(context).size.height * 0.0625 * -1,
+                                  fontWeight: FontWeight.w700,
+                                  alignment: const Alignment(0.07, 2.4),
                                 ),
                               ),
 
@@ -187,8 +196,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                     setState(() {
                                       _buttonAnimations["THEMES"] = false;
                                     });
-                                    // BUTTON CODE
-                                    print("DIALOGUEEEE");
+                                    // Button Code
                                     Navigator.pushReplacement(
                                       context,
                                       PageRouteBuilder(
@@ -258,7 +266,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                 setState(() {
                                   _buttonAnimations["NEW DIALOG"] = false;
                                 });
-                                // BUTTON CODE
+                                // Button Code
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -300,6 +308,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
                   margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.012),
                   child: Column(
                     children: [
+                      // Help Button
                       AnimatedScale(
                         scale: _buttonAnimations["HELP"]! ? 1.1 : 1.0,
                         duration: const Duration(milliseconds: 100),
@@ -315,8 +324,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
                             setState(() {
                               _buttonAnimations["HELP"] = false;
                             });
-                            // BUTTON CODE
-                            print("HELLLLLLLLLLP");
+                            // Button Code
                             emergencyRequest.sendEmergencyRequest(context);
                           },
                           onTapCancel: () {
@@ -335,6 +343,8 @@ class _ListThemesPageState extends State<ListThemesPage> {
                           ),
                         ),
                       ),
+
+                      // Home Button
                       AnimatedScale(
                         scale: _buttonAnimations["HOME"]! ? 1.1 : 1.0,
                         duration: const Duration(milliseconds: 100),
@@ -349,7 +359,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
                             setState(() {
                               _buttonAnimations["HOME"] = false;
                             });
-                            // BUTTON CODE
+                            // Button Code
                             Navigator.popUntil(
                               context,
                                   (route) => route.isFirst,
@@ -370,6 +380,8 @@ class _ListThemesPageState extends State<ListThemesPage> {
                           ),
                         ),
                       ),
+
+                      // Relax Button
                       AnimatedScale(
                         scale: _buttonAnimations["RELAX"]! ? 1.1 : 1.0,
                         duration: const Duration(milliseconds: 100),
@@ -384,8 +396,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
                             setState(() {
                               _buttonAnimations["RELAX"] = false;
                             });
-                            // BUTTON CODE
-                            print("RELAAAAAAAAAX");
+                            // Button Code
                           },
                           onTapCancel: () {
                             setState(() {
@@ -425,7 +436,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
                 crossAxisMargin: MediaQuery.of(context).size.width * 0.00375,
                 mainAxisMargin: MediaQuery.of(context).size.width * 0.00375,
                 trackRadius: const Radius.circular(20),
-                padding: MediaQuery.of(context).size.height > 600 ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.085, MediaQuery.of(context).size.width * 0.0315, MediaQuery.of(context).size.height * 0.11) : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.085, MediaQuery.of(context).size.width * 0.027, MediaQuery.of(context).size.height * 0.11),
+                padding: isThisDeviceATablet ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.085, MediaQuery.of(context).size.width * 0.0315, MediaQuery.of(context).size.height * 0.11) : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.085, MediaQuery.of(context).size.width * 0.027, MediaQuery.of(context).size.height * 0.11),
                 child: Row(
                   children: [
                     // List of dialogs
@@ -452,7 +463,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                       setState(() {
                                         _dialogsAnimations[index] = false;
                                       });
-                                      // BUTTON CODE
+                                      // Button Code
                                       Navigator.push(
                                         context,
                                         PageRouteBuilder(
@@ -504,7 +515,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                       });
                                     },
                                     onTapUp: (_) async {
-                                      // BUTTON CODE
+                                      // Button Code
                                       setState(() {
                                         _deleteButtonsAnimations[index] = false;
                                       });
@@ -554,6 +565,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
+                          // Top Arrow
                           AnimatedScale(
                             scale: _buttonAnimations["TOP ARROW"]! ? 1.1 : 1.0,
                             duration: const Duration(milliseconds: 100),
@@ -612,10 +624,12 @@ class _ListThemesPageState extends State<ListThemesPage> {
                               ),
                             ),
                           ),
+
+                          // Container for when the scrollbar is empty
                           Expanded(
                               child: Container(
                             width: MediaQuery.of(context).size.width * 0.01875,
-                            margin: MediaQuery.of(context).size.height > 600 ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.014) : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.011),
+                            margin: isThisDeviceATablet ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.014) : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.011),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
                               color: const Color.fromRGBO(66, 89, 109, 1),
@@ -628,6 +642,8 @@ class _ListThemesPageState extends State<ListThemesPage> {
                               ),
                             ),
                           )),
+
+                          // Bot Arrow
                           AnimatedScale(
                             scale: _buttonAnimations["BOT ARROW"]! ? 1.1 : 1.0,
                             duration: const Duration(milliseconds: 100),

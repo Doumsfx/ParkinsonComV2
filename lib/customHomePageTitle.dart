@@ -1,9 +1,10 @@
 // CustomHomePageTitle Widget
-// Code by Alexis Pagnon and Sanchez Adam
+// Code by Pagnon Alexis and Sanchez Adam
 // ParkinsonCom V2
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:parkinson_com_v2/variables.dart';
 
 class CustomHomePageTitle extends StatelessWidget {
   final String text;
@@ -28,7 +29,7 @@ class CustomHomePageTitle extends StatelessWidget {
             borderRadius: const BorderRadius.all(Radius.circular(60)),
             color: backgroundColor,
           ),
-          padding: MediaQuery.of(context).size.height > 600 ? EdgeInsets.fromLTRB(MediaQuery.of(context).size.height * 0.05, MediaQuery.of(context).size.height * 0.008, MediaQuery.of(context).size.height * 0.0126, MediaQuery.of(context).size.height * 0.0126) : EdgeInsets.fromLTRB(MediaQuery.of(context).size.height * 0.05, 0, MediaQuery.of(context).size.height * 0.0126, 0),
+          padding: isThisDeviceATablet ? EdgeInsets.fromLTRB(MediaQuery.of(context).size.height * 0.05, MediaQuery.of(context).size.height * 0.008, MediaQuery.of(context).size.height * 0.0126, MediaQuery.of(context).size.height * 0.0126) : EdgeInsets.fromLTRB(MediaQuery.of(context).size.height * 0.05, 0, MediaQuery.of(context).size.height * 0.0126, 0),
           child: Center(
             child: Text(
               text,

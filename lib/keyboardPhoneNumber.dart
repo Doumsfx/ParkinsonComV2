@@ -1,6 +1,8 @@
-// CustomKeyboard Widget
-// Code by Alexis Pagnon and Sanchez Adam
+// Custom Keyboard Phone Number Widget
+// Code by Pagnon Alexis and Sanchez Adam
 // ParkinsonCom V2
+
+/* This keyboard is only for phone number or digit only */
 
 import 'package:flutter/material.dart';
 import 'package:parkinson_com_v2/variables.dart';
@@ -43,9 +45,8 @@ class _CustomKeyboardPhoneNumberState extends State<CustomKeyboardPhoneNumber> {
     }
   }
 
-  // Function that manages actions based on keys pressed
+  /// Function that manages actions based on keys pressed
   void _onKeyPress(String? keyText) {
-    print('Key pressed: $keyText');
 
     if (keyText == "RETURN") {
       setState(() {
@@ -88,24 +89,29 @@ class _CustomKeyboardPhoneNumberState extends State<CustomKeyboardPhoneNumber> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height > 600 ? MediaQuery.of(context).size.height * 0.55 : MediaQuery.of(context).size.height * 0.58,
+      height: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.55 : MediaQuery.of(context).size.height * 0.58,
       width: MediaQuery.of(context).size.width,
       child: Container(
         color: const Color.fromRGBO(34, 39, 42, 1),
         child: Column(
           children: [
-            Container(height: MediaQuery.of(context).size.height * 0.077, width: MediaQuery.of(context).size.width, color: const Color.fromRGBO(69, 73, 76, 1)),
+            // The predictions container which in this case is always disabled
+            Container(
+                height: MediaQuery.of(context).size.height * 0.077,
+                width: MediaQuery.of(context).size.width,
+                color: const Color.fromRGBO(69, 73, 76, 1)),
 
             // Keyboard
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                // First part of the keyboard
                 Container(
                   color: const Color.fromRGBO(34, 39, 42, 1),
                   margin: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.3),
                   width: MediaQuery.of(context).size.width * 0.3,
                   child: VirtualKeyboard(
-                      height: MediaQuery.of(context).size.height > 600 ? MediaQuery.of(context).size.height * (0.55 - 0.077) : MediaQuery.of(context).size.height * (0.58 - 0.13),
+                      height: isThisDeviceATablet ? MediaQuery.of(context).size.height * (0.55 - 0.077) : MediaQuery.of(context).size.height * (0.58 - 0.13),
                       width: MediaQuery.of(context).size.width * 0.887,
                       textColor: Colors.white,
                       defaultLayouts: const [VirtualKeyboardDefaultLayouts.Custom],
@@ -120,7 +126,7 @@ class _CustomKeyboardPhoneNumberState extends State<CustomKeyboardPhoneNumber> {
                         Color backgroundColor = key.text == "" ? const Color.fromRGBO(34, 39, 42, 1) : const Color.fromRGBO(69, 73, 76, 1);
 
                         return Container(
-                          margin: MediaQuery.of(context).size.height > 600 ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.01) : EdgeInsets.zero,
+                          margin: isThisDeviceATablet ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.01) : EdgeInsets.zero,
                           child: GestureDetector(
                             onTapDown: (_) {
                               setState(() {
@@ -172,13 +178,16 @@ class _CustomKeyboardPhoneNumberState extends State<CustomKeyboardPhoneNumber> {
                       },
                       onKeyPress: _onKeyPress),
                 ),
+
+                // Second part of the keyboard (the 3 keys on the right)
                 Container(
                   color: const Color.fromRGBO(34, 39, 42, 1),
-                  height: MediaQuery.of(context).size.height > 600 ? MediaQuery.of(context).size.height * (0.55 - 0.08) : MediaQuery.of(context).size.height * (0.58 - 0.08),
+                  height: isThisDeviceATablet ? MediaQuery.of(context).size.height * (0.55 - 0.08) : MediaQuery.of(context).size.height * (0.58 - 0.08),
                   width: MediaQuery.of(context).size.width * (1 - 0.887),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
+                      // Return Key
                       AnimatedScale(
                         scale: _buttonAnimations["RETURN"] == true ? 1.1 : 1.0,
                         duration: const Duration(milliseconds: 100),
@@ -217,6 +226,8 @@ class _CustomKeyboardPhoneNumberState extends State<CustomKeyboardPhoneNumber> {
                               )),
                         ),
                       ),
+
+                      // Backspace Key
                       AnimatedScale(
                         scale: _buttonAnimations["BACKSPACE"] == true ? 1.1 : 1.0,
                         duration: const Duration(milliseconds: 100),
@@ -256,6 +267,8 @@ class _CustomKeyboardPhoneNumberState extends State<CustomKeyboardPhoneNumber> {
                               )),
                         ),
                       ),
+
+                      // Validate Key
                       AnimatedScale(
                         scale: _buttonAnimations["VALIDATE"] == true ? 1.1 : 1.0,
                         duration: const Duration(milliseconds: 100),

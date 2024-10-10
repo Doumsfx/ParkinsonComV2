@@ -1,11 +1,11 @@
-// List of dialogs filtered by themes Page
-// Code by Alexis Pagnon and Sanchez Adam
+// List of contacts Page
+// Code by Pagnon Alexis and Sanchez Adam
 // ParkinsonCom V2
 
 import 'dart:async';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:parkinson_com_v2/customRemindersTitle.dart';
+import 'package:parkinson_com_v2/customTitle.dart';
 import 'package:parkinson_com_v2/models/database/contact.dart';
 import 'package:parkinson_com_v2/newContact.dart';
 import 'package:parkinson_com_v2/variables.dart';
@@ -37,7 +37,6 @@ class _ListContactsPageState extends State<ListContactsPage> {
   };
 
   List<Contact> _listContacts = [];
-  String selectedThemeTitle = "";
   late List<bool> _contactsAnimations;
   late List<bool> _primaryContacts;
   late List<bool> _secondaryContacts;
@@ -45,7 +44,9 @@ class _ListContactsPageState extends State<ListContactsPage> {
   late List<bool> _modifyButtonsAnimations;
   final ScrollController _scrollController = ScrollController();
 
+  /// Function that initialise our variables
   Future<void> initialisation() async {
+    // We retrieve all the contacts of the database
     _listContacts = await databaseManager.retrieveContacts();
     setState(() {});
     _contactsAnimations = List.filled(_listContacts.length, false);
@@ -99,7 +100,7 @@ class _ListContactsPageState extends State<ListContactsPage> {
   @override
   void initState() {
     super.initState();
-    // Initialisation de nos variables
+    // Initialisation of our variables
     initialisation();
   }
 
@@ -184,7 +185,7 @@ class _ListContactsPageState extends State<ListContactsPage> {
                                     child: Text(
                                       languagesTextsFile.texts["contact_list_contacts"],
                                       textAlign: TextAlign.center,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.w600,
                                       ),
@@ -205,7 +206,7 @@ class _ListContactsPageState extends State<ListContactsPage> {
                                           child: Text(
                                             languagesTextsFile.texts["contact_list_principal"],
                                             textAlign: TextAlign.center,
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               color: Colors.white,
                                               fontWeight: FontWeight.w500,
                                               fontSize: 12,
@@ -220,7 +221,7 @@ class _ListContactsPageState extends State<ListContactsPage> {
                                           child: Text(
                                             languagesTextsFile.texts["contact_list_secondary"],
                                             textAlign: TextAlign.center,
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               color: Colors.white,
                                               fontWeight: FontWeight.w500,
                                               fontSize: 12,
@@ -239,13 +240,18 @@ class _ListContactsPageState extends State<ListContactsPage> {
                         // Title
                         Container(
                           margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.060, MediaQuery.of(context).size.height / 16, MediaQuery.of(context).size.width * 0.125, 0),
-                          child: CustomRemindersTitle(
+                          child: CustomTitle(
                             text: languagesTextsFile.texts["contact_list_title"]!,
                             image: 'assets/enveloppe.png',
                             imageScale: 0.15,
                             backgroundColor: const Color.fromRGBO(12, 178, 255, 1),
                             textColor: Colors.white,
-                            width: MediaQuery.of(context).size.width * 0.50,
+                            containerWidth: MediaQuery.of(context).size.width * 0.50,
+                            containerHeight: MediaQuery.of(context).size.height * 0.12,
+                            containerPadding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.height * 0.085, 0, MediaQuery.of(context).size.height * 0.03, 0),
+                            circleSize: MediaQuery.of(context).size.height * 0.1875,
+                            circlePositionedLeft: MediaQuery.of(context).size.height * 0.1 * -1,
+                            fontSize: isThisDeviceATablet ? 30 : 26,
                             fontWeight: FontWeight.w600,
                             alignment: const Alignment(-0.2, 0.6),
                           ),
@@ -261,6 +267,7 @@ class _ListContactsPageState extends State<ListContactsPage> {
                   margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.012),
                   child: Column(
                     children: [
+                      // Help Button
                       AnimatedScale(
                         scale: _buttonAnimations["HELP"]! ? 1.1 : 1.0,
                         duration: const Duration(milliseconds: 100),
@@ -277,7 +284,6 @@ class _ListContactsPageState extends State<ListContactsPage> {
                               _buttonAnimations["HELP"] = false;
                             });
                             // BUTTON CODE
-                            print("HELLLLLLLLLLP");
                           },
                           onTapCancel: () {
                             setState(() {
@@ -295,6 +301,8 @@ class _ListContactsPageState extends State<ListContactsPage> {
                           ),
                         ),
                       ),
+
+                      // Home Button
                       AnimatedScale(
                         scale: _buttonAnimations["HOME"]! ? 1.1 : 1.0,
                         duration: const Duration(milliseconds: 100),
@@ -349,7 +357,7 @@ class _ListContactsPageState extends State<ListContactsPage> {
                 crossAxisMargin: MediaQuery.of(context).size.width * 0.00375,
                 mainAxisMargin: MediaQuery.of(context).size.width * 0.00375,
                 trackRadius: const Radius.circular(20),
-                padding: MediaQuery.of(context).size.height > 600 ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.085, MediaQuery.of(context).size.width * 0.0315, MediaQuery.of(context).size.height * 0.09) : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.085, MediaQuery.of(context).size.width * 0.027, MediaQuery.of(context).size.height * 0.08),
+                padding: isThisDeviceATablet ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.085, MediaQuery.of(context).size.width * 0.0315, MediaQuery.of(context).size.height * 0.09) : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.085, MediaQuery.of(context).size.width * 0.027, MediaQuery.of(context).size.height * 0.08),
                 child: Row(
                   children: [
                     // List of contacts
@@ -383,8 +391,6 @@ class _ListContactsPageState extends State<ListContactsPage> {
                                                 activeColor: const Color.fromRGBO(240, 242, 239, 1),
 
                                                 onChanged: (value) {
-                                                  print('changement');
-                                                  print(value);
                                                   setState(() {
                                                     updateAllPrimaryContacts(false);
                                                     _primaryContacts[index] = true;
@@ -415,8 +421,6 @@ class _ListContactsPageState extends State<ListContactsPage> {
                                                 activeColor: const Color.fromRGBO(240, 242, 239, 1),
 
                                                 onChanged: (value) {
-                                                  print('changement');
-                                                  print(value);
                                                   setState(() {
                                                     if(!_primaryContacts[index]){
                                                       _secondaryContacts[index] = !_secondaryContacts[index];
@@ -556,21 +560,16 @@ class _ListContactsPageState extends State<ListContactsPage> {
                                       });
                                     },
                                     onTapUp: (_) {
-                                      // BUTTON CODE
+                                      // Button Code
                                       setState(() {
                                         _modifyButtonsAnimations[index] = false;
                                       });
-                                      //Popup to modify
-                                      Popups.showPopupYesOrNo(context, text: (languagesTextsFile.texts["pop_up_delete_contact"]).toString().replaceAll("...", "\n${_listContacts[index].first_name} ${_listContacts[index].last_name}\n"),
-                                          textYes: languagesTextsFile.texts["pop_up_yes"], textNo: languagesTextsFile.texts["pop_up_no"],
-                                          functionYes: (p0) async {
-                                            await databaseManager.deleteContact(_listContacts[index].id_contact);
-                                            // Refresh ui
-                                            _listContacts.removeAt(index);
-                                            _updateParent();
-                                            //Close the popup
-                                            Navigator.pop(context);
-                                          }, functionNo: Popups.functionToQuit);
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => NewContactPage(idContact: _listContacts[index].id_contact),
+                                          )
+                                      ).then((_) => initialisation());
 
 
                                     },
@@ -595,12 +594,14 @@ class _ListContactsPageState extends State<ListContactsPage> {
                             );
                           }),
                     ),
+
                     // ScrollWidgets
                     Container(
                       margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.02),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
+                          // Top Arrow
                           AnimatedScale(
                             scale: _buttonAnimations["TOP ARROW"]! ? 1.1 : 1.0,
                             duration: const Duration(milliseconds: 100),
@@ -659,10 +660,12 @@ class _ListContactsPageState extends State<ListContactsPage> {
                               ),
                             ),
                           ),
+
+                          // Container for when the scrollbar is empty
                           Expanded(
                               child: Container(
                                 width: MediaQuery.of(context).size.width * 0.01875,
-                                margin: MediaQuery.of(context).size.height > 600 ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.014) : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.011),
+                                margin: isThisDeviceATablet ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.014) : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.011),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20),
                                   color: const Color.fromRGBO(66, 89, 109, 1),
@@ -675,6 +678,8 @@ class _ListContactsPageState extends State<ListContactsPage> {
                                   ),
                                 ),
                               )),
+
+                          // Bot Arrow
                           AnimatedScale(
                             scale: _buttonAnimations["BOT ARROW"]! ? 1.1 : 1.0,
                             duration: const Duration(milliseconds: 100),

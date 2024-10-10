@@ -1,58 +1,85 @@
-// CustomShape Widget
-// Code by Alexis Pagnon and Sanchez Adam
+// Custom Shape Widget
+// Code by Pagnon Alexis and Sanchez Adam
 // ParkinsonCom V2
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 class CustomShape extends StatelessWidget {
   final String text;
   final String image;
-  final double scale;
+  final double imageScale;
   final Color backgroundColor;
   final Color textColor;
+  final double fontSize;
+  final double containerWidth;
+  final double containerHeight;
+  final EdgeInsets containerPadding;
+  final double circleSize;
+  final double circlePositionedRight;
+  final FontWeight fontWeight;
+  final double sizedBoxHeight;
+  final double sizedBoxWidth;
+  final double scale;
 
-  const CustomShape({super.key, required this.text, required this.image, required this.scale, required this.backgroundColor, required this.textColor});
+  const CustomShape({super.key, required this.text, required this.image, required this.imageScale, required this.backgroundColor, required this.textColor, required this.fontSize, required this.containerWidth, required this.containerHeight, required this.containerPadding, required this.circleSize, required this.circlePositionedRight, required this.fontWeight, required this.sizedBoxHeight, required this.sizedBoxWidth, required this.scale});
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      // Allows the circle to exceed the limits of the Stack
-      clipBehavior: Clip.none,
-      alignment: Alignment.centerLeft,
-      children: [
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(Radius.circular(60)),
-            color: backgroundColor,
-          ),
-          padding: EdgeInsets.fromLTRB(10 * scale, 10 * scale, 50 * scale, 10 * scale),
-          child: Text(
-            text,
-            style: TextStyle(
-              color: textColor,
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-            ),
-          ),
-        ),
-        Positioned(
-          right: -30 * scale,
-          child: Container(
-            width: 80 * scale,
-            height: 80 * scale,
+    return SizedBox(
+      width: sizedBoxWidth * scale,
+      height: sizedBoxHeight * scale,
+      child: Stack(
+        // Allows the circle to exceed the limits of the Stack
+        clipBehavior: Clip.none,
+        alignment: Alignment.centerLeft,
+        children: [
+          // Text
+          Container(
+            height: containerHeight * scale,
+            width: containerWidth * scale,
             decoration: BoxDecoration(
-              shape: BoxShape.circle,
+              borderRadius: BorderRadius.all(Radius.circular(60 * scale)),
               color: backgroundColor,
             ),
-            child: Padding(
-              padding: EdgeInsets.all(15 * scale),
-              child: Image.asset(
-                image,
+            child: Center(
+              child: Padding(
+                padding: containerPadding * scale,
+                child: AutoSizeText(
+                  text,
+                  style: TextStyle(
+                    color: textColor,
+                    fontWeight: fontWeight,
+                    fontSize: fontSize,
+                  ),
+                  maxLines: 1,
+                  minFontSize: 5,
+                  maxFontSize: 30,
+                ),
               ),
             ),
           ),
-        ),
-      ],
+
+          // Image
+          Positioned(
+            right: circlePositionedRight * scale,
+            child: Container(
+              width: circleSize * scale,
+              height: circleSize * scale,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: backgroundColor,
+              ),
+              child: Padding(
+                padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.016 * scale / imageScale - 1),
+                child: Image.asset(
+                  image,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

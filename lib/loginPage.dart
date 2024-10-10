@@ -1,5 +1,5 @@
-// List of dialogs filtered by themes Page
-// Code by Alexis Pagnon and Sanchez Adam
+// Login Page
+// Code by Pagnon Alexis and Sanchez Adam
 // ParkinsonCom V2
 
 import 'package:auto_size_text/auto_size_text.dart';
@@ -11,8 +11,6 @@ import 'package:parkinson_com_v2/variables.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'models/popupshandler.dart';
-
-
 
 class LoginPage extends StatefulWidget {
   final VoidCallback onLoginSuccess;
@@ -70,13 +68,13 @@ class _LoginPageState extends State<LoginPage> {
   Future<bool> startChecks() async {
     // SIM card presence check
     if (phone) {
-      //Ask for the phone permissions in order to read the phone state
+      // Ask for the phone permissions in order to read the phone state
       if (permissionPhone.isDenied) {
         await _checkPermissionsPhone();
       }
-      //Permission granted
+      // Permission granted
       if (permissionPhone.isGranted) {
-        //Check the sim card presence
+        // Check the sim card presence
         bool sim = await smsHandler.checkSim();
         if (!sim) {
           phone = false;
@@ -84,7 +82,7 @@ class _LoginPageState extends State<LoginPage> {
           return false;
         }
       }
-      //Permission denied
+      // Permission denied
       else {
         phone = false;
         Popups.showPopupOk(context, text: languagesTextsFile.texts["missing_permissions"], textOk: languagesTextsFile.texts["pop_up_ok"], functionOk: Popups.functionToQuit);
@@ -103,10 +101,10 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  ///Check if the permissions to read the phone state are given, and ask for them if it's not the case
+  /// Check if the permissions to read the phone state are given, and ask for them if it's not the case
   Future<bool> _checkPermissionsPhone() async {
 
-    ///Function that is used by the OK button of the popup
+    /// Function that is used by the OK button of the popup
     void askPermissions(BuildContext context) async {
       permissionPhone = await Permission.phone.request();
       if (permissionPhone.isGranted) {
@@ -119,9 +117,6 @@ class _LoginPageState extends State<LoginPage> {
         return value ?? false;
     },);
   }
-
-
-
 
 
   @override
@@ -463,7 +458,7 @@ class _LoginPageState extends State<LoginPage> {
                                       setState(() {
                                         _buttonAnimations["START"] = false;
                                       });
-                                      // BUTTON CODE
+                                      // Button Code
                                       if(_firstController.text.isEmpty){
                                         Popups.showPopupOk(context, text: languagesTextsFile.texts["login_page_error_first_name"], textOk: languagesTextsFile.texts["pop_up_ok"], functionOk: Popups.functionToQuit);
                                       }
@@ -483,13 +478,6 @@ class _LoginPageState extends State<LoginPage> {
                                           await databaseManager.initDB();
 
                                           // Redirection
-                                          /*
-                                          Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute(builder: (context) => const HomePage(),)
-                                          );
-
-                                           */
                                           widget.onLoginSuccess();
 
                                           // Adding in the database
@@ -514,7 +502,7 @@ class _LoginPageState extends State<LoginPage> {
                                     },
                                     child: Container(
                                       width: MediaQuery.of(context).size.width * 0.37,
-                                      height: MediaQuery.of(context).size.height > 600 ? MediaQuery.of(context).size.width * 0.06 : MediaQuery.of(context).size.width * 0.05,
+                                      height: isThisDeviceATablet ? MediaQuery.of(context).size.width * 0.06 : MediaQuery.of(context).size.width * 0.05,
                                       decoration: const BoxDecoration(
                                         borderRadius: BorderRadius.all(Radius.circular(30)),
                                         color: Color.fromRGBO(61, 192, 200, 1),
@@ -543,6 +531,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
 
+                        // Language choice
                         Container(
                           margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.012),
                           child: Column(
@@ -565,7 +554,7 @@ class _LoginPageState extends State<LoginPage> {
                                     setState(() {
                                       _buttonAnimations["FR"] = false;
                                     });
-                                    // BUTTON CODE
+                                    // Button Code
                                     print("FRAAAAAAAAAAAANCE");
                                     language = "fr";
                                     ttsHandler.setVoiceFrOrNl(language, 'female');
@@ -605,7 +594,7 @@ class _LoginPageState extends State<LoginPage> {
                                     setState(() {
                                       _buttonAnimations["NL"] = false;
                                     });
-                                    // BUTTON CODE
+                                    // Button Code
                                     print("NETHERLANDSSSSS");
                                     setState(() {
                                       language = "nl";
@@ -635,8 +624,6 @@ class _LoginPageState extends State<LoginPage> {
                             ],
                           ),
                         ),
-
-
                       ],
                     ),
                   ),
@@ -646,6 +633,7 @@ class _LoginPageState extends State<LoginPage> {
                     height: MediaQuery.of(context).size.height * 0.3,
                     child: Row(
                       children: [
+                        // Text
                         Container(
                           width: MediaQuery.of(context).size.width * 0.65,
                           padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.04),
@@ -664,6 +652,8 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                         ),
+
+                        // Logo
                         Expanded(
                           child: Center(
                             child: SizedBox(
@@ -837,8 +827,9 @@ class _LoginPageState extends State<LoginPage> {
                 ],
               );
             }
-
-          },));
+          },
+        )
+    );
   }
 
 }

@@ -1,17 +1,18 @@
-// List of dialogs filtered by themes Page
-// Code by Alexis Pagnon and Sanchez Adam
+// New Reminder Page
+// Code by Pagnon Alexis and Sanchez Adam
 // ParkinsonCom V2
 
 import 'dart:async';
 
 import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:parkinson_com_v2/customRemindersTitle.dart';
+import 'package:parkinson_com_v2/customTitle.dart';
 import 'package:parkinson_com_v2/keyboard.dart';
 import 'package:parkinson_com_v2/keyboardHour.dart';
 import 'package:parkinson_com_v2/models/database/reminder.dart';
 import 'package:parkinson_com_v2/variables.dart';
 
+import 'customtextfield.dart';
 import 'models/popupshandler.dart';
 
 
@@ -62,16 +63,17 @@ class _NewReminderPageState extends State<NewReminderPage> {
   final FocusNode _focusNode = FocusNode();
   final FocusNode _focusNode2 = FocusNode();
 
-  // Function to update all values
-  void updateAllAlarms(bool value) {
-    daysAlarm.updateAll((key, oldValue) => value);
-  }
-
   var battery = Battery();
   int batteryLevel = 0;
   late Timer timer;
   var timeAndDate = DateTime.now();
 
+  /// Function to update all values of daysAlarm
+  void updateAllAlarms(bool value) {
+    daysAlarm.updateAll((key, oldValue) => value);
+  }
+
+  /// Function to initialise our variables
   Future<void> initialisation() async {
 
     batteryLevel = await battery.batteryLevel;
@@ -97,6 +99,7 @@ class _NewReminderPageState extends State<NewReminderPage> {
     }
   }
 
+  /// Function to format a [number] into a two format digit, for example '2' becomes '02'
   String formatWithTwoDigits(int number) {
     return number.toString().padLeft(2, '0');
   }
@@ -227,14 +230,20 @@ class _NewReminderPageState extends State<NewReminderPage> {
                             // Title
                             Container(
                               margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.015, MediaQuery.of(context).size.height / 16, MediaQuery.of(context).size.width * 0.17, 0),
-                              child: CustomRemindersTitle(
+                              child: CustomTitle(
                                 text: languagesTextsFile.texts["new_reminder_title"]!,
                                 image: 'assets/horloge.png',
                                 imageScale: 0.2,
                                 backgroundColor: Colors.white,
                                 textColor: const Color.fromRGBO(234, 104, 104, 1),
-                                width: MediaQuery.of(context).size.width * 0.5,
+                                containerWidth: MediaQuery.of(context).size.width * 0.5,
+                                containerHeight: MediaQuery.of(context).size.height * 0.12,
+                                containerPadding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.height * 0.085, 0, MediaQuery.of(context).size.height * 0.03, 0),
+                                circleSize: MediaQuery.of(context).size.height * 0.1875,
+                                circlePositionedLeft: MediaQuery.of(context).size.height * 0.1 * -1,
+                                fontSize: isThisDeviceATablet ? 30 : 26,
                                 fontWeight: FontWeight.w700,
+                                alignment: const Alignment(0, 0.3),
                               ),
                             ),
                           ],
@@ -245,6 +254,7 @@ class _NewReminderPageState extends State<NewReminderPage> {
                           margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.012),
                           child: Column(
                             children: [
+                              // Help Button
                               AnimatedScale(
                                 scale: _buttonAnimations["HELP"]! ? 1.1 : 1.0,
                                 duration: const Duration(milliseconds: 100),
@@ -260,7 +270,7 @@ class _NewReminderPageState extends State<NewReminderPage> {
                                     setState(() {
                                       _buttonAnimations["HELP"] = false;
                                     });
-                                    // BUTTON CODE
+                                    // Button Code
                                     print("HELLLLLLLLLLP");
                                     emergencyRequest.sendEmergencyRequest(context);
                                   },
@@ -280,6 +290,8 @@ class _NewReminderPageState extends State<NewReminderPage> {
                                   ),
                                 ),
                               ),
+
+                              // Home Button
                               AnimatedScale(
                                 scale: _buttonAnimations["HOME"]! ? 1.1 : 1.0,
                                 duration: const Duration(milliseconds: 100),
@@ -294,7 +306,7 @@ class _NewReminderPageState extends State<NewReminderPage> {
                                     setState(() {
                                       _buttonAnimations["HOME"] = false;
                                     });
-                                    // BUTTON CODE
+                                    // Button Code
                                     Navigator.popUntil(
                                       context,
                                           (route) => route.isFirst,
@@ -334,7 +346,7 @@ class _NewReminderPageState extends State<NewReminderPage> {
                         crossAxisMargin: MediaQuery.of(context).size.width * 0.00375,
                         mainAxisMargin: MediaQuery.of(context).size.width * 0.00375,
                         trackRadius: const Radius.circular(20),
-                        padding: MediaQuery.of(context).size.height > 600 ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.085, MediaQuery.of(context).size.width * 0.0315, MediaQuery.of(context).size.height * 0.0) : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.085, MediaQuery.of(context).size.width * 0.027, 0),
+                        padding: isThisDeviceATablet ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.085, MediaQuery.of(context).size.width * 0.0315, MediaQuery.of(context).size.height * 0.0) : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.085, MediaQuery.of(context).size.width * 0.027, 0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -369,7 +381,10 @@ class _NewReminderPageState extends State<NewReminderPage> {
                                               0,
                                             ),
                                             child: Center(
-                                              child: TextField(
+                                              child: CustomTextField(
+                                                context: context,
+                                                width: MediaQuery.of(context).size.width * 0.9,
+                                                maxFontSize: 22,
                                                 style: const TextStyle(
                                                   fontSize: 22,
                                                   fontWeight: FontWeight.w800,
@@ -520,8 +535,7 @@ class _NewReminderPageState extends State<NewReminderPage> {
                                           ),
                                         ),
 
-
-                                        // Ring
+                                        // Ring Checkbox
                                         Container(
                                             width: MediaQuery.of(context).size.width * 0.7,
                                             height: MediaQuery.of(context).size.height * 0.1,
@@ -609,7 +623,7 @@ class _NewReminderPageState extends State<NewReminderPage> {
                                             )
                                         ),
 
-                                        // Everyday
+                                        // Everyday Checkbox
                                         Container(
                                             width: MediaQuery.of(context).size.width * 0.7,
                                             height: MediaQuery.of(context).size.height * 0.1,
@@ -668,7 +682,7 @@ class _NewReminderPageState extends State<NewReminderPage> {
                                             )
                                         ),
 
-                                        // Days of the week
+                                        // Days of the week Checkbox
                                         SizedBox(
                                           height: MediaQuery.of(context).size.height * 0.13 * 7,
                                           width: MediaQuery.of(context).size.width * 0.71,
@@ -767,7 +781,7 @@ class _NewReminderPageState extends State<NewReminderPage> {
                                         setState(() {
                                           _buttonAnimations["ADD"] = false;
                                         });
-                                        // BUTTON CODE
+                                        // Button Code
 
                                         int i = 0;
                                         String daysString = "";
@@ -851,6 +865,7 @@ class _NewReminderPageState extends State<NewReminderPage> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
+                                  // Top Arrow
                                   AnimatedScale(
                                     scale: _buttonAnimations["TOP ARROW"]! ? 1.1 : 1.0,
                                     duration: const Duration(milliseconds: 100),
@@ -909,15 +924,20 @@ class _NewReminderPageState extends State<NewReminderPage> {
                                       ),
                                     ),
                                   ),
+
+                                  // Container for when the scrollbar is empty
                                   Expanded(
                                       child: Container(
                                         width: MediaQuery.of(context).size.width * 0.01875,
-                                        margin: MediaQuery.of(context).size.height > 600 ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.02, 0, MediaQuery.of(context).size.height * 0.05) : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.035, 0, MediaQuery.of(context).size.height * 0.035),
+                                        margin: isThisDeviceATablet ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.02, 0, MediaQuery.of(context).size.height * 0.05) : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.035, 0, MediaQuery.of(context).size.height * 0.035),
                                         decoration: BoxDecoration(
                                           borderRadius: BorderRadius.circular(20),
                                           color: const Color.fromRGBO(66, 89, 109, 1),
                                         ),
-                                      )),
+                                      )
+                                  ),
+
+                                  // Bottom Arrow
                                   AnimatedScale(
                                     scale: _buttonAnimations["BOT ARROW"]! ? 1.1 : 1.0,
                                     duration: const Duration(milliseconds: 100),
@@ -965,7 +985,7 @@ class _NewReminderPageState extends State<NewReminderPage> {
                                           0,
                                           0,
                                           0,
-                                          MediaQuery.of(context).size.height > 600 ? MediaQuery.of(context).size.height * 0.05 : MediaQuery.of(context).size.height * 0.07,
+                                          isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.05 : MediaQuery.of(context).size.height * 0.07,
                                         ),
                                         decoration: BoxDecoration(
                                           borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * 0.01),
@@ -1051,7 +1071,7 @@ class _NewReminderPageState extends State<NewReminderPage> {
                                 setState(() {
                                   _buttonAnimations["HELP"] = false;
                                 });
-                                // BUTTON CODE
+                                // Button Code
                                 print("HELLLLLLLLLLP");
                                 emergencyRequest.sendEmergencyRequest(context);
                               },
@@ -1094,7 +1114,10 @@ class _NewReminderPageState extends State<NewReminderPage> {
                           0,
                         ),
                         child: Center(
-                          child: TextField(
+                          child: CustomTextField(
+                            context: context,
+                            width: MediaQuery.of(context).size.width * 0.9,
+                            maxFontSize: 22,
                             style: const TextStyle(
                               fontSize: 22,
                               fontWeight: FontWeight.w800,
@@ -1160,8 +1183,10 @@ class _NewReminderPageState extends State<NewReminderPage> {
                       ),
                     ),
 
+                    // Spacing
                     const Expanded(child: SizedBox()),
 
+                    // Keyboard
                     Builder(builder: (context) {
                       if(boolFirstController){
                         return CustomKeyboard(controller: _firstController, textPredictions: isConnected, forcedPredictionsOff: true,);

@@ -1,5 +1,5 @@
-// List of dialogs filtered by themes Page
-// Code by Alexis Pagnon and Sanchez Adam
+// List of reminders Page
+// Code by Pagnon Alexis and Sanchez Adam
 // ParkinsonCom V2
 
 import 'dart:async';
@@ -7,7 +7,7 @@ import 'dart:async';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:parkinson_com_v2/customRemindersTitle.dart';
+import 'package:parkinson_com_v2/customTitle.dart';
 import 'package:parkinson_com_v2/models/database/reminder.dart';
 import 'package:parkinson_com_v2/newReminderPage.dart';
 import 'package:parkinson_com_v2/variables.dart';
@@ -39,7 +39,6 @@ class _ListRemindersPageState extends State<ListRemindersPage> {
   };
 
   List<Reminder> _listReminders = [];
-  String selectedThemeTitle = "";
   late List<bool> _remindersAnimations;
   late List<bool> _deleteButtonsAnimations;
   final ScrollController _scrollController = ScrollController();
@@ -49,10 +48,12 @@ class _ListRemindersPageState extends State<ListRemindersPage> {
   late Timer timer;
   var timeAndDate = DateTime.now();
 
+  /// Function to initialise our variables
   Future<void> initialisation() async {
 
     batteryLevel = await battery.batteryLevel;
 
+    // We retrieve all the reminders from the database
     _listReminders = await databaseManager.retrieveReminders();
     setState(() {});
     _remindersAnimations = List.filled(_listReminders.length, false);
@@ -64,13 +65,14 @@ class _ListRemindersPageState extends State<ListRemindersPage> {
 
     }
 
+  /// Function to format a [number] into a two format digit, for example '2' becomes '02'
   String formatWithTwoDigits(int number) {
     return number.toString().padLeft(2, '0');
   }
 
+  /// Function to retrieve the list of days in the good language
   String listDaysInGoodLanguage(String str){
     List<String> list = str.split(" ");
-    //print(list);
     String newList = "";
     String day = "";
     int i = 0;
@@ -79,14 +81,13 @@ class _ListRemindersPageState extends State<ListRemindersPage> {
       newList += " ${day.substring(0, 3)}";
     }
 
-
     return newList;
   }
 
   @override
   void initState() {
     super.initState();
-    // Initialisation de nos variables
+    // Initialisation of our variables
     initialisation();
 
     timer = Timer.periodic(const Duration(seconds: 1), (_) async {
@@ -133,6 +134,7 @@ class _ListRemindersPageState extends State<ListRemindersPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
 
+                        // Back Arrow + Date + Time
                         SizedBox(
                             width: MediaQuery.of(context).size.width * 0.24,
                             child: Column(
@@ -206,13 +208,18 @@ class _ListRemindersPageState extends State<ListRemindersPage> {
                         // Title
                         Container(
                           margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.015, MediaQuery.of(context).size.height / 16, MediaQuery.of(context).size.width * 0.04, 0),
-                          child: CustomRemindersTitle(
+                          child: CustomTitle(
                             text: languagesTextsFile.texts["reminders_title"]!,
                             image: 'assets/horloge.png',
                             imageScale: 0.2,
                             backgroundColor: Colors.white,
                             textColor: const Color.fromRGBO(234, 104, 104, 1),
-                            width: MediaQuery.of(context).size.width * 0.63,
+                            containerWidth: MediaQuery.of(context).size.width * 0.63,
+                            containerHeight: MediaQuery.of(context).size.height * 0.12,
+                            containerPadding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.height * 0.085, 0, MediaQuery.of(context).size.height * 0.03, 0),
+                            circleSize: MediaQuery.of(context).size.height * 0.1875,
+                            circlePositionedLeft: MediaQuery.of(context).size.height * 0.1 * -1,
+                            fontSize: isThisDeviceATablet ? 30 : 26,
                             fontWeight: FontWeight.w700,
                             alignment: const Alignment(0, 0.3),
                           ),
@@ -236,7 +243,7 @@ class _ListRemindersPageState extends State<ListRemindersPage> {
                           setState(() {
                             _buttonAnimations["NEW REMINDER"] = false;
                           });
-                          // BUTTON CODE
+                          // Button Code
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -284,6 +291,7 @@ class _ListRemindersPageState extends State<ListRemindersPage> {
                   margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.012),
                   child: Column(
                     children: [
+                      // Help Button
                       AnimatedScale(
                         scale: _buttonAnimations["HELP"]! ? 1.1 : 1.0,
                         duration: const Duration(milliseconds: 100),
@@ -299,8 +307,7 @@ class _ListRemindersPageState extends State<ListRemindersPage> {
                             setState(() {
                               _buttonAnimations["HELP"] = false;
                             });
-                            // BUTTON CODE
-                            print("HELLLLLLLLLLP");
+                            // Button Code
                             emergencyRequest.sendEmergencyRequest(context);
                           },
                           onTapCancel: () {
@@ -319,6 +326,8 @@ class _ListRemindersPageState extends State<ListRemindersPage> {
                           ),
                         ),
                       ),
+
+                      // Home Button
                       AnimatedScale(
                         scale: _buttonAnimations["HOME"]! ? 1.1 : 1.0,
                         duration: const Duration(milliseconds: 100),
@@ -333,7 +342,7 @@ class _ListRemindersPageState extends State<ListRemindersPage> {
                             setState(() {
                               _buttonAnimations["HOME"] = false;
                             });
-                            // BUTTON CODE
+                            // Button Code
                             Navigator.popUntil(
                               context,
                                   (route) => route.isFirst,
@@ -373,7 +382,7 @@ class _ListRemindersPageState extends State<ListRemindersPage> {
                 crossAxisMargin: MediaQuery.of(context).size.width * 0.00375,
                 mainAxisMargin: MediaQuery.of(context).size.width * 0.00375,
                 trackRadius: const Radius.circular(20),
-                padding: MediaQuery.of(context).size.height > 600 ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.085, MediaQuery.of(context).size.width * 0.0315, MediaQuery.of(context).size.height * 0.11) : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.085, MediaQuery.of(context).size.width * 0.027, MediaQuery.of(context).size.height * 0.11),
+                padding: isThisDeviceATablet ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.085, MediaQuery.of(context).size.width * 0.0315, MediaQuery.of(context).size.height * 0.11) : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.085, MediaQuery.of(context).size.width * 0.027, MediaQuery.of(context).size.height * 0.11),
                 child: Row(
                   children: [
                     // List of reminders
@@ -400,7 +409,7 @@ class _ListRemindersPageState extends State<ListRemindersPage> {
                                       setState(() {
                                         _remindersAnimations[index] = false;
                                       });
-                                      // BUTTON CODE
+                                      // Button Code
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
@@ -455,7 +464,7 @@ class _ListRemindersPageState extends State<ListRemindersPage> {
                                       });
                                     },
                                     onTapUp: (_) {
-                                      // BUTTON CODE
+                                      // Button Code
                                       setState(() {
                                         _deleteButtonsAnimations[index] = false;
                                       });
@@ -495,12 +504,14 @@ class _ListRemindersPageState extends State<ListRemindersPage> {
                             );
                           }),
                     ),
+
                     // ScrollWidgets
                     Container(
                       margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.02),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
+                          // Top Arrow
                           AnimatedScale(
                             scale: _buttonAnimations["TOP ARROW"]! ? 1.1 : 1.0,
                             duration: const Duration(milliseconds: 100),
@@ -559,10 +570,12 @@ class _ListRemindersPageState extends State<ListRemindersPage> {
                               ),
                             ),
                           ),
+
+                          // Container for when the scrollbar is empty
                           Expanded(
                               child: Container(
                                 width: MediaQuery.of(context).size.width * 0.01875,
-                                margin: MediaQuery.of(context).size.height > 600 ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.014) : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.011),
+                                margin: isThisDeviceATablet ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.014) : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.011),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20),
                                   color: const Color.fromRGBO(66, 89, 109, 1),
@@ -575,6 +588,8 @@ class _ListRemindersPageState extends State<ListRemindersPage> {
                                   ),
                                 ),
                               )),
+
+                          // Bot Arrow
                           AnimatedScale(
                             scale: _buttonAnimations["BOT ARROW"]! ? 1.1 : 1.0,
                             duration: const Duration(milliseconds: 100),

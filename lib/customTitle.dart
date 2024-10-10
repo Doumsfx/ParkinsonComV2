@@ -1,7 +1,8 @@
-// CustomTitle Widget
-// Code by Alexis Pagnon and Sanchez Adam
+// Custom Title Widget
+// Code by Pagnon Alexis and Sanchez Adam
 // ParkinsonCom V2
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -11,8 +12,16 @@ class CustomTitle extends StatelessWidget {
   final double imageScale;
   final Color backgroundColor;
   final Color textColor;
+  final double fontSize;
+  final double containerWidth;
+  final double containerHeight;
+  final EdgeInsets containerPadding;
+  final double circleSize;
+  final double circlePositionedLeft;
+  final FontWeight fontWeight;
+  final Alignment alignment;
 
-  const CustomTitle({super.key, required this.text, required this.image, required this.imageScale, required this.backgroundColor, required this.textColor});
+  const CustomTitle({super.key, required this.text, required this.image, required this.imageScale, required this.backgroundColor, required this.textColor, required this.fontWeight, this.alignment = const Alignment(0, 0), required this.fontSize, required this.containerWidth, required this.containerHeight, required this.containerPadding, required this.circleSize, required this.circlePositionedLeft});
 
   @override
   Widget build(BuildContext context) {
@@ -21,36 +30,43 @@ class CustomTitle extends StatelessWidget {
       clipBehavior: Clip.none,
       alignment: Alignment.centerLeft,
       children: [
+        // Text
         Container(
-          width: MediaQuery.of(context).size.width * 0.50,
-          height: MediaQuery.of(context).size.height * 0.12,
+          width: containerWidth,
+          height: containerHeight,
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(Radius.circular(60)),
             color: backgroundColor,
           ),
-          padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.height * 0.0126, MediaQuery.of(context).size.height * 0.0126, MediaQuery.of(context).size.height * 0.0126, MediaQuery.of(context).size.height * 0.0126),
-          child: Center(
-            child: Text(
+          padding: containerPadding,
+          child: Align(
+            alignment: alignment,
+            child: AutoSizeText(
               text,
               style: GoogleFonts.josefinSans(
                 color: textColor,
-                fontWeight: FontWeight.w700,
-                fontSize: MediaQuery.of(context).size.height > 600 ? 32 : 28,
+                fontWeight: fontWeight,
+                fontSize: fontSize,
               ),
+              maxLines: 1,
+              maxFontSize: 50,
+              minFontSize: 5,
             ),
           ),
         ),
+
+        // Image
         Positioned(
-          left: MediaQuery.of(context).size.height * 0.0625 * -1,
+          left: circlePositionedLeft,
           child: Container(
-            width: MediaQuery.of(context).size.height * 0.1875,
-            height: MediaQuery.of(context).size.height * 0.1875,
+            width: circleSize,
+            height: circleSize,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: backgroundColor,
             ),
             child: Padding(
-              padding: EdgeInsets.all(MediaQuery.of(context).size.height * 0.00625 * 1/imageScale),
+              padding: EdgeInsets.all(MediaQuery.of(context).size.height * 0.00625 / imageScale),
               child: Image.asset(
                 image,
               ),

@@ -1,9 +1,10 @@
-// CustomShape Widget
-// Code by Alexis Pagnon and Sanchez Adam
+// Custom Shape Themes Widget
+// Code by Pagnon Alexis and Sanchez Adam
 // ParkinsonCom V2
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:parkinson_com_v2/variables.dart';
 
 class CustomShapeThemes extends StatelessWidget {
   final String text;
@@ -23,6 +24,7 @@ class CustomShapeThemes extends StatelessWidget {
         clipBehavior: Clip.none,
         alignment: Alignment.centerLeft,
         children: [
+          // Text
           Container(
             width: MediaQuery.of(context).size.width * 0.31,
             height: MediaQuery.of(context).size.height * 0.067,
@@ -36,10 +38,12 @@ class CustomShapeThemes extends StatelessWidget {
               style: GoogleFonts.josefinSans(
                 color: textColor,
                 fontWeight: FontWeight.w600,
-                fontSize: 18,
+                fontSize: isThisDeviceATablet ? 18 : 17,
               ),
             ),
           ),
+
+          // Image
           Positioned(
             //right: MediaQuery.of(context).size.height * 0.040 * -1,
             right: MediaQuery.of(context).size.height * 0.001 * -1,
