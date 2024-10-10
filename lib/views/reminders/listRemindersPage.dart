@@ -7,12 +7,12 @@ import 'dart:async';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:parkinson_com_v2/customTitle.dart';
+import 'package:parkinson_com_v2/views/customWidgets/customTitle.dart';
 import 'package:parkinson_com_v2/models/database/reminder.dart';
-import 'package:parkinson_com_v2/newReminderPage.dart';
-import 'package:parkinson_com_v2/variables.dart';
+import 'package:parkinson_com_v2/views/reminders/newReminderPage.dart';
+import 'package:parkinson_com_v2/models/variables.dart';
 
-import 'models/popupshandler.dart';
+import '../../models/popupshandler.dart';
 
 
 class ListRemindersPage extends StatefulWidget {

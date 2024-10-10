@@ -7,9 +7,9 @@ import 'package:parkinson_com_v2/models/emailhandler.dart';
 import 'package:parkinson_com_v2/models/emergencyRequest.dart';
 import 'package:parkinson_com_v2/models/fileHandler.dart';
 import 'package:parkinson_com_v2/models/smshandler.dart';
-import 'models/notificationHandler.dart';
-import 'models/ttshandler.dart';
-import 'models/database/databasemanager.dart';
+import 'notificationHandler.dart';
+import 'ttshandler.dart';
+import 'database/databasemanager.dart';
 
 // Global variables
 bool azerty = true; // true: azerty | false: abcde

@@ -4,7 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:parkinson_com_v2/variables.dart';
+import 'package:parkinson_com_v2/models/variables.dart';
 
 class CustomShapeThemes extends StatelessWidget {
   final String text;

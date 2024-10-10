@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:http/http.dart' as http;
-import 'package:parkinson_com_v2/variables.dart';
+import 'package:parkinson_com_v2/models/variables.dart';
 import 'package:xml/xml.dart' as xml;
 
 import 'dico.dart';

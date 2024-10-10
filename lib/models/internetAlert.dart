@@ -6,7 +6,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
-import '../variables.dart';
+import 'variables.dart';
 
 class InternetAlert {
   //This key is used to know when the popup is already displayed or not, because we only close the popup when it is displayed

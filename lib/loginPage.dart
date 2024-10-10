@@ -4,10 +4,10 @@
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:parkinson_com_v2/customtextfield.dart';
-import 'package:parkinson_com_v2/keyboard.dart';
+import 'package:parkinson_com_v2/views/customWidgets/customTextField.dart';
+import 'package:parkinson_com_v2/views/keyboards/keyboard.dart';
 import 'package:parkinson_com_v2/models/database/contact.dart';
-import 'package:parkinson_com_v2/variables.dart';
+import 'package:parkinson_com_v2/models/variables.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'models/popupshandler.dart';

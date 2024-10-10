@@ -9,10 +9,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
-import 'package:parkinson_com_v2/keyboardPhoneNumber.dart';
+import 'package:parkinson_com_v2/views/keyboards/keyboardPhoneNumber.dart';
 import 'package:parkinson_com_v2/models/popupshandler.dart';
 
-import '../variables.dart';
+import 'variables.dart';
 
 class EmailHandler {
   late SmtpServer _smtpServer;

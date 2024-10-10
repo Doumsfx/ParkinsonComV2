@@ -4,7 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:parkinson_com_v2/models/predictions/prediction.dart';
-import 'package:parkinson_com_v2/variables.dart';
+import 'package:parkinson_com_v2/models/variables.dart';
 import 'package:virtual_keyboard_custom_layout/virtual_keyboard_custom_layout.dart';
 
 class CustomKeyboard extends StatefulWidget {

@@ -5,12 +5,12 @@
 import 'dart:async';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:parkinson_com_v2/customTitle.dart';
+import 'package:parkinson_com_v2/views/customWidgets/customTitle.dart';
 import 'package:parkinson_com_v2/models/database/contact.dart';
-import 'package:parkinson_com_v2/newContact.dart';
-import 'package:parkinson_com_v2/variables.dart';
+import 'package:parkinson_com_v2/views/contacts/newContact.dart';
+import 'package:parkinson_com_v2/models/variables.dart';
 
-import 'models/popupshandler.dart';
+import '../../models/popupshandler.dart';
 
 
 class ListContactsPage extends StatefulWidget {

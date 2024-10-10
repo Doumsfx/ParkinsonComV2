@@ -6,14 +6,14 @@ import 'dart:async';
 
 import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:parkinson_com_v2/customTitle.dart';
-import 'package:parkinson_com_v2/keyboard.dart';
-import 'package:parkinson_com_v2/keyboardHour.dart';
+import 'package:parkinson_com_v2/views/customWidgets/customTitle.dart';
+import 'package:parkinson_com_v2/views/keyboards/keyboard.dart';
+import 'package:parkinson_com_v2/views/keyboards/keyboardHour.dart';
 import 'package:parkinson_com_v2/models/database/reminder.dart';
-import 'package:parkinson_com_v2/variables.dart';
+import 'package:parkinson_com_v2/models/variables.dart';
 
-import 'customtextfield.dart';
-import 'models/popupshandler.dart';
+import '../customWidgets/customTextField.dart';
+import '../../models/popupshandler.dart';
 
 
 class NewReminderPage extends StatefulWidget {

@@ -1,4 +1,4 @@
-// List of dialogs Page
+// List of dialogs filtered by themes Page
 // Code by Pagnon Alexis and Sanchez Adam
 // ParkinsonCom V2
 
@@ -6,23 +6,22 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:parkinson_com_v2/customShapeThemes.dart';
-import 'package:parkinson_com_v2/customTitle.dart';
-import 'package:parkinson_com_v2/listThemesPage.dart';
-import 'package:parkinson_com_v2/variables.dart';
-import 'package:parkinson_com_v2/dialogPage.dart';
+import 'package:parkinson_com_v2/views/customWidgets/customTitle.dart';
+import 'package:parkinson_com_v2/models/variables.dart';
+import 'package:parkinson_com_v2/views/dialogs/dialogPage.dart';
 
-import 'models/database/dialog.dart';
-import 'models/popupshandler.dart';
+import '../../models/database/dialog.dart';
+import '../../models/popupshandler.dart';
 
-class ListDialogsPage extends StatefulWidget {
-  const ListDialogsPage({super.key});
+class ListDialogsPageFiltered extends StatefulWidget {
+  final int idTheme;
+  const ListDialogsPageFiltered({super.key, required this.idTheme});
 
   @override
-  State<ListDialogsPage> createState() => _ListDialogsPageState();
+  State<ListDialogsPageFiltered> createState() => _ListDialogsPageFilteredState();
 }
 
-class _ListDialogsPageState extends State<ListDialogsPage> {
+class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
   // Useful variables
   final Map<String, bool> _buttonAnimations = {
     "NEW DIALOG": false,
@@ -39,15 +38,20 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
   };
 
   List<DialogObject> _listDialogs = [];
+  String selectedThemeTitle = "";
   late List<bool> _dialogsAnimations;
   late List<bool> _deleteButtonsAnimations;
   late List<bool> _ttsButtonsAnimations;
   final ScrollController _scrollController = ScrollController();
 
-  /// Function that initialise our variables
+  /// Function to initialise our variables
   Future<void> initialisation() async {
     // We retrieve all the dialogs from the database
-    _listDialogs = await databaseManager.retrieveDialogsFromLanguage(language);
+    _listDialogs = await databaseManager.retrieveDialogsFromTheme(widget.idTheme);
+
+    // We retrieve the title of the selected theme to display it
+    selectedThemeTitle = (await databaseManager.retrieveThemeFromId(widget.idTheme)).title;
+
     setState(() {});
     _dialogsAnimations = List.filled(_listDialogs.length, false);
     _deleteButtonsAnimations = List.filled(_listDialogs.length, false);
@@ -67,6 +71,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
         } else {
           endIndex = i;
           secondPart = _listDialogs.sublist(0, endIndex + 1);
+
           break;
         }
       }
@@ -126,9 +131,10 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                 setState(() {
                                   _buttonAnimations["BACK ARROW"] = false;
                                 });
-                                Navigator.popUntil(
+
+                                // Button code
+                                Navigator.pop(
                                   context,
-                                  (route) => route.isFirst,
                                 );
                               },
                               onTapCancel: () {
@@ -156,7 +162,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                               Container(
                                 margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.19, MediaQuery.of(context).size.height / 16, 0, MediaQuery.of(context).size.height * 0.07),
                                 child: CustomTitle(
-                                  text: languagesTextsFile.texts["dialog_list_title"]!,
+                                  text: languagesTextsFile.texts["dialog_list_filtered_title"]!,
                                   image: 'assets/themeIcon.png',
                                   imageScale: 1,
                                   backgroundColor: Colors.white,
@@ -169,52 +175,6 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                   circlePositionedLeft: MediaQuery.of(context).size.height * 0.0625 * -1,
                                   fontWeight: FontWeight.w700,
                                   alignment: const Alignment(0.07, 2.4),
-
-                                ),
-                              ),
-
-                              // See themes Button
-                              AnimatedScale(
-                                scale: _buttonAnimations["THEMES"] == true ? 1.1 : 1.0,
-                                duration: const Duration(milliseconds: 100),
-                                curve: Curves.bounceOut,
-                                alignment: Alignment.centerRight,
-                                child: GestureDetector(
-                                  // Animation management
-                                  onTapDown: (_) {
-                                    setState(() {
-                                      _buttonAnimations["THEMES"] = true;
-                                    });
-                                  },
-                                  onTapUp: (_) {
-                                    setState(() {
-                                      _buttonAnimations["THEMES"] = false;
-                                    });
-                                    // Button Code
-                                    print("THEMESSS");
-                                    Navigator.push(
-                                      context,
-                                      PageRouteBuilder(
-                                        pageBuilder: (context, animation, secondaryAnimation) => const ListThemesPage(),
-                                        transitionDuration: const Duration(milliseconds: 100),
-                                        reverseTransitionDuration: const Duration(milliseconds: 100),
-                                      ),
-                                    );
-                                  },
-                                  onTapCancel: () {
-                                    setState(() {
-                                      _buttonAnimations["THEMES"] = false;
-                                    });
-                                  },
-                                  child: Container(
-                                    margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.40, 0, 0, 0),
-                                    child: CustomShapeThemes(
-                                      text: languagesTextsFile.texts["dialog_list_theme"]!,
-                                      image: 'assets/doubleFleche.png',
-                                      backgroundColor: const Color.fromRGBO(78, 237, 255, 1),
-                                      textColor: Colors.black,
-                                    ),
-                                  ),
                                 ),
                               ),
                             ],
@@ -233,7 +193,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                           Container(
                             margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.04, 0, 0, MediaQuery.of(context).size.height * 0.02),
                             child: Text(
-                              languagesTextsFile.texts["dialog_list_name"]!,
+                              languagesTextsFile.texts["dialog_list_filtered_name"]!,
                               style: GoogleFonts.josefinSans(
                                 fontSize: 18,
                                 color: Colors.white,
@@ -268,6 +228,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                       builder: (context) => DialogPage(
                                             idDialog: -1,
                                             initialTextDialog: "",
+                                            idTheme: widget.idTheme,
                                           )),
                                 ).then((_) => initialisation());
                               },
@@ -285,7 +246,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                 ),
                                 padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.04, MediaQuery.of(context).size.width * 0.015, MediaQuery.of(context).size.width * 0.02, MediaQuery.of(context).size.width * 0.015),
                                 child: Text(
-                                  languagesTextsFile.texts["dialog_list_new"]!,
+                                  languagesTextsFile.texts["dialog_list_filtered_new"]!,
                                   style: const TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,
@@ -323,7 +284,6 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                               _buttonAnimations["HELP"] = false;
                             });
                             // Button Code
-                            print("HELLLLLLLLLLP");
                             emergencyRequest.sendEmergencyRequest(context);
                           },
                           onTapCancel: () {
@@ -396,7 +356,6 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                               _buttonAnimations["RELAX"] = false;
                             });
                             // Button Code
-                            print("RELAAAAAAAAAX");
                           },
                           onTapCancel: () {
                             setState(() {
@@ -466,7 +425,12 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                       // Button Code
                                       Navigator.push(
                                         context,
-                                        MaterialPageRoute(builder: (context) => DialogPage(idDialog: _listDialogs[index].id_dialog, initialTextDialog: _listDialogs[index].sentence, idTheme: _listDialogs[index].id_theme)),
+                                        MaterialPageRoute(
+                                            builder: (context) => DialogPage(
+                                                  idDialog: _listDialogs[index].id_dialog,
+                                                  initialTextDialog: _listDialogs[index].sentence,
+                                                  idTheme: _listDialogs[index].id_theme,
+                                                )),
                                       ).then((_) => initialisation());
                                     },
                                     onTapCancel: () {
@@ -484,21 +448,23 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                       child: Row(
                                         children: [
                                           // Text
-                                          Expanded(
-                                            child: Container(
-                                              padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.04, MediaQuery.of(context).size.width * 0.015, MediaQuery.of(context).size.width * 0.02, MediaQuery.of(context).size.width * 0.015),
-                                              child: Text(
-                                                _listDialogs[index].sentence,
-                                                style: const TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 18,
-                                                ),
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
+                                          Container(
+                                            width: MediaQuery.of(context).size.width * 0.745,
+                                            padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.04, MediaQuery.of(context).size.width * 0.015, MediaQuery.of(context).size.width * 0.02, MediaQuery.of(context).size.width * 0.015),
+                                            child: Text(
+                                              _listDialogs[index].sentence,
+                                              style: const TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18,
                                               ),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
                                             ),
                                           ),
+
+                                          // Fill in the rest of the container
+                                          const Expanded(child: SizedBox()),
 
                                           // TTS
                                           Container(
@@ -642,12 +608,6 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                 });
                               },
 
-                              onTapCancel: () {
-                                setState(() {
-                                  _buttonAnimations["TOP ARROW"] = false;
-                                });
-                              },
-
                               child: Container(
                                 width: MediaQuery.of(context).size.height * 0.07,
                                 height: MediaQuery.of(context).size.height * 0.07,
@@ -670,21 +630,20 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                           // Container for when the scrollbar is empty
                           Expanded(
                               child: Container(
-                                width: MediaQuery.of(context).size.width * 0.01875,
-                                margin: isThisDeviceATablet ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.014) : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.011),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: const Color.fromRGBO(66, 89, 109, 1),
-                                ),
-                                child: Container(
-                                  margin: EdgeInsets.all(MediaQuery.of(context).size.width * 0.00375),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: Colors.blue,
-                                  ),
-                                ),
-                            )
-                          ),
+                            width: MediaQuery.of(context).size.width * 0.01875,
+                            margin: isThisDeviceATablet ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.014) : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.011),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: const Color.fromRGBO(66, 89, 109, 1),
+                            ),
+                            child: Container(
+                              margin: EdgeInsets.all(MediaQuery.of(context).size.width * 0.00375),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: Colors.blue,
+                              ),
+                            ),
+                          )),
 
                           // Bot Arrow
                           AnimatedScale(

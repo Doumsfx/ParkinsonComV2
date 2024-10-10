@@ -4,12 +4,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:parkinson_com_v2/customtextfield.dart';
-import 'package:parkinson_com_v2/keyboard.dart';
+import 'package:parkinson_com_v2/views/customWidgets/customTextField.dart';
+import 'package:parkinson_com_v2/views/keyboards/keyboard.dart';
 import 'package:parkinson_com_v2/models/database/theme.dart';
-import 'package:parkinson_com_v2/variables.dart';
+import 'package:parkinson_com_v2/models/variables.dart';
 
-import 'models/popupshandler.dart';
+import '../../models/popupshandler.dart';
 
 class NewThemePage extends StatefulWidget {
   const NewThemePage({super.key});

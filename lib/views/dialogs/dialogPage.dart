@@ -7,14 +7,14 @@ import 'package:diacritic/diacritic.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:parkinson_com_v2/customShape.dart';
-import 'package:parkinson_com_v2/keyboard.dart';
-import 'package:parkinson_com_v2/variables.dart';
+import 'package:parkinson_com_v2/views/customWidgets/customShape.dart';
+import 'package:parkinson_com_v2/views/keyboards/keyboard.dart';
+import 'package:parkinson_com_v2/models/variables.dart';
 
-import 'models/database/contact.dart';
-import 'models/database/dialog.dart';
-import 'models/database/theme.dart';
-import 'models/popupshandler.dart';
+import '../../models/database/contact.dart';
+import '../../models/database/dialog.dart';
+import '../../models/database/theme.dart';
+import '../../models/popupshandler.dart';
 
 class DialogPage extends StatefulWidget {
   final int idDialog;
