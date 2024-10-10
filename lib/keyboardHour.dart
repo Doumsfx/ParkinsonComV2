@@ -166,6 +166,9 @@ class _CustomKeyboardHourState extends State<CustomKeyboardHour> {
 
       });
     }
+    else if(keyText == "BACKSPACE"){
+      // Do nothing
+    }
 
     // For any other keys
     else {
