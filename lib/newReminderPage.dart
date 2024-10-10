@@ -12,6 +12,8 @@ import 'package:parkinson_com_v2/keyboardHour.dart';
 import 'package:parkinson_com_v2/models/database/reminder.dart';
 import 'package:parkinson_com_v2/variables.dart';
 
+import 'models/popupshandler.dart';
+
 
 class NewReminderPage extends StatefulWidget {
   final int idReminder;
@@ -97,78 +99,6 @@ class _NewReminderPageState extends State<NewReminderPage> {
 
   String formatWithTwoDigits(int number) {
     return number.toString().padLeft(2, '0');
-  }
-
-  /// Generic popup to display a specific [text] from the JSON and with an "OK" button
-  void _showGenericPopupOK(String text) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          double screenHeight = MediaQuery.of(context).size.height;
-          double screenWidth = MediaQuery.of(context).size.width;
-          return StatefulBuilder(builder: (context, setState) {
-            return Dialog(
-              backgroundColor: Colors.black87,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.15),
-                    Text(
-                      text,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: screenHeight * 0.2),
-                    //Button to quit
-                    AnimatedScale(
-                      scale: _buttonAnimations["POPUP OK"]! ? 1.1 : 1.0,
-                      duration: const Duration(milliseconds: 100),
-                      curve: Curves.bounceOut,
-                      child: GestureDetector(
-                        // Animation management
-                        onTapDown: (_) {
-                          setState(() {
-                            _buttonAnimations["POPUP OK"] = true;
-                          });
-                        },
-                        onTapUp: (_) {
-                          setState(() {
-                            _buttonAnimations["POPUP OK"] = false;
-                          });
-                          // BUTTON CODE
-                          Navigator.pop(context);
-                        },
-                        onTapCancel: () {
-                          setState(() {
-                            _buttonAnimations["POPUP OK"] = false;
-                          });
-                        },
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(60)),
-                            color: Colors.lightGreen,
-                          ),
-                          padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
-                          child: Text(
-                            languagesTextsFile.texts["pop_up_ok"]!,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: screenHeight * 0.03),
-                  ],
-                ),
-              ),
-            );
-          });
-        });
   }
 
   @override
@@ -848,13 +778,13 @@ class _NewReminderPageState extends State<NewReminderPage> {
                                         }
 
                                         if(_firstController.text.isEmpty){
-                                          _showGenericPopupOK(languagesTextsFile.texts["new_reminder_error_name"]);
+                                          Popups.showPopupOk(context, text: languagesTextsFile.texts["new_reminder_error_name"], textOk: languagesTextsFile.texts["pop_up_ok"], functionOk: Popups.functionToQuit);
                                         }
                                         else if(_secondController.text.isEmpty){
-                                          _showGenericPopupOK(languagesTextsFile.texts["new_reminder_error_time_empty"]);
+                                          Popups.showPopupOk(context, text: languagesTextsFile.texts["new_reminder_error_time_empty"], textOk: languagesTextsFile.texts["pop_up_ok"], functionOk: Popups.functionToQuit);
                                         }
                                         else if(daysString.isEmpty){
-                                          _showGenericPopupOK(languagesTextsFile.texts["new_reminder_error_days"]);
+                                          Popups.showPopupOk(context, text: languagesTextsFile.texts["new_reminder_error_days"], textOk: languagesTextsFile.texts["pop_up_ok"], functionOk: Popups.functionToQuit);
                                         }
                                         else{
                                           if(widget.idReminder == -1){

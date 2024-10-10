@@ -6,6 +6,7 @@ import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:parkinson_com_v2/models/popupshandler.dart';
 
 import '../variables.dart';
 import 'database/reminder.dart';
@@ -42,79 +43,6 @@ class NotificationHandler {
       text, // Contenu
       generalNotificationDetails, // Paramètres de notification
     );
-  }
-
-  /// Generic popup to display a specific [text] from the JSON and with an "OK" button and a music alarm
-  void _showReminderPopUp(BuildContext context,String text) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          double screenHeight = MediaQuery.of(context).size.height;
-          double screenWidth = MediaQuery.of(context).size.width;
-          return StatefulBuilder(builder: (context, setState) {
-            return Dialog(
-              backgroundColor: Colors.black87,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.15),
-                    Text(
-                      text,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: screenHeight * 0.2),
-                    //Button to quit
-                    AnimatedScale(
-                      scale: buttonAnimation ? 1.1 : 1.0,
-                      duration: const Duration(milliseconds: 100),
-                      curve: Curves.bounceOut,
-                      child: GestureDetector(
-                        // Animation management
-                        onTapDown: (_) {
-                          setState(() {
-                            buttonAnimation = true;
-                          });
-                        },
-                        onTapUp: (_) {
-                          setState(() {
-                             buttonAnimation = false;
-                          });
-                          // BUTTON CODE
-                          stopMusic();
-                          Navigator.pop(context);
-                        },
-                        onTapCancel: () {
-                          setState(() {
-                            buttonAnimation = false;
-                          });
-                        },
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(60)),
-                            color: Colors.lightGreen,
-                          ),
-                          padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
-                          child: Text(
-                            languagesTextsFile.texts["pop_up_ok"]!,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: screenHeight * 0.03),
-                  ],
-                ),
-              ),
-            );
-          });
-        });
   }
 
   /// Dispose the Audio Player
@@ -180,7 +108,13 @@ class NotificationHandler {
             for(i; i < _listReminders.length; i += 1){
               if(_listReminders[i].hour == currentTime){
                 if(_listReminders[i].days.contains(currentDay)){
-                  _showReminderPopUp(context, "${languagesTextsFile.texts["notification_text"]}:\n ${_listReminders[i].title}");
+                  //Popup
+                  //_showReminderPopUp(context, "${languagesTextsFile.texts["notification_text"]}:\n ${_listReminders[i].title}");
+                  Popups.showPopupOk(context, text: "${languagesTextsFile.texts["notification_text"]}:\n ${_listReminders[i].title}", textOk: languagesTextsFile.texts["pop_up_ok"]!, functionOk: (p0) {
+                    stopMusic();
+                    Navigator.pop(context);
+                  },);
+                  //Device notification
                   _showNotification("${languagesTextsFile.texts["notification_text"]} ${_listReminders[i].title}",languagesTextsFile.texts["notification_title"], flutterLocalNotificationsPlugin);
                   if(_listReminders[i].ring && !isMusicPlaying()){
                     startMusic();

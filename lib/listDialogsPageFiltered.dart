@@ -11,6 +11,7 @@ import 'package:parkinson_com_v2/variables.dart';
 import 'package:parkinson_com_v2/dialogPage.dart';
 
 import 'models/database/dialog.dart';
+import 'models/popupshandler.dart';
 
 class ListDialogsPageFiltered extends StatefulWidget {
   final int idTheme;
@@ -510,131 +511,16 @@ class _ListDialogsPageFilteredState extends State<ListDialogsPageFiltered> {
                                         _deleteButtonsAnimations[index] = false;
                                       });
                                       //Popup to confirm the deletion
-                                      showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            // Use StatefulBuilder to manage the state inside the dialog
-                                            return StatefulBuilder(builder: (context, setState) {
-                                              double screenHeight = MediaQuery.of(context).size.height;
-                                              double screenWidth = MediaQuery.of(context).size.width;
-
-                                              return Dialog(
-                                                backgroundColor: Colors.black87,
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(16.0), // Optional padding for aesthetics
-                                                  child: Column(
-                                                      mainAxisSize: MainAxisSize.min, // Ensures the dialog is as small as needed
-                                                      children: [
-                                                        SizedBox(height: screenHeight * 0.1),
-                                                        //Suppression warning
-                                                        Text(
-                                                          languagesTextsFile.texts["pop_up_delete_dialog"]!,
-                                                          style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-                                                        ),
-
-                                                        SizedBox(height: screenHeight * 0.2),
-                                                        //Buttons to cancel and validate
-                                                        Row(
-                                                          mainAxisAlignment: MainAxisAlignment.center,
-                                                          children: [
-                                                            //Cancel button
-                                                            AnimatedScale(
-                                                              scale: _buttonAnimations["POPUP NO"]! ? 1.1 : 1.0,
-                                                              duration: const Duration(milliseconds: 100),
-                                                              curve: Curves.bounceOut,
-                                                              alignment: Alignment.center,
-                                                              child: GestureDetector(
-                                                                // Animation management
-                                                                onTapDown: (_) {
-                                                                  setState(() {
-                                                                    _buttonAnimations["POPUP NO"] = true;
-                                                                  });
-                                                                },
-                                                                onTapUp: (_) {
-                                                                  setState(() {
-                                                                    _buttonAnimations["POPUP NO"] = false;
-                                                                  });
-                                                                  // BUTTON CODE
-                                                                  Navigator.pop(context);
-                                                                },
-                                                                onTapCancel: () {
-                                                                  setState(() {
-                                                                    _buttonAnimations["POPUP NO"] = false;
-                                                                  });
-                                                                },
-                                                                child: Container(
-                                                                  decoration: const BoxDecoration(
-                                                                    borderRadius: BorderRadius.all(Radius.circular(60)),
-                                                                    color: Colors.red,
-                                                                  ),
-                                                                  padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
-                                                                  child: Text(
-                                                                    languagesTextsFile.texts["pop_up_no"]!,
-                                                                    style: const TextStyle(
-                                                                      color: Colors.white,
-                                                                      fontWeight: FontWeight.bold,
-                                                                      fontSize: 20,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            //Blank space between the buttons
-                                                            SizedBox(width: screenWidth * 0.15),
-                                                            //Validate button
-                                                            AnimatedScale(
-                                                              scale: _buttonAnimations["POPUP YES"]! ? 1.1 : 1.0,
-                                                              duration: const Duration(milliseconds: 100),
-                                                              curve: Curves.bounceOut,
-                                                              alignment: Alignment.center,
-                                                              child: GestureDetector(
-                                                                // Animation management
-                                                                onTapDown: (_) {
-                                                                  setState(() {
-                                                                    _buttonAnimations["POPUP YES"] = true;
-                                                                  });
-                                                                },
-                                                                onTapUp: (_) async {
-                                                                  _buttonAnimations["POPUP YES"] = false;
-
-                                                                  await databaseManager.deleteDialog(_listDialogs[index].id_dialog);
-                                                                  //Refresh ui
-                                                                  _listDialogs.removeAt(index);
-                                                                  _updateParent();
-                                                                  //Close the popup
-                                                                  Navigator.pop(context); // Close the dialog
-                                                                },
-
-                                                                onTapCancel: () {
-                                                                  setState(() {
-                                                                    _buttonAnimations["POPUP YES"] = false;
-                                                                  });
-                                                                },
-                                                                child: Container(
-                                                                  decoration: const BoxDecoration(
-                                                                    borderRadius: BorderRadius.all(Radius.circular(60)),
-                                                                    color: Colors.lightGreen,
-                                                                  ),
-                                                                  padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
-                                                                  child: Text(
-                                                                    languagesTextsFile.texts["pop_up_yes"]!,
-                                                                    style: const TextStyle(
-                                                                      color: Colors.white,
-                                                                      fontWeight: FontWeight.bold,
-                                                                      fontSize: 20,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        SizedBox(height: screenHeight * 0.03),
-                                                      ]),
-                                                ),
-                                              );
-                                            });
-                                          });
+                                      Popups.showPopupYesOrNo(context, text: languagesTextsFile.texts["pop_up_delete_dialog"]!, textYes: languagesTextsFile.texts["pop_up_yes"]!, textNo: languagesTextsFile.texts["pop_up_no"]!,
+                                          functionYes: (p0) async {
+                                            await databaseManager.deleteDialog(_listDialogs[index].id_dialog);
+                                            //Refresh ui
+                                            _listDialogs.removeAt(index);
+                                            _updateParent();
+                                            //Close the popup
+                                            Navigator.pop(context);
+                                          },
+                                          functionNo: Popups.functionToQuit);
                                     },
                                     onTapCancel: () {
                                       setState(() {

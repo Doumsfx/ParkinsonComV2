@@ -35,6 +35,7 @@ class InternetAlert {
         case InternetStatus.disconnected:
           // The internet is now disconnected
           isConnected.value = false;
+          //We don't replace this popup with the Popups Class because of the global key that it uses.
           _showNoInternetAlert(context);
           break;
       }

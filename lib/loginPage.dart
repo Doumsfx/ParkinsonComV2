@@ -192,7 +192,7 @@ class _LoginPageState extends State<LoginPage> {
                                         // TextField
                                         Expanded(
                                           child: CustomTextField(
-                                            width: MediaQuery.of(context).size.width * 0.3,
+                                            width: MediaQuery.of(context).size.width * 0.33,
                                             context: context,
                                             minFontSize: 5,
                                             maxFontSize: 22,
@@ -299,7 +299,7 @@ class _LoginPageState extends State<LoginPage> {
                                         // TextField
                                         Expanded(
                                           child: CustomTextField(
-                                            width: MediaQuery.of(context).size.width * 0.3,
+                                            width: MediaQuery.of(context).size.width * 0.33,
                                             context: context,
                                             maxFontSize: 22,
                                             minFontSize: 5,
@@ -465,13 +465,13 @@ class _LoginPageState extends State<LoginPage> {
                                       });
                                       // BUTTON CODE
                                       if(_firstController.text.isEmpty){
-                                        _showGenericPopupOK(languagesTextsFile.texts["login_page_error_first_name"], 1);
+                                        Popups.showPopupOk(context, text: languagesTextsFile.texts["login_page_error_first_name"], textOk: languagesTextsFile.texts["pop_up_ok"], functionOk: Popups.functionToQuit);
                                       }
                                       else if(_secondController.text.isEmpty){
-                                        _showGenericPopupOK(languagesTextsFile.texts["login_page_error_mail"], 1);
+                                        Popups.showPopupOk(context, text: languagesTextsFile.texts["login_page_error_mail"], textOk: languagesTextsFile.texts["pop_up_ok"], functionOk: Popups.functionToQuit);
                                       }
                                       else if(_secondController.text.isNotEmpty && !_secondController.text.contains('@')){
-                                        _showGenericPopupOK(languagesTextsFile.texts["login_page_error_form_mail"], 1);
+                                        Popups.showPopupOk(context, text: languagesTextsFile.texts["login_page_error_form_mail"], textOk: languagesTextsFile.texts["pop_up_ok"], functionOk: Popups.functionToQuit);
                                       }
                                       else{
                                         bool checks = await startChecks();
@@ -743,7 +743,7 @@ class _LoginPageState extends State<LoginPage> {
                                             // TextField
                                             Expanded(
                                               child: CustomTextField(
-                                                width: MediaQuery.of(context).size.width * 0.3,
+                                                width: MediaQuery.of(context).size.width * 0.33,
                                                 context: context,
                                                 maxFontSize: 22,
                                                 minFontSize: 5,
@@ -841,79 +841,4 @@ class _LoginPageState extends State<LoginPage> {
           },));
   }
 
-
-  /// Generic popup to display a specific [text] from the JSON and with an "OK" button
-  void _showGenericPopupOK(String text, int nbPopContext) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          double screenHeight = MediaQuery.of(context).size.height;
-          double screenWidth = MediaQuery.of(context).size.width;
-          return StatefulBuilder(builder: (context, setState) {
-            return Dialog(
-              backgroundColor: Colors.black87,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.15),
-                    Text(
-                      text,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: screenHeight * 0.2),
-                    //Button to quit
-                    AnimatedScale(
-                      scale: _buttonAnimations["POPUP OK"]! ? 1.1 : 1.0,
-                      duration: const Duration(milliseconds: 100),
-                      curve: Curves.bounceOut,
-                      child: GestureDetector(
-                        // Animation management
-                        onTapDown: (_) {
-                          setState(() {
-                            _buttonAnimations["POPUP OK"] = true;
-                          });
-                        },
-                        onTapUp: (_) {
-                          setState(() {
-                            _buttonAnimations["POPUP OK"] = false;
-                          });
-                          // BUTTON CODE
-                          int i = 0;
-                          for(i; i < nbPopContext; i += 1){
-                            Navigator.pop(context);
-                          }
-                        },
-                        onTapCancel: () {
-                          setState(() {
-                            _buttonAnimations["POPUP OK"] = false;
-                          });
-                        },
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(60)),
-                            color: Colors.lightGreen,
-                          ),
-                          padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
-                          child: Text(
-                            languagesTextsFile.texts["pop_up_ok"]!,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: screenHeight * 0.03),
-                  ],
-                ),
-              ),
-            );
-          });
-        });
-  }
 }

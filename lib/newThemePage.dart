@@ -9,6 +9,8 @@ import 'package:parkinson_com_v2/keyboard.dart';
 import 'package:parkinson_com_v2/models/database/theme.dart';
 import 'package:parkinson_com_v2/variables.dart';
 
+import 'models/popupshandler.dart';
+
 class NewThemePage extends StatefulWidget {
   const NewThemePage({super.key});
 
@@ -225,160 +227,17 @@ class _NewThemePageState extends State<NewThemePage> {
                                 });
                                 // BUTTON CODE
                                 // Save button
-                                showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    //Popup Can't save an empty theme
-                                    double screenWidth = MediaQuery.of(context).size.width;
-                                    double screenHeight = MediaQuery.of(context).size.height;
-                                    if (_controller.text.isEmpty) {
-                                      return StatefulBuilder(
-                                        builder: (context, setState) {
-                                          return Dialog(
-                                            backgroundColor: Colors.black87,
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(8.0),
-                                              child: Column(
-                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  SizedBox(height: screenHeight * 0.1, width: screenWidth * 0.95),
-                                                  Text(
-                                                    languagesTextsFile.texts["pop_up_cant_save_theme"],
-                                                    textAlign: TextAlign.center,
-                                                    style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-                                                  ),
-                                                  SizedBox(height: screenHeight * 0.1),
-                                                  //Button to close the popup
-                                                  AnimatedScale(
-                                                    scale: _buttonAnimations["POPUP OK"]! ? 1.1 : 1.0,
-                                                    duration: const Duration(milliseconds: 100),
-                                                    curve: Curves.bounceOut,
-                                                    alignment: Alignment.center,
-                                                    child: GestureDetector(
-                                                      // Animation management
-                                                      onTapDown: (_) {
-                                                        setState(() {
-                                                          _buttonAnimations["POPUP OK"] = true;
-                                                        });
-                                                      },
-                                                      onTapUp: (_) {
-                                                        setState(() {
-                                                          _buttonAnimations["POPUP OK"] = false;
-                                                        });
-                                                        // BUTTON CODE
-                                                        Navigator.pop(context);
-                                                      },
-                                                      onTapCancel: () {
-                                                        setState(() {
-                                                          _buttonAnimations["POPUP OK"] = false;
-                                                        });
-                                                      },
-                                                      child: Container(
-                                                        decoration: const BoxDecoration(
-                                                          borderRadius: BorderRadius.all(Radius.circular(60)),
-                                                          color: Colors.lightGreen,
-                                                        ),
-                                                        padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
-                                                        child: Text(
-                                                          languagesTextsFile.texts["pop_up_ok"],
-                                                          style: const TextStyle(
-                                                            color: Colors.white,
-                                                            fontWeight: FontWeight.bold,
-                                                            fontSize: 20,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  SizedBox(height: screenHeight * 0.03)
-                                                ],
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                      );
-                                    }
-                                    //Popup Theme added with success
-                                    else {
-                                      //Add the theme into the database
-                                      databaseManager.insertTheme(ThemeObject(title: _controller.text, language: language));
+                                if (_controller.text.isEmpty) {
+                                  Popups.showPopupOk(context, text: languagesTextsFile.texts["pop_up_cant_save_theme"], textOk: languagesTextsFile.texts["pop_up_ok"], functionOk: Popups.functionToQuit);
+                                }
+                                else {
+                                  databaseManager.insertTheme(ThemeObject(title: _controller.text, language: language));
+                                  Popups.showPopupOk(context, text: languagesTextsFile.texts["pop_up_save_theme"], textOk: languagesTextsFile.texts["pop_up_ok"], functionOk: (p0) {
+                                    Navigator.pop(context); // Quit popup
+                                    Navigator.pop(context); // Get back to list
+                                  },);
+                                }
 
-                                      return StatefulBuilder(
-                                        builder: (context, setState) {
-                                          return Dialog(
-                                            backgroundColor: Colors.black87,
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(8.0),
-                                              child: Column(
-                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  SizedBox(height: screenHeight * 0.1, width: screenWidth * 0.95),
-                                                  Text(
-                                                    languagesTextsFile.texts["pop_up_save_theme"],
-                                                    textAlign: TextAlign.center,
-                                                    style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-                                                  ),
-                                                  SizedBox(height: screenHeight * 0.1),
-                                                  //Button to close the popup
-                                                  AnimatedScale(
-                                                    scale: _buttonAnimations["POPUP OK"]! ? 1.1 : 1.0,
-                                                    duration: const Duration(milliseconds: 100),
-                                                    curve: Curves.bounceOut,
-                                                    alignment: Alignment.center,
-                                                    child: GestureDetector(
-                                                      // Animation management
-                                                      onTapDown: (_) {
-                                                        setState(() {
-                                                          _buttonAnimations["POPUP OK"] = true;
-                                                        });
-                                                      },
-                                                      onTapUp: (_) {
-                                                        setState(() {
-                                                          newThemePageState = ValueNotifier<bool>(false);
-                                                          _buttonAnimations["POPUP OK"] = false;
-                                                        });
-
-                                                        // Redirection
-                                                        Navigator.pop(context); // Quit popup
-                                                        Navigator.pop(context); // Get back to list
-                                                      },
-
-                                                      onTapCancel: () {
-                                                        setState(() {
-                                                          _buttonAnimations["POPUP OK"] = false;
-                                                        });
-                                                      },
-                                                      child: Container(
-                                                        decoration: const BoxDecoration(
-                                                          borderRadius: BorderRadius.all(Radius.circular(60)),
-                                                          color: Colors.lightGreen,
-                                                        ),
-                                                        padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
-                                                        child: Text(
-                                                          languagesTextsFile.texts["pop_up_ok"],
-                                                          style: const TextStyle(
-                                                            color: Colors.white,
-                                                            fontWeight: FontWeight.bold,
-                                                            fontSize: 20,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  SizedBox(height: screenHeight * 0.03),
-                                                ],
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                      );
-                                    }
-                                  },
-                                );
                               },
                               onTapCancel: () {
                                 setState(() {

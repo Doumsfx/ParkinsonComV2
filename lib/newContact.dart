@@ -13,6 +13,8 @@ import 'package:parkinson_com_v2/keyboardPhoneNumber.dart';
 import 'package:parkinson_com_v2/models/database/contact.dart';
 import 'package:parkinson_com_v2/variables.dart';
 
+import 'models/popupshandler.dart';
+
 
 class NewContactPage extends StatefulWidget {
   final int idContact;
@@ -78,80 +80,6 @@ class _NewContactPageState extends State<NewContactPage> {
     }
   }
 
-  /// Generic popup to display a specific [text] from the JSON and with an "OK" button
-  void _showGenericPopupOK(String text, int nbPopContext) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          double screenHeight = MediaQuery.of(context).size.height;
-          double screenWidth = MediaQuery.of(context).size.width;
-          return StatefulBuilder(builder: (context, setState) {
-            return Dialog(
-              backgroundColor: Colors.black87,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.15),
-                    Text(
-                      text,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: screenHeight * 0.2),
-                    //Button to quit
-                    AnimatedScale(
-                      scale: _buttonAnimations["POPUP OK"]! ? 1.1 : 1.0,
-                      duration: const Duration(milliseconds: 100),
-                      curve: Curves.bounceOut,
-                      child: GestureDetector(
-                        // Animation management
-                        onTapDown: (_) {
-                          setState(() {
-                            _buttonAnimations["POPUP OK"] = true;
-                          });
-                        },
-                        onTapUp: (_) {
-                          setState(() {
-                            _buttonAnimations["POPUP OK"] = false;
-                          });
-                          // BUTTON CODE
-                          int i = 0;
-                          for(i; i < nbPopContext; i += 1){
-                            Navigator.pop(context);
-                          }
-                        },
-                        onTapCancel: () {
-                          setState(() {
-                            _buttonAnimations["POPUP OK"] = false;
-                          });
-                        },
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(60)),
-                            color: Colors.lightGreen,
-                          ),
-                          padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
-                          child: Text(
-                            languagesTextsFile.texts["pop_up_ok"]!,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: screenHeight * 0.03),
-                  ],
-                ),
-              ),
-            );
-          });
-        });
-  }
 
   @override
   void initState() {
@@ -672,20 +600,17 @@ class _NewContactPageState extends State<NewContactPage> {
                                   _buttonAnimations["ADD"] = false;
                                 });
                                 // BUTTON CODE
-                                if(_firstController.text.isEmpty){
-                                  _showGenericPopupOK(languagesTextsFile.texts["new_contact_first_name_error"], 1);
-                                }
-                                else if(_secondController.text.isEmpty){
-                                  _showGenericPopupOK(languagesTextsFile.texts["new_contact_last_name_error"], 1);
+                                if(_secondController.text.isEmpty){
+                                  Popups.showPopupOk(context, text: languagesTextsFile.texts["new_contact_last_name_error"], textOk: languagesTextsFile.texts["pop_up_ok"], functionOk: Popups.functionToQuit);
                                 }
                                 else if(_thirdController.text.isNotEmpty && mail && !_thirdController.text.contains("@")){
-                                  _showGenericPopupOK(languagesTextsFile.texts["new_contact_mail_error_form"], 1);
+                                  Popups.showPopupOk(context, text: languagesTextsFile.texts["new_contact_mail_error_form"], textOk: languagesTextsFile.texts["pop_up_ok"], functionOk: Popups.functionToQuit);
                                 }
                                 else if(_thirdController.text.isEmpty && mail){
-                                  _showGenericPopupOK(languagesTextsFile.texts["new_contact_mail_error"], 1);
+                                  Popups.showPopupOk(context, text: languagesTextsFile.texts["new_contact_mail_error"], textOk: languagesTextsFile.texts["pop_up_ok"], functionOk: Popups.functionToQuit);
                                 }
                                 else if(_thirdController.text.isEmpty && phone){
-                                  _showGenericPopupOK(languagesTextsFile.texts["new_contact_phone_error"], 1);
+                                  Popups.showPopupOk(context, text: languagesTextsFile.texts["new_contact_phone_error"], textOk: languagesTextsFile.texts["pop_up_ok"], functionOk: Popups.functionToQuit);
                                 }
                                 else{
                                   if(widget.idContact == -1){
@@ -698,8 +623,8 @@ class _NewContactPageState extends State<NewContactPage> {
                                       priority: 3,
                                     ));
                     
-                                    _showGenericPopupOK(languagesTextsFile.texts["new_contact_pop_up_success"], 2);
-                    
+                                    Popups.showPopupOk(context, text: languagesTextsFile.texts["new_contact_pop_up_success"], textOk: languagesTextsFile.texts["pop_up_ok"], functionOk: Popups.functionToQuit, numberOfExecutionsOk: 2);
+
                                   }
                     
                                   // Updating the old contact
