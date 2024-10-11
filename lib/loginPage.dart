@@ -473,6 +473,7 @@ class _LoginPageState extends State<LoginPage> {
 
                                         if(checks) {
                                           isFirstLaunch = false;
+                                          wantPhoneFonctionnality = phone;
 
                                           // Initialization of the database manager when launching the app (create or open the database)
                                           await databaseManager.initDB();
