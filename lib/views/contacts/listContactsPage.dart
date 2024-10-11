@@ -52,8 +52,8 @@ class _ListContactsPageState extends State<ListContactsPage> {
     _contactsAnimations = List.filled(_listContacts.length, false);
     _deleteButtonsAnimations = List.filled(_listContacts.length, false);
     _modifyButtonsAnimations = List.filled(_listContacts.length, false);
-    _primaryContacts = List.filled(_listContacts.length, false);
-    _secondaryContacts = List.filled(_listContacts.length, false);
+    _primaryContacts = List.filled(_listContacts.length, false, growable: true);
+    _secondaryContacts = List.filled(_listContacts.length, false, growable: true);
 
     // Sorting list with first name
     _listContacts.sort((a, b) => a.last_name.compareTo(b.last_name));
@@ -522,6 +522,8 @@ class _ListContactsPageState extends State<ListContactsPage> {
                                             await databaseManager.deleteContact(_listContacts[index].id_contact);
                                             // Refresh ui
                                             _listContacts.removeAt(index);
+                                            _primaryContacts.removeAt(index);
+                                            _secondaryContacts.removeAt(index);
                                             _updateParent();
                                             //Close the popup
                                             Navigator.pop(context);

@@ -199,7 +199,7 @@ class _ListDialogsPageState extends State<ListDialogsPage> {
                                         transitionDuration: const Duration(milliseconds: 100),
                                         reverseTransitionDuration: const Duration(milliseconds: 100),
                                       ),
-                                    );
+                                    ).then((_) => initialisation());
                                   },
                                   onTapCancel: () {
                                     setState(() {
