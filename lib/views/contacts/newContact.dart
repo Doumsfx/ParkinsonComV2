@@ -658,7 +658,7 @@ class _NewContactPageState extends State<NewContactPage> {
                                       _buttonAnimations["HELP"] = false;
                                     });
                                     // Button Code
-                                    print("HELLLLLLLLLLP");
+                                    emergencyRequest.sendEmergencyRequest(context);
                                   },
                                   onTapCancel: () {
                                     setState(() {

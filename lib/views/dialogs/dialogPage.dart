@@ -1614,6 +1614,7 @@ class _DialogPageState extends State<DialogPage> {
     }
     //Popup to choose the contact
     else {
+      contactsList.sort((a, b) => a.last_name.compareTo(b.last_name));
       Contact? selectedContact = contactsList[0];
       //Set directly on the principal contact
       for(var c in contactsList) {
