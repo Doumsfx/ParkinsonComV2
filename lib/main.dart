@@ -598,7 +598,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                   fontWeight: FontWeight.w700,
                                   containerWidth: MediaQuery.of(context).size.width * 0.23,
                                   containerHeight: MediaQuery.of(context).size.width * 0.05,
-                                  containerPadding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.01, 0, MediaQuery.of(context).size.width * 0.035, 0),
+                                  containerPadding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.01, 0, MediaQuery.of(context).size.width * 0.04, 0),
                                   circlePositionedRight: MediaQuery.of(context).size.width * 0.001 * -1,
                                   circleSize: MediaQuery.of(context).size.width * 0.085,
                                   sizedBoxHeight: MediaQuery.of(context).size.width * 0.085,
