@@ -20,18 +20,19 @@ class Popups {
           return StatefulBuilder(builder: (context, setState) {
             return Dialog(
               backgroundColor: Colors.black87,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
+              child: SizedBox(
+                height: screenHeight*0.8,
+                width: screenWidth*0.95,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.15),
+                    const Expanded(child: SizedBox()), //Top of the popup
                     Text(
                       text,
                       textAlign: TextAlign.center,
                       style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: screenHeight * 0.2),
+                    const Expanded(child: SizedBox()), //Between the text and the buttons
                     //Buttons
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -128,7 +129,7 @@ class Popups {
                         ),
                       ],
                     ),
-                    SizedBox(height: screenHeight * 0.03),
+                    SizedBox(height: screenHeight * 0.05),
                   ],
                 ),
               ),
@@ -150,18 +151,19 @@ class Popups {
           return StatefulBuilder(builder: (context, setState) {
             return Dialog(
               backgroundColor: Colors.black87,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
+              child: SizedBox(
+                height: screenHeight*0.8,
+                width: screenWidth*0.95,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.15),
+                    const Expanded(child: SizedBox()), //Top of the popup
                     Text(
                       text,
                       textAlign: TextAlign.center,
                       style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: screenHeight * 0.2),
+                    const Expanded(child: SizedBox()), //Between the popup and the buttons
                     //Button OK
                     AnimatedScale(
                       scale: _buttonAnimations["POPUP OK"]! ? 1.1 : 1.0,
@@ -206,7 +208,7 @@ class Popups {
                         ),
                       ),
                     ),
-                    SizedBox(height: screenHeight * 0.03),
+                    SizedBox(height: screenHeight * 0.05),
                   ],
                 ),
               ),

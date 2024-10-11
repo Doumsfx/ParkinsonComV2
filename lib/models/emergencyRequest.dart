@@ -5,6 +5,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:parkinson_com_v2/models/popupshandler.dart';
 import 'package:parkinson_com_v2/models/variables.dart';
 
 import 'database/contact.dart';
@@ -70,12 +71,13 @@ class EmergencyRequest {
 
               return Dialog(
                 backgroundColor: Colors.black87,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
+                child: SizedBox(
+                  height: screenHeight*0.8,
+                  width: screenWidth*0.95,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.13),
+                      const Expanded(child: SizedBox()),
                       Text(
                         "${languagesTextsFile.texts["emergency_ask_1"]!}\n${primaryContact.last_name} ${primaryContact.first_name}\n${languagesTextsFile.texts["emergency_ask_2"]!}",
                         textAlign: TextAlign.center,
@@ -88,7 +90,7 @@ class EmergencyRequest {
                         textAlign: TextAlign.center,
                         style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
                       ),
-                      SizedBox(height: screenHeight * 0.08),
+                      const Expanded(child: SizedBox()),
                       //Buttons
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -184,8 +186,7 @@ class EmergencyRequest {
                           ),
                         ],
                       ),
-
-                      SizedBox(height: screenHeight * 0.03),
+                      SizedBox(height: screenHeight * 0.05),
                     ],
                   ),
                 ),
@@ -194,81 +195,10 @@ class EmergencyRequest {
           });
     } else {
       //No contact
-      _showGenericPopupOK(languagesTextsFile.texts["pop_up_contact_empty"]!, contextPage);
+      Popups.showPopupOk(contextPage, text: languagesTextsFile.texts["pop_up_contact_empty"]!, textOk: languagesTextsFile.texts["pop_up_ok"]!, functionOk: Popups.functionToQuit);
     }
   }
 
-  ///Generic popup to display a specific [text] from the JSON and with an "OK" button
-  void _showGenericPopupOK(String text, BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          double screenHeight = MediaQuery.of(context).size.height;
-          double screenWidth = MediaQuery.of(context).size.width;
-          return StatefulBuilder(builder: (context, setState) {
-            return Dialog(
-              backgroundColor: Colors.black87,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.15),
-                    Text(
-                      text,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: screenHeight * 0.2),
-                    //Button to quit
-                    AnimatedScale(
-                      scale: _buttonAnimations["POPUP OK"]! ? 1.1 : 1.0,
-                      duration: const Duration(milliseconds: 100),
-                      curve: Curves.bounceOut,
-                      child: GestureDetector(
-                        // Animation management
-                        onTapDown: (_) {
-                          setState(() {
-                            _buttonAnimations["POPUP OK"] = true;
-                          });
-                        },
-                        onTapUp: (_) {
-                          setState(() {
-                            _buttonAnimations["POPUP OK"] = false;
-                          });
-                          // BUTTON CODE
-                          Navigator.pop(context);
-                        },
-                        onTapCancel: () {
-                          setState(() {
-                            _buttonAnimations["POPUP OK"] = false;
-                          });
-                        },
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(60)),
-                            color: Colors.lightGreen,
-                          ),
-                          padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
-                          child: Text(
-                            languagesTextsFile.texts["pop_up_ok"]!,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: screenHeight * 0.03),
-                  ],
-                ),
-              ),
-            );
-          });
-        });
-  }
 
   ///Send an emergency request to the [primaryContact] and launch the process for the list of [secondaryContacts]
   Future<void> _sendEmergencyRequestPrimary(Contact primaryContact, BuildContext contextPage, BuildContext context, List<Contact> secondaryContacts ) async {
@@ -280,8 +210,11 @@ class EmergencyRequest {
     int result = 0;
     //If the primary contact has an email
     if (primaryContact.email != null) {
+      // Get the user's info
+      Contact user = await databaseManager.retrieveContactFromId(0);
+      // Create the content of the email
       String content =
-          "${languagesTextsFile.texts["mail_body_1"]!} TOCHANGE{account.name}, TOCHANGE{account.email}\n\n${languagesTextsFile.texts["emergency_message"]!}\n\n${languagesTextsFile.texts["mail_body_2"]!} TOCHANGE{account.email} ${languagesTextsFile.texts["mail_body_3"]!}";
+          "${languagesTextsFile.texts["mail_body_1"]!} ${user.first_name}, ${user.email}\n\n${languagesTextsFile.texts["emergency_message"]!}\n\n${languagesTextsFile.texts["mail_body_2"]!} ${user.email} ${languagesTextsFile.texts["mail_body_3"]!}";
       result = await emailHandler.sendMessage(primaryContact.email as String, content);
     }
     //Or if the primary contact has a phone number
@@ -293,7 +226,7 @@ class EmergencyRequest {
     if (contextPage.mounted) {
       //Error encountered
       if (result < 0) {
-        _showGenericPopupOK(languagesTextsFile.texts["popup_message_send_fail"]!, contextPage);
+        Popups.showPopupOk(contextPage, text: languagesTextsFile.texts["popup_message_send_fail"]!, textOk: languagesTextsFile.texts["pop_up_ok"]!, functionOk: Popups.functionToQuit);
       }
       //Ask for each of the secondary contacts
       else {
@@ -355,12 +288,13 @@ class EmergencyRequest {
 
               return Dialog(
                 backgroundColor: Colors.black87,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
+                child: SizedBox(
+                  height: screenHeight*0.8,
+                  width: screenWidth*0.95,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.13),
+                      const Expanded(child: SizedBox()),
                       Text(
                         "${languagesTextsFile.texts["emergency_ask_1.2"]!}\n${contact.last_name} ${contact.first_name}\n${languagesTextsFile.texts["emergency_ask_2"]!}", // Display contact info
                         textAlign: TextAlign.center,
@@ -381,7 +315,7 @@ class EmergencyRequest {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(height: screenHeight * 0.08),
+                      const Expanded(child: SizedBox()),
                       // Buttons for Yes/No
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -471,7 +405,7 @@ class EmergencyRequest {
                           ),
                         ],
                       ),
-                      SizedBox(height: screenHeight * 0.03),
+                      SizedBox(height: screenHeight * 0.05),
                     ],
                   ),
                 ),
@@ -489,9 +423,11 @@ class EmergencyRequest {
       int result = 0;
       // Send message via email or SMS
       if (contact.email != null) {
-        //todo update info sender
+        // Get the user's info
+        Contact user = await databaseManager.retrieveContactFromId(0);
+        // Create the content of the email
         String content =
-            "${languagesTextsFile.texts["mail_body_1"]!} TOCHANGE{account.name}, TOCHANGE{account.email}\n\n${languagesTextsFile.texts["emergency_message"]!}\n\n${languagesTextsFile.texts["mail_body_2"]!} TOCHANGE{account.email} ${languagesTextsFile.texts["mail_body_3"]!}";
+            "${languagesTextsFile.texts["mail_body_1"]!} ${user.first_name}, ${user.email}\n\n${languagesTextsFile.texts["emergency_message"]!}\n\n${languagesTextsFile.texts["mail_body_2"]!} ${user.email} ${languagesTextsFile.texts["mail_body_3"]!}";
         result = await emailHandler.sendMessage(contact.email as String, content);
       } else if (contact.phone != null) {
         result = await smsHandler.checkPermissionAndSendSMS(languagesTextsFile.texts["emergency_message"]!, [contact.phone as String]);
@@ -501,7 +437,7 @@ class EmergencyRequest {
       if (result < 0) {
         forceStop = true;
         if (contextPage.mounted) {
-          _showGenericPopupOK(languagesTextsFile.texts["popup_message_send_fail"]!, contextPage);
+          Popups.showPopupOk(contextPage, text: languagesTextsFile.texts["popup_message_send_fail"]!, textOk: languagesTextsFile.texts["pop_up_ok"]!, functionOk: Popups.functionToQuit);
         }
       }
     }

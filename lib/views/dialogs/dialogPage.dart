@@ -128,7 +128,13 @@ class _DialogPageState extends State<DialogPage> {
                                               });
                                               //Button Code
                                               if(_controller.text != widget.initialTextDialog) {
-                                                _showTextUnsavedBackArrow();
+                                                Popups.showPopupYesOrNo(context, text: languagesTextsFile.texts["pop_up_dialog_unsaved"]!, textYes: languagesTextsFile.texts["pop_up_yes"]!, textNo: languagesTextsFile.texts["pop_up_no"]!,
+                                                    functionYes: (p0) {
+                                                      //Close the popup
+                                                      Navigator.pop(p0);
+                                                      //Close the menu
+                                                      Navigator.pop(p0);
+                                                    }, functionNo: Popups.functionToQuit);
                                               }
                                               else {
                                                 Navigator.pop(
@@ -597,12 +603,13 @@ class _DialogPageState extends State<DialogPage> {
                                       });
                                       // BUTTON CODE
                                       if(_controller.text != widget.initialTextDialog) {
-                                        Popups.showPopupYesOrNo(context, text: languagesTextsFile.texts["pop_up_dialog_unsaved"]!, textYes: languagesTextsFile.texts["pop_up_yes"]!, textNo: languagesTextsFile.texts["pop_up_no"]!, functionYes: (p0) {
-                                          Navigator.popUntil(
-                                            context,
-                                                (route) => route.isFirst,
-                                          );
-                                        }, functionNo: Popups.functionToQuit);
+                                        Popups.showPopupYesOrNo(context, text: languagesTextsFile.texts["pop_up_dialog_unsaved"]!, textYes: languagesTextsFile.texts["pop_up_yes"]!, textNo: languagesTextsFile.texts["pop_up_no"]!,
+                                            functionYes: (p0) {
+                                              Navigator.popUntil(
+                                                p0,
+                                                    (route) => route.isFirst,
+                                              );
+                                            }, functionNo: Popups.functionToQuit);
                                       }
                                       else {
                                         Navigator.popUntil(
@@ -835,12 +842,13 @@ class _DialogPageState extends State<DialogPage> {
                                           // Button Code
                                           if(_controller.text != widget.initialTextDialog) {
                                             //Popup quit without saving
-                                            Popups.showPopupYesOrNo(context, text: languagesTextsFile.texts["pop_up_dialog_unsaved"]!, textYes: languagesTextsFile.texts["pop_up_yes"]!, textNo: languagesTextsFile.texts["pop_up_no"]!, functionYes: (p0) {
-                                              Navigator.popUntil(
-                                                context,
-                                                    (route) => route.isFirst,
-                                              );
-                                            }, functionNo: Popups.functionToQuit);
+                                            Popups.showPopupYesOrNo(context, text: languagesTextsFile.texts["pop_up_dialog_unsaved"]!, textYes: languagesTextsFile.texts["pop_up_yes"]!, textNo: languagesTextsFile.texts["pop_up_no"]!,
+                                                functionYes: (p0) {
+                                                  Navigator.popUntil(
+                                                    p0,
+                                                        (route) => route.isFirst,
+                                                  );
+                                                }, functionNo: Popups.functionToQuit);
                                           }
                                           else {
                                             Navigator.popUntil(
@@ -958,7 +966,7 @@ class _DialogPageState extends State<DialogPage> {
                                         if (t.id_theme == widget.idTheme) selectedTheme = t;
                                       }
 
-                                      //Popup for choosing a theme
+                                      //Popup for choosing a theme (can't use our Popups class because of the drop down menu)
                                       showDialog(
                                         context: context,
                                         builder: (BuildContext context) {
@@ -971,13 +979,14 @@ class _DialogPageState extends State<DialogPage> {
                                               if (!isSaved) {
                                                 return Dialog(
                                                   backgroundColor: Colors.black87,
-                                                  child: Padding(
-                                                    padding: const EdgeInsets.all(16.0),
-                                                    // Optional padding for aesthetics
+                                                  child: SizedBox(
+                                                    height: screenHeight*0.8,
+                                                    width: screenWidth*0.95,
                                                     child: Column(
                                                       mainAxisSize: MainAxisSize.min,
                                                       // Ensures the dialog is as small as needed
                                                       children: [
+                                                        const Expanded(child: SizedBox()),
                                                         // Title for theme selection
                                                         Text(
                                                           languagesTextsFile.texts["pop_up_save_dialog"]!,
@@ -1012,7 +1021,7 @@ class _DialogPageState extends State<DialogPage> {
                                                             ),
                                                           ),
                                                         ),
-                                                        SizedBox(height: screenHeight * 0.2),
+                                                        const Expanded(child: SizedBox()),
                                                         //Buttons to cancel and validate
                                                         Row(
                                                           mainAxisAlignment: MainAxisAlignment.center,
@@ -1110,7 +1119,7 @@ class _DialogPageState extends State<DialogPage> {
                                                             ),
                                                           ],
                                                         ),
-                                                        SizedBox(height: screenHeight * 0.03),
+                                                        SizedBox(height: screenHeight * 0.05),
                                                       ],
                                                     ),
                                                   ),
@@ -1118,18 +1127,19 @@ class _DialogPageState extends State<DialogPage> {
                                               } else {
                                                 return Dialog(
                                                   backgroundColor: Colors.black87,
-                                                  child: Padding(
-                                                    padding: const EdgeInsets.all(16.0),
+                                                  child: SizedBox(
+                                                    height: screenHeight*0.8,
+                                                    width: screenWidth*0.95,
                                                     child: Column(
                                                       mainAxisSize: MainAxisSize.min,
                                                       children: [
-                                                        SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.15),
+                                                        const Expanded(child: SizedBox()),
                                                         // Title for saving confirmation
                                                         Text(
                                                           languagesTextsFile.texts["pop_up_save_dialog_succes"]!,
                                                           style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
                                                         ),
-                                                        SizedBox(height: screenHeight * 0.2),
+                                                        const Expanded(child: SizedBox()),
                                                         //Button to quit
                                                         AnimatedScale(
                                                           scale: _buttonAnimations["POPUP OK"]! ? 1.1 : 1.0,
@@ -1173,7 +1183,7 @@ class _DialogPageState extends State<DialogPage> {
                                                             ),
                                                           ),
                                                         ),
-                                                        SizedBox(height: screenHeight * 0.03),
+                                                        SizedBox(height: screenHeight * 0.05),
                                                       ],
                                                     ),
                                                   ),
@@ -1328,11 +1338,13 @@ class _DialogPageState extends State<DialogPage> {
                                             if (!isModified) {
                                               return Dialog(
                                                 backgroundColor: Colors.black87,
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(16.0), // Optional padding for aesthetics
+                                                child: SizedBox(
+                                                  height: screenHeight*0.8,
+                                                  width: screenWidth*0.95,
                                                   child: Column(
                                                     mainAxisSize: MainAxisSize.min, // Ensures the dialog is as small as needed
                                                     children: [
+                                                      const Expanded(child: SizedBox()),
                                                       // Title for theme selection
                                                       Text(
                                                         languagesTextsFile.texts["pop_up_save_dialog"]!,
@@ -1366,7 +1378,7 @@ class _DialogPageState extends State<DialogPage> {
                                                           ),
                                                         ),
                                                       ),
-                                                      SizedBox(height: screenHeight * 0.2),
+                                                      const Expanded(child: SizedBox()),
                                                       // Buttons to cancel and validate
                                                       Row(
                                                         mainAxisAlignment: MainAxisAlignment.center,
@@ -1466,7 +1478,7 @@ class _DialogPageState extends State<DialogPage> {
                                                           ),
                                                         ],
                                                       ),
-                                                      SizedBox(height: screenHeight * 0.03),
+                                                      SizedBox(height: screenHeight * 0.05),
                                                     ],
                                                   ),
                                                 ),
@@ -1476,19 +1488,20 @@ class _DialogPageState extends State<DialogPage> {
                                             else {
                                               return Dialog(
                                                 backgroundColor: Colors.black87,
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(16.0), // Optional padding for aesthetics
+                                                child: SizedBox(
+                                                  height: screenHeight*0.8,
+                                                  width: screenWidth*0.95,
                                                   child: Column(
                                                     mainAxisSize: MainAxisSize.min, // Ensures the dialog is as small as needed
                                                     mainAxisAlignment: MainAxisAlignment.center,
                                                     children: [
-                                                      SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.15),
+                                                      const Expanded(child: SizedBox()),
                                                       // Title for theme selection
                                                       Text(
                                                         languagesTextsFile.texts["pop_up_modify_dialog_succes"]!,
-                                                        style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                                                        style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
                                                       ),
-                                                      SizedBox(height: screenHeight * 0.2),
+                                                      const Expanded(child: SizedBox()),
                                                       // Button to quit
                                                       AnimatedScale(
                                                         scale: _buttonAnimations["POPUP OK"]! ? 1.1 : 1.0,
@@ -1532,7 +1545,7 @@ class _DialogPageState extends State<DialogPage> {
                                                           ),
                                                         ),
                                                       ),
-                                                      SizedBox(height: screenHeight * 0.03),
+                                                      SizedBox(height: screenHeight * 0.05),
                                                     ],
                                                   ),
                                                 ),
@@ -1591,131 +1604,6 @@ class _DialogPageState extends State<DialogPage> {
     );
   }
 
-  /// Popup when the user try to quit without saving his modifications
-  void _showTextUnsavedBackArrow() {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          double screenHeight = MediaQuery.of(context).size.height;
-          double screenWidth = MediaQuery.of(context).size.width;
-          return StatefulBuilder(builder: (context, setState) {
-            return Dialog(
-              backgroundColor: Colors.black87,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.15),
-                    Text(
-                      languagesTextsFile.texts["pop_up_dialog_unsaved"]!,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: screenHeight * 0.2),
-                    //Buttons
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        //Cancel button
-                        AnimatedScale(
-                          scale: _buttonAnimations["POPUP NO"]! ? 1.1 : 1.0,
-                          duration: const Duration(milliseconds: 100),
-                          curve: Curves.bounceOut,
-                          alignment: Alignment.center,
-                          child: GestureDetector(
-                            // Animation management
-                            onTapDown: (_) {
-                              setState(() {
-                                _buttonAnimations["POPUP NO"] = true;
-                              });
-                            },
-                            onTapUp: (_) {
-                              setState(() {
-                                _buttonAnimations["POPUP NO"] = false;
-                              });
-                              // Button Code
-                              Navigator.pop(context);
-                            },
-                            onTapCancel: () {
-                              setState(() {
-                                _buttonAnimations["POPUP NO"] = false;
-                              });
-                            },
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(60)),
-                                color: Colors.red,
-                              ),
-                              padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
-                              child: Text(
-                                languagesTextsFile.texts["pop_up_no"]!,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        //Blank space between the buttons
-                        SizedBox(width: screenWidth * 0.15),
-                        //Yes button
-                        AnimatedScale(
-                          scale: _buttonAnimations["POPUP YES"]! ? 1.1 : 1.0,
-                          duration: const Duration(milliseconds: 100),
-                          curve: Curves.bounceOut,
-                          alignment: Alignment.center,
-                          child: GestureDetector(
-                            // Animation management
-                            onTapDown: (_) {
-                              setState(() {
-                                _buttonAnimations["POPUP YES"] = true;
-                              });
-                            },
-                            onTapUp: (_) async {
-                              setState(() {
-                                _buttonAnimations["POPUP YES"] = false;
-                              });
-                              //Close the popup
-                              Navigator.pop(context);
-                              //Close the menu
-                              Navigator.pop(context);
-                            },
-                            onTapCancel: () {
-                              setState(() {
-                                _buttonAnimations["POPUP YES"] = false;
-                              });
-                            },
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(60)),
-                                color: Colors.lightGreen,
-                              ),
-                              padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
-                              child: Text(
-                                languagesTextsFile.texts["pop_up_yes"]!,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    SizedBox(height: screenHeight * 0.03),
-                  ],
-                ),
-              ),
-            );
-          });
-        });
-  }
 
   ///Popup that display the list of contact and let choose to who we are sending the message
   void _showContactList() async {
@@ -1744,13 +1632,14 @@ class _DialogPageState extends State<DialogPage> {
               double screenWidth = MediaQuery.of(contextPopup).size.width;
                 return Dialog(
                   backgroundColor: Colors.black87,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    // Optional padding for aesthetics
+                  child: SizedBox(
+                    height: screenHeight*0.8,
+                    width: screenWidth*0.95,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       // Ensures the dialog is as small as needed
                       children: [
+                        const Expanded(child: SizedBox()),
                         // Title for theme selection
                         Text(
                           languagesTextsFile.texts["pop_up_contact_send"]!,
@@ -1786,7 +1675,7 @@ class _DialogPageState extends State<DialogPage> {
                             ),
                           ),
                         ),
-                        SizedBox(height: screenHeight * 0.2),
+                        const Expanded(child: SizedBox()),
                         //Buttons to cancel and validate
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -1854,8 +1743,10 @@ class _DialogPageState extends State<DialogPage> {
                                   if (_controller.text.isNotEmpty) {
                                     //Send an E-Mail
                                     if (selectedContact!.email != null) {
-                                      //todo update info sender
-                                      String content = "${languagesTextsFile.texts["mail_body_1"]!} ${selectedContact!.first_name}, ${selectedContact!.email}\n\n${_controller.text}\n\n${languagesTextsFile.texts["mail_body_2"]!} ${selectedContact!.email} ${languagesTextsFile.texts["mail_body_3"]!}";
+                                      // Get the user's info
+                                      Contact user = await databaseManager.retrieveContactFromId(0);
+                                      // Create the content of the email
+                                      String content = "${languagesTextsFile.texts["mail_body_1"]!} ${user.first_name}, ${user.email}\n\n${_controller.text}\n\n${languagesTextsFile.texts["mail_body_2"]!} ${user.email} ${languagesTextsFile.texts["mail_body_3"]!}";
                                       final result = await emailHandler.sendMessage(selectedContact!.email!, content);
                                       if (mounted) { //Protect from trying to display the popup when the context has changed (ex : going back to the menu)
                                         if(result == 1) {
@@ -1916,7 +1807,7 @@ class _DialogPageState extends State<DialogPage> {
                             ),
                           ],
                         ),
-                        SizedBox(height: screenHeight * 0.03),
+                        SizedBox(height: screenHeight * 0.05),
                       ],
                     ),
                   ),

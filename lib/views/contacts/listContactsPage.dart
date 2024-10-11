@@ -284,6 +284,7 @@ class _ListContactsPageState extends State<ListContactsPage> {
                               _buttonAnimations["HELP"] = false;
                             });
                             // BUTTON CODE
+                            emergencyRequest.sendEmergencyRequest(context);
                           },
                           onTapCancel: () {
                             setState(() {

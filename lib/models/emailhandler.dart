@@ -62,18 +62,19 @@ class EmailHandler {
           return StatefulBuilder(builder: (context, setState) {
             return Dialog(
               backgroundColor: Colors.black87,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
+              child: SizedBox(
+                height: screenHeight*0.8,
+                width: screenWidth*0.95,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.3),
+                    const Expanded(child: SizedBox()),
                     Text(
                       languagesTextsFile.texts["sending_code_mail"],
                       textAlign: TextAlign.center,
                       style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: screenHeight * 0.3),
+                    const Expanded(child: SizedBox()),
                   ],
                 ),
               ),
@@ -105,18 +106,19 @@ class EmailHandler {
               if(!value){
                 return Dialog(
                   backgroundColor: Colors.black87,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
+                  child: SizedBox(
+                    height: screenHeight*0.8,
+                    width: screenWidth*0.95,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.06),
+                        const Expanded(child: SizedBox()),
                         Text(
                           (languagesTextsFile.texts["input_code_mail"] as String).replaceAll("...", userMail),
                           textAlign: TextAlign.center,
                           style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
                         ),
-                        SizedBox(height: screenHeight * 0.06),
+                        const Expanded(child: SizedBox()),
                         //TextField for code input
                         SizedBox(
                           width: screenWidth*0.35,
@@ -184,7 +186,7 @@ class EmailHandler {
                             },
                           ),
                         ),
-                        SizedBox(height: screenHeight * 0.06),
+                        const Expanded(child: SizedBox()),
                         //Buttons
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -297,12 +299,13 @@ class EmailHandler {
 
                   Dialog(
                     backgroundColor: Colors.black87,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
+                    child: SizedBox(
+                      height: screenHeight*0.8,
+                      width: screenWidth*0.95,
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          SizedBox(width: screenWidth * 0.95, height: screenHeight * 0.08),
+                          SizedBox(height: screenHeight*0.1),
                           //TextField for code input
                           SizedBox(
                             width: screenWidth*0.35,
@@ -378,11 +381,11 @@ class EmailHandler {
                   Positioned(
                       bottom: 0,
                       left: 0,
-
                       child: Builder(builder: (context) {
-                    return CustomKeyboardPhoneNumber(controller: controller,);
-                  },))
-
+                          return CustomKeyboardPhoneNumber(controller: controller,);
+                      },
+                    ),
+                  ),
                 ],
                 );
               }
@@ -406,6 +409,5 @@ class EmailHandler {
       },);
     }
   }
-
 
 }
