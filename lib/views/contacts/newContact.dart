@@ -569,16 +569,59 @@ class _NewContactPageState extends State<NewContactPage> {
                                       }
                                       else{
                                         if(widget.idContact == -1){
-                                          // Adding the contact in the database
-                                          await databaseManager.insertContact(Contact(
-                                            first_name: _firstController.text,
-                                            last_name: _secondController.text,
-                                            email: mail ? _thirdController.text : null,
-                                            phone: phone ? _thirdController.text : null,
-                                            priority: 3,
-                                          ));
 
-                                          Popups.showPopupOk(context, text: languagesTextsFile.texts["new_contact_pop_up_success"], textOk: languagesTextsFile.texts["pop_up_ok"], functionOk: Popups.functionToQuit, numberOfExecutionsOk: 2);
+                                          // Waiting popup
+                                          showDialog(context: context, builder: (context) {
+                                            double screenHeight = MediaQuery.of(context).size.height;
+                                            double screenWidth = MediaQuery.of(context).size.width;
+                                            return Dialog(
+                                              backgroundColor: Colors.black87,
+                                              child: SizedBox(
+                                                height: screenHeight*0.8,
+                                                width: screenWidth*0.95,
+                                                child: Center(
+                                                  child: Text(
+                                                    languagesTextsFile.texts["new_contact_waiting"],
+                                                    textAlign: TextAlign.center,
+                                                    style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          },);
+
+                                          // Inform the contact that he has been added
+                                          // If the message isn't sent, we don't save the contact because he didn't get informed
+                                          Contact user = await databaseManager.retrieveContactFromId(0);
+                                          int result = -1;
+
+                                          if(mail) {
+                                            String content = (languagesTextsFile.texts["new_contact_info_email"] as String).replaceAll("...", user.first_name);
+                                            result = await emailHandler.sendMessage(_thirdController.text, content);
+                                          }
+                                          else if(phone) {
+                                            String content = (languagesTextsFile.texts["new_contact_info_sms"] as String).replaceAll("...", user.first_name);
+                                            result = await smsHandler.checkPermissionAndSendSMS(content, [_thirdController.text]);
+                                          }
+                                          // Quit the waiting popup
+                                          Navigator.of(context).pop();
+
+                                          if(result >= 0){
+                                            // Adding the contact in the database
+                                            await databaseManager.insertContact(Contact(
+                                              first_name: _firstController.text,
+                                              last_name: _secondController.text,
+                                              email: mail ? _thirdController.text : null,
+                                              phone: phone ? _thirdController.text : null,
+                                              priority: 3,
+                                            ));
+
+                                            Popups.showPopupOk(context, text: languagesTextsFile.texts["new_contact_pop_up_success"], textOk: languagesTextsFile.texts["pop_up_ok"], functionOk: Popups.functionToQuit, numberOfExecutionsOk: 2);
+                                          }
+                                          else {
+                                            Popups.showPopupOk(context, text: languagesTextsFile.texts["new_contact_error"], textOk: languagesTextsFile.texts["pop_up_ok"], functionOk: Popups.functionToQuit, numberOfExecutionsOk: 1);
+                                          }
+
 
                                         }
 
