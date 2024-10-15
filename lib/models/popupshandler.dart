@@ -23,114 +23,117 @@ class Popups {
               child: SizedBox(
                 height: screenHeight*0.8,
                 width: screenWidth*0.95,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Expanded(child: SizedBox()), //Top of the popup
-                    Text(
-                      text,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    const Expanded(child: SizedBox()), //Between the text and the buttons
-                    //Buttons
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        //Cancel button
-                        AnimatedScale(
-                          scale: _buttonAnimations["POPUP NO"]! ? 1.1 : 1.0,
-                          duration: const Duration(milliseconds: 100),
-                          curve: Curves.bounceOut,
-                          alignment: Alignment.center,
-                          child: GestureDetector(
-                            // Animation management
-                            onTapDown: (_) {
-                              setState(() {
-                                _buttonAnimations["POPUP NO"] = true;
-                              });
-                            },
-                            onTapUp: (_) {
-                              setState(() {
-                                _buttonAnimations["POPUP NO"] = false;
-                              });
-                              // BUTTON CODE
-                              for (int i = 0; i < numberOfExecutionsNo; i++) {
-                                functionNo(context);
-                              }
-                            },
-                            onTapCancel: () {
-                              setState(() {
-                                _buttonAnimations["POPUP NO"] = false;
-                              });
-                            },
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(60)),
-                                color: Colors.red,
-                              ),
-                              padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
-                              child: Text(
-                                textNo,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth*0.01),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Expanded(child: SizedBox()), //Top of the popup
+                      Text(
+                        text,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white, fontSize: screenHeight*0.05, fontWeight: FontWeight.bold),
+                      ),
+                      const Expanded(child: SizedBox()), //Between the text and the buttons
+                      //Buttons
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          //Cancel button
+                          AnimatedScale(
+                            scale: _buttonAnimations["POPUP NO"]! ? 1.1 : 1.0,
+                            duration: const Duration(milliseconds: 100),
+                            curve: Curves.bounceOut,
+                            alignment: Alignment.center,
+                            child: GestureDetector(
+                              // Animation management
+                              onTapDown: (_) {
+                                setState(() {
+                                  _buttonAnimations["POPUP NO"] = true;
+                                });
+                              },
+                              onTapUp: (_) {
+                                setState(() {
+                                  _buttonAnimations["POPUP NO"] = false;
+                                });
+                                // BUTTON CODE
+                                for (int i = 0; i < numberOfExecutionsNo; i++) {
+                                  functionNo(context);
+                                }
+                              },
+                              onTapCancel: () {
+                                setState(() {
+                                  _buttonAnimations["POPUP NO"] = false;
+                                });
+                              },
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular(60)),
+                                  color: Colors.red,
+                                ),
+                                padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
+                                child: Text(
+                                  textNo,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: screenHeight*0.05,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                        //Blank space between the buttons
-                        SizedBox(width: screenWidth * 0.15),
-                        //Yes button
-                        AnimatedScale(
-                          scale: _buttonAnimations["POPUP YES"]! ? 1.1 : 1.0,
-                          duration: const Duration(milliseconds: 100),
-                          curve: Curves.bounceOut,
-                          alignment: Alignment.center,
-                          child: GestureDetector(
-                            // Animation management
-                            onTapDown: (_) {
-                              setState(() {
-                                _buttonAnimations["POPUP YES"] = true;
-                              });
-                            },
-                            onTapUp: (_) async {
-                              setState(() {
-                                _buttonAnimations["POPUP YES"] = false;
-                              });
-                              //BUTTON CODE
-                              for (int i = 0; i < numberOfExecutionsYes; i++) {
-                                functionYes(context);
-                              }
-                            },
-                            onTapCancel: () {
-                              setState(() {
-                                _buttonAnimations["POPUP YES"] = false;
-                              });
-                            },
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(60)),
-                                color: Colors.lightGreen,
-                              ),
-                              padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
-                              child: Text(
-                                textYes,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
+                          //Blank space between the buttons
+                          SizedBox(width: screenWidth * 0.15),
+                          //Yes button
+                          AnimatedScale(
+                            scale: _buttonAnimations["POPUP YES"]! ? 1.1 : 1.0,
+                            duration: const Duration(milliseconds: 100),
+                            curve: Curves.bounceOut,
+                            alignment: Alignment.center,
+                            child: GestureDetector(
+                              // Animation management
+                              onTapDown: (_) {
+                                setState(() {
+                                  _buttonAnimations["POPUP YES"] = true;
+                                });
+                              },
+                              onTapUp: (_) async {
+                                setState(() {
+                                  _buttonAnimations["POPUP YES"] = false;
+                                });
+                                //BUTTON CODE
+                                for (int i = 0; i < numberOfExecutionsYes; i++) {
+                                  functionYes(context);
+                                }
+                              },
+                              onTapCancel: () {
+                                setState(() {
+                                  _buttonAnimations["POPUP YES"] = false;
+                                });
+                              },
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular(60)),
+                                  color: Colors.lightGreen,
+                                ),
+                                padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
+                                child: Text(
+                                  textYes,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: screenHeight*0.05,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: screenHeight * 0.05),
-                  ],
+                        ],
+                      ),
+                      SizedBox(height: screenHeight * 0.05),
+                    ],
+                  ),
                 ),
               ),
             );
@@ -154,62 +157,65 @@ class Popups {
               child: SizedBox(
                 height: screenHeight*0.8,
                 width: screenWidth*0.95,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Expanded(child: SizedBox()), //Top of the popup
-                    Text(
-                      text,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    const Expanded(child: SizedBox()), //Between the popup and the buttons
-                    //Button OK
-                    AnimatedScale(
-                      scale: _buttonAnimations["POPUP OK"]! ? 1.1 : 1.0,
-                      duration: const Duration(milliseconds: 100),
-                      curve: Curves.bounceOut,
-                      alignment: Alignment.center,
-                      child: GestureDetector(
-                        // Animation management
-                        onTapDown: (_) {
-                          setState(() {
-                            _buttonAnimations["POPUP OK"] = true;
-                          });
-                        },
-                        onTapUp: (_) async {
-                          setState(() {
-                            _buttonAnimations["POPUP OK"] = false;
-                          });
-                          //BUTTON CODE
-                          for (int i = 0; i < numberOfExecutionsOk; i++) {
-                            functionOk(context);
-                          }
-                        },
-                        onTapCancel: () {
-                          setState(() {
-                            _buttonAnimations["POPUP OK"] = false;
-                          });
-                        },
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(60)),
-                            color: Colors.lightGreen,
-                          ),
-                          padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
-                          child: Text(
-                            textOk,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth*0.01),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Expanded(child: SizedBox()), //Top of the popup
+                      Text(
+                        text,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white, fontSize: screenHeight*0.05, fontWeight: FontWeight.bold),
+                      ),
+                      const Expanded(child: SizedBox()), //Between the popup and the buttons
+                      //Button OK
+                      AnimatedScale(
+                        scale: _buttonAnimations["POPUP OK"]! ? 1.1 : 1.0,
+                        duration: const Duration(milliseconds: 100),
+                        curve: Curves.bounceOut,
+                        alignment: Alignment.center,
+                        child: GestureDetector(
+                          // Animation management
+                          onTapDown: (_) {
+                            setState(() {
+                              _buttonAnimations["POPUP OK"] = true;
+                            });
+                          },
+                          onTapUp: (_) async {
+                            setState(() {
+                              _buttonAnimations["POPUP OK"] = false;
+                            });
+                            //BUTTON CODE
+                            for (int i = 0; i < numberOfExecutionsOk; i++) {
+                              functionOk(context);
+                            }
+                          },
+                          onTapCancel: () {
+                            setState(() {
+                              _buttonAnimations["POPUP OK"] = false;
+                            });
+                          },
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(60)),
+                              color: Colors.lightGreen,
+                            ),
+                            padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
+                            child: Text(
+                              textOk,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: screenHeight*0.05,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    SizedBox(height: screenHeight * 0.05),
-                  ],
+                      SizedBox(height: screenHeight * 0.05),
+                    ],
+                  ),
                 ),
               ),
             );

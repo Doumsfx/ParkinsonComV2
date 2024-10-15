@@ -990,7 +990,7 @@ class _DialogPageState extends State<DialogPage> {
                                                         // Title for theme selection
                                                         Text(
                                                           languagesTextsFile.texts["pop_up_save_dialog"]!,
-                                                          style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                                                          style: TextStyle(color: Colors.white, fontSize: screenHeight*0.05, fontWeight: FontWeight.bold),
                                                         ),
                                                         SizedBox(height: screenHeight * 0.1),
                                                         // Dropdown menu for themes
@@ -1003,7 +1003,7 @@ class _DialogPageState extends State<DialogPage> {
                                                                 maxHeight: screenHeight * 0.35,
                                                                 decoration: const BoxDecoration(color: Colors.amber),
                                                               ),
-                                                              style: const TextStyle(color: Color.fromRGBO(65, 65, 65, 1), fontWeight: FontWeight.bold, fontSize: 20),
+                                                              style: TextStyle(color: const Color.fromRGBO(65, 65, 65, 1), fontWeight: FontWeight.bold, fontSize: screenHeight*0.05),
                                                               onChanged: (ThemeObject? newValue) {
                                                                 setState(() {
                                                                   selectedTheme = newValue; // Update the selected theme
@@ -1059,10 +1059,10 @@ class _DialogPageState extends State<DialogPage> {
                                                                   padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
                                                                   child: Text(
                                                                     languagesTextsFile.texts["pop_up_cancel"]!,
-                                                                    style: const TextStyle(
+                                                                    style: TextStyle(
                                                                       color: Colors.white,
                                                                       fontWeight: FontWeight.bold,
-                                                                      fontSize: 20,
+                                                                      fontSize: screenHeight*0.05,
                                                                     ),
                                                                   ),
                                                                 ),
@@ -1108,10 +1108,10 @@ class _DialogPageState extends State<DialogPage> {
                                                                   padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
                                                                   child: Text(
                                                                     languagesTextsFile.texts["pop_up_validate"]!,
-                                                                    style: const TextStyle(
+                                                                    style: TextStyle(
                                                                       color: Colors.white,
                                                                       fontWeight: FontWeight.bold,
-                                                                      fontSize: 20,
+                                                                      fontSize: screenHeight*0.05,
                                                                     ),
                                                                   ),
                                                                 ),
@@ -1137,7 +1137,7 @@ class _DialogPageState extends State<DialogPage> {
                                                         // Title for saving confirmation
                                                         Text(
                                                           languagesTextsFile.texts["pop_up_save_dialog_succes"]!,
-                                                          style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                                                          style: TextStyle(color: Colors.white, fontSize: screenHeight*0.05, fontWeight: FontWeight.bold),
                                                         ),
                                                         const Expanded(child: SizedBox()),
                                                         //Button to quit
@@ -1174,10 +1174,10 @@ class _DialogPageState extends State<DialogPage> {
                                                               padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
                                                               child: Text(
                                                                 languagesTextsFile.texts["pop_up_ok"]!,
-                                                                style: const TextStyle(
+                                                                style: TextStyle(
                                                                   color: Colors.white,
                                                                   fontWeight: FontWeight.bold,
-                                                                  fontSize: 20,
+                                                                  fontSize: screenHeight*0.05,
                                                                 ),
                                                               ),
                                                             ),
@@ -1348,7 +1348,7 @@ class _DialogPageState extends State<DialogPage> {
                                                       // Title for theme selection
                                                       Text(
                                                         languagesTextsFile.texts["pop_up_save_dialog"]!,
-                                                        style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                                                        style: TextStyle(color: Colors.white, fontSize: screenHeight*0.05, fontWeight: FontWeight.bold),
                                                       ),
                                                       SizedBox(height: screenHeight * 0.1),
                                                       // Dropdown menu for themes
@@ -1361,7 +1361,7 @@ class _DialogPageState extends State<DialogPage> {
                                                               maxHeight: screenHeight * 0.35,
                                                               decoration: const BoxDecoration(color: Colors.amber),
                                                             ),
-                                                            style: const TextStyle(color: Color.fromRGBO(65, 65, 65, 1), fontWeight: FontWeight.bold, fontSize: 20),
+                                                            style: TextStyle(color: const Color.fromRGBO(65, 65, 65, 1), fontWeight: FontWeight.bold, fontSize: screenHeight*0.05),
                                                             onChanged: (ThemeObject? newValue) {
                                                               setState(() {
                                                                 selectedTheme = newValue; // Update the selected theme
@@ -1402,7 +1402,7 @@ class _DialogPageState extends State<DialogPage> {
                                                                 });
                                                                 // Button Code
                                                                 Navigator.pop(context);
-                                                                Navigator.pop(context);
+                                                                //Navigator.pop(context);
                                                               },
                                                               onTapCancel: () {
                                                                 setState(() {
@@ -1417,10 +1417,10 @@ class _DialogPageState extends State<DialogPage> {
                                                                 padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
                                                                 child: Text(
                                                                   languagesTextsFile.texts["pop_up_cancel"]!,
-                                                                  style: const TextStyle(
+                                                                  style: TextStyle(
                                                                     color: Colors.white,
                                                                     fontWeight: FontWeight.bold,
-                                                                    fontSize: 20,
+                                                                    fontSize: screenHeight*0.05,
                                                                   ),
                                                                 ),
                                                               ),
@@ -1467,10 +1467,10 @@ class _DialogPageState extends State<DialogPage> {
                                                                 padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
                                                                 child: Text(
                                                                   languagesTextsFile.texts["pop_up_validate"]!,
-                                                                  style: const TextStyle(
+                                                                  style: TextStyle(
                                                                     color: Colors.white,
                                                                     fontWeight: FontWeight.bold,
-                                                                    fontSize: 20,
+                                                                    fontSize: screenHeight*0.05,
                                                                   ),
                                                                 ),
                                                               ),
@@ -1499,7 +1499,7 @@ class _DialogPageState extends State<DialogPage> {
                                                       // Title for theme selection
                                                       Text(
                                                         languagesTextsFile.texts["pop_up_modify_dialog_succes"]!,
-                                                        style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                                                        style: TextStyle(color: Colors.white, fontSize: screenHeight*0.05, fontWeight: FontWeight.bold),
                                                       ),
                                                       const Expanded(child: SizedBox()),
                                                       // Button to quit
@@ -1536,10 +1536,10 @@ class _DialogPageState extends State<DialogPage> {
                                                             padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
                                                             child: Text(
                                                               languagesTextsFile.texts["pop_up_ok"]!,
-                                                              style: const TextStyle(
+                                                              style: TextStyle(
                                                                 color: Colors.white,
                                                                 fontWeight: FontWeight.bold,
-                                                                fontSize: 20,
+                                                                fontSize: screenHeight*0.05,
                                                               ),
                                                             ),
                                                           ),
@@ -1645,7 +1645,7 @@ class _DialogPageState extends State<DialogPage> {
                         Text(
                           languagesTextsFile.texts["pop_up_contact_send"]!,
                           textAlign: TextAlign.center,
-                          style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                          style: TextStyle(color: Colors.white, fontSize: screenHeight*0.05, fontWeight: FontWeight.bold),
                         ),
                         SizedBox(height: screenHeight * 0.1),
                         // Dropdown menu for themes
@@ -1658,7 +1658,7 @@ class _DialogPageState extends State<DialogPage> {
                                 maxHeight: screenHeight * 0.35,
                                 decoration: const BoxDecoration(color: Colors.amber),
                               ),
-                              style: const TextStyle(color: Color.fromRGBO(65, 65, 65, 1), fontWeight: FontWeight.bold, fontSize: 20),
+                              style: TextStyle(color: const Color.fromRGBO(65, 65, 65, 1), fontWeight: FontWeight.bold, fontSize: screenHeight*0.05),
                               onChanged: (Contact? newValue) {
                                 setState(() {
                                   selectedContact = newValue; // Update the selected contact
@@ -1714,10 +1714,10 @@ class _DialogPageState extends State<DialogPage> {
                                   padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
                                   child: Text(
                                     languagesTextsFile.texts["pop_up_cancel"]!,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 20,
+                                      fontSize: screenHeight*0.05,
                                     ),
                                   ),
                                 ),
@@ -1797,10 +1797,10 @@ class _DialogPageState extends State<DialogPage> {
                                   padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
                                   child: Text(
                                     languagesTextsFile.texts["pop_up_validate"]!,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 20,
+                                      fontSize: screenHeight*0.05,
                                     ),
                                   ),
                                 ),

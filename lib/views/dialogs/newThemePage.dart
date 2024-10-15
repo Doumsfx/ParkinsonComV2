@@ -515,7 +515,7 @@ class _NewThemePageState extends State<NewThemePage> {
                                                         Text(
                                                           languagesTextsFile.texts["pop_up_cant_save_theme"],
                                                           textAlign: TextAlign.center,
-                                                          style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                                                          style: TextStyle(color: Colors.white, fontSize: screenHeight*0.05, fontWeight: FontWeight.bold),
                                                         ),
                                                         SizedBox(height: screenHeight * 0.1),
                                                         //Button to close the popup
@@ -551,10 +551,10 @@ class _NewThemePageState extends State<NewThemePage> {
                                                               padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
                                                               child: Text(
                                                                 languagesTextsFile.texts["pop_up_ok"],
-                                                                style: const TextStyle(
+                                                                style: TextStyle(
                                                                   color: Colors.white,
                                                                   fontWeight: FontWeight.bold,
-                                                                  fontSize: 20,
+                                                                  fontSize: screenHeight*0.05,
                                                                 ),
                                                               ),
                                                             ),
@@ -588,7 +588,7 @@ class _NewThemePageState extends State<NewThemePage> {
                                                         Text(
                                                           languagesTextsFile.texts["pop_up_save_theme"],
                                                           textAlign: TextAlign.center,
-                                                          style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                                                          style: TextStyle(color: Colors.white, fontSize: screenHeight*0.05, fontWeight: FontWeight.bold),
                                                         ),
                                                         SizedBox(height: screenHeight * 0.1),
                                                         //Button to close the popup
@@ -628,10 +628,10 @@ class _NewThemePageState extends State<NewThemePage> {
                                                               padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
                                                               child: Text(
                                                                 languagesTextsFile.texts["pop_up_ok"],
-                                                                style: const TextStyle(
+                                                                style: TextStyle(
                                                                   color: Colors.white,
                                                                   fontWeight: FontWeight.bold,
-                                                                  fontSize: 20,
+                                                                  fontSize: screenHeight*0.05,
                                                                 ),
                                                               ),
                                                             ),

@@ -63,7 +63,7 @@ class InternetAlert {
                     Text(
                       languagesTextsFile.texts["pop_up_internet"]!,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                      style: TextStyle(color: Colors.white, fontSize: MediaQuery.of(context).size.height*0.05, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: MediaQuery.of(context).size.height * 0.12),
                     //Button to close the popup
@@ -99,10 +99,10 @@ class InternetAlert {
                           padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
                           child: Text(
                             languagesTextsFile.texts["pop_up_continue_without_internet"]!,
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
-                              fontSize: 20,
+                              fontSize: MediaQuery.of(context).size.height*0.05,
                             ),
                           ),
                         ),

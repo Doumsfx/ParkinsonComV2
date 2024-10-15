@@ -583,7 +583,7 @@ class _NewContactPageState extends State<NewContactPage> {
                                                   child: Text(
                                                     languagesTextsFile.texts["new_contact_waiting"],
                                                     textAlign: TextAlign.center,
-                                                    style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                                                    style: TextStyle(color: Colors.white, fontSize: screenHeight*0.05, fontWeight: FontWeight.bold),
                                                   ),
                                                 ),
                                               ),

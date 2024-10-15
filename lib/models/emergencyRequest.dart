@@ -81,14 +81,14 @@ class EmergencyRequest {
                       Text(
                         "${languagesTextsFile.texts["emergency_ask_1"]!}\n${primaryContact.last_name} ${primaryContact.first_name}\n${languagesTextsFile.texts["emergency_ask_2"]!}",
                         textAlign: TextAlign.center,
-                        style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                        style: TextStyle(color: Colors.white, fontSize: screenHeight*0.05, fontWeight: FontWeight.bold),
                       ),
                       SizedBox(height: screenHeight * 0.08),
                       //Timer
                       Text(
                         "${languagesTextsFile.texts["emergency_timer_1"]!} ${formatDuration(_start)}",
                         textAlign: TextAlign.center,
-                        style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                        style: TextStyle(color: Colors.white, fontSize: screenHeight*0.05, fontWeight: FontWeight.bold),
                       ),
                       const Expanded(child: SizedBox()),
                       //Buttons
@@ -129,10 +129,10 @@ class EmergencyRequest {
                                 padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
                                 child: Text(
                                   languagesTextsFile.texts["pop_up_no"]!,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 20,
+                                    fontSize: screenHeight*0.05,
                                   ),
                                 ),
                               ),
@@ -175,10 +175,10 @@ class EmergencyRequest {
                                 padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
                                 child: Text(
                                   languagesTextsFile.texts["pop_up_yes"]!,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 20,
+                                    fontSize: screenHeight*0.05,
                                   ),
                                 ),
                               ),
@@ -298,9 +298,9 @@ class EmergencyRequest {
                       Text(
                         "${languagesTextsFile.texts["emergency_ask_1.2"]!}\n${contact.last_name} ${contact.first_name}\n${languagesTextsFile.texts["emergency_ask_2"]!}", // Display contact info
                         textAlign: TextAlign.center,
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Colors.white,
-                          fontSize: 20,
+                          fontSize: screenHeight*0.05,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -309,9 +309,9 @@ class EmergencyRequest {
                       Text(
                         "${languagesTextsFile.texts["emergency_timer_1"]!} ${formatDuration(_start)}",
                         textAlign: TextAlign.center,
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Colors.white,
-                          fontSize: 20,
+                          fontSize: screenHeight*0.05,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -352,10 +352,10 @@ class EmergencyRequest {
                                 padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
                                 child: Text(
                                   languagesTextsFile.texts["pop_up_no"]!,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 20,
+                                    fontSize: screenHeight*0.05,
                                   ),
                                 ),
                               ),
@@ -394,10 +394,10 @@ class EmergencyRequest {
                                 padding: EdgeInsets.fromLTRB(screenWidth * 0.1, 8.0, screenWidth * 0.1, 8.0),
                                 child: Text(
                                   languagesTextsFile.texts["pop_up_yes"]!,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 20,
+                                    fontSize: screenHeight*0.05,
                                   ),
                                 ),
                               ),
