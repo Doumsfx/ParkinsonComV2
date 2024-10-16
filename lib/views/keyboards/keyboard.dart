@@ -2,6 +2,7 @@
 // Code by Pagnon Alexis and Sanchez Adam
 // ParkinsonCom V2
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:parkinson_com_v2/models/predictions/prediction.dart';
 import 'package:parkinson_com_v2/models/variables.dart';
@@ -319,12 +320,13 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
                                                   width: MediaQuery.sizeOf(context).width / nbValues - 16,
                                                   child: Align(
                                                     alignment: Alignment.center,
-                                                    child: Text(nonEmptyValues[index],
+                                                    child: Text(
+                                                        nonEmptyValues[index],
                                                         textAlign: TextAlign.center,
                                                         style: TextStyle(
                                                           color: Colors.white,
-                                                          fontWeight: FontWeight.w800,
-                                                          fontSize: 17 * _wordScales["WORD $index"]!,
+                                                          fontWeight: FontWeight.w700,
+                                                          fontSize: MediaQuery.of(context).size.width * 0.025 * _wordScales["WORD $index"]!,
                                                         )),
                                                   ),
                                                 ),
@@ -370,8 +372,8 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                       color: Colors.white,
-                                                      fontWeight: FontWeight.w800,
-                                                      fontSize: 17 * _wordScales["WORD 4"]!,
+                                                      fontWeight: FontWeight.w700,
+                                                      fontSize: MediaQuery.of(context).size.width * 0.025 * _wordScales["WORD $index"]!,
                                                     )),
                                               ),
                                             ),
@@ -401,14 +403,12 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
                       type: VirtualKeyboardType.Custom,
                       keys: _keyboard,
                       builder: (context, key) {
-                        // We define the size of the keys as well as the font size
+                        // We define the size of the keys
                         Size keySize = key.text == languagesTextsFile.texts["keyboard_space"]
                             ? Size(MediaQuery.of(context).size.width / 2.2, MediaQuery.of(context).size.height / 11)
                             : key.text == "?123" || key.text == "ABC"
                                 ? Size(MediaQuery.of(context).size.width / 11.5, MediaQuery.of(context).size.height / 11)
                                 : Size(MediaQuery.of(context).size.width / 13, MediaQuery.of(context).size.height / 11);
-
-                        double fontSize = key.text == "?123" || key.text == "ABC" ? 17 : 20;
 
                         Color backgroundColor = key.text == "MAJ" || key.text == "?123" || key.text == "TIRET" || key.text == "," || key.text == "." || key.text == "ABC" || key.action == VirtualKeyboardKeyAction.Return
                             ? const Color.fromRGBO(51, 56, 59, 1) // Dark Grey
@@ -452,20 +452,27 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
                                 onPressed: () {
                                   _onKeyPress(key.text);
                                 },
-                                child: key.text == "MAJ"
-                                    ? Image.asset(
-                                        'assets/maj.png',
-                                        height: MediaQuery.of(context).size.height * 0.065,
-                                        width: MediaQuery.of(context).size.height * 0.065,
-                                      )
-                                    : Text(
-                                        key.text == "TIRET" ? "-" : key.text.toString(),
-                                        style: TextStyle(
-                                          fontSize: fontSize,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.01),
+                                  child: key.text == "MAJ"
+                                      ? Image.asset(
+                                    'assets/maj.png',
+                                    height: MediaQuery.of(context).size.height * 0.065,
+                                    width: MediaQuery.of(context).size.height * 0.065,
+                                  )
+                                      : AutoSizeText(
+                                    key.text == "TIRET" ? "-" : key.text.toString(),
+                                    maxLines: 1,
+                                    maxFontSize: 50,
+                                    minFontSize: 5,
+                                    style: const TextStyle(
+                                      fontSize: 50,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+
+                                ),
                               ),
                             ),
                           ),

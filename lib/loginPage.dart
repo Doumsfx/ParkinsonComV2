@@ -190,11 +190,11 @@ class _LoginPageState extends State<LoginPage> {
                                             width: MediaQuery.of(context).size.width * 0.33,
                                             context: context,
                                             minFontSize: 5,
-                                            maxFontSize: 22,
-                                            style: const TextStyle(
-                                              fontSize: 22,
+                                            maxFontSize: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.045 : MediaQuery.of(context).size.height * 0.055,
+                                            style: TextStyle(
+                                              fontSize: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.045 : MediaQuery.of(context).size.height * 0.055,
                                               fontWeight: FontWeight.w800,
-                                              color: Color.fromRGBO(50, 50, 50, 1),
+                                              color: const Color.fromRGBO(50, 50, 50, 1),
                                               overflow: TextOverflow.ellipsis,
                                             ),
 
@@ -205,7 +205,7 @@ class _LoginPageState extends State<LoginPage> {
                                             enableInteractiveSelection: true,
                                             maxLines: 1,
                                             textAlign: TextAlign.left,
-                                            textAlignVertical: TextAlignVertical.center,
+                                            textAlignVertical: TextAlignVertical.bottom,
 
                                             decoration: InputDecoration(
                                                 filled: true,
@@ -238,11 +238,11 @@ class _LoginPageState extends State<LoginPage> {
                                                   ),
                                                 ),
                                                 hintText: languagesTextsFile.texts["login_page_first_name"],
-                                                hintStyle: const TextStyle(
-                                                  color: Color.fromRGBO(147, 147, 147, 1),
+                                                hintStyle: TextStyle(
+                                                  color: const Color.fromRGBO(147, 147, 147, 1),
                                                   fontStyle: FontStyle.italic,
                                                   fontWeight: FontWeight.w700,
-                                                  fontSize: 19,
+                                                  fontSize: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.045 : MediaQuery.of(context).size.height * 0.055,
                                                 )
                                             ),
 
@@ -295,13 +295,14 @@ class _LoginPageState extends State<LoginPage> {
                                         Expanded(
                                           child: CustomTextField(
                                             width: MediaQuery.of(context).size.width * 0.33,
+                                            height: MediaQuery.of(context).size.height * 0.11,
                                             context: context,
-                                            maxFontSize: 22,
+                                            maxFontSize: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.045 : MediaQuery.of(context).size.height * 0.055,
                                             minFontSize: 5,
-                                            style: const TextStyle(
-                                              fontSize: 22,
+                                            style: TextStyle(
+                                              fontSize: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.045 : MediaQuery.of(context).size.height * 0.055,
                                               fontWeight: FontWeight.w800,
-                                              color: Color.fromRGBO(50, 50, 50, 1),
+                                              color: const Color.fromRGBO(50, 50, 50, 1),
                                               overflow: TextOverflow.ellipsis,
                                             ),
 
@@ -312,7 +313,7 @@ class _LoginPageState extends State<LoginPage> {
                                             enableInteractiveSelection: true,
                                             maxLines: 1,
                                             textAlign: TextAlign.left,
-                                            textAlignVertical: TextAlignVertical.center,
+                                            textAlignVertical: TextAlignVertical.bottom,
 
                                             decoration: InputDecoration(
                                                 filled: true,
@@ -345,11 +346,11 @@ class _LoginPageState extends State<LoginPage> {
                                                   ),
                                                 ),
                                                 hintText: languagesTextsFile.texts["login_page_mail"],
-                                                hintStyle: const TextStyle(
-                                                  color: Color.fromRGBO(147, 147, 147, 1),
+                                                hintStyle: TextStyle(
+                                                  color: const Color.fromRGBO(147, 147, 147, 1),
                                                   fontStyle: FontStyle.italic,
                                                   fontWeight: FontWeight.w700,
-                                                  fontSize: 19,
+                                                  fontSize: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.045 : MediaQuery.of(context).size.height * 0.055,
                                                 )
                                             ),
 
@@ -404,15 +405,15 @@ class _LoginPageState extends State<LoginPage> {
                                           margin: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.01),
                                           child: AutoSizeText(
                                             languagesTextsFile.texts["login_page_phone"],
-                                            style: const TextStyle(
-                                              fontSize: 20,
+                                            style: TextStyle(
+                                              fontSize: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.045 : MediaQuery.of(context).size.height * 0.055,
                                               fontWeight: FontWeight.w800,
-                                              color: Color.fromRGBO(50, 50, 50, 1),
+                                              color: const Color.fromRGBO(50, 50, 50, 1),
                                               overflow: TextOverflow.ellipsis,
                                             ),
                                             maxLines: 1,
                                             minFontSize: 5,
-                                            maxFontSize: 20,
+                                            maxFontSize: 50,
                                           ),
                                         )
                                       ),
@@ -504,9 +505,9 @@ class _LoginPageState extends State<LoginPage> {
                                     child: Container(
                                       width: MediaQuery.of(context).size.width * 0.37,
                                       height: isThisDeviceATablet ? MediaQuery.of(context).size.width * 0.06 : MediaQuery.of(context).size.width * 0.05,
-                                      decoration: const BoxDecoration(
-                                        borderRadius: BorderRadius.all(Radius.circular(30)),
-                                        color: Color.fromRGBO(61, 192, 200, 1),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(Radius.circular(MediaQuery.of(context).size.width * 0.02)),
+                                        color: const Color.fromRGBO(61, 192, 200, 1),
                                       ),
                                       padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.01),
                                       child: Center(
@@ -515,12 +516,12 @@ class _LoginPageState extends State<LoginPage> {
                                           style: const TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.w800,
-                                            fontSize: 18,
+                                            fontSize: 50,
                                           ),
                                           textAlign: TextAlign.center,
                                           maxLines: 1,
                                           minFontSize: 5,
-                                          maxFontSize: 18,
+                                          maxFontSize: 50,
                                         ),
                                       ),
                                     ),
@@ -642,13 +643,13 @@ class _LoginPageState extends State<LoginPage> {
                             child: AutoSizeText(
                               languagesTextsFile.texts["login_page_text"],
                               style: const TextStyle(
-                                fontSize: 20,
+                                fontSize: 50,
                                 fontWeight: FontWeight.w800,
                                 color: Colors.white,
                                 overflow: TextOverflow.ellipsis,
                               ),
                               maxLines: 1,
-                              maxFontSize: 20,
+                              maxFontSize: 50,
                               minFontSize: 5,
                             ),
                           ),
@@ -736,12 +737,12 @@ class _LoginPageState extends State<LoginPage> {
                                               child: CustomTextField(
                                                 width: MediaQuery.of(context).size.width * 0.33,
                                                 context: context,
-                                                maxFontSize: 22,
+                                                maxFontSize: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.045 : MediaQuery.of(context).size.height * 0.055,
                                                 minFontSize: 5,
-                                                style: const TextStyle(
-                                                  fontSize: 22,
+                                                style: TextStyle(
+                                                  fontSize: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.045 : MediaQuery.of(context).size.height * 0.055,
                                                   fontWeight: FontWeight.w800,
-                                                  color: Color.fromRGBO(50, 50, 50, 1),
+                                                  color: const Color.fromRGBO(50, 50, 50, 1),
                                                   overflow: TextOverflow.ellipsis,
                                                 ),
                     
@@ -752,7 +753,7 @@ class _LoginPageState extends State<LoginPage> {
                                                 enableInteractiveSelection: true,
                                                 maxLines: 1,
                                                 textAlign: TextAlign.left,
-                                                textAlignVertical: TextAlignVertical.center,
+                                                textAlignVertical: TextAlignVertical.bottom,
                     
                                                 decoration: InputDecoration(
                                                     filled: true,
@@ -785,11 +786,11 @@ class _LoginPageState extends State<LoginPage> {
                                                       ),
                                                     ),
                                                     hintText: _isFirstControllerActive ? languagesTextsFile.texts["login_page_first_name"] : languagesTextsFile.texts["login_page_mail"],
-                                                    hintStyle: const TextStyle(
+                                                    hintStyle: TextStyle(
                                                       color: Color.fromRGBO(147, 147, 147, 1),
                                                       fontStyle: FontStyle.italic,
                                                       fontWeight: FontWeight.w700,
-                                                      fontSize: 19,
+                                                      fontSize: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.045 : MediaQuery.of(context).size.height * 0.055,
                                                     )
                                                 ),
                     

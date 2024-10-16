@@ -88,7 +88,9 @@ class _DialogPageState extends State<DialogPage> {
                   mainAxisMargin: MediaQuery.of(context).size.width * 0.00375,
                   trackRadius: const Radius.circular(20),
                   padding: value
-                      ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.1, MediaQuery.of(context).size.width * 0.0807, MediaQuery.of(context).size.width * 0.0640 * -1)
+                      ? isThisDeviceATablet
+                          ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.1, MediaQuery.of(context).size.width * 0.1, MediaQuery.of(context).size.width * 0.0640 * -1)
+                          : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.1, MediaQuery.of(context).size.width * 0.105, MediaQuery.of(context).size.width * 0.0640 * -1)
                       : isThisDeviceATablet
                           ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.23, MediaQuery.of(context).size.width * 0.1, MediaQuery.of(context).size.width * 0.034 * -1)
                           : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.24, MediaQuery.of(context).size.width * 0.104, MediaQuery.of(context).size.width * 0.047 * -1),
@@ -159,61 +161,72 @@ class _DialogPageState extends State<DialogPage> {
 
                                 Container(
                                   margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.01),
-                                  child: Text(
+                                  child: AutoSizeText(
                                     languagesTextsFile.texts["dialog_title"]!,
                                     style: GoogleFonts.josefinSans(
-                                      fontSize: 25,
+                                      fontSize: 50,
                                       fontWeight: FontWeight.w500,
                                       color: Colors.white,
                                     ),
+                                    minFontSize: 5,
+                                    maxFontSize: 50,
+                                    maxLines: 1,
                                   ),
                                 ),
 
                                 // Displaying the Theme of the Dialog at the top right corner
                                 Expanded(
-                                  child: Center(
-                                    child: FutureBuilder(
-                                      // Need to retrieve the theme before displaying it
-                                      future: databaseManager.retrieveThemeFromId(widget.idTheme),
-                                      builder: (context, snapshot) {
-                                        if (snapshot.hasData) {
-                                          return AutoSizeText(
-                                            '${languagesTextsFile.texts["dialog_theme"]!} ${snapshot.data!.title}',
-                                            maxLines: 1,
-                                            maxFontSize: 15,
-                                            minFontSize: 5,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: const TextStyle(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
-                                              decoration: TextDecoration.underline,
-                                              decorationColor: Colors.white,
-                                              decorationThickness: 1.7,
-                                            ),
-                                          );
-                                        } else {
-                                          return Container(
-                                            margin: EdgeInsets.only(
-                                              right: MediaQuery.of(context).size.width * 0.01,
-                                            ),
-                                            child: OverflowBox(
-                                              maxWidth: double.infinity,
-                                              child: Text(
-                                                languagesTextsFile.texts["dialog_without_theme"]!,
-                                                style: const TextStyle(
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.white,
-                                                  decoration: TextDecoration.underline,
-                                                  decorationColor: Colors.white,
-                                                  decorationThickness: 1.7,
+                                  child: Container(
+                                    height: MediaQuery.of(context).size.height * 0.1,
+                                    margin: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.015),
+                                    padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.009),
+                                    child: Center(
+                                      child: FutureBuilder(
+                                        // Need to retrieve the theme before displaying it
+                                        future: databaseManager.retrieveThemeFromId(widget.idTheme),
+                                        builder: (context, snapshot) {
+                                          if (snapshot.hasData) {
+                                            return AutoSizeText(
+                                              '${languagesTextsFile.texts["dialog_theme"]!} ${snapshot.data!.title}',
+                                              maxLines: 1,
+                                              maxFontSize: 30,
+                                              minFontSize: 5,
+                                              style: const TextStyle(
+                                                fontSize: 30,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                                decoration: TextDecoration.underline,
+                                                decorationColor: Colors.white,
+                                                decorationThickness: 1.7,
+                                              ),
+                                            );
+                                          } else {
+                                            return Container(
+                                              margin: EdgeInsets.only(
+                                                right: MediaQuery.of(context).size.width * 0.01,
+                                              ),
+                                              child: OverflowBox(
+                                                maxWidth: double.infinity,
+                                                child: AutoSizeText(
+                                                  languagesTextsFile.texts["dialog_without_theme"]!,
+                                                  maxLines: 1,
+                                                  maxFontSize: 30,
+                                                  minFontSize: 5,
+                                                  style: const TextStyle(
+                                                    fontSize: 30,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white,
+                                                    decoration: TextDecoration.underline,
+                                                    decorationColor: Colors.white,
+                                                    decorationThickness: 1.7,
+                                                  ),
+
                                                 ),
                                               ),
-                                            ),
-                                          );
-                                        }
-                                      },
+                                            );
+                                          }
+                                        },
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -252,7 +265,7 @@ class _DialogPageState extends State<DialogPage> {
                                           decelerationRate: ScrollDecelerationRate.normal,
                                         ),
                                         style: TextStyle(
-                                          fontSize: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.026 : MediaQuery.of(context).size.height * 0.058,
+                                          fontSize: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.051 : MediaQuery.of(context).size.height * 0.058,
                                           fontWeight: FontWeight.bold,
                                           color: const Color.fromRGBO(50, 50, 50, 1),
                                         ),
@@ -949,9 +962,9 @@ class _DialogPageState extends State<DialogPage> {
                                       _buttonAnimations["SAVE"] = false;
                                     });
                                     // Button Code
-                                    //Empty dialog can't be saved
+                                    // Empty dialog can't be saved
                                     if (_controller.text.isNotEmpty) {
-                                      //Retrieve the list of the themes for the actual language
+                                      // Retrieve the list of the themes for the actual language
                                       List<ThemeObject> themesList = await databaseManager.retrieveThemesFromLanguage(language);
 
                                       // Sorting list in alphabetic order
@@ -966,7 +979,7 @@ class _DialogPageState extends State<DialogPage> {
                                         if (t.id_theme == widget.idTheme) selectedTheme = t;
                                       }
 
-                                      //Popup for choosing a theme (can't use our Popups class because of the drop down menu)
+                                      // Popup for choosing a theme (can't use our Popups class because of the drop down menu)
                                       showDialog(
                                         context: context,
                                         builder: (BuildContext context) {
@@ -1216,19 +1229,23 @@ class _DialogPageState extends State<DialogPage> {
                                       borderRadius: BorderRadius.all(Radius.circular(60)),
                                       color: Color.fromRGBO(255, 183, 34, 1),
                                     ),
-                                    padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.01, 0, MediaQuery.of(context).size.width * 0.01, 0),
                                     margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.05, 0, 0, 0),
                                     child: Center(
-                                      child: AutoSizeText(
-                                        languagesTextsFile.texts["dialog_save"]!,
-                                        style: const TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18,
+                                      child: SizedBox(
+                                        height: MediaQuery.of(context).size.height * 0.065,
+                                        child: Center(
+                                          child: AutoSizeText(
+                                            languagesTextsFile.texts["dialog_save"]!,
+                                            style: const TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 50,
+                                            ),
+                                            maxLines: 1,
+                                            minFontSize: 10,
+                                            maxFontSize: 50,
+                                          ),
                                         ),
-                                        maxLines: 1,
-                                        minFontSize: 10,
-                                        maxFontSize: 18,
                                       ),
                                     ),
                                   ),
@@ -1269,7 +1286,7 @@ class _DialogPageState extends State<DialogPage> {
                                       text: languagesTextsFile.texts["dialog_send"]!,
                                       backgroundColor: const Color.fromRGBO(12, 178, 255, 1),
                                       textColor: Colors.white,
-                                      fontSize: 18,
+                                      fontSize: 50,
                                       fontWeight: FontWeight.bold,
                                       containerWidth: MediaQuery.of(context).size.width * 0.34,
                                       containerHeight: MediaQuery.of(context).size.width * 0.065,
@@ -1279,6 +1296,7 @@ class _DialogPageState extends State<DialogPage> {
                                       circlePositionedRight: MediaQuery.of(context).size.width * 0.0013 * -30,
                                       sizedBoxWidth: MediaQuery.of(context).size.width * 0.34,
                                       sizedBoxHeight: MediaQuery.of(context).size.width * 0.065,
+                                      sizedBoxHeightFont: MediaQuery.of(context).size.height * 0.065,
                                       scale: 1,
 
                                     ),
@@ -1578,19 +1596,23 @@ class _DialogPageState extends State<DialogPage> {
                                     borderRadius: BorderRadius.all(Radius.circular(60)),
                                     color: Color.fromRGBO(255, 183, 34, 1),
                                   ),
-                                  padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.01, 0, MediaQuery.of(context).size.width * 0.01, 0),
                                   margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.05, MediaQuery.of(context).size.height * 0.03, 0, 0),
                                   child: Center(
-                                    child: AutoSizeText(
-                                      languagesTextsFile.texts["dialog_modify"]!,
-                                      style: const TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18,
+                                    child: SizedBox(
+                                      height: MediaQuery.of(context).size.height * 0.065,
+                                      child: Center(
+                                        child: AutoSizeText(
+                                          languagesTextsFile.texts["dialog_modify"]!,
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 50,
+                                          ),
+                                          maxLines: 1,
+                                          minFontSize: 10,
+                                          maxFontSize: 50,
+                                        ),
                                       ),
-                                      maxLines: 1,
-                                      minFontSize: 10,
-                                      maxFontSize: 18,
                                     ),
                                   ),
                                 ),

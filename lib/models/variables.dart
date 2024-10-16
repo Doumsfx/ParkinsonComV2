@@ -18,6 +18,7 @@ bool hasSimCard = true; // true: the device has a sim card | false: it doesn't h
 bool wantPhoneFonctionnality = false; // true: user want to send SMS | false: user don't want to send SMS
 bool isFirstLaunch = false; // true: before user registers | false: after registration
 bool isThisDeviceATablet = true; // true: tablet | false: phone
+double screenRatio = 0;
 
 ValueNotifier<bool> dialogPageState = ValueNotifier<bool>(false); // true: keyboard page | false: page without keyboard
 ValueNotifier<bool> newThemePageState = ValueNotifier<bool>(false); // true: keyboard page | false: page without keyboard

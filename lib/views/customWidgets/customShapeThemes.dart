@@ -2,6 +2,7 @@
 // Code by Pagnon Alexis and Sanchez Adam
 // ParkinsonCom V2
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:parkinson_com_v2/models/variables.dart';
@@ -32,20 +33,25 @@ class CustomShapeThemes extends StatelessWidget {
               borderRadius: const BorderRadius.all(Radius.circular(60)),
               color: backgroundColor,
             ),
-            padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.height * 0.00625 * 5, MediaQuery.of(context).size.height * 0.00625, MediaQuery.of(context).size.height * 0.00625, MediaQuery.of(context).size.height * 0.00625),
-            child: Text(
-              text,
-              style: GoogleFonts.josefinSans(
-                color: textColor,
-                fontWeight: FontWeight.w600,
-                fontSize: isThisDeviceATablet ? 18 : 17,
+            padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.height * 0.00625 * 5, 0, MediaQuery.of(context).size.height * 0.00625, 0),
+            child: Align(
+              alignment: isThisDeviceATablet ? Alignment(-1, MediaQuery.of(context).size.width * 0.01) : Alignment(-1, MediaQuery.of(context).size.width * 0.05),
+              child: AutoSizeText(
+                text,
+                style: GoogleFonts.josefinSans(
+                  color: textColor,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 50,
+                ),
+                maxLines: 1,
+                maxFontSize: 50,
+                minFontSize: 5,
               ),
             ),
           ),
 
           // Image
           Positioned(
-            //right: MediaQuery.of(context).size.height * 0.040 * -1,
             right: MediaQuery.of(context).size.height * 0.001 * -1,
             child: Container(
               width: MediaQuery.of(context).size.height * 0.1,
