@@ -4,6 +4,7 @@
 
 import 'dart:async';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:parkinson_com_v2/views/customWidgets/customShapeThemes.dart';
@@ -170,12 +171,12 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                   textColor: const Color.fromRGBO(29, 52, 83, 1),
                                   containerWidth: MediaQuery.of(context).size.width * 0.50,
                                   containerHeight: MediaQuery.of(context).size.height * 0.12,
-                                  containerPadding: EdgeInsets.all(MediaQuery.of(context).size.height * 0.0),
-                                  fontSize: isThisDeviceATablet ? 32 : 28,
+                                  containerPadding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.01),
+                                  fontSize: MediaQuery.of(context).size.height * 0.1,
                                   circleSize: MediaQuery.of(context).size.height * 0.1875,
                                   circlePositionedLeft: MediaQuery.of(context).size.height * 0.0625 * -1,
                                   fontWeight: FontWeight.w700,
-                                  alignment: const Alignment(0.07, 2.4),
+                                  alignment: const Alignment(0.07, 0),
                                 ),
                               ),
 
@@ -236,17 +237,22 @@ class _ListThemesPageState extends State<ListThemesPage> {
                         children: [
                           // Text
                           Container(
+                            height: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.063 : MediaQuery.of(context).size.height * 0.063 * screenRatio / 1.8,
+                            width: MediaQuery.of(context).size.width * 0.7,
                             margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.04, 0, 0, MediaQuery.of(context).size.height * 0.02),
-                            child: Text(
+                            child: AutoSizeText(
                               languagesTextsFile.texts["theme_list_name"]!,
                               style: GoogleFonts.josefinSans(
-                                fontSize: 18,
+                                fontSize: 50,
                                 color: Colors.white,
                                 fontWeight: FontWeight.w700,
                                 decoration: TextDecoration.underline,
                                 decorationColor: Colors.white,
                                 decorationThickness: 1.4,
                               ),
+                              maxFontSize: 50,
+                              minFontSize: 5,
+                              maxLines: 1,
                             ),
                           ),
 
@@ -280,19 +286,23 @@ class _ListThemesPageState extends State<ListThemesPage> {
                               },
                               child: Container(
                                 margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.025, 0, 0, MediaQuery.of(context).size.height * 0.02),
+                                height: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.115 : MediaQuery.of(context).size.height * 0.115 * screenRatio / 1.8,
                                 width: MediaQuery.of(context).size.width * 0.7,
                                 decoration: const BoxDecoration(
                                   borderRadius: BorderRadius.all(Radius.circular(60)),
                                   color: Color.fromRGBO(255, 183, 34, 1),
                                 ),
                                 padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.04, MediaQuery.of(context).size.width * 0.015, MediaQuery.of(context).size.width * 0.02, MediaQuery.of(context).size.width * 0.015),
-                                child: Text(
+                                child: AutoSizeText(
                                   languagesTextsFile.texts["theme_list_new"]!,
                                   style: const TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 18,
+                                    fontSize: 50,
                                   ),
+                                  minFontSize: 5,
+                                  maxFontSize: 50,
+                                  maxLines: 1,
                                 ),
                               ),
                             ),
@@ -481,6 +491,7 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                     child: Container(
                                       margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.025, 0, 0, MediaQuery.of(context).size.height * 0.02),
                                       width: MediaQuery.of(context).size.width * 0.82,
+                                      height: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.115 : MediaQuery.of(context).size.height * 0.115 * screenRatio / 1.8,
                                       decoration: const BoxDecoration(
                                         borderRadius: BorderRadius.all(Radius.circular(60)),
                                         color: Colors.white,
@@ -490,10 +501,10 @@ class _ListThemesPageState extends State<ListThemesPage> {
                                         padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.04, MediaQuery.of(context).size.width * 0.015, MediaQuery.of(context).size.width * 0.02, MediaQuery.of(context).size.width * 0.015),
                                         child: Text(
                                           _listThemes[index].title,
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.bold,
-                                            fontSize: 18,
+                                            fontSize: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.045 : MediaQuery.of(context).size.height * 0.048,
                                           ),
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,

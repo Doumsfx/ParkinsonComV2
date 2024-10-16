@@ -4,6 +4,7 @@
 
 /* This keyboard is only for phone number or digit only */
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:parkinson_com_v2/models/variables.dart';
 import 'package:virtual_keyboard_custom_layout/virtual_keyboard_custom_layout.dart';
@@ -121,8 +122,6 @@ class _CustomKeyboardPhoneNumberState extends State<CustomKeyboardPhoneNumber> {
                         // We define the size of the keys as well as the font size
                         Size keySize = Size(MediaQuery.of(context).size.width / 13, MediaQuery.of(context).size.height / 11);
 
-                        double fontSize = 20;
-
                         Color backgroundColor = key.text == "" ? const Color.fromRGBO(34, 39, 42, 1) : const Color.fromRGBO(69, 73, 76, 1);
 
                         return Container(
@@ -163,12 +162,18 @@ class _CustomKeyboardPhoneNumberState extends State<CustomKeyboardPhoneNumber> {
                                 onPressed: () {
                                   _onKeyPress(key.text);
                                 },
-                                child: Text(
-                                  key.text.toString(),
-                                  style: TextStyle(
-                                    fontSize: fontSize,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600,
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.01),
+                                  child: AutoSizeText(
+                                    key.text.toString(),
+                                    maxLines: 1,
+                                    maxFontSize: 50,
+                                    minFontSize: 5,
+                                    style: const TextStyle(
+                                      fontSize: 50,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
                                 ),
                               ),

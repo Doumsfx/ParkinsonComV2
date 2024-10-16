@@ -185,9 +185,10 @@ class _ListContactsPageState extends State<ListContactsPage> {
                                     child: Text(
                                       languagesTextsFile.texts["contact_list_contacts"],
                                       textAlign: TextAlign.center,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.w600,
+                                        fontSize: MediaQuery.of(context).size.height * 0.04,
                                       ),
                                     ),
                                   ),
@@ -206,10 +207,10 @@ class _ListContactsPageState extends State<ListContactsPage> {
                                           child: Text(
                                             languagesTextsFile.texts["contact_list_principal"],
                                             textAlign: TextAlign.center,
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               color: Colors.white,
                                               fontWeight: FontWeight.w500,
-                                              fontSize: 12,
+                                              fontSize: MediaQuery.of(context).size.height * 0.031,
                                             ),
                                           ),
                                         ),
@@ -221,10 +222,10 @@ class _ListContactsPageState extends State<ListContactsPage> {
                                           child: Text(
                                             languagesTextsFile.texts["contact_list_secondary"],
                                             textAlign: TextAlign.center,
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               color: Colors.white,
                                               fontWeight: FontWeight.w500,
-                                              fontSize: 12,
+                                              fontSize: MediaQuery.of(context).size.height * 0.031,
                                             ),
                                           ),
                                         ),
@@ -251,7 +252,7 @@ class _ListContactsPageState extends State<ListContactsPage> {
                             containerPadding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.height * 0.085, 0, MediaQuery.of(context).size.height * 0.03, 0),
                             circleSize: MediaQuery.of(context).size.height * 0.1875,
                             circlePositionedLeft: MediaQuery.of(context).size.height * 0.1 * -1,
-                            fontSize: isThisDeviceATablet ? 30 : 26,
+                            fontSize: 50,
                             fontWeight: FontWeight.w600,
                             alignment: const Alignment(-0.2, 0.6),
                           ),
@@ -482,13 +483,13 @@ class _ListContactsPageState extends State<ListContactsPage> {
                                             alignment: const Alignment(-1, 0),
                                             child: AutoSizeText(
                                               "${_listContacts[index].last_name} ${_listContacts[index].first_name} - ${_listContacts[index].email ?? _listContacts[index].phone}",
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.bold,
-                                                fontSize: 20,
+                                                fontSize: MediaQuery.of(context).size.height * 0.0555,
                                               ),
                                               maxLines: 1,
-                                              maxFontSize: 20,
+                                              maxFontSize: 50,
                                               minFontSize: 5,
                                               overflow: TextOverflow.ellipsis,
                                             ),
@@ -794,17 +795,22 @@ class _ListContactsPageState extends State<ListContactsPage> {
                         ),
                         padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.01),
                         child: Center(
-                          child: AutoSizeText(
-                            languagesTextsFile.texts["contact_list_add"],
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w800,
-                              fontSize: 18,
+                          child: SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.06,
+                            child: Center(
+                              child: AutoSizeText(
+                                languagesTextsFile.texts["contact_list_add"],
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 50,
+                                ),
+                                textAlign: TextAlign.center,
+                                maxLines: 1,
+                                minFontSize: 5,
+                                maxFontSize: 50,
+                              ),
                             ),
-                            textAlign: TextAlign.center,
-                            maxLines: 1,
-                            minFontSize: 5,
-                            maxFontSize: 18,
                           ),
                         ),
                       ),
@@ -898,17 +904,22 @@ class _ListContactsPageState extends State<ListContactsPage> {
                         ),
                         padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.01),
                         child: Center(
-                          child: AutoSizeText(
-                            languagesTextsFile.texts["contact_list_save"],
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w800,
-                              fontSize: 18,
+                          child: SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.06,
+                            child: Center(
+                              child: AutoSizeText(
+                                languagesTextsFile.texts["contact_list_save"],
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 50,
+                                ),
+                                textAlign: TextAlign.center,
+                                maxLines: 1,
+                                minFontSize: 5,
+                                maxFontSize: 50,
+                              ),
                             ),
-                            textAlign: TextAlign.center,
-                            maxLines: 1,
-                            minFontSize: 5,
-                            maxFontSize: 18,
                           ),
                         ),
                       ),

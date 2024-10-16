@@ -166,7 +166,7 @@ class _NewContactPageState extends State<NewContactPage> {
                                   languagesTextsFile.texts["new_contact_title"],
                                   style: GoogleFonts.josefinSans(
                                     color: Colors.white,
-                                    fontSize: 35,
+                                    fontSize: MediaQuery.of(context).size.height * 0.095,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
@@ -179,7 +179,7 @@ class _NewContactPageState extends State<NewContactPage> {
                                   hasSimCard && wantPhoneFonctionnality ? languagesTextsFile.texts["new_contact_subtitle2"] : languagesTextsFile.texts["new_contact_subtitle"],
                                   style: GoogleFonts.josefinSans(
                                     color: Colors.white,
-                                    fontSize: 14,
+                                    fontSize: MediaQuery.of(context).size.height * 0.039,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
@@ -206,11 +206,11 @@ class _NewContactPageState extends State<NewContactPage> {
                                     child: CustomTextField(
                                     context: context,
                                     width: MediaQuery.of(context).size.width * 0.4,
-                                    maxFontSize: 22,
-                                      style: const TextStyle(
-                                        fontSize: 22,
+                                      maxFontSize: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.05 : MediaQuery.of(context).size.height * 0.06,
+                                      style: TextStyle(
+                                        fontSize: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.05 : MediaQuery.of(context).size.height * 0.06,
                                         fontWeight: FontWeight.w800,
-                                        color: Color.fromRGBO(50, 50, 50, 1),
+                                        color: const Color.fromRGBO(50, 50, 50, 1),
                                         overflow: TextOverflow.ellipsis,
                                       ),
 
@@ -221,7 +221,7 @@ class _NewContactPageState extends State<NewContactPage> {
                                       enableInteractiveSelection: true,
                                       maxLines: 1,
                                       textAlign: TextAlign.left,
-                                      textAlignVertical: TextAlignVertical.center,
+                                      textAlignVertical: TextAlignVertical.bottom,
 
                                       decoration: InputDecoration(
                                           filled: true,
@@ -254,11 +254,11 @@ class _NewContactPageState extends State<NewContactPage> {
                                             ),
                                           ),
                                           hintText: languagesTextsFile.texts["new_contact_first_name"],
-                                          hintStyle: const TextStyle(
-                                            color: Color.fromRGBO(147, 147, 147, 1),
+                                          hintStyle: TextStyle(
+                                            color: const Color.fromRGBO(147, 147, 147, 1),
                                             fontStyle: FontStyle.italic,
                                             fontWeight: FontWeight.w700,
-                                            fontSize: 19,
+                                            fontSize: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.05 : MediaQuery.of(context).size.height * 0.06,
                                           )
                                       ),
 
@@ -299,11 +299,11 @@ class _NewContactPageState extends State<NewContactPage> {
                                     child: CustomTextField(
                                       context: context,
                                       width: MediaQuery.of(context).size.width * 0.4,
-                                      maxFontSize: 22,
-                                      style: const TextStyle(
-                                        fontSize: 22,
+                                      maxFontSize: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.05 : MediaQuery.of(context).size.height * 0.06,
+                                      style: TextStyle(
+                                        fontSize: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.05 : MediaQuery.of(context).size.height * 0.06,
                                         fontWeight: FontWeight.w800,
-                                        color: Color.fromRGBO(50, 50, 50, 1),
+                                        color: const Color.fromRGBO(50, 50, 50, 1),
                                         overflow: TextOverflow.ellipsis,
                                       ),
 
@@ -314,7 +314,7 @@ class _NewContactPageState extends State<NewContactPage> {
                                       enableInteractiveSelection: true,
                                       maxLines: 1,
                                       textAlign: TextAlign.left,
-                                      textAlignVertical: TextAlignVertical.center,
+                                      textAlignVertical: TextAlignVertical.bottom,
 
                                       decoration: InputDecoration(
                                           filled: true,
@@ -347,11 +347,11 @@ class _NewContactPageState extends State<NewContactPage> {
                                             ),
                                           ),
                                           hintText: languagesTextsFile.texts["new_contact_last_name"],
-                                          hintStyle: const TextStyle(
-                                            color: Color.fromRGBO(147, 147, 147, 1),
+                                          hintStyle: TextStyle(
+                                            color: const Color.fromRGBO(147, 147, 147, 1),
                                             fontStyle: FontStyle.italic,
                                             fontWeight: FontWeight.w700,
-                                            fontSize: 19,
+                                            fontSize: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.05 : MediaQuery.of(context).size.height * 0.06,
                                           )
                                       ),
 
@@ -380,9 +380,9 @@ class _NewContactPageState extends State<NewContactPage> {
                                         // Mail
                                         Text(
                                           languagesTextsFile.texts["new_contact_mail"],
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             color: Colors.white,
-                                            fontSize: 20,
+                                            fontSize: MediaQuery.of(context).size.height * 0.05,
                                             fontWeight: FontWeight.w700,
                                           ),
                                         ),
@@ -410,9 +410,9 @@ class _NewContactPageState extends State<NewContactPage> {
                                         // Phone
                                         Text(
                                           languagesTextsFile.texts["new_contact_phone"],
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             color: Colors.white,
-                                            fontSize: 20,
+                                            fontSize: MediaQuery.of(context).size.height * 0.05,
                                             fontWeight: FontWeight.w700,
                                           ),
                                         ),
@@ -466,11 +466,11 @@ class _NewContactPageState extends State<NewContactPage> {
                                     child: CustomTextField(
                                       context: context,
                                       width: MediaQuery.of(context).size.width * 0.4,
-                                      maxFontSize: 22,
-                                      style: const TextStyle(
-                                        fontSize: 22,
+                                      maxFontSize: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.05 : MediaQuery.of(context).size.height * 0.06,
+                                      style: TextStyle(
+                                        fontSize: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.05 : MediaQuery.of(context).size.height * 0.06,
                                         fontWeight: FontWeight.w800,
-                                        color: Color.fromRGBO(50, 50, 50, 1),
+                                        color: const Color.fromRGBO(50, 50, 50, 1),
                                         overflow: TextOverflow.ellipsis,
                                       ),
 
@@ -481,7 +481,7 @@ class _NewContactPageState extends State<NewContactPage> {
                                       enableInteractiveSelection: true,
                                       maxLines: 1,
                                       textAlign: TextAlign.left,
-                                      textAlignVertical: TextAlignVertical.center,
+                                      textAlignVertical: TextAlignVertical.bottom,
 
                                       decoration: InputDecoration(
                                           filled: true,
@@ -514,11 +514,11 @@ class _NewContactPageState extends State<NewContactPage> {
                                             ),
                                           ),
                                           hintText: mail ? languagesTextsFile.texts["new_contact_hint_mail"] : languagesTextsFile.texts["new_contact_hint_phone"],
-                                          hintStyle: const TextStyle(
-                                            color: Color.fromRGBO(147, 147, 147, 1),
+                                          hintStyle: TextStyle(
+                                            color: const Color.fromRGBO(147, 147, 147, 1),
                                             fontStyle: FontStyle.italic,
                                             fontWeight: FontWeight.w700,
-                                            fontSize: 19,
+                                            fontSize: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.05 : MediaQuery.of(context).size.height * 0.06,
                                           )
                                       ),
 
@@ -658,15 +658,15 @@ class _NewContactPageState extends State<NewContactPage> {
                                       child: Center(
                                         child: AutoSizeText(
                                           widget.idContact == -1 ? languagesTextsFile.texts["new_contact_add"] : languagesTextsFile.texts["new_contact_modify"] ,
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.w800,
-                                            fontSize: 18,
+                                            fontSize: MediaQuery.of(context).size.height * 0.05,
                                           ),
                                           textAlign: TextAlign.center,
                                           maxLines: 1,
                                           minFontSize: 5,
-                                          maxFontSize: 18,
+                                          maxFontSize: 50,
                                         ),
                                       ),
                                     ),
@@ -766,7 +766,7 @@ class _NewContactPageState extends State<NewContactPage> {
                   // Text at the left
                   Positioned(
                     left: 0,
-                    bottom: MediaQuery.of(context).size.height * 0.38,
+                    top: MediaQuery.of(context).size.height * 0.45,
                     child: hasSimCard && wantPhoneFonctionnality
                         ? SizedBox(
                       width: MediaQuery.of(context).size.width * 0.29,
@@ -776,9 +776,9 @@ class _NewContactPageState extends State<NewContactPage> {
                       margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.02),
                       child: Text(
                         languagesTextsFile.texts["new_contact_message_left"]!,
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Colors.white,
-                          fontSize: 12,
+                          fontSize: MediaQuery.of(context).size.height * 0.0335,
                           fontWeight: FontWeight.w700,
                         ),
                         maxLines: 6,
@@ -862,11 +862,11 @@ class _NewContactPageState extends State<NewContactPage> {
                         child: CustomTextField(
                           context: context,
                           width: MediaQuery.of(context).size.width * 0.95,
-                          maxFontSize: 22,
-                          style: const TextStyle(
-                            fontSize: 22,
+                          maxFontSize: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.05 : MediaQuery.of(context).size.height * 0.06,
+                          style: TextStyle(
+                            fontSize: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.05 : MediaQuery.of(context).size.height * 0.06,
                             fontWeight: FontWeight.w800,
-                            color: Color.fromRGBO(50, 50, 50, 1),
+                            color: const Color.fromRGBO(50, 50, 50, 1),
                             overflow: TextOverflow.ellipsis,
                           ),
 
@@ -910,10 +910,11 @@ class _NewContactPageState extends State<NewContactPage> {
                                 ),
                               ),
                               hintText: _whichControllerIsActive[0] ? languagesTextsFile.texts["new_contact_first_name"] : _whichControllerIsActive[1] ? languagesTextsFile.texts["new_contact_last_name"] : mail ? languagesTextsFile.texts["new_contact_hint_mail"] : languagesTextsFile.texts["new_contact_hint_phone"],
-                              hintStyle: const TextStyle(
-                                color: Color.fromRGBO(147, 147, 147, 1),
+                              hintStyle: TextStyle(
+                                color: const Color.fromRGBO(147, 147, 147, 1),
                                 fontStyle: FontStyle.italic,
-                                fontSize: 22,
+                                fontWeight: FontWeight.w700,
+                                fontSize: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.05 : MediaQuery.of(context).size.height * 0.06,
                               )
                           ),
 

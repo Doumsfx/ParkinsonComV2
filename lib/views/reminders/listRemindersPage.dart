@@ -180,12 +180,18 @@ class _ListRemindersPageState extends State<ListRemindersPage> {
                                 // Date
                                 Container(
                                   margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.03, MediaQuery.of(context).size.height * 0.02, 0, 0),
-                                  child: Text(
-                                    "${formatWithTwoDigits(timeAndDate.day)}/${formatWithTwoDigits(timeAndDate.month)}/${timeAndDate.year}",
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w800,
-                                      fontSize: 18,
+                                  child: SizedBox(
+                                    height: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.06 : MediaQuery.of(context).size.height * 0.07,
+                                    child: AutoSizeText(
+                                      "${formatWithTwoDigits(timeAndDate.day)}/${formatWithTwoDigits(timeAndDate.month)}/${timeAndDate.year}",
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w800,
+                                        fontSize: 50,
+                                      ),
+                                      maxLines: 1,
+                                      minFontSize: 5,
+                                      maxFontSize: 50,
                                     ),
                                   ),
                                 ),
@@ -193,12 +199,18 @@ class _ListRemindersPageState extends State<ListRemindersPage> {
                                 // Time
                                 Container(
                                   margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.03, 0, 0, 0),
-                                  child: Text(
-                                    "${formatWithTwoDigits(timeAndDate.hour)}:${formatWithTwoDigits(timeAndDate.minute)}:${formatWithTwoDigits(timeAndDate.second)}",
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w800,
-                                      fontSize: 18,
+                                  child: SizedBox(
+                                    height: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.06 : MediaQuery.of(context).size.height * 0.07,
+                                    child: AutoSizeText(
+                                      "${formatWithTwoDigits(timeAndDate.hour)}:${formatWithTwoDigits(timeAndDate.minute)}:${formatWithTwoDigits(timeAndDate.second)}",
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w800,
+                                        fontSize: 50,
+                                      ),
+                                      maxLines: 1,
+                                      minFontSize: 5,
+                                      maxFontSize: 50,
                                     ),
                                   ),
                                 ),
@@ -219,7 +231,7 @@ class _ListRemindersPageState extends State<ListRemindersPage> {
                             containerPadding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.height * 0.085, 0, MediaQuery.of(context).size.height * 0.03, 0),
                             circleSize: MediaQuery.of(context).size.height * 0.1875,
                             circlePositionedLeft: MediaQuery.of(context).size.height * 0.1 * -1,
-                            fontSize: isThisDeviceATablet ? 30 : 26,
+                            fontSize: 50,
                             fontWeight: FontWeight.w700,
                             alignment: const Alignment(0, 0.3),
                           ),
@@ -270,14 +282,14 @@ class _ListRemindersPageState extends State<ListRemindersPage> {
                             alignment: const Alignment(-1, 0),
                             child: AutoSizeText(
                               languagesTextsFile.texts["reminders_new"]!,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 20,
+                                fontSize: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.045 : MediaQuery.of(context).size.height * 0.05,
                               ),
                               maxLines: 1,
                               minFontSize: 5,
-                              maxFontSize: 20,
+                              maxFontSize: 50,
                             ),
                           ),
                         ),
@@ -433,18 +445,19 @@ class _ListRemindersPageState extends State<ListRemindersPage> {
                                       ),
                                       child: Container(
                                         width: MediaQuery.of(context).size.width * 0.745,
-                                        padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.04, MediaQuery.of(context).size.width * 0.02, MediaQuery.of(context).size.width * 0.02, MediaQuery.of(context).size.width * 0.015),
+                                        padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.04, MediaQuery.of(context).size.width * 0.02, MediaQuery.of(context).size.width * 0.03, MediaQuery.of(context).size.width * 0.015),
                                         child: Align(
                                           alignment: const Alignment(-1, 0),
-                                          child: Text(
+                                          child: AutoSizeText(
                                             "${_listReminders[index].title} - ${_listReminders[index].hour} - ${listDaysInGoodLanguage(_listReminders[index].days)}",
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               color: Colors.black,
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 20,
+                                              fontSize: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.045 : MediaQuery.of(context).size.height * 0.05,
                                             ),
                                             maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
+                                            minFontSize: 5,
+                                            maxFontSize: 50,
                                           ),
                                         ),
                                       ),
