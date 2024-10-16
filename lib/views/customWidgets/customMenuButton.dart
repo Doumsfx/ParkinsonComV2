@@ -43,18 +43,21 @@ class CustomMenuButton extends StatelessWidget {
           width: MediaQuery.of(context).size.height * 0.28 * scale,
           decoration: BoxDecoration(color: backgroundColor, borderRadius: BorderRadius.circular(MediaQuery.of(context).size.height * 0.09 * scale)),
           child: Center(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.012 * scale),
-              child: AutoSizeText(
-                text,
-                style: TextStyle(
-                  color: textColor,
-                  fontWeight: FontWeight.w700,
-                  fontSize: 20,
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.14 * scale,
+              height: MediaQuery.of(context).size.height * 0.07 * scale,
+              child: Center(
+                child: AutoSizeText(
+                  text,
+                  style: TextStyle(
+                    color: textColor,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 40,
+                  ),
+                  maxLines: 1,
+                  minFontSize: 10,
+                  maxFontSize: 40,
                 ),
-                maxLines: 1,
-                minFontSize: 10,
-                maxFontSize: 20,
               ),
             ),
           ),

@@ -49,7 +49,7 @@ class CustomTitle extends StatelessWidget {
                 fontSize: fontSize,
               ),
               maxLines: 1,
-              maxFontSize: 50,
+              maxFontSize: 100,
               minFontSize: 5,
             ),
           ),

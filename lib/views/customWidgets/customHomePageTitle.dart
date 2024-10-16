@@ -2,6 +2,7 @@
 // Code by Pagnon Alexis and Sanchez Adam
 // ParkinsonCom V2
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:parkinson_com_v2/models/variables.dart';
@@ -29,14 +30,19 @@ class CustomHomePageTitle extends StatelessWidget {
             borderRadius: const BorderRadius.all(Radius.circular(60)),
             color: backgroundColor,
           ),
-          padding: isThisDeviceATablet ? EdgeInsets.fromLTRB(MediaQuery.of(context).size.height * 0.05, MediaQuery.of(context).size.height * 0.008, MediaQuery.of(context).size.height * 0.0126, MediaQuery.of(context).size.height * 0.0126) : EdgeInsets.fromLTRB(MediaQuery.of(context).size.height * 0.05, 0, MediaQuery.of(context).size.height * 0.0126, 0),
+
           child: Center(
-            child: Text(
-              text,
-              style: GoogleFonts.josefinSans(
-                color: textColor,
-                fontWeight: FontWeight.w600,
-                fontSize: 35,
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.height * 0.07, MediaQuery.of(context).size.height * 0.005, MediaQuery.of(context).size.height * 0.0126, 0),
+              child: Text(
+                text,
+                style: GoogleFonts.josefinSans(
+                  color: textColor,
+                  fontWeight: FontWeight.w600,
+                  fontSize: MediaQuery.of(context).size.height * 0.09,
+                ),
+                maxLines: 1,
+
               ),
             ),
           ),

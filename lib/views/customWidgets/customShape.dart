@@ -21,8 +21,9 @@ class CustomShape extends StatelessWidget {
   final double sizedBoxHeight;
   final double sizedBoxWidth;
   final double scale;
+  final double sizedBoxHeightFont;
 
-  const CustomShape({super.key, required this.text, required this.image, required this.imageScale, required this.backgroundColor, required this.textColor, required this.fontSize, required this.containerWidth, required this.containerHeight, required this.containerPadding, required this.circleSize, required this.circlePositionedRight, required this.fontWeight, required this.sizedBoxHeight, required this.sizedBoxWidth, required this.scale});
+  const CustomShape({super.key, required this.text, required this.image, required this.imageScale, required this.backgroundColor, required this.textColor, required this.fontSize, required this.containerWidth, required this.containerHeight, required this.containerPadding, required this.circleSize, required this.circlePositionedRight, required this.fontWeight, required this.sizedBoxHeight, required this.sizedBoxWidth, required this.scale, this.sizedBoxHeightFont = 0});
 
   @override
   Widget build(BuildContext context) {
@@ -45,16 +46,19 @@ class CustomShape extends StatelessWidget {
             child: Center(
               child: Padding(
                 padding: containerPadding * scale,
-                child: AutoSizeText(
-                  text,
-                  style: TextStyle(
-                    color: textColor,
-                    fontWeight: fontWeight,
-                    fontSize: fontSize,
+                child: SizedBox(
+                  height: sizedBoxHeightFont == 0 ? null : sizedBoxHeightFont,
+                  child: AutoSizeText(
+                    text,
+                    style: TextStyle(
+                      color: textColor,
+                      fontWeight: fontWeight,
+                      fontSize: fontSize,
+                    ),
+                    maxLines: 1,
+                    minFontSize: 5,
+                    maxFontSize: 50,
                   ),
-                  maxLines: 1,
-                  minFontSize: 5,
-                  maxFontSize: 30,
                 ),
               ),
             ),

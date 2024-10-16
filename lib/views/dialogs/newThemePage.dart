@@ -103,7 +103,7 @@ class _NewThemePageState extends State<NewThemePage> {
                               languagesTextsFile.texts["new_theme_title"],
                               style: GoogleFonts.josefinSans(
                                 color: Colors.white,
-                                fontSize: 35,
+                                fontSize: MediaQuery.of(context).size.height * 0.1,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
@@ -116,7 +116,7 @@ class _NewThemePageState extends State<NewThemePage> {
                               languagesTextsFile.texts["new_theme_subtitle"],
                               style: GoogleFonts.josefinSans(
                                 color: Colors.white,
-                                fontSize: 20,
+                                fontSize: MediaQuery.of(context).size.height * 0.05,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
@@ -143,12 +143,12 @@ class _NewThemePageState extends State<NewThemePage> {
                               child: CustomTextField(
                                 context: context,
                                 width: MediaQuery.of(context).size.width * 0.5,
-                                maxFontSize: 20,
+                                maxFontSize: MediaQuery.of(context).size.height * 0.05,
                                 minFontSize: 5,
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w800,
-                                  color: Color.fromRGBO(50, 50, 50, 1),
+                                style: TextStyle(
+                                  fontSize: MediaQuery.of(context).size.height * 0.05,
+                                  fontWeight: FontWeight.w700,
+                                  color: const Color.fromRGBO(50, 50, 50, 1),
                                   overflow: TextOverflow.ellipsis,
                                 ),
 
@@ -241,17 +241,17 @@ class _NewThemePageState extends State<NewThemePage> {
                               },
                               child: Container(
                                 width: MediaQuery.of(context).size.width * 0.3,
-                                decoration: const BoxDecoration(
-                                  borderRadius: BorderRadius.all(Radius.circular(30)),
-                                  color: Color.fromRGBO(61, 192, 200, 1),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular(MediaQuery.of(context).size.width * 0.02)),
+                                  color: const Color.fromRGBO(61, 192, 200, 1),
                                 ),
                                 padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.02, MediaQuery.of(context).size.width * 0.015, MediaQuery.of(context).size.width * 0.02, MediaQuery.of(context).size.width * 0.015),
                                 child: Text(
                                   languagesTextsFile.texts["new_theme_save"],
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     color: Colors.white,
-                                    fontWeight: FontWeight.w800,
-                                    fontSize: 18,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: MediaQuery.of(context).size.height * 0.04,
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
@@ -415,11 +415,11 @@ class _NewThemePageState extends State<NewThemePage> {
                                   child: CustomTextField(
                                     context: context,
                                     width: MediaQuery.of(context).size.width * 0.5,
-                                    maxFontSize: 20,
-                                    style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w800,
-                                      color: Color.fromRGBO(50, 50, 50, 1),
+                                    maxFontSize: MediaQuery.of(context).size.height * 0.05,
+                                    style: TextStyle(
+                                      fontSize: MediaQuery.of(context).size.height * 0.05,
+                                      fontWeight: FontWeight.w700,
+                                      color: const Color.fromRGBO(50, 50, 50, 1),
                                       overflow: TextOverflow.ellipsis,
                                     ),
 
@@ -655,17 +655,17 @@ class _NewThemePageState extends State<NewThemePage> {
                                     },
                                     child: Container(
                                       width: MediaQuery.of(context).size.width * 0.3,
-                                      decoration: const BoxDecoration(
-                                        borderRadius: BorderRadius.all(Radius.circular(30)),
-                                        color: Color.fromRGBO(61, 192, 200, 1),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(Radius.circular(MediaQuery.of(context).size.width * 0.02)),
+                                        color: const Color.fromRGBO(61, 192, 200, 1),
                                       ),
                                       padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.02, MediaQuery.of(context).size.width * 0.015, MediaQuery.of(context).size.width * 0.02, MediaQuery.of(context).size.width * 0.015),
                                       child: Text(
                                         languagesTextsFile.texts["new_theme_save"],
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           color: Colors.white,
-                                          fontWeight: FontWeight.w800,
-                                          fontSize: 18,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: MediaQuery.of(context).size.height * 0.04,
                                         ),
                                         textAlign: TextAlign.center,
                                       ),

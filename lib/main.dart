@@ -4,6 +4,7 @@
 
 import 'dart:async';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -68,6 +69,12 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: const HomePage(),
+      builder: (context, child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1.0)),
+          child: child!,
+        );
+      },
     );
   }
 }
@@ -96,6 +103,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
   late Timer timer;
   var timeAndDate = DateTime.now();
   var isMusicPaused = false;
+  bool isPageInitialized = false;
+
 
   /// Function to initialise our variables
   Future<void> initialisation() async {
@@ -150,12 +159,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
     WidgetsBinding.instance.addPostFrameCallback((_) {
       notificationHandler.startCheck(context, flutterLocalNotificationsPlugin);
 
-      if(isTablet()){
-        isThisDeviceATablet = true;
-      }
-      else{
-        isThisDeviceATablet = false;
-      }
+      setState(() {
+        isThisDeviceATablet = isTablet();
+        isPageInitialized = true;
+      });
     });
 
   }
@@ -211,6 +218,15 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
   @override
   Widget build(BuildContext context) {
     return Builder(builder: (context) {
+      // If our variables aren't initialized, we put a loading screen
+      if (isPageInitialized == false) {
+        return Scaffold(
+          body: Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
+      }
+
       if(isFirstLaunch){
         return LoginPage(onLoginSuccess: _handleLoginSuccess);
       }
@@ -277,13 +293,20 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
 
                                       // Text
                                       Container(
-                                        margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.height * 0.08, MediaQuery.of(context).size.height * 0.04, MediaQuery.of(context).size.height * 0.019, 0),
-                                        child: Text(
-                                          "$batteryLevel%",
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 15,
+                                        margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.height * 0.075, MediaQuery.of(context).size.height * 0.04, MediaQuery.of(context).size.height * 0.019, 0),
+                                        child: SizedBox(
+                                          width: MediaQuery.of(context).size.width * 0.055,
+                                          height: MediaQuery.of(context).size.height * 0.06,
+                                          child: AutoSizeText(
+                                            "$batteryLevel%",
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 50,
+                                            ),
+                                            maxLines: 1,
+                                            maxFontSize: 50,
+                                            minFontSize: 5,
                                           ),
                                         ),
                                       ),
@@ -305,12 +328,18 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                   // Date
                                   Container(
                                     margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.03, MediaQuery.of(context).size.height * 0.02, 0, 0),
-                                    child: Text(
-                                      "${formatWithTwoDigits(timeAndDate.day)}/${formatWithTwoDigits(timeAndDate.month)}/${timeAndDate.year}",
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w800,
-                                        fontSize: 18,
+                                    child: SizedBox(
+                                      height: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.06 : MediaQuery.of(context).size.height * 0.07,
+                                      child: AutoSizeText(
+                                        "${formatWithTwoDigits(timeAndDate.day)}/${formatWithTwoDigits(timeAndDate.month)}/${timeAndDate.year}",
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w800,
+                                          fontSize: 50,
+                                        ),
+                                        maxLines: 1,
+                                        minFontSize: 5,
+                                        maxFontSize: 50,
                                       ),
                                     ),
                                   ),
@@ -318,12 +347,18 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                   // Time
                                   Container(
                                     margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.03, 0, 0, 0),
-                                    child: Text(
-                                      "${formatWithTwoDigits(timeAndDate.hour)}:${formatWithTwoDigits(timeAndDate.minute)}:${formatWithTwoDigits(timeAndDate.second)}",
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w800,
-                                        fontSize: 18,
+                                    child: SizedBox(
+                                      height: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.06 : MediaQuery.of(context).size.height * 0.07,
+                                      child: AutoSizeText(
+                                        "${formatWithTwoDigits(timeAndDate.hour)}:${formatWithTwoDigits(timeAndDate.minute)}:${formatWithTwoDigits(timeAndDate.second)}",
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w800,
+                                          fontSize: 50,
+                                        ),
+                                        maxLines: 1,
+                                        minFontSize: 5,
+                                        maxFontSize: 50,
                                       ),
                                     ),
                                   ),
@@ -422,6 +457,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                 });
                                 // Button Code
                                 print("DIALOOOOOOOOOOG");
+
+                                screenRatio = MediaQuery.of(context).size.width / MediaQuery.of(context).size.height;
+
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -466,6 +504,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                 });
                                 // Button Code
                                 print("RELAAAAAAAAAAAAAX");
+                                print("hauteur: ${MediaQuery.of(context).size.height}");
+                                print("largeur: ${MediaQuery.of(context).size.width}");
+                                print("screenRatio: $screenRatio");
 
                                 setState(() {
                                   if(language == "fr") {
@@ -538,11 +579,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                 backgroundColor: const Color.fromRGBO(245, 107, 56, 1),
                                 textColor: const Color.fromRGBO(35, 55, 79, 1),
                                 imageScale: 3,
-                                fontSize: 20,
+                                fontSize: 38,
                                 fontWeight: FontWeight.w700,
                                 containerWidth: MediaQuery.of(context).size.width * 0.23,
                                 containerHeight: MediaQuery.of(context).size.width * 0.05,
-                                containerPadding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.01, 0, MediaQuery.of(context).size.width * 0.035, 0),
+                                containerPadding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.01, 0, MediaQuery.of(context).size.width * 0.04, 0),
                                 circlePositionedRight: MediaQuery.of(context).size.width * 0.001 * -1,
                                 circleSize: MediaQuery.of(context).size.width * 0.085,
                                 sizedBoxHeight: MediaQuery.of(context).size.width * 0.085,
@@ -594,7 +635,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                   backgroundColor: Colors.white,
                                   textColor: const Color.fromRGBO(224, 106, 109, 1),
                                   imageScale: 1.1,
-                                  fontSize: 20,
+                                  fontSize: 38,
                                   fontWeight: FontWeight.w700,
                                   containerWidth: MediaQuery.of(context).size.width * 0.23,
                                   containerHeight: MediaQuery.of(context).size.width * 0.05,
@@ -648,7 +689,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                 backgroundColor: const Color.fromRGBO(12, 178, 255, 1),
                                 textColor: const Color.fromRGBO(35, 55, 79, 1),
                                 imageScale: 0.9,
-                                fontSize: 20,
+                                fontSize: 38,
                                 fontWeight: FontWeight.w700,
                                 containerWidth: MediaQuery.of(context).size.width * 0.23,
                                 containerHeight: MediaQuery.of(context).size.width * 0.05,

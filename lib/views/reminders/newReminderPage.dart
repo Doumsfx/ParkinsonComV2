@@ -4,6 +4,7 @@
 
 import 'dart:async';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:parkinson_com_v2/views/customWidgets/customTitle.dart';
@@ -202,12 +203,18 @@ class _NewReminderPageState extends State<NewReminderPage> {
                                     // Date
                                     Container(
                                       margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.03, MediaQuery.of(context).size.height * 0.02, 0, 0),
-                                      child: Text(
-                                        "${formatWithTwoDigits(timeAndDate.day)}/${formatWithTwoDigits(timeAndDate.month)}/${timeAndDate.year}",
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w800,
-                                          fontSize: 18,
+                                      child: SizedBox(
+                                        height: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.06 : MediaQuery.of(context).size.height * 0.07,
+                                        child: AutoSizeText(
+                                          "${formatWithTwoDigits(timeAndDate.day)}/${formatWithTwoDigits(timeAndDate.month)}/${timeAndDate.year}",
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w800,
+                                            fontSize: 50,
+                                          ),
+                                          maxLines: 1,
+                                          minFontSize: 5,
+                                          maxFontSize: 50,
                                         ),
                                       ),
                                     ),
@@ -215,12 +222,18 @@ class _NewReminderPageState extends State<NewReminderPage> {
                                     // Time
                                     Container(
                                       margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.03, 0, 0, 0),
-                                      child: Text(
-                                        "${formatWithTwoDigits(timeAndDate.hour)}:${formatWithTwoDigits(timeAndDate.minute)}:${formatWithTwoDigits(timeAndDate.second)}",
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w800,
-                                          fontSize: 18,
+                                      child: SizedBox(
+                                        height: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.06 : MediaQuery.of(context).size.height * 0.07,
+                                        child: AutoSizeText(
+                                          "${formatWithTwoDigits(timeAndDate.hour)}:${formatWithTwoDigits(timeAndDate.minute)}:${formatWithTwoDigits(timeAndDate.second)}",
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w800,
+                                            fontSize: 50,
+                                          ),
+                                          maxLines: 1,
+                                          minFontSize: 5,
+                                          maxFontSize: 50,
                                         ),
                                       ),
                                     ),
@@ -241,7 +254,7 @@ class _NewReminderPageState extends State<NewReminderPage> {
                                 containerPadding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.height * 0.085, 0, MediaQuery.of(context).size.height * 0.03, 0),
                                 circleSize: MediaQuery.of(context).size.height * 0.1875,
                                 circlePositionedLeft: MediaQuery.of(context).size.height * 0.1 * -1,
-                                fontSize: isThisDeviceATablet ? 30 : 26,
+                                fontSize: 50,
                                 fontWeight: FontWeight.w700,
                                 alignment: const Alignment(0, 0.3),
                               ),
@@ -384,9 +397,9 @@ class _NewReminderPageState extends State<NewReminderPage> {
                                               child: CustomTextField(
                                                 context: context,
                                                 width: MediaQuery.of(context).size.width * 0.9,
-                                                maxFontSize: 22,
-                                                style: const TextStyle(
-                                                  fontSize: 22,
+                                                maxFontSize: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.05 : MediaQuery.of(context).size.height * 0.06,
+                                                style: TextStyle(
+                                                  fontSize: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.05 : MediaQuery.of(context).size.height * 0.06,
                                                   fontWeight: FontWeight.w800,
                                                   color: Color.fromRGBO(50, 50, 50, 1),
                                                   overflow: TextOverflow.ellipsis,
@@ -431,10 +444,10 @@ class _NewReminderPageState extends State<NewReminderPage> {
                                                       ),
                                                     ),
                                                     hintText: languagesTextsFile.texts["new_reminder_hint_name"],
-                                                    hintStyle: const TextStyle(
-                                                      color: Color.fromRGBO(147, 147, 147, 1),
+                                                    hintStyle: TextStyle(
+                                                      color: const Color.fromRGBO(147, 147, 147, 1),
                                                       fontStyle: FontStyle.italic,
-                                                      fontSize: 22,
+                                                      fontSize: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.05 : MediaQuery.of(context).size.height * 0.06,
                                                     )
                                                 ),
 
@@ -470,10 +483,10 @@ class _NewReminderPageState extends State<NewReminderPage> {
                                             ),
                                             child: Center(
                                               child: TextField(
-                                                style: const TextStyle(
-                                                  fontSize: 22,
+                                                style: TextStyle(
+                                                  fontSize: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.05 : MediaQuery.of(context).size.height * 0.06,
                                                   fontWeight: FontWeight.w800,
-                                                  color: Color.fromRGBO(50, 50, 50, 1),
+                                                  color: const Color.fromRGBO(50, 50, 50, 1),
                                                   overflow: TextOverflow.ellipsis,
                                                 ),
 
@@ -516,10 +529,10 @@ class _NewReminderPageState extends State<NewReminderPage> {
                                                       ),
                                                     ),
                                                     hintText: languagesTextsFile.texts["new_reminder_hint_hour"],
-                                                    hintStyle: const TextStyle(
-                                                      color: Color.fromRGBO(147, 147, 147, 1),
+                                                    hintStyle: TextStyle(
+                                                      color: const Color.fromRGBO(147, 147, 147, 1),
                                                       fontStyle: FontStyle.italic,
-                                                      fontSize: 22,
+                                                      fontSize: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.05 : MediaQuery.of(context).size.height * 0.06,
                                                     )
                                                 ),
 
@@ -555,10 +568,10 @@ class _NewReminderPageState extends State<NewReminderPage> {
                                                   margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.04, 0, 0, 0),
                                                   child: Text(
                                                     languagesTextsFile.texts["new_reminder_ring"]!,
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                       color: Colors.white,
-                                                      fontSize: 20,
-                                                      fontWeight: FontWeight.w600,
+                                                      fontSize: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.045 : MediaQuery.of(context).size.height * 0.055,
+                                                      fontWeight: FontWeight.w700,
                                                     ),
                                                   ),
                                                 ),
@@ -612,10 +625,10 @@ class _NewReminderPageState extends State<NewReminderPage> {
                                                   margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.04, 0, 0, 0),
                                                   child: Text(
                                                     languagesTextsFile.texts["new_reminder_repeat"]!,
-                                                    style: const TextStyle(
-                                                      color: Color.fromRGBO(234, 104, 104, 1),
-                                                      fontSize: 20,
-                                                      fontWeight: FontWeight.w600,
+                                                    style: TextStyle(
+                                                      color: const Color.fromRGBO(234, 104, 104, 1),
+                                                      fontSize: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.045 : MediaQuery.of(context).size.height * 0.055,
+                                                      fontWeight: FontWeight.w700,
                                                     ),
                                                   ),
                                                 ),
@@ -643,10 +656,10 @@ class _NewReminderPageState extends State<NewReminderPage> {
                                                   margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.04, 0, 0, 0),
                                                   child: Text(
                                                     languagesTextsFile.texts["new_reminder_everyday"]!,
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                       color: Colors.white,
-                                                      fontSize: 20,
-                                                      fontWeight: FontWeight.w600,
+                                                      fontSize: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.045 : MediaQuery.of(context).size.height * 0.055,
+                                                      fontWeight: FontWeight.w700,
                                                     ),
                                                   ),
                                                 ),
@@ -709,10 +722,10 @@ class _NewReminderPageState extends State<NewReminderPage> {
                                                         margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.04, 0, 0, 0),
                                                         child: Text(
                                                           "- ${languagesTextsFile.texts[days[index]]!}",
-                                                          style: const TextStyle(
+                                                          style: TextStyle(
                                                             color: Colors.white,
-                                                            fontSize: 20,
-                                                            fontWeight: FontWeight.w600,
+                                                            fontSize: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.045 : MediaQuery.of(context).size.height * 0.055,
+                                                            fontWeight: FontWeight.w700,
                                                           ),
                                                         ),
                                                       ),
@@ -836,18 +849,22 @@ class _NewReminderPageState extends State<NewReminderPage> {
                                       },
                                       child: Container(
                                         width: MediaQuery.of(context).size.width * 0.25,
+                                        height: isThisDeviceATablet ? MediaQuery.of(context).size.width * 0.055 : MediaQuery.of(context).size.width * 0.05,
                                         decoration: const BoxDecoration(
                                           borderRadius: BorderRadius.all(Radius.circular(30)),
                                           color: Color.fromRGBO(61, 192, 200, 1),
                                         ),
-                                        padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.02, MediaQuery.of(context).size.width * 0.01, MediaQuery.of(context).size.width * 0.02, MediaQuery.of(context).size.width * 0.01),
-                                        child: Text(
+                                        padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.02, MediaQuery.of(context).size.height * 0.01, MediaQuery.of(context).size.width * 0.02, MediaQuery.of(context).size.height * 0.01),
+                                        child: AutoSizeText(
                                           widget.idReminder == -1 ? languagesTextsFile.texts["new_reminder_add"] : languagesTextsFile.texts["new_reminder_modify"],
                                           style: const TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.w800,
-                                            fontSize: 18,
+                                            fontSize: 50,
                                           ),
+                                          maxFontSize: 50,
+                                          minFontSize: 5,
+                                          maxLines: 1,
                                           textAlign: TextAlign.center,
                                         ),
                                       ),
@@ -1021,16 +1038,23 @@ class _NewReminderPageState extends State<NewReminderPage> {
                       children: [
                         // Date + Time
                         Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             // Date
                             Container(
                               margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.03, MediaQuery.of(context).size.height * 0.02, 0, 0),
-                              child: Text(
-                                "${formatWithTwoDigits(timeAndDate.day)}/${formatWithTwoDigits(timeAndDate.month)}/${timeAndDate.year}",
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 18,
+                              child: SizedBox(
+                                height: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.06 : MediaQuery.of(context).size.height * 0.07,
+                                child: AutoSizeText(
+                                  "${formatWithTwoDigits(timeAndDate.day)}/${formatWithTwoDigits(timeAndDate.month)}/${timeAndDate.year}",
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 50,
+                                  ),
+                                  maxLines: 1,
+                                  minFontSize: 5,
+                                  maxFontSize: 50,
                                 ),
                               ),
                             ),
@@ -1038,12 +1062,18 @@ class _NewReminderPageState extends State<NewReminderPage> {
                             // Time
                             Container(
                               margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.03, 0, 0, 0),
-                              child: Text(
-                                "${formatWithTwoDigits(timeAndDate.hour)}:${formatWithTwoDigits(timeAndDate.minute)}:${formatWithTwoDigits(timeAndDate.second)}",
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 18,
+                              child: SizedBox(
+                                height: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.06 : MediaQuery.of(context).size.height * 0.07,
+                                child: AutoSizeText(
+                                  "${formatWithTwoDigits(timeAndDate.hour)}:${formatWithTwoDigits(timeAndDate.minute)}:${formatWithTwoDigits(timeAndDate.second)}",
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 50,
+                                  ),
+                                  maxLines: 1,
+                                  minFontSize: 5,
+                                  maxFontSize: 50,
                                 ),
                               ),
                             ),
@@ -1117,11 +1147,11 @@ class _NewReminderPageState extends State<NewReminderPage> {
                           child: CustomTextField(
                             context: context,
                             width: MediaQuery.of(context).size.width * 0.9,
-                            maxFontSize: 22,
-                            style: const TextStyle(
-                              fontSize: 22,
+                            maxFontSize: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.05 : MediaQuery.of(context).size.height * 0.06,
+                            style: TextStyle(
+                              fontSize: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.05 : MediaQuery.of(context).size.height * 0.06,
                               fontWeight: FontWeight.w800,
-                              color: Color.fromRGBO(50, 50, 50, 1),
+                              color: const Color.fromRGBO(50, 50, 50, 1),
                               overflow: TextOverflow.ellipsis,
                             ),
 
@@ -1165,10 +1195,10 @@ class _NewReminderPageState extends State<NewReminderPage> {
                                   ),
                                 ),
                                 hintText: boolFirstController ? languagesTextsFile.texts["new_reminder_hint_name"] : languagesTextsFile.texts["new_reminder_hint_hour"],
-                                hintStyle: const TextStyle(
-                                  color: Color.fromRGBO(147, 147, 147, 1),
+                                hintStyle: TextStyle(
+                                  color: const Color.fromRGBO(147, 147, 147, 1),
                                   fontStyle: FontStyle.italic,
-                                  fontSize: 22,
+                                  fontSize: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.05 : MediaQuery.of(context).size.height * 0.06,
                                 )
                             ),
 
