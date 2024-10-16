@@ -9,7 +9,7 @@ import 'package:parkinson_com_v2/views/keyboards/keyboard.dart';
 import 'package:parkinson_com_v2/models/database/theme.dart';
 import 'package:parkinson_com_v2/models/variables.dart';
 
-import '../../models/popupshandler.dart';
+import '../../models/popupsHandler.dart';
 
 class NewThemePage extends StatefulWidget {
   const NewThemePage({super.key});

@@ -6,15 +6,29 @@
         android:name="android.hardware.telephony"
         android:required="false" />
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Send SMS -->
     <uses-permission android:name="android.permission.SEND_SMS"/>
 
+    <!-- Check SIM card -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <!-- SMS Conversations -->
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
 
     <application
         android:label="ParkinsonComV2"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+
+        <!-- SMS Conversations -->
+        <receiver android:name="com.shounakmulay.telephony.sms.IncomingSmsReceiver"
+            android:permission="android.permission.BROADCAST_SMS" android:exported="true">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -43,6 +57,7 @@
             android:value="2" />
     </application>
 
+    <!-- Send SMS -->
     <queries>
         <intent>
             <action android:name="android.intent.action.SENDTO"/>

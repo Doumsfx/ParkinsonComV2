@@ -8,7 +8,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-/// Custom Text Fill that change the text font size if it doesn't fit in the [width].
+/// Custom Text Field that change the text font size if it doesn't fit in the [width].
 /// Every TextField's parameters can also be used (they will be transmit to the TextField)
 class CustomTextField extends StatefulWidget {
   final BuildContext context;

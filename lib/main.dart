@@ -164,6 +164,13 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
       }
     });
 
+
+    // SMS Receiver initialization
+    if(hasSimCard && wantPhoneFonctionnality) {
+      smsReceiver.setCallBack(_handleSmsReceived);
+      smsReceiver.initReceiver();
+    }
+
   }
 
 
@@ -208,9 +215,16 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
     }
   }
 
+  /// Function used as a callback for the login page
   void _handleLoginSuccess() {
     setState(() {
       isFirstLaunch = false;
+    });
+  }
+
+  /// Function used as a callback when receiving a new SMS
+  void _handleSmsReceived() {
+    setState(() {
     });
   }
 

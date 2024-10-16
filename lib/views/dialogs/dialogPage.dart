@@ -14,7 +14,7 @@ import 'package:parkinson_com_v2/models/variables.dart';
 import '../../models/database/contact.dart';
 import '../../models/database/dialog.dart';
 import '../../models/database/theme.dart';
-import '../../models/popupshandler.dart';
+import '../../models/popupsHandler.dart';
 
 class DialogPage extends StatefulWidget {
   final int idDialog;

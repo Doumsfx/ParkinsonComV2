@@ -12,7 +12,7 @@ import 'package:parkinson_com_v2/models/database/reminder.dart';
 import 'package:parkinson_com_v2/views/reminders/newReminderPage.dart';
 import 'package:parkinson_com_v2/models/variables.dart';
 
-import '../../models/popupshandler.dart';
+import '../../models/popupsHandler.dart';
 
 
 class ListRemindersPage extends StatefulWidget {

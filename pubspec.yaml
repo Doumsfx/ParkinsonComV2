@@ -58,6 +58,8 @@ dependencies:
   audioplayers: ^6.1.0
   flutter_local_notifications: ^17.2.3
   flutter_launcher_icons: ^0.14.1
+  telephony: ^0.2.0
+  flutter_sms_inbox: ^1.0.3
 
 flutter_launcher_icons:
   android: true

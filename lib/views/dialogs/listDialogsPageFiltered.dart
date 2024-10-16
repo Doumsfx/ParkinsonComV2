@@ -11,7 +11,7 @@ import 'package:parkinson_com_v2/models/variables.dart';
 import 'package:parkinson_com_v2/views/dialogs/dialogPage.dart';
 
 import '../../models/database/dialog.dart';
-import '../../models/popupshandler.dart';
+import '../../models/popupsHandler.dart';
 
 class ListDialogsPageFiltered extends StatefulWidget {
   final int idTheme;

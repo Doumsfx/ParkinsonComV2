@@ -6,7 +6,7 @@ import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:parkinson_com_v2/models/popupshandler.dart';
+import 'package:parkinson_com_v2/models/popupsHandler.dart';
 
 import 'variables.dart';
 import 'database/reminder.dart';

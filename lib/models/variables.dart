@@ -3,19 +3,20 @@
 // ParkinsonCom V2
 
 import 'package:flutter/material.dart';
-import 'package:parkinson_com_v2/models/emailhandler.dart';
+import 'package:parkinson_com_v2/models/emailHandler.dart';
 import 'package:parkinson_com_v2/models/emergencyRequest.dart';
 import 'package:parkinson_com_v2/models/fileHandler.dart';
-import 'package:parkinson_com_v2/models/smshandler.dart';
+import 'package:parkinson_com_v2/models/smsHandler.dart';
+import 'package:parkinson_com_v2/models/smsReceiver.dart';
 import 'notificationHandler.dart';
-import 'ttshandler.dart';
-import 'database/databasemanager.dart';
+import 'ttsHandler.dart';
+import 'database/databaseManager.dart';
 
 // Global variables
 bool azerty = true; // true: azerty | false: abcde
 String language = "fr"; // "fr" | "nl"
 bool hasSimCard = true; // true: the device has a sim card | false: it doesn't have one
-bool wantPhoneFonctionnality = false; // true: user want to send SMS | false: user don't want to send SMS
+bool wantPhoneFonctionnality = true; // true: user want to send SMS | false: user don't want to send SMS
 bool isFirstLaunch = false; // true: before user registers | false: after registration
 bool isThisDeviceATablet = true; // true: tablet | false: phone
 
@@ -55,3 +56,5 @@ SmsHandler smsHandler = SmsHandler();
 // Emergency Requester
 EmergencyRequest emergencyRequest = EmergencyRequest();
 
+// SMS Receiver
+SmsReceiver smsReceiver = SmsReceiver();

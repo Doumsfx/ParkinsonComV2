@@ -15,7 +15,7 @@ import 'package:parkinson_com_v2/views/dialogs/newThemePage.dart';
 import 'package:parkinson_com_v2/models/variables.dart';
 import 'package:diacritic/diacritic.dart';
 
-import '../../models/popupshandler.dart';
+import '../../models/popupsHandler.dart';
 
 class ListThemesPage extends StatefulWidget {
   const ListThemesPage({super.key});

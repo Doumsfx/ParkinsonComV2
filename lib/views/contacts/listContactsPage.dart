@@ -10,7 +10,7 @@ import 'package:parkinson_com_v2/models/database/contact.dart';
 import 'package:parkinson_com_v2/views/contacts/newContact.dart';
 import 'package:parkinson_com_v2/models/variables.dart';
 
-import '../../models/popupshandler.dart';
+import '../../models/popupsHandler.dart';
 
 
 class ListContactsPage extends StatefulWidget {

@@ -10,7 +10,7 @@ import 'package:parkinson_com_v2/models/database/contact.dart';
 import 'package:parkinson_com_v2/models/variables.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import 'models/popupshandler.dart';
+import 'models/popupsHandler.dart';
 
 class LoginPage extends StatefulWidget {
   final VoidCallback onLoginSuccess;
@@ -477,6 +477,16 @@ class _LoginPageState extends State<LoginPage> {
 
                                           // Initialization of the database manager when launching the app (create or open the database)
                                           await databaseManager.initDB();
+
+                                          // SMS Receiver initialization
+                                          if(hasSimCard && wantPhoneFonctionnality) {
+                                            smsReceiver.setCallBack(() {
+                                              setState(() {
+                                              });
+                                            },);
+                                            await smsReceiver.initReceiver();
+                                          }
+
 
                                           // Redirection
                                           widget.onLoginSuccess();
