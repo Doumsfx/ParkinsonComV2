@@ -12,8 +12,10 @@ class CustomMenuButton extends StatelessWidget {
   final Color textColor;
   final double imageScale;
   final double scale;
+  final EdgeInsets padding;
+  final double sizedBoxHeight;
 
-  const CustomMenuButton({super.key, required this.text, required this.image, required this.backgroundColor, required this.textColor, required this.imageScale, required this.scale});
+  const CustomMenuButton({super.key, required this.text, required this.image, required this.backgroundColor, required this.textColor, required this.imageScale, required this.scale, this.padding = EdgeInsets.zero, required this.sizedBoxHeight});
 
   @override
   Widget build(BuildContext context) {
@@ -45,18 +47,21 @@ class CustomMenuButton extends StatelessWidget {
           child: Center(
             child: SizedBox(
               width: MediaQuery.of(context).size.width * 0.14 * scale,
-              height: MediaQuery.of(context).size.height * 0.07 * scale,
+              height: sizedBoxHeight * scale,
               child: Center(
-                child: AutoSizeText(
-                  text,
-                  style: TextStyle(
-                    color: textColor,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 40,
+                child: Padding(
+                  padding: padding,
+                  child: AutoSizeText(
+                    text,
+                    style: TextStyle(
+                      color: textColor,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 40,
+                    ),
+                    maxLines: 1,
+                    minFontSize: 10,
+                    maxFontSize: 40,
                   ),
-                  maxLines: 1,
-                  minFontSize: 10,
-                  maxFontSize: 40,
                 ),
               ),
             ),
