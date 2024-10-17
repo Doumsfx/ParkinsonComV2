@@ -3,12 +3,15 @@
 // ParkinsonCom V2
 
 import 'package:flutter/material.dart';
+import 'package:parkinson_com_v2/models/database/contact.dart';
+import 'package:parkinson_com_v2/models/database/sms.dart';
 import 'package:parkinson_com_v2/views/customWidgets/customTitle.dart';
 import 'package:parkinson_com_v2/models/variables.dart';
 import 'package:parkinson_com_v2/views/keyboards/keyboard.dart';
 
 class ConversationPage extends StatefulWidget {
-  const ConversationPage({super.key});
+  final Contact contact;
+  const ConversationPage({super.key, required this.contact});
 
   @override
   State<ConversationPage> createState() => _ConversationPageState();
@@ -357,12 +360,46 @@ class _ConversationPageState extends State<ConversationPage> {
                                 _buttonAnimations["SEND"] = true;
                               });
                             },
-                            onTapUp: (_) {
+                            onTapUp: (_) async {
                               setState(() {
                                 _buttonAnimations["SEND"] = false;
                               });
                               // Button Code
                               print("SEEEEEEEEEEEEEEEND");
+
+
+                              final int result = await smsHandler.checkPermissionAndSendSMS(_controller.text, [widget.contact.phone!]);
+
+                              // If the SMS has been sent -> save it into the database
+                              if(result == 1) {
+
+                                // Format the timestamp of the sms
+                                DateTime timeNow = DateTime.now();
+                                String hourNow = "${formatWithTwoDigits(timeNow.hour)}:${formatWithTwoDigits(timeNow.minute)}:${formatWithTwoDigits(timeNow.second)}";
+
+                                await databaseManager.insertSms(Sms(
+                                  content: _controller.text,
+                                  isReceived: false,
+                                  id_contact: widget.contact.id_contact,
+                                  timeSms: hourNow,
+                                ));
+
+                                // We only keep the 50 last SMS exchanged with each contact
+                                List<Sms> listSms = await databaseManager.retrieveSmsFromContact(widget.contact.id_contact);
+                                if(listSms.length > 50) {
+                                  // Loop for removing multiple SMS (ex : can happen when sending messages to ourself)
+                                  for(int i = 0; i < (listSms.length - 50); i++) {
+                                    // Remove the older SMS
+                                    await databaseManager.deleteSms(listSms[i].id_sms);
+                                  }
+                                }
+                              }
+
+                              _controller.clear();
+
+                              setState(() {
+                              });
+
                             },
                             onTapCancel: () {
                               setState(() {
@@ -403,6 +440,7 @@ class _ConversationPageState extends State<ConversationPage> {
                               });
                               // Button Code
                               print("CAAAAAAAAAAAAAAAAANCEL");
+                              _controller.clear();
                             },
                             onTapCancel: () {
                               setState(() {
@@ -883,4 +921,10 @@ class _ConversationPageState extends State<ConversationPage> {
           }),
     );
   }
+
+  /// Function to format a [number] into a two format digit, for example '2' becomes '02'
+  String formatWithTwoDigits(int number) {
+    return number.toString().padLeft(2, '0');
+  }
+
 }

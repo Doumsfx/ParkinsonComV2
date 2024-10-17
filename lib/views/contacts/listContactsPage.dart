@@ -519,11 +519,11 @@ class _ListContactsPageState extends State<ListContactsPage> {
                                         _modifyButtonsAnimations[index] = false;
                                       });
 
-                                      if(true /* wantPhoneFonctionnality && _listContacts[index].phone != null */){
+                                      if(true /* wantPhoneFonctionnality && _listContacts[index].phone != null */){ //todo condition
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => const ConversationPage(),
+                                              builder: (context) => ConversationPage(contact: _listContacts[index]),
                                             )
                                         ).then((_) => initialisation());
                                       }

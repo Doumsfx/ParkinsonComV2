@@ -29,6 +29,8 @@ ValueNotifier<bool> loginPageState = ValueNotifier<bool>(false); // true: keyboa
 ValueNotifier<bool> verificationPopUpState = ValueNotifier<bool>(false); // true: keyboard page | false: page without keyboard
 ValueNotifier<bool> conversationPageState = ValueNotifier<bool>(false); // true: keyboard page | false: page without keyboard
 
+ValueNotifier<Map<int,int>> unreadMessages = ValueNotifier<Map<int,int>>({}); // Map  {id_contact : number_of_unread_sms}
+
 final Map<String, int> idDialogWithoutTheme = {
   "fr": 1,
   "nl": 13,

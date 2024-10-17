@@ -15,7 +15,7 @@ class SmsReceiver {
   final Telephony _telephony = Telephony.instance; // Instance to detect when a SMS is received
   VoidCallback? onReceiveSMS; // Callback (-> update a state) executed when SMS is received
 
-  Map<int,int> unreadMessages = {}; // Map  {id_contact : number_of_unread_sms}
+  //Map<int,int> unreadMessages = {}; // Map  {id_contact : number_of_unread_sms}
 
   SmsReceiver({this.onReceiveSMS});
 
@@ -26,16 +26,16 @@ class SmsReceiver {
   /// Return the number of SMS from the unreadMessages map
   int countNewSMS() {
     int count = 0;
-    for(var number in unreadMessages.keys) {
-      count += unreadMessages[number]!;
+    for(var number in unreadMessages.value.keys) {
+      count += unreadMessages.value[number]!;
     }
     return count;
   }
 
-  /// Return the number of SMS from unreadMessages map for a specific [phone] number
+  /// Return the number of SMS from unreadMessages map for a specific contact using its [id_contact]
   int countSmsForPhone(int id_contact) {
-    if(unreadMessages[id_contact] != null) {
-      return unreadMessages[id_contact]!;
+    if(unreadMessages.value[id_contact] != null) {
+      return unreadMessages.value[id_contact]!;
     }
     else {
       return 0;
@@ -65,11 +65,11 @@ class SmsReceiver {
 
             if(contact != null) {
               // Increment by 1 in the map for the counter of unread messages
-              if(unreadMessages.keys.contains(contact.id_contact) && unreadMessages[contact.id_contact] != null ) {
-                (unreadMessages[contact.id_contact] = unreadMessages[contact.id_contact] !+ 1);
+              if(unreadMessages.value.keys.contains(contact.id_contact) && unreadMessages.value[contact.id_contact] != null ) {
+                (unreadMessages.value[contact.id_contact] = unreadMessages.value[contact.id_contact] !+ 1);
               }
               else {
-                unreadMessages.addAll({contact.id_contact : 1});
+                unreadMessages.value.addAll({contact.id_contact : 1});
               }
 
               // Format the timestamp of the sms
