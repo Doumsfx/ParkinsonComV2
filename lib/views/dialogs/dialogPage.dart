@@ -91,10 +91,10 @@ class _DialogPageState extends State<DialogPage> {
                   padding: value
                       ? isThisDeviceATablet
                           ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.1, MediaQuery.of(context).size.width * 0.1, MediaQuery.of(context).size.width * 0.0640 * -1)
-                          : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.1, MediaQuery.of(context).size.width * 0.105, MediaQuery.of(context).size.width * 0.0640 * -1)
+                          : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.1, MediaQuery.of(context).size.width * 0.1045, MediaQuery.of(context).size.width * 0.0640 * -1)
                       : isThisDeviceATablet
                           ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.23, MediaQuery.of(context).size.width * 0.1, MediaQuery.of(context).size.width * 0.034 * -1)
-                          : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.24, MediaQuery.of(context).size.width * 0.104, MediaQuery.of(context).size.width * 0.047 * -1),
+                          : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.24, MediaQuery.of(context).size.width * 0.1045, MediaQuery.of(context).size.width * 0.047 * -1),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

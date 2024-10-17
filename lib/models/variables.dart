@@ -27,6 +27,8 @@ ValueNotifier<bool> newReminderPageState = ValueNotifier<bool>(false); // true: 
 ValueNotifier<bool> newContactPageState = ValueNotifier<bool>(false); // true: keyboard page | false: page without keyboard
 ValueNotifier<bool> loginPageState = ValueNotifier<bool>(false); // true: keyboard page | false: page without keyboard
 ValueNotifier<bool> verificationPopUpState = ValueNotifier<bool>(false); // true: keyboard page | false: page without keyboard
+ValueNotifier<bool> conversationPageState = ValueNotifier<bool>(false); // true: keyboard page | false: page without keyboard
+
 final Map<String, int> idDialogWithoutTheme = {
   "fr": 1,
   "nl": 13,

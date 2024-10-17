@@ -18,6 +18,7 @@ import 'package:parkinson_com_v2/loginPage.dart';
 import 'package:parkinson_com_v2/views/customWidgets/CustomShape.dart';
 import 'package:parkinson_com_v2/models/variables.dart';
 import 'package:battery_plus/battery_plus.dart';
+import 'package:parkinson_com_v2/views/settings/settingsPage.dart';
 
 import 'models/internetAlert.dart';
 
@@ -492,6 +493,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                 text: languagesTextsFile.texts["main_dialog"]!,
                                 imageScale: 1,
                                 scale: isThisDeviceATablet ? 1 : 1.2,
+                                sizedBoxHeight: MediaQuery.of(context).size.height * 0.07,
+                                padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.012),
                               ),
                             ),
                           ),
@@ -545,6 +548,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                 text: languagesTextsFile.texts["main_relax"]!,
                                 imageScale: 1.4,
                                 scale: isThisDeviceATablet ? 1 : 1.2,
+                                sizedBoxHeight: MediaQuery.of(context).size.height * 0.07,
+                                padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.012),
                               ),
                             ),
                           ),
@@ -579,6 +584,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                 });
                                 // Button Code
                                 print("SETTINGGGGGGGGGS");
+
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const SettingsPage(),
+                                    )).then((_) => initialisation());
 
 
                               },

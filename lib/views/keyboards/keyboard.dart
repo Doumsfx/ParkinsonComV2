@@ -222,6 +222,7 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
         newReminderPageState.value = false;
         newContactPageState.value = false;
         verificationPopUpState.value = false;
+        conversationPageState.value = false;
       });
     }
 
