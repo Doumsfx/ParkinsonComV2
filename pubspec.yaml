@@ -59,8 +59,8 @@ dependencies:
   flutter_local_notifications: ^17.2.3
   flutter_launcher_icons: ^0.14.1
   telephony: ^0.2.0
-  flutter_sms_inbox: ^1.0.3
   auto_size_text_field: ^2.2.4
+  phone_numbers_parser: ^9.0.1
 
 flutter_launcher_icons:
   android: true

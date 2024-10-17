@@ -844,4 +844,9 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  /// Function to format a [number] into a two format digit, for example '2' becomes '02'
+  String formatWithTwoDigits(int number) {
+    return number.toString().padLeft(2, '0');
+  }
+
 }

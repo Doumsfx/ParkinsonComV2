@@ -1,21 +1,21 @@
+// SMS Receiver
+// Code by Pagnon Alexis and Sanchez Adam
+// ParkinsonCom V2
 
 import 'dart:ui';
-
-import 'package:flutter_sms_inbox/flutter_sms_inbox.dart';
+import 'package:flutter/material.dart';
 import 'package:parkinson_com_v2/models/variables.dart';
-import 'package:telephony/telephony.dart' as tel;
-import 'package:permission_handler/permission_handler.dart';
+import 'package:phone_numbers_parser/phone_numbers_parser.dart';
+import 'package:telephony/telephony.dart';
+import 'database/contact.dart';
+import 'database/sms.dart';
 
 
 class SmsReceiver {
-  final SmsQuery _query = SmsQuery(); // Query to read SMS Conversations
-  List<SmsMessage> _messages = [];
-  List<SmsMessage> _messagesSent = [];
-  List<SmsMessage> _messagesReceived = [];
-  final tel.Telephony _telephony = tel.Telephony.instance; // Instance to detect when a SMS is received
+  final Telephony _telephony = Telephony.instance; // Instance to detect when a SMS is received
   VoidCallback? onReceiveSMS; // Callback (-> update a state) executed when SMS is received
 
-  Map<String,int> newMessages = {};
+  Map<int,int> unreadMessages = {}; // Map  {id_contact : number_of_unread_sms}
 
   SmsReceiver({this.onReceiveSMS});
 
@@ -23,119 +23,22 @@ class SmsReceiver {
     onReceiveSMS = functionCallback;
   }
 
-  List<SmsMessage> getMessages() => _messages;
-  List<SmsMessage> getMessagesSent() => _messagesSent;
-  List<SmsMessage> getMessagesReceived() => _messagesReceived;
-
-  /*
-  /// Convert a [phoneNumber] starting with a 0 into the international phone number format (must be edited in order to add your country code)
-  String convertIntoInternational(String phoneNumber, String country) {
-    if (phoneNumber.startsWith("0")) {
-      var temp = phoneNumber.split("");
-      temp[0] = _countryCodes[country] ?? "+33"; // we set at French by default
-      return temp.join("");
-    }
-    else {
-      return phoneNumber;
-    }
-  }
-
-   */
-
-  /// Return the number of SMS from the newMessages map
+  /// Return the number of SMS from the unreadMessages map
   int countNewSMS() {
     int count = 0;
-    for(var number in newMessages.keys) {
-      count += newMessages[number]!;
+    for(var number in unreadMessages.keys) {
+      count += unreadMessages[number]!;
     }
     return count;
   }
 
-  /// Return the number of SMS from newMessages map for a specific [phone] number
-  int getSmsForPhone(String phone) {
-    String phoneNumber = phone;
-    // If truncated : we only keep the end of the phone number (cut the 0)
-    if(phoneNumber.startsWith("0")) {
-      phoneNumber = phoneNumber.substring(1);
+  /// Return the number of SMS from unreadMessages map for a specific [phone] number
+  int countSmsForPhone(int id_contact) {
+    if(unreadMessages[id_contact] != null) {
+      return unreadMessages[id_contact]!;
     }
-    // Search for a phone number finishing with our phoneNumber (can start with 0 or +...)
-    for(var p in newMessages.keys) {
-      if(p.endsWith(phoneNumber)) {
-        return newMessages[p]!;
-      }
-    }
-    return 0;
-  }
-
-  /// Read the list of exchanged SMS with a contact using his [phoneNumber]
-  Future<void> requestPermissionsAndReadSMS(String phoneNumber) async {
-    // Request SMS permission
-    PermissionStatus status = await Permission.sms.request();
-    if (status.isGranted) {
-      // Fetch the list of SMS
-
-      List<SmsMessage> messages = await _query.getAllSms;
-
-      for(SmsMessage sms in messages) {
-
-      }
-
-      /*
-      // Received
-      List<SmsMessage> messagesReceived = await _query.querySms(
-          kinds: [SmsQueryKind.inbox],
-          address: phoneNumber // International format (+...)
-      );
-      // Sent
-      List<SmsMessage> messagesSent = await _query.querySms(
-          kinds: [SmsQueryKind.sent],
-          address: phoneNumber // Truncated (0...)
-      );
-
-      // If the phone number start with 0 (ex : 06.../07...)
-      // We replace it with it international format (ex : +336../+337..)
-      // Needed because you can send to a 0..., but you always receive from a +...
-
-      // Check all country codes
-      for(var country in _countryCodes.keys) {
-        // /!\ If you communicate with a foreign number you must add its country code to the _countryCodes map
-        String internationalPhoneNumber = convertIntoInternational(phoneNumber, country);
-
-        // Fetch SMS
-        messagesReceived.addAll(await _query.querySms(
-          kinds: [SmsQueryKind.inbox],
-          address: internationalPhoneNumber
-        ));
-        messagesSent.addAll(await _query.querySms(
-          kinds: [SmsQueryKind.sent],
-          address: internationalPhoneNumber
-        ));
-      }
-
-      // Merge sent and received SMS into a single List in order to sort the SMS based on the timestamp
-      List<SmsMessage> messages = [];
-      messages.addAll(messagesReceived);
-      messages.addAll(messagesSent);
-
-      messages.sort((a, b) {
-        if(a.date != null && b.date != null) {
-          return (a.date as DateTime).compareTo(b.date as DateTime);
-        }
-        // One date is null
-        else {
-          return 1;
-        }
-      });
-
-      // Set the new values of each list
-      _messages = messages;
-      _messagesReceived = messagesReceived;
-      _messagesSent = messagesSent;
-
-      */
-
-    } else {
-      print("SMS permission denied");
+    else {
+      return 0;
     }
   }
 
@@ -146,40 +49,58 @@ class SmsReceiver {
     if(result != null && result == true) {
       // Start to listen for incoming SMS
       _telephony.listenIncomingSms(
-        onNewMessage: (tel.SmsMessage message) {
+        onNewMessage: (SmsMessage message) async {
 
           // Update the map of the new SMS
           if (message.address != null) {
 
-            // International phone number format
-            String internationalFormat = message.address!;
-            if(message.address!.startsWith("0")) {
-              //internationalFormat = convertIntoInternational(internationalFormat, language);
-            }
-            // Increment by 1 in the map
-            if(newMessages.keys.contains(message.address) && newMessages[message.address] != null ) {
-              (newMessages[message.address!] = newMessages[message.address!] !+ 1);
-            }
-            else if(newMessages.keys.contains(internationalFormat)) {
-              (newMessages[internationalFormat] = newMessages[internationalFormat] !+ 1);
-            }
-            else {
-              newMessages.addAll({message.address! : 1});
-            }
+            // Message addresses are in E.164 Standard : + country_code phone_number
+            // Parse the phone number
+            PhoneNumber phoneNumber = PhoneNumber.parse(message.address!);
+            // Remove the "+ country_code" of the phone number
+            String phoneNumberClean = (message.address!).replaceAll("+${phoneNumber.countryCode}", "");
 
-            print(newMessages.toString());
+            // Retrieve the contact associate to the phone number
+            Contact? contact = await databaseManager.retrieveContactFromPhone(phoneNumberClean);
+
+            if(contact != null) {
+              // Increment by 1 in the map for the counter of unread messages
+              if(unreadMessages.keys.contains(contact.id_contact) && unreadMessages[contact.id_contact] != null ) {
+                (unreadMessages[contact.id_contact] = unreadMessages[contact.id_contact] !+ 1);
+              }
+              else {
+                unreadMessages.addAll({contact.id_contact : 1});
+              }
+
+              // Format the timestamp of the sms
+              DateTime receptionDate = DateTime.fromMillisecondsSinceEpoch(message.date!);
+              String receptionHour = "${formatWithTwoDigits(receptionDate.hour)}:${formatWithTwoDigits(receptionDate.minute)}:${formatWithTwoDigits(receptionDate.second)}";
+
+              // Insert the sms into the database
+              await databaseManager.insertSms(Sms(
+                id_contact: contact.id_contact,
+                content: message.body!,
+                isReceived: true,
+                timeSms: receptionHour,
+              ));
+
+              // Callback function (refresh UI)
+              if(onReceiveSMS != null) {
+                onReceiveSMS!();
+              }
+
+            }
           }
 
-          // Callback function (refresh UI)
-          if(onReceiveSMS != null) {
-            onReceiveSMS!();
-          }
-
-          print("Message reçu : ${message.body}");
         },
         listenInBackground: false,
       );
     }
+  }
+
+  /// Function to format a [number] into a two format digit, for example '2' becomes '02'
+  String formatWithTwoDigits(int number) {
+    return number.toString().padLeft(2, '0');
   }
 
 }

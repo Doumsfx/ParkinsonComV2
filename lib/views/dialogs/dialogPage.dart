@@ -7,6 +7,7 @@ import 'package:diacritic/diacritic.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:parkinson_com_v2/models/database/sms.dart';
 import 'package:parkinson_com_v2/views/customWidgets/customShape.dart';
 import 'package:parkinson_com_v2/views/keyboards/keyboard.dart';
 import 'package:parkinson_com_v2/models/variables.dart';
@@ -1786,6 +1787,22 @@ class _DialogPageState extends State<DialogPage> {
                                     else if(selectedContact!.phone != null) {
                                       String phoneNumber = selectedContact!.phone as String;
                                       final int result = await smsHandler.checkPermissionAndSendSMS(_controller.text, [phoneNumber]);
+
+                                      // If the SMS has been sent -> save it into the database
+                                      if(result == 1 && wantPhoneFonctionnality && hasSimCard) {
+
+                                        // Format the timestamp of the sms
+                                        DateTime timeNow = DateTime.now();
+                                        String hourNow = "${formatWithTwoDigits(timeNow.hour)}:${formatWithTwoDigits(timeNow.minute)}:${formatWithTwoDigits(timeNow.second)}";
+
+                                        databaseManager.insertSms(Sms(
+                                          content: _controller.text,
+                                          isReceived: false,
+                                          id_contact: selectedContact!.id_contact,
+                                          timeSms: hourNow,
+                                        ));
+                                      }
+
                                       //Show result of the SMS
                                       if (mounted) {
                                         if(result == 1) {
@@ -1841,6 +1858,11 @@ class _DialogPageState extends State<DialogPage> {
           },
       );
     }
+  }
+
+  /// Function to format a [number] into a two format digit, for example '2' becomes '02'
+  String formatWithTwoDigits(int number) {
+    return number.toString().padLeft(2, '0');
   }
 
 

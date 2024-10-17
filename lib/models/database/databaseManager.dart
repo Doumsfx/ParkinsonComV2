@@ -5,12 +5,14 @@
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
-import 'package:parkinson_com_v2/models/database/reminder.dart';
+
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'contact.dart';
 import 'theme.dart';
 import 'dialog.dart';
+import 'reminder.dart';
+import 'sms.dart';
 
 class DatabaseManager {
   static final DatabaseManager _databaseManager = DatabaseManager._();
@@ -19,7 +21,11 @@ class DatabaseManager {
 
   late Database db;
 
-  ///Initialization of the data base
+  factory DatabaseManager() {
+    return _databaseManager;
+  }
+
+  /// Initialization of the data base
   Future<void> initDB() async {
     String path = await getDatabasesPath();
     db = await openDatabase(
@@ -30,7 +36,7 @@ class DatabaseManager {
     );
   }
 
-  ///SQL commands executed after the creation of the database
+  /// SQL commands executed after the creation of the database
   Future _onCreate(database, version) async {
     /*Creation of the Theme table*/
     await database.execute("""
@@ -76,15 +82,27 @@ class DatabaseManager {
             );
           """);
 
-    //todo delete this
-    await _insertContacts(database);
+    /*Creation of the Sms table*/
+    await database.execute("""
+            CREATE TABLE IF NOT EXISTS Sms(
+            id_sms INTEGER PRIMARY KEY,
+            content TEXT,
+            isReceived BOOL,
+            timeSms TIME,
+            id_contact INTEGER,
+            FOREIGN KEY (id_contact) REFERENCES Contact (id_contact) ON DELETE CASCADE
+            );
+          """);
+
+
   }
 
-  ///Enable Foreign Keys
+  /// Enable Foreign Keys
   Future _onConfigure(Database db) async {
     await db.execute('PRAGMA foreign_keys = ON');
   }
 
+  /// Return true if the databse 'parkinsoncom2.db' exists
   Future<bool> doesExist() async {
     String path = await getDatabasesPath();
     if(await databaseExists(join(path,"parkinsoncom2.db"))){
@@ -262,14 +280,14 @@ class DatabaseManager {
   }
 
   /* CRUD Contact */
-  ///Insert a [Contact] into the database
-  ///(the id_contact  will be replaced by the autoincrement)
+  /// Insert a [Contact] into the database
+  /// (the id_contact  will be replaced by the autoincrement)
   Future<int> insertContact(Contact contact) async {
     int result = await db.insert('Contact', contact.toMap());
     return result;
   }
 
-  ///Update a [contact] of the database (updating requires the right id_contact)
+  /// Update a [contact] of the database (updating requires the right id_contact)
   Future<int> updateContact(Contact contact) async {
     int result = await db.update(
       'Contact',
@@ -280,19 +298,30 @@ class DatabaseManager {
     return result;
   }
 
-  ///Retrieve the list of Contact from the database
+  /// Retrieve the list of Contact from the database
   Future<List<Contact>> retrieveContacts() async {
     final List<Map<String, Object?>> queryResult = await db.query('Contact', where: "id_contact != 0");
     return queryResult.map((e) => Contact.fromMap(e)).toList();
   }
 
-  ///Retrieve a specific Contact from the database using its [id]
+  /// Retrieve a specific Contact from the database using its [id]
   Future<Contact> retrieveContactFromId(int id) async {
     final List<Map<String, Object?>> queryResult = await db.query('Contact', where: "id_contact = ?", whereArgs: [id]);
     return Contact.fromMap(queryResult[0]);
   }
 
-  ///Delete the Contact with the [id] from the database
+  /// Retrieve the Contact with a specific [phoneNumber]  from the database
+  Future<Contact?> retrieveContactFromPhone(String phoneNumber) async {
+    final List<Map<String, Object?>> queryResult = await db.query('Contact', where: "phone LIKE ?", whereArgs: ['%$phoneNumber']);
+    if(queryResult.isNotEmpty) {
+      return Contact.fromMap(queryResult[0]);
+    }
+    else {
+      return null;
+    }
+  }
+
+  /// Delete the Contact with the [id] from the database
   Future<void> deleteContact(int id) async {
     await db.delete(
       'Contact',
@@ -301,7 +330,7 @@ class DatabaseManager {
     );
   }
 
-  ///Count the number of contacts
+  /// Count the number of contacts
   Future<int> countContacts() async {
     //id_contact = 0 --> not a contact but the user's info
     List<Map<String, Object?>> queryResult = await db.rawQuery('''
@@ -311,24 +340,64 @@ class DatabaseManager {
     return int.parse(queryResult[0]["COUNT(*)"].toString());
   }
 
-  ///Retrieve a list of Contacts from the database using their [priority] (1 = primary, 2 = secondary, 3 = none)
+  /// Retrieve a list of Contacts from the database using their [priority] (1 = primary, 2 = secondary, 3 = none)
   Future<List<Contact>> retrieveContactFromPriority(int priority) async {
     final List<Map<String, Object?>> queryResult = await db.query('Contact', where: "priority = ?", whereArgs: [priority]);
     return queryResult.map((e) => Contact.fromMap(e)).toList();
   }
 
-  ///Retrieve the User's info from the database
+  /// Retrieve the User's info from the database
   Future<Contact> retrieveUserInfo() async {
     final List<Map<String, Object?>> queryResult = await db.query('Contact', where: "id_contact = 0");
     return Contact.fromMap(queryResult[0]);
   }
 
-  factory DatabaseManager() {
-    return _databaseManager;
+
+  /* CRUD Sms */
+  /// Insert a [Sms] into the database
+  /// (the id_sms  will be replaced by the autoincrement)
+  Future<int> insertSms(Sms sms) async {
+    int result = await db.insert('Sms', sms.toMap());
+    return result;
+  }
+
+  /// Update a [sms] of the database (updating requires the right id_sms)
+  Future<int> updateSms(Sms sms) async {
+    int result = await db.update(
+      'Sms',
+      sms.toMap(),
+      where: "id_sms = ?",
+      whereArgs: [sms.id_sms],
+    );
+    return result;
+  }
+
+  /// Retrieve the list of Sms from the database
+  Future<List<Sms>> retrieveSms() async {
+    final List<Map<String, Object?>> queryResult = await db.query('Sms');
+    return queryResult.map((e) => Sms.fromMap(e)).toList();
+  }
+
+  /// Retrieve a specific Sms from the database using its [id]
+  Future<Sms> retrieveSmsFromId(int id) async {
+    final List<Map<String, Object?>> queryResult = await db.query('Sms', where: "id_sms = ?", whereArgs: [id]);
+    return Sms.fromMap(queryResult[0]);
+  }
+
+  /// Retrieve a list of Sms exchanged with a specific contact using its [id_contact]
+  Future<List<Sms>> retrieveSmsFromContact(int id_contact) async {
+    final List<Map<String, Object?>> queryResult = await db.query('Sms', where: "id_contact = ?", whereArgs: [id_contact]);
+    return queryResult.map((e) => Sms.fromMap(e)).toList();
+  }
+
+  /// Delete the Sms with the [id] from the database
+  Future<void> deleteSms(int id) async {
+    await db.delete(
+      'Sms',
+      where: "id_sms = ?",
+      whereArgs: [id],
+    );
   }
 
 
-  //todo delete this
-  Future<void> _insertContacts(Database database) async {
-    }
 }
