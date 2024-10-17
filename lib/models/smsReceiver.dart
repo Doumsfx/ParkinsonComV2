@@ -84,6 +84,16 @@ class SmsReceiver {
                 timeSms: receptionHour,
               ));
 
+              // We only keep the 50 last SMS exchanged with each contact
+              List<Sms> listSms = await databaseManager.retrieveSmsFromContact(contact.id_contact);
+              if(listSms.length > 50) {
+                // Loop for removing multiple SMS (ex : can happen when sending messages to ourself)
+                for(int i = 0; i < (listSms.length - 50); i++) {
+                  // Remove the older SMS
+                  await databaseManager.deleteSms(listSms[i].id_sms);
+                }
+              }
+
               // Callback function (refresh UI)
               if(onReceiveSMS != null) {
                 onReceiveSMS!();

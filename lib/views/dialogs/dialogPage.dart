@@ -1789,18 +1789,28 @@ class _DialogPageState extends State<DialogPage> {
                                       final int result = await smsHandler.checkPermissionAndSendSMS(_controller.text, [phoneNumber]);
 
                                       // If the SMS has been sent -> save it into the database
-                                      if(result == 1 && wantPhoneFonctionnality && hasSimCard) {
+                                      if(result == 1) {
 
                                         // Format the timestamp of the sms
                                         DateTime timeNow = DateTime.now();
                                         String hourNow = "${formatWithTwoDigits(timeNow.hour)}:${formatWithTwoDigits(timeNow.minute)}:${formatWithTwoDigits(timeNow.second)}";
 
-                                        databaseManager.insertSms(Sms(
+                                        await databaseManager.insertSms(Sms(
                                           content: _controller.text,
                                           isReceived: false,
                                           id_contact: selectedContact!.id_contact,
                                           timeSms: hourNow,
                                         ));
+
+                                        // We only keep the 50 last SMS exchanged with each contact
+                                        List<Sms> listSms = await databaseManager.retrieveSmsFromContact(selectedContact!.id_contact);
+                                        if(listSms.length > 50) {
+                                          // Loop for removing multiple SMS (ex : can happen when sending messages to ourself)
+                                          for(int i = 0; i < (listSms.length - 50); i++) {
+                                            // Remove the older SMS
+                                            await databaseManager.deleteSms(listSms[i].id_sms);
+                                          }
+                                        }
                                       }
 
                                       //Show result of the SMS

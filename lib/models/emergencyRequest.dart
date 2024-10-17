@@ -9,6 +9,7 @@ import 'package:parkinson_com_v2/models/popupsHandler.dart';
 import 'package:parkinson_com_v2/models/variables.dart';
 
 import 'database/contact.dart';
+import 'database/sms.dart';
 
 class EmergencyRequest {
   final Map<String, bool> _buttonAnimations = {
@@ -220,6 +221,32 @@ class EmergencyRequest {
     //Or if the primary contact has a phone number
     else if (primaryContact.phone != null) {
       result = await smsHandler.checkPermissionAndSendSMS(languagesTextsFile.texts["emergency_message"]!, [primaryContact.phone as String]);
+
+      // If the SMS has been sent -> save it into the database
+      if(result == 1) {
+
+        // Format the timestamp of the sms
+        DateTime timeNow = DateTime.now();
+        String hourNow = "${formatWithTwoDigits(timeNow.hour)}:${formatWithTwoDigits(timeNow.minute)}:${formatWithTwoDigits(timeNow.second)}";
+
+        await databaseManager.insertSms(Sms(
+          content: languagesTextsFile.texts["emergency_message"]!,
+          isReceived: false,
+          id_contact: primaryContact.id_contact,
+          timeSms: hourNow,
+        ));
+
+        // We only keep the 50 last SMS exchanged with each contact
+        List<Sms> listSms = await databaseManager.retrieveSmsFromContact(primaryContact.id_contact);
+        if(listSms.length > 50) {
+          // Loop for removing multiple SMS (ex : can happen when sending messages to ourself)
+          for(int i = 0; i < (listSms.length - 50); i++) {
+            // Remove the older SMS
+            await databaseManager.deleteSms(listSms[i].id_sms);
+          }
+        }
+      }
+
     }
 
     //Check if the context from where we clicked on the emergency button still exist
@@ -431,6 +458,32 @@ class EmergencyRequest {
         result = await emailHandler.sendMessage(contact.email as String, content);
       } else if (contact.phone != null) {
         result = await smsHandler.checkPermissionAndSendSMS(languagesTextsFile.texts["emergency_message"]!, [contact.phone as String]);
+
+        // If the SMS has been sent -> save it into the database
+        if(result == 1) {
+
+          // Format the timestamp of the sms
+          DateTime timeNow = DateTime.now();
+          String hourNow = "${formatWithTwoDigits(timeNow.hour)}:${formatWithTwoDigits(timeNow.minute)}:${formatWithTwoDigits(timeNow.second)}";
+
+          await databaseManager.insertSms(Sms(
+            content: languagesTextsFile.texts["emergency_message"]!,
+            isReceived: false,
+            id_contact: contact.id_contact,
+            timeSms: hourNow,
+          ));
+
+          // We only keep the 50 last SMS exchanged with each contact
+          List<Sms> listSms = await databaseManager.retrieveSmsFromContact(contact.id_contact);
+          if(listSms.length > 50) {
+            // Loop for removing multiple SMS (ex : can happen when sending messages to ourself)
+            for(int i = 0; i < (listSms.length - 50); i++) {
+              // Remove the older SMS
+              await databaseManager.deleteSms(listSms[i].id_sms);
+            }
+          }
+        }
+
       }
 
       // Error -> show a failure message and stop
@@ -485,5 +538,10 @@ class EmergencyRequest {
     final minutesString = '$minutes'.padLeft(2, '0');
     final secondsString = '$seconds'.padLeft(2, '0');
     return '$minutesString:$secondsString';
+  }
+
+  /// Function to format a [number] into a two format digit, for example '2' becomes '02'
+  String formatWithTwoDigits(int number) {
+    return number.toString().padLeft(2, '0');
   }
 }
