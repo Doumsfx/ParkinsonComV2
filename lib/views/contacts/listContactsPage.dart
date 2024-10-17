@@ -5,6 +5,7 @@
 import 'dart:async';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:parkinson_com_v2/views/contacts/conversationPage.dart';
 import 'package:parkinson_com_v2/views/customWidgets/customTitle.dart';
 import 'package:parkinson_com_v2/models/database/contact.dart';
 import 'package:parkinson_com_v2/views/contacts/newContact.dart';
@@ -500,6 +501,54 @@ class _ListContactsPageState extends State<ListContactsPage> {
                                   ),
                                 ),
 
+
+                                // Conversation Buttons
+                                AnimatedScale(
+                                  scale: _modifyButtonsAnimations[index] ? 1.1 : 1.0,
+                                  duration: const Duration(milliseconds: 100),
+                                  curve: Curves.bounceOut,
+                                  child: GestureDetector(
+                                    onTapDown: (_) {
+                                      setState(() {
+                                        _modifyButtonsAnimations[index] = true;
+                                      });
+                                    },
+                                    onTapUp: (_) {
+                                      // Button Code
+                                      setState(() {
+                                        _modifyButtonsAnimations[index] = false;
+                                      });
+
+                                      if(true /* wantPhoneFonctionnality && _listContacts[index].phone != null */){
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => const ConversationPage(),
+                                            )
+                                        ).then((_) => initialisation());
+                                      }
+                                    },
+                                    onTapCancel: () {
+                                      setState(() {
+                                        _modifyButtonsAnimations[index] = false;
+                                      });
+                                    },
+                                    child: Container(
+                                      height: MediaQuery.of(context).size.width * 0.062,
+                                      width: MediaQuery.of(context).size.width * 0.062,
+                                      padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.011),
+                                      margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.01, 0, 0, MediaQuery.of(context).size.height * 0.02),
+                                      decoration: const BoxDecoration(
+                                        color: Color.fromRGBO(12, 178, 255, 1),
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Image.asset(
+                                        "assets/dialog.png",
+                                      ),
+                                    ),
+                                  ),
+                                ),
+
                                 // Delete Contact Buttons
                                 AnimatedScale(
                                   scale: _deleteButtonsAnimations[index] ? 1.1 : 1.0,
@@ -540,7 +589,7 @@ class _ListContactsPageState extends State<ListContactsPage> {
                                       height: MediaQuery.of(context).size.width * 0.062,
                                       width: MediaQuery.of(context).size.width * 0.062,
                                       padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.01),
-                                      margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.01, 0, MediaQuery.of(context).size.width * 0.005, MediaQuery.of(context).size.height * 0.02),
+                                      margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.01, 0, MediaQuery.of(context).size.width * 0.01, MediaQuery.of(context).size.height * 0.02),
                                       decoration: const BoxDecoration(
                                         color: Color.fromRGBO(244, 66, 56, 1),
                                         shape: BoxShape.circle,
@@ -552,48 +601,6 @@ class _ListContactsPageState extends State<ListContactsPage> {
                                   ),
                                 ),
 
-                                // Modify Contact Buttons
-                                AnimatedScale(
-                                  scale: _modifyButtonsAnimations[index] ? 1.1 : 1.0,
-                                  duration: const Duration(milliseconds: 100),
-                                  curve: Curves.bounceOut,
-                                  child: GestureDetector(
-                                    onTapDown: (_) {
-                                      setState(() {
-                                        _modifyButtonsAnimations[index] = true;
-                                      });
-                                    },
-                                    onTapUp: (_) {
-                                      // Button Code
-                                      setState(() {
-                                        _modifyButtonsAnimations[index] = false;
-                                      });
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => NewContactPage(idContact: _listContacts[index].id_contact),
-                                          )
-                                      ).then((_) => initialisation());
-
-
-                                    },
-                                    onTapCancel: () {
-                                      setState(() {
-                                        _modifyButtonsAnimations[index] = false;
-                                      });
-                                    },
-                                    child: Container(
-                                      height: MediaQuery.of(context).size.width * 0.062,
-                                      width: MediaQuery.of(context).size.width * 0.062,
-                                      padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.001),
-                                      margin: EdgeInsets.fromLTRB(0, 0, 0, MediaQuery.of(context).size.height * 0.02),
-                                      color: Colors.transparent,
-                                      child: Image.asset(
-                                        "assets/edit.png",
-                                      ),
-                                    ),
-                                  ),
-                                ),
                               ],
                             );
                           }),

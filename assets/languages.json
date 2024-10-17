@@ -143,7 +143,8 @@
     "settings_page_user": "Qui suis-je ?",
     "settings_page_settings": "Paramètres",
     "settings_page_relaxation": "Détente",
-    "settings_page_media": "Multimédia"
+    "settings_page_media": "Multimédia",
+    "conversation_page_title": "Conversation"
 
 
   },
@@ -291,7 +292,8 @@
     "settings_page_user": "...",
     "settings_page_settings": "...",
     "settings_page_relaxation": "...",
-    "settings_page_media": "..."
+    "settings_page_media": "...",
+    "conversation_page_title": "..."
   }
 
 }
