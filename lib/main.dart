@@ -702,53 +702,56 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                         ),
 
                         // Contacts
-                        Container(
-                          margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.07),
-                          child: AnimatedScale(
-                            scale: _buttonAnimations["CONTACTS"]! ? 1.1 : 1.0,
-                            duration: const Duration(milliseconds: 100),
-                            curve: Curves.bounceOut,
-                            alignment: Alignment.center,
-                            child: GestureDetector(
-                              // Animation management
-                              onTapDown: (_) {
-                                setState(() {
-                                  _buttonAnimations["CONTACTS"] = true;
-                                });
-                              },
-                              onTapUp: (_) {
-                                setState(() {
-                                  _buttonAnimations["CONTACTS"] = false;
-                                });
-                                // Button Code
-                                print("CONTACTSSSSS");
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const ListContactsPage(),
-                                    )).then((_) => initialisation());
-                              },
-                              onTapCancel: () {
-                                setState(() {
-                                  _buttonAnimations["CONTACTS"] = false;
-                                });
-                              },
-                              child: CustomShape(
-                                text: languagesTextsFile.texts["main_contacts"]!,
-                                image: 'assets/enveloppe.png',
-                                backgroundColor: const Color.fromRGBO(12, 178, 255, 1),
-                                textColor: const Color.fromRGBO(35, 55, 79, 1),
-                                imageScale: 0.9,
-                                fontSize: 38,
-                                fontWeight: FontWeight.w700,
-                                containerWidth: MediaQuery.of(context).size.width * 0.23,
-                                containerHeight: MediaQuery.of(context).size.width * 0.05,
-                                containerPadding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.01, 0, MediaQuery.of(context).size.width * 0.035, 0),
-                                circlePositionedRight: MediaQuery.of(context).size.width * 0.001 * -1,
-                                circleSize: MediaQuery.of(context).size.width * 0.085,
-                                sizedBoxHeight: MediaQuery.of(context).size.width * 0.085,
-                                sizedBoxWidth: MediaQuery.of(context).size.width * 0.2725,
-                                scale: isThisDeviceATablet ? 1 : 0.85,
+                        SizedBox(
+                          child: Container(
+                            margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.07),
+                            child: AnimatedScale(
+                              scale: _buttonAnimations["CONTACTS"]! ? 1.1 : 1.0,
+                              duration: const Duration(milliseconds: 100),
+                              curve: Curves.bounceOut,
+                              alignment: Alignment.center,
+                              child: GestureDetector(
+                                // Animation management
+                                onTapDown: (_) {
+                                  setState(() {
+                                    _buttonAnimations["CONTACTS"] = true;
+                                  });
+                                },
+                                onTapUp: (_) {
+                                  setState(() {
+                                    _buttonAnimations["CONTACTS"] = false;
+                                  });
+                                  // Button Code
+                                  print("CONTACTSSSSS");
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const ListContactsPage(),
+                                      )).then((_) => initialisation());
+                                },
+                                onTapCancel: () {
+                                  setState(() {
+                                    _buttonAnimations["CONTACTS"] = false;
+                                  });
+                                },
+                                child: CustomShape(
+                                  text: languagesTextsFile.texts["main_contacts"]!,
+                                  image: 'assets/enveloppe.png',
+                                  backgroundColor: const Color.fromRGBO(12, 178, 255, 1),
+                                  textColor: const Color.fromRGBO(35, 55, 79, 1),
+                                  imageScale: 0.9,
+                                  fontSize: 38,
+                                  fontWeight: FontWeight.w700,
+                                  containerWidth: MediaQuery.of(context).size.width * 0.23,
+                                  containerHeight: MediaQuery.of(context).size.width * 0.05,
+                                  containerPadding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.01, 0, MediaQuery.of(context).size.width * 0.035, 0),
+                                  circlePositionedRight: MediaQuery.of(context).size.width * 0.001 * -1,
+                                  circleSize: MediaQuery.of(context).size.width * 0.085,
+                                  sizedBoxHeight: MediaQuery.of(context).size.width * 0.085,
+                                  sizedBoxWidth: MediaQuery.of(context).size.width * 0.2725,
+                                  scale: isThisDeviceATablet ? 1 : 0.85,
+                                  nbNotification: 9,
+                                ),
                               ),
                             ),
                           ),

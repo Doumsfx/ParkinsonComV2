@@ -22,8 +22,9 @@ class CustomShape extends StatelessWidget {
   final double sizedBoxWidth;
   final double scale;
   final double sizedBoxHeightFont;
+  final int nbNotification;
 
-  const CustomShape({super.key, required this.text, required this.image, required this.imageScale, required this.backgroundColor, required this.textColor, required this.fontSize, required this.containerWidth, required this.containerHeight, required this.containerPadding, required this.circleSize, required this.circlePositionedRight, required this.fontWeight, required this.sizedBoxHeight, required this.sizedBoxWidth, required this.scale, this.sizedBoxHeightFont = 0});
+  const CustomShape({super.key, required this.text, required this.image, required this.imageScale, required this.backgroundColor, required this.textColor, required this.fontSize, required this.containerWidth, required this.containerHeight, required this.containerPadding, required this.circleSize, required this.circlePositionedRight, required this.fontWeight, required this.sizedBoxHeight, required this.sizedBoxWidth, required this.scale, this.sizedBoxHeightFont = 0, this.nbNotification = 0});
 
   @override
   Widget build(BuildContext context) {
@@ -82,6 +83,36 @@ class CustomShape extends StatelessWidget {
               ),
             ),
           ),
+
+          // Notification
+          nbNotification > 0
+              ? Positioned(
+                right: 0,
+                top: 0,
+                child: Container(
+                height: circleSize / 2.5,
+                width: circleSize / 2.5,
+                decoration: const BoxDecoration(
+                  color: Colors.red,
+                  shape: BoxShape.circle,
+                ),
+                child: Center(
+                  child: AutoSizeText(
+                    nbNotification.toString(),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 50,
+                    ),
+                    maxFontSize: 50,
+                    minFontSize: 1,
+                    maxLines: 1,
+
+                  ),
+                )
+                          ),
+              )
+              : const SizedBox(),
         ],
       ),
     );
