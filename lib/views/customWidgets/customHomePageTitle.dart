@@ -2,10 +2,8 @@
 // Code by Pagnon Alexis and Sanchez Adam
 // ParkinsonCom V2
 
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:parkinson_com_v2/models/variables.dart';
 
 class CustomHomePageTitle extends StatelessWidget {
   final String text;
