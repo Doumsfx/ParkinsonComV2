@@ -6,6 +6,7 @@ import 'dart:async';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:parkinson_com_v2/views/contacts/conversationPage.dart';
+import 'package:parkinson_com_v2/views/customWidgets/customImageWithNotification.dart';
 import 'package:parkinson_com_v2/views/customWidgets/customTitle.dart';
 import 'package:parkinson_com_v2/models/database/contact.dart';
 import 'package:parkinson_com_v2/views/contacts/newContact.dart';
@@ -501,7 +502,7 @@ class _ListContactsPageState extends State<ListContactsPage> {
                                   ),
                                 ),
 
-
+                                /*
                                 // Conversation Buttons
                                 AnimatedScale(
                                   scale: _modifyButtonsAnimations[index] ? 1.1 : 1.0,
@@ -552,6 +553,61 @@ class _ListContactsPageState extends State<ListContactsPage> {
                                       ),
                                       child: Image.asset(
                                         "assets/dialog.png",
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                 */
+
+                                // Conversation Buttons
+                                AnimatedScale(
+                                  scale: _modifyButtonsAnimations[index] ? 1.1 : 1.0,
+                                  duration: const Duration(milliseconds: 100),
+                                  curve: Curves.bounceOut,
+                                  child: GestureDetector(
+                                    onTapDown: (_) {
+                                      setState(() {
+                                        _modifyButtonsAnimations[index] = true;
+                                      });
+                                    },
+                                    onTapUp: (_) {
+                                      // Button Code
+                                      setState(() {
+                                        _modifyButtonsAnimations[index] = false;
+                                      });
+
+                                      if(_listContacts[index].email != null){
+                                        //TODO pop up qui dis qu'on ne peux pas pas échanger par le biais d'une adresse mail, mais vous pouvez lui envoyer des dialogues
+                                        print("peut pas échanger avec mail");
+                                      }
+                                      else if(_listContacts[index].phone != null && !wantPhoneFonctionnality){
+                                        //TODO pop up qui dit qu'il faut avoir une carte SIM et activé le bouton téléphone dans mes options
+                                        print("il faut SIM + activer fonction téléphone dans option");
+                                      }
+                                      else if(_listContacts[index].phone != null && wantPhoneFonctionnality){ //TODO enlever le commentaire une fois qu'on aura fini nos tests
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => ConversationPage(contact: _listContacts[index]),
+                                            )
+                                        ).then((_) => initialisation());
+                                      }
+                                    },
+                                    onTapCancel: () {
+                                      setState(() {
+                                        _modifyButtonsAnimations[index] = false;
+                                      });
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.01, 0, 0, MediaQuery.of(context).size.height * 0.02),
+                                      child: CustomImageWithNotification(
+                                        circleSize: MediaQuery.of(context).size.width * 0.062,
+                                        circlePadding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.011),
+                                        circleColor: const Color.fromRGBO(12, 178, 255, 1),
+                                        image: "assets/dialog.png",
+                                        nbNotification: 0  ,
+                                        sizedBoxWidth: MediaQuery.of(context).size.width * 0.062,
+                                        sizedBoxHeight: MediaQuery.of(context).size.width * 0.062,
                                       ),
                                     ),
                                   ),
