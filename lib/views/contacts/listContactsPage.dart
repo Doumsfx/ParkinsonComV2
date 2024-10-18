@@ -523,7 +523,7 @@ class _ListContactsPageState extends State<ListContactsPage> {
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => const ConversationPage(),
+                                              builder: (context) => ConversationPage(idContact: _listContacts[index].id_contact),
                                             )
                                         ).then((_) => initialisation());
                                       }
