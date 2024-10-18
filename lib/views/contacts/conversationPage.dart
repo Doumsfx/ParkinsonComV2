@@ -36,7 +36,7 @@ class _ConversationPageState extends State<ConversationPage> {
   final ScrollController _conversationScrollController = ScrollController();
   final ScrollController _newMessageScrollController = ScrollController();
   late CustomKeyboard customKeyboard;
-  late List<Sms> _listSMS;
+  List<Sms> _listSMS = [];
 
   /// Function that initialise our variables
   Future<void> initialisation() async {
@@ -605,13 +605,16 @@ class _ConversationPageState extends State<ConversationPage> {
                                     // Remove the older SMS
                                     await databaseManager.deleteSms(listSms[i].id_sms);
                                   }
+                                  listSms = listSms.sublist(listSms.length - 50-1);
                                 }
+
+                                // Refresh UI with the new list
+                                setState(() {
+                                  _listSMS = listSms;
+                                });
                               }
 
                               _controller.clear();
-
-                              setState(() {
-                              });
 
                             },
                             onTapCancel: () {

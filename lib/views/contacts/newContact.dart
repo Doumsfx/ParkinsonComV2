@@ -84,8 +84,6 @@ class _NewContactPageState extends State<NewContactPage> {
     // Initialisation of our variables
     initialisation();
 
-    print("hasSimCard : $hasSimCard wantPhoneFonctionnality : $wantPhoneFonctionnality");
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
       FocusScope.of(context).requestFocus(_focusNode);
       FocusScope.of(context).requestFocus(_focusNode2);

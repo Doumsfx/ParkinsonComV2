@@ -522,10 +522,13 @@ class _ListContactsPageState extends State<ListContactsPage> {
                                       if(_listContacts[index].email != null){
                                         //TODO pop up qui dis qu'on ne peux pas pas échanger par le biais d'une adresse mail, mais vous pouvez lui envoyer des dialogues
                                         print("peut pas échanger avec mail");
+                                        Popups.showPopupOk(context, text: languagesTextsFile.texts["pop_up_conversation_cant_with_email"], textOk: languagesTextsFile.texts["pop_up_ok"], functionOk: Popups.functionToQuit);
+
                                       }
                                       else if(_listContacts[index].phone != null && !wantPhoneFonctionnality){
                                         //TODO pop up qui dit qu'il faut avoir une carte SIM et activé le bouton téléphone dans mes options
                                         print("il faut SIM + activer fonction téléphone dans option");
+                                        Popups.showPopupOk(context, text: languagesTextsFile.texts["pop_up_conversation_need_phone_functions"], textOk: languagesTextsFile.texts["pop_up_ok"], functionOk: Popups.functionToQuit);
                                       }
                                       else if(_listContacts[index].phone != null && wantPhoneFonctionnality){ //TODO enlever le commentaire une fois qu'on aura fini nos tests
                                         Navigator.push(

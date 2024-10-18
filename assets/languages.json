@@ -146,8 +146,9 @@
     "settings_page_media": "Multimédia",
     "conversation_page_title": "Conversation",
     "conversation_page_hint_text": "Cliquez-ici pour écrire un message...",
-    "conversation_page_hint_text2": "Ecrire votre message ici..."
-
+    "conversation_page_hint_text2": "Ecrire votre message ici...",
+    "pop_up_conversation_cant_with_email" : "L'accès à la conversation n'est pas disponible via les adresses mails.\nVous pouvez uniquement envoyer des messages via les dialogues.",
+    "pop_up_conversation_need_phone_functions" : "L'option pour utiliser les fonctionnalités du téléphone doit être cochée.\nVous pourrez trouver cette option dans le menu \"Mes options\"."
 
   },
   "nl" : {
@@ -297,7 +298,9 @@
     "settings_page_media": "...",
     "conversation_page_title": "...",
     "conversation_page_hint_text": "...",
-    "conversation_page_hint_text2": "..."
+    "conversation_page_hint_text2": "...",
+    "pop_up_conversation_cant_with_email" : "Toegang tot het gesprek is niet beschikbaar via e-mailadressen.\nU kunt alleen berichten verzenden via de dialoogvensters.",
+    "pop_up_conversation_need_phone_functions" : "De optie om telefoonfuncties te gebruiken, moet worden gecontroleerd.\nU kunt deze optie vinden in het menu \"Mijn opties\"."
   }
 
 }
