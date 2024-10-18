@@ -8,16 +8,18 @@ import 'package:parkinson_com_v2/models/emergencyRequest.dart';
 import 'package:parkinson_com_v2/models/fileHandler.dart';
 import 'package:parkinson_com_v2/models/smsHandler.dart';
 import 'package:parkinson_com_v2/models/smsReceiver.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'notificationHandler.dart';
 import 'ttsHandler.dart';
 import 'database/databaseManager.dart';
 
+SharedPreferencesWithCache? preferences;
 // Global variables
-bool azerty = true; // true: azerty | false: abcde
-String language = "fr"; // "fr" | "nl"
-bool hasSimCard = true; // true: the device has a sim card | false: it doesn't have one
-bool wantPhoneFonctionnality = true; // true: user want to send SMS | false: user don't want to send SMS
-bool isFirstLaunch = false; // true: before user registers | false: after registration
+late bool azerty; // true: azerty | false: abcde
+late String language; // "fr" | "nl"
+late bool hasSimCard; // true: the device has a sim card | false: it doesn't have one
+late bool wantPhoneFonctionnality; // true: user want to send SMS | false: user don't want to send SMS
+late bool isFirstLaunch; // true: before user registers | false: after registration
 bool isThisDeviceATablet = true; // true: tablet | false: phone
 double screenRatio = 0;
 

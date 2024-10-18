@@ -78,8 +78,12 @@ class _LoginPageState extends State<LoginPage> {
         bool sim = await smsHandler.checkSim();
         if (!sim) {
           phone = false;
+          hasSimCard = false;
           Popups.showPopupOk(context, text: languagesTextsFile.texts["sim_card_absent"], textOk: languagesTextsFile.texts["pop_up_ok"], functionOk: Popups.functionToQuit);
           return false;
+        }
+        else {
+          hasSimCard = true;
         }
       }
       // Permission denied
@@ -470,14 +474,18 @@ class _LoginPageState extends State<LoginPage> {
                                         Popups.showPopupOk(context, text: languagesTextsFile.texts["login_page_error_form_mail"], textOk: languagesTextsFile.texts["pop_up_ok"], functionOk: Popups.functionToQuit);
                                       }
                                       else{
+                                        // Check for e-mail confirmation + SIM card detection (if selected)
                                         bool checks = await startChecks();
 
+                                        // All checks succeeded
                                         if(checks) {
                                           isFirstLaunch = false;
                                           wantPhoneFonctionnality = phone;
 
                                           // Initialization of the database manager when launching the app (create or open the database)
                                           await databaseManager.initDB();
+
+                                          //todo popup permissions for receiver
 
                                           // SMS Receiver initialization
                                           if(hasSimCard && wantPhoneFonctionnality) {
@@ -488,8 +496,12 @@ class _LoginPageState extends State<LoginPage> {
                                             await smsReceiver.initReceiver();
                                           }
 
+                                          // Save the preferences
+                                          await preferences?.setBool("isFirstLaunch", isFirstLaunch);
+                                          await preferences?.setBool("wantPhoneFonctionnality", wantPhoneFonctionnality);
+                                          await preferences?.setBool("hasSimCard", hasSimCard); // hasSimCard modified within startChecks()
 
-                                          // Redirection
+                                          // Redirection to the main page
                                           widget.onLoginSuccess();
 
                                           // Adding in the database
@@ -562,15 +574,21 @@ class _LoginPageState extends State<LoginPage> {
                                       _buttonAnimations["FR"] = true;
                                     });
                                   },
-                                  onTapUp: (_) {
+                                  onTapUp: (_) async {
                                     setState(() {
                                       _buttonAnimations["FR"] = false;
                                     });
                                     // Button Code
                                     print("FRAAAAAAAAAAAANCE");
-                                    language = "fr";
-                                    ttsHandler.setVoiceFrOrNl(language, 'female');
-                                    languagesTextsFile.setNewLanguage(language);
+
+                                    setState(() {
+                                      language = "fr";
+                                      ttsHandler.setVoiceFrOrNl(language, 'female');
+                                      languagesTextsFile.setNewLanguage(language);
+                                    });
+
+                                    // Save language
+                                    await preferences?.setString("language", language);
 
                                   },
                                   onTapCancel: () {
@@ -602,7 +620,7 @@ class _LoginPageState extends State<LoginPage> {
                                       _buttonAnimations["NL"] = true;
                                     });
                                   },
-                                  onTapUp: (_) {
+                                  onTapUp: (_) async {
                                     setState(() {
                                       _buttonAnimations["NL"] = false;
                                     });
@@ -613,6 +631,9 @@ class _LoginPageState extends State<LoginPage> {
                                       ttsHandler.setVoiceFrOrNl(language, 'female');
                                       languagesTextsFile.setNewLanguage(language);
                                     });
+
+                                    // Save language
+                                    await preferences?.setString("language", language);
 
                                   },
                                   onTapCancel: () {

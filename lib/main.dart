@@ -19,6 +19,7 @@ import 'package:parkinson_com_v2/views/customWidgets/CustomShape.dart';
 import 'package:parkinson_com_v2/models/variables.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:parkinson_com_v2/views/settings/settingsPage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'models/internetAlert.dart';
 
@@ -26,6 +27,9 @@ void main() async {
   // We put the game in full screen mode
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+
+  // Initialization of the sharedPreferences
+  await initSharedPreferences();
 
   // Detect if it is the first time we are launching the app using the existence of the database or not
   isFirstLaunch = !(await databaseManager.doesExist()); // first time <=> no database existing
@@ -39,7 +43,7 @@ void main() async {
   }
 
   // Set the texts to the default language
-  languagesTextsFile.setNewLanguage("fr");
+  languagesTextsFile.setNewLanguage(language);
 
   // Load .env variables
   loadEnvVariables();
@@ -51,6 +55,24 @@ void main() async {
 
   // Launch the app
   runApp(const MyApp());});
+}
+
+/// Load variables from the shared preferences
+Future<void> initSharedPreferences() async {
+  // Obtain shared preferences.
+  preferences = await SharedPreferencesWithCache.create(
+    cacheOptions: const SharedPreferencesWithCacheOptions(
+      // When an allowlist is included, any keys that aren't included cannot be used.
+      allowList: <String>{'azerty', 'language', 'hasSimCard', 'wantPhoneFonctionnality', 'isFirstLaunch'},
+    ),
+  );
+
+  azerty = await preferences?.getBool("azerty") ?? true;
+  language = await preferences?.getString("language") ?? "fr";
+  hasSimCard = await preferences?.getBool("hasSimCard") ?? false;
+  wantPhoneFonctionnality = await preferences?.getBool("wantPhoneFonctionnality") ?? false;
+  isFirstLaunch = await preferences?.getBool("isFirstLaunch") ?? true;
+
 }
 
 /// Load Environment Variables from the .env file
@@ -131,6 +153,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
     initialisation();
     WidgetsBinding.instance.addObserver(this);
 
+
+
     timer = Timer.periodic(const Duration(seconds: 1), (_) async {
       int newBatteryLevel = await battery.batteryLevel;
       DateTime newTimeAndDate = DateTime.now();
@@ -166,7 +190,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
       });
     });
 
-
     // SMS Receiver initialization
     if(hasSimCard && wantPhoneFonctionnality) {
       smsReceiver.setCallBack(_handleSmsReceived);
@@ -174,7 +197,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
     }
 
   }
-
 
   @override
   void dispose() {
@@ -515,7 +537,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                   _buttonAnimations["RELAX"] = true;
                                 });
                               },
-                              onTapUp: (_) {
+                              onTapUp: (_) async {
                                 setState(() {
                                   _buttonAnimations["RELAX"] = false;
                                 });
@@ -534,6 +556,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                   ttsHandler.setVoiceFrOrNl(language, 'female');
                                   languagesTextsFile.setNewLanguage(language);
                                 });
+
+                                // Save preferences
+                                await preferences?.setString("language", language);
 
                               },
                               onTapCancel: () {
