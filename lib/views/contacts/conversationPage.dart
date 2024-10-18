@@ -502,12 +502,14 @@ class _ConversationPageState extends State<ConversationPage> {
                                                 Radius.circular(MediaQuery.of(context).size.width * 0.045),
                                               ),
                                             ),
-                                            hintText: "test",
+                                            hintText: languagesTextsFile.texts["conversation_page_hint_text"],
                                             hintStyle: TextStyle(
                                               color: const Color.fromRGBO(147, 147, 147, 1),
                                               fontStyle: FontStyle.italic,
                                               fontSize: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.05 : MediaQuery.of(context).size.height * 0.06,
-                                            )),
+                                              fontWeight: FontWeight.w600,
+                                            )
+                                        ),
                                         onTap: () {
                                           setState(() {
                                             conversationPageState.value = true;
@@ -783,7 +785,13 @@ class _ConversationPageState extends State<ConversationPage> {
                                                     Radius.circular(MediaQuery.of(context).size.width * 0.045),
                                                   ),
                                                 ),
-                                                hintText: languagesTextsFile.texts["dialog_hint_text"]!,
+                                                hintText: languagesTextsFile.texts["conversation_page_hint_text2"],
+                                                hintStyle: const TextStyle(
+                                                  color: Color.fromRGBO(147, 147, 147, 1),
+                                                  fontStyle: FontStyle.italic,
+                                                  fontWeight: FontWeight.w600,
+                                                )
+
                                               ),
                                             ),
                                           ),

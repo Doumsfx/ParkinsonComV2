@@ -144,7 +144,9 @@
     "settings_page_settings": "Paramètres",
     "settings_page_relaxation": "Détente",
     "settings_page_media": "Multimédia",
-    "conversation_page_title": "Conversation"
+    "conversation_page_title": "Conversation",
+    "conversation_page_hint_text": "Cliquez-ici pour écrire un message...",
+    "conversation_page_hint_text2": "Ecrire votre message ici..."
 
 
   },
@@ -293,7 +295,9 @@
     "settings_page_settings": "...",
     "settings_page_relaxation": "...",
     "settings_page_media": "...",
-    "conversation_page_title": "..."
+    "conversation_page_title": "...",
+    "conversation_page_hint_text": "...",
+    "conversation_page_hint_text2": "..."
   }
 
 }

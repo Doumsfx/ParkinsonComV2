@@ -519,7 +519,15 @@ class _ListContactsPageState extends State<ListContactsPage> {
                                         _modifyButtonsAnimations[index] = false;
                                       });
 
-                                      if(true /* wantPhoneFonctionnality && _listContacts[index].phone != null */){ //todo condition
+                                      if(_listContacts[index].email != null){
+                                        //TODO pop up qui dis qu'on ne peux pas pas échanger par le biais d'une adresse mail, mais vous pouvez lui envoyer des dialogues
+                                        print("peut pas échanger avec mail");
+                                      }
+                                      else if(_listContacts[index].phone != null && !wantPhoneFonctionnality){
+                                        //TODO pop up qui dit qu'il faut avoir une carte SIM et activé le bouton téléphone dans mes options
+                                        print("il faut SIM + activer fonction téléphone dans option");
+                                      }
+                                      else if(_listContacts[index].phone != null && wantPhoneFonctionnality){ //TODO enlever le commentaire une fois qu'on aura fini nos tests
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
