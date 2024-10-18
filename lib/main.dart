@@ -750,7 +750,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                   sizedBoxHeight: MediaQuery.of(context).size.width * 0.085,
                                   sizedBoxWidth: MediaQuery.of(context).size.width * 0.2725,
                                   scale: isThisDeviceATablet ? 1 : 0.85,
-                                  nbNotification: 9,
+                                  nbNotification: 0,
                                 ),
                               ),
                             ),
