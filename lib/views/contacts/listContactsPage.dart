@@ -74,6 +74,7 @@ class _ListContactsPageState extends State<ListContactsPage> {
       ));
 
       _primaryContacts[0] = true;
+      _secondaryContacts[0] = false;
     }
     setState(() {});
 
@@ -82,9 +83,11 @@ class _ListContactsPageState extends State<ListContactsPage> {
     for(i; i < _listContacts.length; i += 1){
       if(_listContacts[i].priority == 1){
         _primaryContacts[i] = true;
+        _secondaryContacts[i] = false;
       }
       else if(_listContacts[i].priority == 2){
         _secondaryContacts[i] = true;
+        _primaryContacts[i] = false;
       }
     }
   }
@@ -271,7 +274,7 @@ class _ListContactsPageState extends State<ListContactsPage> {
                               textColor: Colors.white,
                               containerWidth: MediaQuery.of(context).size.width * 0.50,
                               containerHeight: MediaQuery.of(context).size.height * 0.12,
-                              containerPadding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.height * 0.085, 0, MediaQuery.of(context).size.height * 0.03, 0),
+                              containerPadding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.height * 0.085, MediaQuery.of(context).size.height * 0.007, MediaQuery.of(context).size.height * 0.03, 0),
                               circleSize: MediaQuery.of(context).size.height * 0.1875,
                               circlePositionedLeft: MediaQuery.of(context).size.height * 0.1 * -1,
                               fontSize: 50,

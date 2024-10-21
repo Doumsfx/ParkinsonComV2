@@ -5,6 +5,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:parkinson_com_v2/models/database/contact.dart';
 import 'package:parkinson_com_v2/models/database/sms.dart';
 import 'package:parkinson_com_v2/views/customWidgets/customSMS.dart';
@@ -39,7 +40,9 @@ class _ConversationPageState extends State<ConversationPage> {
   final ScrollController _conversationScrollController = ScrollController();
   final ScrollController _newMessageScrollController = ScrollController();
   late CustomKeyboard customKeyboard;
+  final FocusNode _focusNode = FocusNode();
   List<Sms> _listSMS = [];
+
 
   /// Function that initialise our variables
   Future<void> initialisation() async {
@@ -48,6 +51,16 @@ class _ConversationPageState extends State<ConversationPage> {
     setState(() {});
   }
 
+  /// Function that scroll to the bottom of the page
+  void _scrollToBottom() {
+    if (_conversationScrollController.hasClients) {
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        _conversationScrollController.jumpTo(
+          _conversationScrollController.position.maxScrollExtent,
+        );
+      });
+    }
+  }
 
   @override
   void initState() {
@@ -56,6 +69,15 @@ class _ConversationPageState extends State<ConversationPage> {
     initialisation();
     customKeyboard = CustomKeyboard(controller: _controller, textPredictions: isConnected);
     conversationPageState.value = false;
+
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      _scrollToBottom();
+    });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      FocusScope.of(context).requestFocus(_focusNode);
+    });
+
   }
 
 
@@ -262,471 +284,475 @@ class _ConversationPageState extends State<ConversationPage> {
                           ],
                         ),
 
-                        // List of messages
-                        Expanded(
-                          child: RawScrollbar(
-                            thumbColor: Colors.blue,
-                            controller: _conversationScrollController,
-                            trackVisibility: true,
-                            thumbVisibility: true,
-                            thickness: MediaQuery.of(context).size.width * 0.01125,
-                            radius: Radius.circular(MediaQuery.of(context).size.width * 0.015),
-                            trackColor: const Color.fromRGBO(66, 89, 109, 1),
-                            crossAxisMargin: MediaQuery.of(context).size.width * 0.00375,
-                            mainAxisMargin: MediaQuery.of(context).size.width * 0.00375,
-                            trackRadius: const Radius.circular(20),
-                            padding: isThisDeviceATablet ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.085, MediaQuery.of(context).size.width * 0.0315, MediaQuery.of(context).size.height * 0.09) : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.085, MediaQuery.of(context).size.width * 0.027, MediaQuery.of(context).size.height * 0.08),
-                            child: Row(
-                              children: [
-                                // List of contacts
+                    // List of messages
+                    Expanded(
+                      child: RawScrollbar(
+                        thumbColor: Colors.blue,
+                        controller: _conversationScrollController,
+                        trackVisibility: true,
+                        thumbVisibility: true,
+                        thickness: MediaQuery.of(context).size.width * 0.01125,
+                        radius: Radius.circular(MediaQuery.of(context).size.width * 0.015),
+                        trackColor: const Color.fromRGBO(66, 89, 109, 1),
+                        crossAxisMargin: MediaQuery.of(context).size.width * 0.00375,
+                        mainAxisMargin: MediaQuery.of(context).size.width * 0.00375,
+                        trackRadius: const Radius.circular(20),
+                        padding: isThisDeviceATablet ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.085, MediaQuery.of(context).size.width * 0.0315, MediaQuery.of(context).size.height * 0.09) : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.085, MediaQuery.of(context).size.width * 0.027, MediaQuery.of(context).size.height * 0.08),
+                        child: Row(
+                          children: [
+                            // List of contacts
 
-                                Expanded(
-                                  child: ListView.builder(
-                                      controller: _conversationScrollController,
-                                      itemCount: _listSMS.length,
-                                      itemBuilder: (context, index) {
-                                        if(_listSMS[index].isReceived){
-                                          return Container(
-                                            margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.01, 0, 0, MediaQuery.of(context).size.height * 0.02),
+                            Expanded(
+                              child: ListView.builder(
+                                  key: const PageStorageKey<String>('conversationScrollKey'),
+                                  controller: _conversationScrollController,
+                                  itemCount: _listSMS.length,
+                                  itemBuilder: (context, index) {
+                                    if(_listSMS[index].isReceived){
+                                      return Container(
+                                        margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.01, 0, 0, MediaQuery.of(context).size.height * 0.02),
+                                        child: CustomSMS(
+                                          time: _listSMS[index].timeSms,
+                                          isReceive: _listSMS[index].isReceived,
+                                          text: _listSMS[index].content,
+                                        ),
+                                      );
+                                    }
+                                    else{
+                                      return Row(
+                                        children: [
+                                          const Expanded(child: SizedBox()),
+
+                                          Container(
+                                            margin: EdgeInsets.fromLTRB(0, 0, MediaQuery.of(context).size.width * 0.01, MediaQuery.of(context).size.height * 0.02),
                                             child: CustomSMS(
                                               time: _listSMS[index].timeSms,
                                               isReceive: _listSMS[index].isReceived,
                                               text: _listSMS[index].content,
                                             ),
-                                          );
-                                        }
-                                        else{
-                                          return Row(
-                                            children: [
-                                              const Expanded(child: SizedBox()),
-
-                                              Container(
-                                                margin: EdgeInsets.fromLTRB(0, 0, MediaQuery.of(context).size.width * 0.01, MediaQuery.of(context).size.height * 0.02),
-                                                child: CustomSMS(
-                                                  time: _listSMS[index].timeSms,
-                                                  isReceive: _listSMS[index].isReceived,
-                                                  text: _listSMS[index].content,
-                                                ),
-                                              ),
-                                            ],
-                                          );
-                                        }
-
-                                      }),
-                                ),
-
-
-                                // ScrollWidgets
-                                Container(
-                                  margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.02),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      // Top Arrow
-                                      AnimatedScale(
-                                        scale: _buttonAnimations["TOP ARROW"]! ? 1.1 : 1.0,
-                                        duration: const Duration(milliseconds: 100),
-                                        curve: Curves.bounceOut,
-                                        child: GestureDetector(
-                                          // Animation management
-                                          onTap: () {
-                                            _conversationScrollController.animateTo(
-                                              _conversationScrollController.offset - 120,
-                                              duration: const Duration(milliseconds: 500),
-                                              curve: Curves.easeIn,
-                                            );
-                                          },
-
-                                          onLongPress: () {
-                                            _conversationScrollController.animateTo(
-                                              _conversationScrollController.position.minScrollExtent,
-                                              duration: const Duration(milliseconds: 1),
-                                              curve: Curves.easeIn,
-                                            );
-                                          },
-
-                                          onTapDown: (_) {
-                                            setState(() {
-                                              _buttonAnimations["TOP ARROW"] = true;
-                                            });
-                                          },
-
-                                          onTapUp: (_) {
-                                            setState(() {
-                                              _buttonAnimations["TOP ARROW"] = false;
-                                            });
-                                          },
-
-                                          onLongPressEnd: (_) {
-                                            setState(() {
-                                              _buttonAnimations["TOP ARROW"] = false;
-                                            });
-                                          },
-
-                                          child: Container(
-                                            width: MediaQuery.of(context).size.height * 0.07,
-                                            height: MediaQuery.of(context).size.height * 0.07,
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * 0.01),
-                                              color: const Color.fromRGBO(101, 72, 254, 1),
-                                            ),
-                                            child: Transform.rotate(
-                                              angle: 1.5708,
-                                              child: Icon(
-                                                Icons.arrow_back_ios_new_rounded,
-                                                color: Colors.white,
-                                                size: MediaQuery.of(context).size.height * 0.063,
-                                              ),
-                                            ),
                                           ),
-                                        ),
-                                      ),
-
-                                      // Container for when the scrollbar is empty
-                                      Expanded(
-                                          child: Container(
-                                            width: MediaQuery.of(context).size.width * 0.01875,
-                                            margin: isThisDeviceATablet ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.014) : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.011),
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(20),
-                                              color: const Color.fromRGBO(66, 89, 109, 1),
-                                            ),
-                                            child: Container(
-                                              margin: EdgeInsets.all(MediaQuery.of(context).size.width * 0.00375),
-                                              decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(20),
-                                                color: Colors.blue,
-                                              ),
-                                            ),
-                                          )),
-
-                                      // Bot Arrow
-                                      AnimatedScale(
-                                        scale: _buttonAnimations["BOT ARROW"]! ? 1.1 : 1.0,
-                                        duration: const Duration(milliseconds: 100),
-                                        curve: Curves.bounceOut,
-                                        child: GestureDetector(
-                                          // Animation management
-                                          onTap: () {
-                                            _conversationScrollController.animateTo(
-                                              _conversationScrollController.offset + 120,
-                                              duration: const Duration(milliseconds: 500),
-                                              curve: Curves.easeIn,
-                                            );
-                                          },
-
-                                          onLongPress: () {
-                                            _conversationScrollController.animateTo(
-                                              _conversationScrollController.position.maxScrollExtent,
-                                              duration: const Duration(milliseconds: 1),
-                                              curve: Curves.easeIn,
-                                            );
-                                          },
-
-                                          onTapDown: (_) {
-                                            setState(() {
-                                              _buttonAnimations["BOT ARROW"] = true;
-                                            });
-                                          },
-
-                                          onTapUp: (_) {
-                                            setState(() {
-                                              _buttonAnimations["BOT ARROW"] = false;
-                                            });
-                                          },
-
-                                          onLongPressEnd: (_) {
-                                            setState(() {
-                                              _buttonAnimations["BOT ARROW"] = false;
-                                            });
-                                          },
-
-                                          child: Container(
-                                            width: MediaQuery.of(context).size.height * 0.07,
-                                            height: MediaQuery.of(context).size.height * 0.07,
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * 0.01),
-                                              color: const Color.fromRGBO(101, 72, 254, 1),
-                                            ),
-                                            child: Transform.rotate(
-                                              angle: -1.5708,
-                                              child: Icon(
-                                                Icons.arrow_back_ios_new_rounded,
-                                                color: Colors.white,
-                                                size: MediaQuery.of(context).size.height * 0.063,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-
-
-                        // Third Part
-                        SizedBox(
-                          width: double.infinity,
-                          height: MediaQuery.of(context).size.height * 0.15,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              // TextField + TTS
-                              Expanded(
-                                child: Container(
-                                  height: MediaQuery.of(context).size.height * 0.14,
-                                  margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.01, MediaQuery.of(context).size.height * 0.02, 0, MediaQuery.of(context).size.height * 0.02),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(MediaQuery.of(context).size.width * 0.045),
-                                    ),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      // TextField
-                                      Expanded(
-                                        child: Padding(
-                                          padding: EdgeInsets.fromLTRB(
-                                            MediaQuery.of(context).size.width * 0.02,
-                                            0,
-                                            MediaQuery.of(context).size.width * 0.02,
-                                            0,
-                                          ),
-                                          child: Center(
-                                            child: TextField(
-                                              style: TextStyle(
-                                                fontSize: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.05 : MediaQuery.of(context).size.height * 0.06,
-                                                fontWeight: FontWeight.w800,
-                                                color: const Color.fromRGBO(50, 50, 50, 1),
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                              controller: _controller,
-                                              readOnly: true,
-                                              showCursor: true,
-                                              enableInteractiveSelection: true,
-                                              maxLines: 1,
-                                              textAlign: TextAlign.left,
-                                              textAlignVertical: TextAlignVertical.bottom,
-                                              decoration: InputDecoration(
-                                                  filled: true,
-                                                  fillColor: Colors.white,
-                                                  iconColor: Colors.white,
-                                                  focusColor: Colors.white,
-                                                  hoverColor: Colors.white,
-                                                  border: OutlineInputBorder(
-                                                    borderSide: const BorderSide(
-                                                      color: Colors.white,
-                                                    ),
-                                                    borderRadius: BorderRadius.all(
-                                                      Radius.circular(MediaQuery.of(context).size.width * 0.045),
-                                                    ),
-                                                  ),
-                                                  enabledBorder: OutlineInputBorder(
-                                                    borderSide: const BorderSide(
-                                                      color: Colors.white,
-                                                    ),
-                                                    borderRadius: BorderRadius.all(
-                                                      Radius.circular(MediaQuery.of(context).size.width * 0.045),
-                                                    ),
-                                                  ),
-                                                  focusedBorder: OutlineInputBorder(
-                                                    borderSide: const BorderSide(
-                                                      color: Colors.white,
-                                                    ),
-                                                    borderRadius: BorderRadius.all(
-                                                      Radius.circular(MediaQuery.of(context).size.width * 0.045),
-                                                    ),
-                                                  ),
-                                                  hintText: languagesTextsFile.texts["conversation_page_hint_text"],
-                                                  hintStyle: TextStyle(
-                                                    color: const Color.fromRGBO(147, 147, 147, 1),
-                                                    fontStyle: FontStyle.italic,
-                                                    fontSize: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.05 : MediaQuery.of(context).size.height * 0.06,
-                                                    fontWeight: FontWeight.w600,
-                                                  )
-                                              ),
-                                              onTap: () {
-                                                setState(() {
-                                                  conversationPageState.value = true;
-                                                });
-                                                print("TOUCHEEEEEEEEEEEEEEE");
-                                              },
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-
-                                      // TTS
-                                      Container(
-                                        margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.02),
-                                        child: AnimatedScale(
-                                          scale: _buttonAnimations["TTS"]! ? 1.1 : 1.0,
-                                          duration: const Duration(milliseconds: 100),
-                                          curve: Curves.bounceOut,
-                                          child: GestureDetector(
-                                            // Animation management
-                                            onTapDown: (_) {
-                                              setState(() {
-                                                _buttonAnimations["TTS"] = true;
-                                              });
-                                            },
-                                            onTapUp: (_) {
-                                              setState(() {
-                                                _buttonAnimations["TTS"] = false;
-                                              });
-                                              // Button Code
-                                              // TTS
-                                              ttsHandler.setText(_controller.text);
-                                              ttsHandler.speak();
-                                            },
-                                            onTapCancel: () {
-                                              setState(() {
-                                                _buttonAnimations["TTS"] = false;
-                                              });
-                                            },
-                                            child: Image.asset(
-                                              'assets/sound.png',
-                                              height: MediaQuery.of(context).size.height * 0.085,
-                                              color: Colors.blue,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-
-                              // Send Button
-                              AnimatedScale(
-                                scale: _buttonAnimations["SEND"]! ? 1.1 : 1.0,
-                                duration: const Duration(milliseconds: 100),
-                                curve: Curves.bounceOut,
-                                child: GestureDetector(
-                                  onTapDown: (_) {
-                                    setState(() {
-                                      _buttonAnimations["SEND"] = true;
-                                    });
-                                  },
-                                  onTapUp: (_) async {
-                                    setState(() {
-                                      _buttonAnimations["SEND"] = false;
-                                    });
-                                    // Button Code
-                                    print("SEEEEEEEEEEEEEEEND");
-
-                                    if(_controller.text.isNotEmpty) {
-                                      final int result = await smsHandler.checkPermissionAndSendSMS(_controller.text, [widget.contact.phone!]);
-
-                                      // If the SMS has been sent -> save it into the database
-                                      if(result == 1) {
-
-                                        // Format the timestamp of the sms
-                                        DateTime timeNow = DateTime.now();
-                                        String hourNow = "${formatWithTwoDigits(timeNow.hour)}:${formatWithTwoDigits(timeNow.minute)}:${formatWithTwoDigits(timeNow.second)}";
-
-                                        await databaseManager.insertSms(Sms(
-                                          content: _controller.text,
-                                          isReceived: false,
-                                          id_contact: widget.contact.id_contact,
-                                          timeSms: hourNow,
-                                        ));
-
-                                        // We only keep the 50 last SMS exchanged with each contact
-                                        List<Sms> listSms = await databaseManager.retrieveSmsFromContact(widget.contact.id_contact);
-                                        if(listSms.length > 50) {
-                                          // Loop for removing multiple SMS (ex : can happen when sending messages to ourself)
-                                          for(int i = 0; i < (listSms.length - 50); i++) {
-                                            // Remove the older SMS
-                                            await databaseManager.deleteSms(listSms[i].id_sms);
-                                          }
-                                          listSms = listSms.sublist(listSms.length - 50-1);
-                                        }
-
-                                        // Refresh UI with the new list
-                                        setState(() {
-                                          _listSMS = listSms;
-                                        });
-                                      }
-
-                                      _controller.clear();
+                                        ],
+                                      );
                                     }
 
-                                  },
-                                  onTapCancel: () {
-                                    setState(() {
-                                      _buttonAnimations["SEND"] = false;
-                                    });
-                                  },
-                                  child: Container(
-                                    height: MediaQuery.of(context).size.width * 0.060,
-                                    width: MediaQuery.of(context).size.width * 0.060,
-                                    padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.009, MediaQuery.of(context).size.width * 0.014, MediaQuery.of(context).size.width * 0.013,
-                                        MediaQuery.of(context).size.width * 0.008),
-                                    margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.008),
-                                    decoration: const BoxDecoration(
-                                      color: Color.fromRGBO(160, 208, 86, 1),
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: Image.asset(
-                                      "assets/send.png",
-                                    ),
-                                  ),
-                                ),
-                              ),
 
-                              // Cancel Button
-                              AnimatedScale(
-                                scale: _buttonAnimations["CANCEL"]! ? 1.1 : 1.0,
-                                duration: const Duration(milliseconds: 100),
-                                curve: Curves.bounceOut,
-                                child: GestureDetector(
-                                  onTapDown: (_) {
-                                    setState(() {
-                                      _buttonAnimations["CANCEL"] = true;
-                                    });
-                                  },
-                                  onTapUp: (_) {
-                                    setState(() {
-                                      _buttonAnimations["CANCEL"] = false;
-                                    });
-                                    // Button Code
-                                    print("CAAAAAAAAAAAAAAAAANCEL");
-                                    _controller.clear();
-                                  },
-                                  onTapCancel: () {
-                                    setState(() {
-                                      _buttonAnimations["CANCEL"] = false;
-                                    });
-                                  },
-                                  child: Container(
-                                    height: MediaQuery.of(context).size.width * 0.060,
-                                    width: MediaQuery.of(context).size.width * 0.060,
-                                    padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.012),
-                                    margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.008),
-                                    decoration: const BoxDecoration(
-                                      color: Colors.red,
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: Image.asset(
-                                      "assets/croix.png",
+
+                                  }),
+                            ),
+
+
+                            // ScrollWidgets
+                            Container(
+                              margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.02),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  // Top Arrow
+                                  AnimatedScale(
+                                    scale: _buttonAnimations["TOP ARROW"]! ? 1.1 : 1.0,
+                                    duration: const Duration(milliseconds: 100),
+                                    curve: Curves.bounceOut,
+                                    child: GestureDetector(
+                                      // Animation management
+                                      onTap: () {
+                                        _conversationScrollController.animateTo(
+                                          _conversationScrollController.offset - 120,
+                                          duration: const Duration(milliseconds: 500),
+                                          curve: Curves.easeIn,
+                                        );
+                                      },
+
+                                      onLongPress: () {
+                                        _conversationScrollController.animateTo(
+                                          _conversationScrollController.position.minScrollExtent,
+                                          duration: const Duration(milliseconds: 1),
+                                          curve: Curves.easeIn,
+                                        );
+                                      },
+
+                                      onTapDown: (_) {
+                                        setState(() {
+                                          _buttonAnimations["TOP ARROW"] = true;
+                                        });
+                                      },
+
+                                      onTapUp: (_) {
+                                        setState(() {
+                                          _buttonAnimations["TOP ARROW"] = false;
+                                        });
+                                      },
+
+                                      onLongPressEnd: (_) {
+                                        setState(() {
+                                          _buttonAnimations["TOP ARROW"] = false;
+                                        });
+                                      },
+
+                                      child: Container(
+                                        width: MediaQuery.of(context).size.height * 0.07,
+                                        height: MediaQuery.of(context).size.height * 0.07,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * 0.01),
+                                          color: const Color.fromRGBO(101, 72, 254, 1),
+                                        ),
+                                        child: Transform.rotate(
+                                          angle: 1.5708,
+                                          child: Icon(
+                                            Icons.arrow_back_ios_new_rounded,
+                                            color: Colors.white,
+                                            size: MediaQuery.of(context).size.height * 0.063,
+                                          ),
+                                        ),
+                                      ),
                                     ),
                                   ),
+
+                                  // Container for when the scrollbar is empty
+                                  Expanded(
+                                      child: Container(
+                                        width: MediaQuery.of(context).size.width * 0.01875,
+                                        margin: isThisDeviceATablet ? EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.014) : EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.01, 0, MediaQuery.of(context).size.height * 0.011),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(20),
+                                          color: const Color.fromRGBO(66, 89, 109, 1),
+                                        ),
+                                        child: Container(
+                                          margin: EdgeInsets.all(MediaQuery.of(context).size.width * 0.00375),
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(20),
+                                            color: Colors.blue,
+                                          ),
+                                        ),
+                                      )),
+
+                                  // Bot Arrow
+                                  AnimatedScale(
+                                    scale: _buttonAnimations["BOT ARROW"]! ? 1.1 : 1.0,
+                                    duration: const Duration(milliseconds: 100),
+                                    curve: Curves.bounceOut,
+                                    child: GestureDetector(
+                                      // Animation management
+                                      onTap: () {
+                                        _conversationScrollController.animateTo(
+                                          _conversationScrollController.offset + 120,
+                                          duration: const Duration(milliseconds: 500),
+                                          curve: Curves.easeIn,
+                                        );
+                                      },
+
+                                      onLongPress: () {
+                                        _conversationScrollController.animateTo(
+                                          _conversationScrollController.position.maxScrollExtent,
+                                          duration: const Duration(milliseconds: 1),
+                                          curve: Curves.easeIn,
+                                        );
+                                      },
+
+                                      onTapDown: (_) {
+                                        setState(() {
+                                          _buttonAnimations["BOT ARROW"] = true;
+                                        });
+                                      },
+
+                                      onTapUp: (_) {
+                                        setState(() {
+                                          _buttonAnimations["BOT ARROW"] = false;
+                                        });
+                                      },
+
+                                      onLongPressEnd: (_) {
+                                        setState(() {
+                                          _buttonAnimations["BOT ARROW"] = false;
+                                        });
+                                      },
+
+                                      child: Container(
+                                        width: MediaQuery.of(context).size.height * 0.07,
+                                        height: MediaQuery.of(context).size.height * 0.07,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * 0.01),
+                                          color: const Color.fromRGBO(101, 72, 254, 1),
+                                        ),
+                                        child: Transform.rotate(
+                                          angle: -1.5708,
+                                          child: Icon(
+                                            Icons.arrow_back_ios_new_rounded,
+                                            color: Colors.white,
+                                            size: MediaQuery.of(context).size.height * 0.063,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+
+                    // Third Part
+                    SizedBox(
+                      width: double.infinity,
+                      height: MediaQuery.of(context).size.height * 0.15,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          // TextField + TTS
+                          Expanded(
+                            child: Container(
+                              height: MediaQuery.of(context).size.height * 0.14,
+                              margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.01, MediaQuery.of(context).size.height * 0.02, 0, MediaQuery.of(context).size.height * 0.02),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(MediaQuery.of(context).size.width * 0.045),
                                 ),
                               ),
-                            ],
+                              child: Row(
+                                children: [
+                                  // TextField
+                                  Expanded(
+                                    child: Padding(
+                                      padding: EdgeInsets.fromLTRB(
+                                        MediaQuery.of(context).size.width * 0.02,
+                                        0,
+                                        MediaQuery.of(context).size.width * 0.02,
+                                        0,
+                                      ),
+                                      child: Center(
+                                        child: TextField(
+                                          style: TextStyle(
+                                            fontSize: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.05 : MediaQuery.of(context).size.height * 0.06,
+                                            fontWeight: FontWeight.w800,
+                                            color: const Color.fromRGBO(50, 50, 50, 1),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          controller: _controller,
+                                          readOnly: true,
+                                          showCursor: true,
+                                          enableInteractiveSelection: true,
+                                          maxLines: 1,
+                                          textAlign: TextAlign.left,
+                                          textAlignVertical: TextAlignVertical.bottom,
+                                          focusNode: _focusNode,
+                                          decoration: InputDecoration(
+                                              filled: true,
+                                              fillColor: Colors.white,
+                                              iconColor: Colors.white,
+                                              focusColor: Colors.white,
+                                              hoverColor: Colors.white,
+                                              border: OutlineInputBorder(
+                                                borderSide: const BorderSide(
+                                                  color: Colors.white,
+                                                ),
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(MediaQuery.of(context).size.width * 0.045),
+                                                ),
+                                              ),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderSide: const BorderSide(
+                                                  color: Colors.white,
+                                                ),
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(MediaQuery.of(context).size.width * 0.045),
+                                                ),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderSide: const BorderSide(
+                                                  color: Colors.white,
+                                                ),
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(MediaQuery.of(context).size.width * 0.045),
+                                                ),
+                                              ),
+                                              hintText: languagesTextsFile.texts["conversation_page_hint_text"],
+                                              hintStyle: TextStyle(
+                                                color: const Color.fromRGBO(147, 147, 147, 1),
+                                                fontStyle: FontStyle.italic,
+                                                fontSize: isThisDeviceATablet ? MediaQuery.of(context).size.height * 0.05 : MediaQuery.of(context).size.height * 0.06,
+                                                fontWeight: FontWeight.w600,
+                                              )
+                                          ),
+                                          onTap: () {
+                                            setState(() {
+                                              conversationPageState.value = true;
+                                            });
+                                            print("TOUCHEEEEEEEEEEEEEEE");
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+
+                                  // TTS
+                                  Container(
+                                    margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.02),
+                                    child: AnimatedScale(
+                                      scale: _buttonAnimations["TTS"]! ? 1.1 : 1.0,
+                                      duration: const Duration(milliseconds: 100),
+                                      curve: Curves.bounceOut,
+                                      child: GestureDetector(
+                                        // Animation management
+                                        onTapDown: (_) {
+                                          setState(() {
+                                            _buttonAnimations["TTS"] = true;
+                                          });
+                                        },
+                                        onTapUp: (_) {
+                                          setState(() {
+                                            _buttonAnimations["TTS"] = false;
+                                          });
+                                          // Button Code
+                                          // TTS
+                                          ttsHandler.setText(_controller.text);
+                                          ttsHandler.speak();
+                                        },
+                                        onTapCancel: () {
+                                          setState(() {
+                                            _buttonAnimations["TTS"] = false;
+                                          });
+                                        },
+                                        child: Image.asset(
+                                          'assets/sound.png',
+                                          height: MediaQuery.of(context).size.height * 0.085,
+                                          color: Colors.blue,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                        )
-                      ],
-                    );
-                  }
+
+                          // Send Button
+                          AnimatedScale(
+                            scale: _buttonAnimations["SEND"]! ? 1.1 : 1.0,
+                            duration: const Duration(milliseconds: 100),
+                            curve: Curves.bounceOut,
+                            child: GestureDetector(
+                              onTapDown: (_) {
+                                setState(() {
+                                  _buttonAnimations["SEND"] = true;
+                                });
+                              },
+                              onTapUp: (_) async {
+                                setState(() {
+                                  _buttonAnimations["SEND"] = false;
+                                });
+                                // Button Code
+                                print("SEEEEEEEEEEEEEEEND");
+
+                                if(_controller.text.isNotEmpty) {
+                                  final int result = await smsHandler.checkPermissionAndSendSMS(_controller.text, [widget.contact.phone!]);
+
+                                  // If the SMS has been sent -> save it into the database
+                                  if(result == 1) {
+
+                                    // Format the timestamp of the sms
+                                    DateTime timeNow = DateTime.now();
+                                    String hourNow = "${formatWithTwoDigits(timeNow.hour)}:${formatWithTwoDigits(timeNow.minute)}:${formatWithTwoDigits(timeNow.second)}";
+
+                                    await databaseManager.insertSms(Sms(
+                                      content: _controller.text,
+                                      isReceived: false,
+                                      id_contact: widget.contact.id_contact,
+                                      timeSms: hourNow,
+                                    ));
+
+                                    // We only keep the 50 last SMS exchanged with each contact
+                                    List<Sms> listSms = await databaseManager.retrieveSmsFromContact(widget.contact.id_contact);
+                                    if(listSms.length > 50) {
+                                      // Loop for removing multiple SMS (ex : can happen when sending messages to ourself)
+                                      for(int i = 0; i < (listSms.length - 50); i++) {
+                                        // Remove the older SMS
+                                        await databaseManager.deleteSms(listSms[i].id_sms);
+                                      }
+                                      listSms = listSms.sublist(listSms.length - 50-1);
+                                    }
+
+                                    // Refresh UI with the new list
+                                    setState(() {
+                                      _listSMS = listSms;
+                                    });
+                                  }
+
+                                  _controller.clear();
+                                }
+
+                              },
+                              onTapCancel: () {
+                                setState(() {
+                                  _buttonAnimations["SEND"] = false;
+                                });
+                              },
+                              child: Container(
+                                height: MediaQuery.of(context).size.width * 0.060,
+                                width: MediaQuery.of(context).size.width * 0.060,
+                                padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.009, MediaQuery.of(context).size.width * 0.014, MediaQuery.of(context).size.width * 0.013,
+                                    MediaQuery.of(context).size.width * 0.008),
+                                margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.008),
+                                decoration: const BoxDecoration(
+                                  color: Color.fromRGBO(160, 208, 86, 1),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Image.asset(
+                                  "assets/send.png",
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          // Cancel Button
+                          AnimatedScale(
+                            scale: _buttonAnimations["CANCEL"]! ? 1.1 : 1.0,
+                            duration: const Duration(milliseconds: 100),
+                            curve: Curves.bounceOut,
+                            child: GestureDetector(
+                              onTapDown: (_) {
+                                setState(() {
+                                  _buttonAnimations["CANCEL"] = true;
+                                });
+                              },
+                              onTapUp: (_) {
+                                setState(() {
+                                  _buttonAnimations["CANCEL"] = false;
+                                });
+                                // Button Code
+                                print("CAAAAAAAAAAAAAAAAANCEL");
+                                _controller.clear();
+                              },
+                              onTapCancel: () {
+                                setState(() {
+                                  _buttonAnimations["CANCEL"] = false;
+                                });
+                              },
+                              child: Container(
+                                height: MediaQuery.of(context).size.width * 0.060,
+                                width: MediaQuery.of(context).size.width * 0.060,
+                                padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.012),
+                                margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.008),
+                                decoration: const BoxDecoration(
+                                  color: Colors.red,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Image.asset(
+                                  "assets/croix.png",
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                );
+
+              }
               else {
-                    return Column(
+                return Column(
                       children: [
                         // First part
                         Expanded(
@@ -787,6 +813,7 @@ class _ConversationPageState extends State<ConversationPage> {
                                                     controller: _controller,
                                                     readOnly: true,
                                                     showCursor: true,
+                                                    focusNode: _focusNode,
                                                     onTap: () {
                                                       setState(() {
                                                         dialogPageState.value = true;
@@ -1180,7 +1207,7 @@ class _ConversationPageState extends State<ConversationPage> {
                         customKeyboard,
                       ],
                     );
-                  }
+              }
             }),
       ),
     );
