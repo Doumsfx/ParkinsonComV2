@@ -68,11 +68,11 @@ Future<void> initSharedPreferences() async {
     ),
   );
 
-  azerty = await preferences?.getBool("azerty") ?? true;
-  language = await preferences?.getString("language") ?? "fr";
-  hasSimCard = await preferences?.getBool("hasSimCard") ?? false;
-  wantPhoneFonctionnality = await preferences?.getBool("wantPhoneFonctionnality") ?? false;
-  isFirstLaunch = await preferences?.getBool("isFirstLaunch") ?? true;
+  azerty = preferences?.getBool("azerty") ?? true;
+  language = preferences?.getString("language") ?? "fr";
+  hasSimCard = preferences?.getBool("hasSimCard") ?? false;
+  wantPhoneFonctionnality = preferences?.getBool("wantPhoneFonctionnality") ?? false;
+  isFirstLaunch = preferences?.getBool("isFirstLaunch") ?? true;
 
 }
 
@@ -715,8 +715,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                             ),
                           ),
 
-                          // Contacts
-                          Container(
+                        // Contacts
+                        SizedBox(
+                          child: Container(
                             margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.07),
                             child: AnimatedScale(
                               scale: _buttonAnimations["CONTACTS"]! ? 1.1 : 1.0,
@@ -763,15 +764,16 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                   sizedBoxHeight: MediaQuery.of(context).size.width * 0.085,
                                   sizedBoxWidth: MediaQuery.of(context).size.width * 0.2725,
                                   scale: isThisDeviceATablet ? 1 : 0.85,
+                                  nbNotification: 0,
                                 ),
                               ),
                             ),
                           ),
-                        ],
-                      )),
-                ],
-              ),
-            ));
+                        ),
+                      ],
+                    )),
+              ],
+            )));
       }
 
     },);

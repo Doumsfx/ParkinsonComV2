@@ -6,6 +6,7 @@ import 'dart:async';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:parkinson_com_v2/views/contacts/conversationPage.dart';
+import 'package:parkinson_com_v2/views/customWidgets/customImageWithNotification.dart';
 import 'package:parkinson_com_v2/views/customWidgets/customTitle.dart';
 import 'package:parkinson_com_v2/models/database/contact.dart';
 import 'package:parkinson_com_v2/views/contacts/newContact.dart';
@@ -115,8 +116,6 @@ class _ListContactsPageState extends State<ListContactsPage> {
   void _updateParent() {
     setState(() {});
   }
-
-
 
 
   @override
@@ -561,16 +560,15 @@ class _ListContactsPageState extends State<ListContactsPage> {
                                         });
                                       },
                                       child: Container(
-                                        height: MediaQuery.of(context).size.width * 0.062,
-                                        width: MediaQuery.of(context).size.width * 0.062,
-                                        padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.011),
                                         margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.01, 0, 0, MediaQuery.of(context).size.height * 0.02),
-                                        decoration: const BoxDecoration(
-                                          color: Color.fromRGBO(12, 178, 255, 1),
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: Image.asset(
-                                          "assets/dialog.png",
+                                        child: CustomImageWithNotification(
+                                          circleSize: MediaQuery.of(context).size.width * 0.062,
+                                          circlePadding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.011),
+                                          circleColor: const Color.fromRGBO(12, 178, 255, 1),
+                                          image: "assets/dialog.png",
+                                          nbNotification: 0  ,
+                                          sizedBoxWidth: MediaQuery.of(context).size.width * 0.062,
+                                          sizedBoxHeight: MediaQuery.of(context).size.width * 0.062,
                                         ),
                                       ),
                                     ),
