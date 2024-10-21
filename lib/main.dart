@@ -154,8 +154,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
     initialisation();
     WidgetsBinding.instance.addObserver(this);
 
-
-
     timer = Timer.periodic(const Duration(seconds: 1), (_) async {
       int newBatteryLevel = await battery.batteryLevel;
       DateTime newTimeAndDate = DateTime.now();

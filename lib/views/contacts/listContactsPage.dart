@@ -74,6 +74,7 @@ class _ListContactsPageState extends State<ListContactsPage> {
       ));
 
       _primaryContacts[0] = true;
+      _secondaryContacts[0] = false;
     }
     setState(() {});
 
@@ -82,9 +83,11 @@ class _ListContactsPageState extends State<ListContactsPage> {
     for(i; i < _listContacts.length; i += 1){
       if(_listContacts[i].priority == 1){
         _primaryContacts[i] = true;
+        _secondaryContacts[i] = false;
       }
       else if(_listContacts[i].priority == 2){
         _secondaryContacts[i] = true;
+        _primaryContacts[i] = false;
       }
     }
   }
