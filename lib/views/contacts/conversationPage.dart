@@ -3,6 +3,7 @@
 // ParkinsonCom V2
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:parkinson_com_v2/models/database/contact.dart';
 import 'package:parkinson_com_v2/models/database/sms.dart';
 import 'package:parkinson_com_v2/views/customWidgets/customSMS.dart';
@@ -46,6 +47,17 @@ class _ConversationPageState extends State<ConversationPage> {
     setState(() {});
   }
 
+  /// Function that scroll to the bottom of the page
+  void _scrollToBottom() {
+    if (_conversationScrollController.hasClients) {
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        _conversationScrollController.jumpTo(
+          _conversationScrollController.position.maxScrollExtent,
+        );
+      });
+    }
+  }
+
 
   @override
   void initState() {
@@ -54,6 +66,11 @@ class _ConversationPageState extends State<ConversationPage> {
     initialisation();
     customKeyboard = CustomKeyboard(controller: _controller, textPredictions: isConnected);
     conversationPageState.value = false;
+
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      _scrollToBottom();
+    });
+
   }
 
 
@@ -288,6 +305,8 @@ class _ConversationPageState extends State<ConversationPage> {
                                             ],
                                           );
                                         }
+
+
 
                                       }),
                                 ),
