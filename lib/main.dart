@@ -3,6 +3,7 @@
 // ParkinsonCom V2
 
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -64,15 +65,21 @@ Future<void> initSharedPreferences() async {
   preferences = await SharedPreferencesWithCache.create(
     cacheOptions: const SharedPreferencesWithCacheOptions(
       // When an allowlist is included, any keys that aren't included cannot be used.
-      allowList: <String>{'azerty', 'language', 'hasSimCard', 'wantPhoneFonctionnality', 'isFirstLaunch'},
+      allowList: <String>{'azerty', 'language', 'hasSimCard', 'wantPhoneFonctionnality', 'isFirstLaunch', 'unreadMessages'},
     ),
   );
 
   azerty = preferences?.getBool("azerty") ?? true;
   language = preferences?.getString("language") ?? "fr";
+
+  //todo Remplacer en utilisant le contact 0
   hasSimCard = preferences?.getBool("hasSimCard") ?? false;
   wantPhoneFonctionnality = preferences?.getBool("wantPhoneFonctionnality") ?? false;
+
+  // Pas nécessaire ?
   isFirstLaunch = preferences?.getBool("isFirstLaunch") ?? true;
+
+  unreadMessages = jsonDecode(preferences?.getString("unreadMessages") ?? "{}");
 
 }
 
@@ -276,11 +283,16 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
       else{
         return Scaffold(
             backgroundColor: const Color.fromRGBO(29, 52, 83, 1),
+            /*
+            Visibility Detector is used to know on which page we are.
+            It is needed because we want to update the callback of smsReceiver
+            in order to refresh the right page (conversationPage for updating the sms history,
+            listContacts and main for updating the number of unread messages)
+            */
             body: VisibilityDetector(
               key: const Key('HomePage-key'),
               onVisibilityChanged: (info) {
                 if(info.visibleFraction > 0) {
-                  print("callback switched to home");
                   smsReceiver.setCallBack(_handleSmsReceived);
                 }
               },
@@ -764,7 +776,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                   sizedBoxHeight: MediaQuery.of(context).size.width * 0.085,
                                   sizedBoxWidth: MediaQuery.of(context).size.width * 0.2725,
                                   scale: isThisDeviceATablet ? 1 : 0.85,
-                                  nbNotification: 0,
+                                  nbNotification: unreadMessages.isEmpty ? 0 : smsReceiver.countNewSMS(),
                                 ),
                               ),
                             ),

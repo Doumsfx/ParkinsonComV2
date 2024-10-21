@@ -2,6 +2,7 @@
 // Code by Pagnon Alexis and Sanchez Adam
 // ParkinsonCom V2
 
+import 'dart:convert';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:parkinson_com_v2/models/variables.dart';
@@ -27,15 +28,15 @@ class SmsReceiver {
   int countNewSMS() {
     int count = 0;
     for(var number in unreadMessages.keys) {
-      count += unreadMessages[number]!;
+      count += (unreadMessages[number]! as int);
     }
     return count;
   }
 
   /// Return the number of SMS from unreadMessages map for a specific contact using its [id_contact]
   int countSmsForPhone(int id_contact) {
-    if(unreadMessages[id_contact] != null) {
-      return unreadMessages[id_contact]!;
+    if(unreadMessages["$id_contact"] != null) {
+      return unreadMessages["$id_contact"]!;
     }
     else {
       return 0;
@@ -66,12 +67,15 @@ class SmsReceiver {
             if(contact != null) {
 
               // Increment by 1 in the map for the counter of unread messages
-              if(unreadMessages.keys.contains(contact.id_contact) && unreadMessages[contact.id_contact] != null ) {
-                (unreadMessages[contact.id_contact] = unreadMessages[contact.id_contact] !+ 1);
+              if(unreadMessages.keys.contains("${contact.id_contact}") && unreadMessages["${contact.id_contact}"] != null ) {
+                (unreadMessages["${contact.id_contact}"] = unreadMessages["${contact.id_contact}"] !+ 1);
               }
               else {
-                unreadMessages.addAll({contact.id_contact : 1});
+                unreadMessages.addAll({"${contact.id_contact}" : 1});
               }
+
+              // Save the unread messages as JSON into the shared preferences
+              await preferences?.setString("unreadMessages", jsonEncode(unreadMessages));
 
               // Format the timestamp of the sms
               DateTime receptionDate = DateTime.fromMillisecondsSinceEpoch(message.date!);
@@ -94,8 +98,6 @@ class SmsReceiver {
                   await databaseManager.deleteSms(listSms[i].id_sms);
                 }
               }
-
-              print(unreadMessages.toString());
 
               // Call back to refresh the UI
               onReceiveSMS!();

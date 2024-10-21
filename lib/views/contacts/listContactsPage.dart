@@ -122,15 +122,19 @@ class _ListContactsPageState extends State<ListContactsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: const Color.fromRGBO(29, 52, 83, 1),
+        /*
+        Visibility Detector is used to know on which page we are.
+        It is needed because we want to update the callback of smsReceiver
+        in order to refresh the right page (conversationPage for updating the sms history,
+        listContacts and main for updating the number of unread messages)
+        */
         body: VisibilityDetector(
           key: const Key('ListContacts-key'),
           onVisibilityChanged: (VisibilityInfo info) {
             if(info.visibleFraction > 0) {
-              print("callback switched to list contacts");
               smsReceiver.setCallBack(() async {
                 if(mounted) {
                   setState(() {
-                    print("list");
                   });
                 }
               },);
@@ -566,7 +570,7 @@ class _ListContactsPageState extends State<ListContactsPage> {
                                           circlePadding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.011),
                                           circleColor: const Color.fromRGBO(12, 178, 255, 1),
                                           image: "assets/dialog.png",
-                                          nbNotification: 0  ,
+                                          nbNotification: smsReceiver.countSmsForPhone(_listContacts[index].id_contact),
                                           sizedBoxWidth: MediaQuery.of(context).size.width * 0.062,
                                           sizedBoxHeight: MediaQuery.of(context).size.width * 0.062,
                                         ),
@@ -595,10 +599,15 @@ class _ListContactsPageState extends State<ListContactsPage> {
                                             textYes: languagesTextsFile.texts["pop_up_yes"], textNo: languagesTextsFile.texts["pop_up_no"],
                                             functionYes: (p0) async {
                                               await databaseManager.deleteContact(_listContacts[index].id_contact);
+
+                                              // Clear its unread messages
+                                              unreadMessages.remove("${_listContacts[index].id_contact}");
+
                                               // Refresh ui
                                               _listContacts.removeAt(index);
                                               _primaryContacts.removeAt(index);
                                               _secondaryContacts.removeAt(index);
+
                                               _updateParent();
                                               //Close the popup
                                               Navigator.pop(context);

@@ -2,6 +2,8 @@
 // Code by Pagnon Alexis and Sanchez Adam
 // ParkinsonCom V2
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:parkinson_com_v2/models/database/contact.dart';
 import 'package:parkinson_com_v2/models/database/sms.dart';
@@ -61,19 +63,40 @@ class _ConversationPageState extends State<ConversationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(29, 52, 83, 1),
+      /*
+      Visibility Detector is used to know on which page we are.
+      It is needed because we want to update the callback of smsReceiver
+      in order to refresh the right page (conversationPage for updating the sms history,
+      listContacts and main for updating the number of unread messages)
+       */
       body: VisibilityDetector(
         key:  const Key('ConversationPage-key'),
         onVisibilityChanged: (VisibilityInfo info) {
           if(info.visibleFraction > 0) {
-            print("callback switched to conversation");
+
+            // Clear the unreadMessages for this contact
+            if(unreadMessages.containsKey("${widget.contact.id_contact}")) {
+              unreadMessages["${widget.contact.id_contact}"] = 0;
+              // Save the unread messages as JSON into the shared preferences
+              preferences?.setString("unreadMessages", jsonEncode(unreadMessages));
+            }
+
             smsReceiver.setCallBack(() async {
               if(mounted) {
                 _listSMS = await databaseManager.retrieveSmsFromContact(widget.contact.id_contact);
                 setState(() {
-                  print("conversation");
                 });
+
+                // Automatically Clear the unreadMessages for this contact
+                if(unreadMessages.containsKey("${widget.contact.id_contact}")) {
+                  unreadMessages["${widget.contact.id_contact}"] = 0;
+                  // Save the unread messages as JSON into the shared preferences
+                  preferences?.setString("unreadMessages", jsonEncode(unreadMessages));
+                }
+
               }
             },);
+
           }
         },
         child: ValueListenableBuilder<bool>(
