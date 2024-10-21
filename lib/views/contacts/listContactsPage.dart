@@ -267,7 +267,7 @@ class _ListContactsPageState extends State<ListContactsPage> {
                               textColor: Colors.white,
                               containerWidth: MediaQuery.of(context).size.width * 0.50,
                               containerHeight: MediaQuery.of(context).size.height * 0.12,
-                              containerPadding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.height * 0.085, 0, MediaQuery.of(context).size.height * 0.03, 0),
+                              containerPadding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.height * 0.085, MediaQuery.of(context).size.height * 0.007, MediaQuery.of(context).size.height * 0.03, 0),
                               circleSize: MediaQuery.of(context).size.height * 0.1875,
                               circlePositionedLeft: MediaQuery.of(context).size.height * 0.1 * -1,
                               fontSize: 50,

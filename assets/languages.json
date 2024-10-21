@@ -296,9 +296,9 @@
     "settings_page_settings": "...",
     "settings_page_relaxation": "...",
     "settings_page_media": "...",
-    "conversation_page_title": "...",
-    "conversation_page_hint_text": "...",
-    "conversation_page_hint_text2": "...",
+    "conversation_page_title": "Gesprek",
+    "conversation_page_hint_text": "Klik hier om een bericht te schrijven...",
+    "conversation_page_hint_text2": "Schrijf hier uw bericht...",
     "pop_up_conversation_cant_with_email" : "Toegang tot het gesprek is niet beschikbaar via e-mailadressen.\nU kunt alleen berichten verzenden via de dialoogvensters.",
     "pop_up_conversation_need_phone_functions" : "De optie om telefoonfuncties te gebruiken, moet worden gecontroleerd.\nU kunt deze optie vinden in het menu \"Mijn opties\"."
   }
