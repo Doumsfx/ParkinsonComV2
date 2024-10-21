@@ -26,16 +26,16 @@ class SmsReceiver {
   /// Return the number of SMS from the unreadMessages map
   int countNewSMS() {
     int count = 0;
-    for(var number in unreadMessages.value.keys) {
-      count += unreadMessages.value[number]!;
+    for(var number in unreadMessages.keys) {
+      count += unreadMessages[number]!;
     }
     return count;
   }
 
   /// Return the number of SMS from unreadMessages map for a specific contact using its [id_contact]
   int countSmsForPhone(int id_contact) {
-    if(unreadMessages.value[id_contact] != null) {
-      return unreadMessages.value[id_contact]!;
+    if(unreadMessages[id_contact] != null) {
+      return unreadMessages[id_contact]!;
     }
     else {
       return 0;
@@ -64,12 +64,13 @@ class SmsReceiver {
             Contact? contact = await databaseManager.retrieveContactFromPhone(phoneNumberClean);
 
             if(contact != null) {
+
               // Increment by 1 in the map for the counter of unread messages
-              if(unreadMessages.value.keys.contains(contact.id_contact) && unreadMessages.value[contact.id_contact] != null ) {
-                (unreadMessages.value[contact.id_contact] = unreadMessages.value[contact.id_contact] !+ 1);
+              if(unreadMessages.keys.contains(contact.id_contact) && unreadMessages[contact.id_contact] != null ) {
+                (unreadMessages[contact.id_contact] = unreadMessages[contact.id_contact] !+ 1);
               }
               else {
-                unreadMessages.value.addAll({contact.id_contact : 1});
+                unreadMessages.addAll({contact.id_contact : 1});
               }
 
               // Format the timestamp of the sms
@@ -94,11 +95,10 @@ class SmsReceiver {
                 }
               }
 
-              // Callback function (refresh UI)
-              if(onReceiveSMS != null) {
-                onReceiveSMS!();
-              }
+              print(unreadMessages.toString());
 
+              // Call back to refresh the UI
+              onReceiveSMS!();
             }
           }
 
