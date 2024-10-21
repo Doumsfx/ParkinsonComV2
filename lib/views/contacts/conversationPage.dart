@@ -107,6 +107,7 @@ class _ConversationPageState extends State<ConversationPage> {
               if(mounted) {
                 _listSMS = await databaseManager.retrieveSmsFromContact(widget.contact.id_contact);
                 setState(() {
+                  _scrollToBottom();
                 });
 
                 // Automatically Clear the unreadMessages for this contact
@@ -128,161 +129,190 @@ class _ConversationPageState extends State<ConversationPage> {
                 return Column(
                   children: [
                     // First part
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Title and buttons
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // First part
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.347,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Title and buttons
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.347,
+                            child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                // Back Arrow
-                                Container(
-                                  margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.013, MediaQuery.of(context).size.width * 0.02, 0),
-                                  child: AnimatedScale(
-                                    scale: _buttonAnimations["BACK ARROW"]! ? 1.1 : 1.0,
-                                    duration: const Duration(milliseconds: 100),
-                                    curve: Curves.bounceOut,
-                                    child: GestureDetector(
-                                      onTapDown: (_) {
-                                        setState(() {
-                                          _buttonAnimations["BACK ARROW"] = true;
-                                        });
-                                      },
-                                      onTapUp: (_) {
-                                        setState(() {
-                                          _buttonAnimations["BACK ARROW"] = false;
-                                        });
-                                        Navigator.pop(context);
-                                      },
-                                      onTapCancel: () {
-                                        setState(() {
-                                          _buttonAnimations["BACK ARROW"] = false;
-                                        });
-                                      },
-                                      child: Image.asset(
-                                        "assets/fleche.png",
-                                        height: MediaQuery.of(context).size.width * 0.05,
-                                        width: MediaQuery.of(context).size.width * 0.07,
+                                // First part
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    // Back Arrow
+                                    Container(
+                                      margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.013, MediaQuery.of(context).size.width * 0.02, 0),
+                                      child: AnimatedScale(
+                                        scale: _buttonAnimations["BACK ARROW"]! ? 1.1 : 1.0,
+                                        duration: const Duration(milliseconds: 100),
+                                        curve: Curves.bounceOut,
+                                        child: GestureDetector(
+                                          onTapDown: (_) {
+                                            setState(() {
+                                              _buttonAnimations["BACK ARROW"] = true;
+                                            });
+                                          },
+                                          onTapUp: (_) {
+                                            setState(() {
+                                              _buttonAnimations["BACK ARROW"] = false;
+                                            });
+                                            Navigator.pop(context);
+                                          },
+                                          onTapCancel: () {
+                                            setState(() {
+                                              _buttonAnimations["BACK ARROW"] = false;
+                                            });
+                                          },
+                                          child: Image.asset(
+                                            "assets/fleche.png",
+                                            height: MediaQuery.of(context).size.width * 0.05,
+                                            width: MediaQuery.of(context).size.width * 0.07,
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                  ),
+
+                                    // Title
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width * 0.838,
+                                      child: Container(
+                                        margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.19, MediaQuery.of(context).size.height / 16, 0, MediaQuery.of(context).size.height * 0.04),
+                                        child: CustomTitle(
+                                          text: languagesTextsFile.texts["conversation_page_title"]!,
+                                          image: 'assets/themeIcon.png',
+                                          imageScale: 1,
+                                          backgroundColor: Colors.white,
+                                          textColor: const Color.fromRGBO(29, 52, 83, 1),
+                                          containerWidth: MediaQuery.of(context).size.width * 0.50,
+                                          containerHeight: MediaQuery.of(context).size.height * 0.12,
+                                          containerPadding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.01),
+                                          fontSize: MediaQuery.of(context).size.height * 0.1,
+                                          circleSize: MediaQuery.of(context).size.height * 0.1875,
+                                          circlePositionedLeft: MediaQuery.of(context).size.height * 0.0625 * -1,
+                                          fontWeight: FontWeight.w700,
+                                          alignment: const Alignment(0.07, 0),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
 
-                                // Title
-                                SizedBox(
-                                  width: MediaQuery.of(context).size.width * 0.838,
-                                  child: Container(
-                                    margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.19, MediaQuery.of(context).size.height / 16, 0, MediaQuery.of(context).size.height * 0.07),
-                                    child: CustomTitle(
-                                      text: languagesTextsFile.texts["conversation_page_title"]!,
-                                      image: 'assets/themeIcon.png',
-                                      imageScale: 1,
-                                      backgroundColor: Colors.white,
-                                      textColor: const Color.fromRGBO(29, 52, 83, 1),
-                                      containerWidth: MediaQuery.of(context).size.width * 0.50,
-                                      containerHeight: MediaQuery.of(context).size.height * 0.12,
-                                      containerPadding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.01),
-                                      fontSize: MediaQuery.of(context).size.height * 0.1,
-                                      circleSize: MediaQuery.of(context).size.height * 0.1875,
-                                      circlePositionedLeft: MediaQuery.of(context).size.height * 0.0625 * -1,
-                                      fontWeight: FontWeight.w700,
-                                      alignment: const Alignment(0.07, 0),
+                                Container(
+                                  height: MediaQuery.of(context).size.height * 0.10,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(MediaQuery.of(context).size.width * 0.045),
+                                    ),
+                                  ),
+                                  padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.01),
+                                  margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.01, MediaQuery.of(context).size.height * 0.01, 0, 0),
+                                  child: Center(
+                                    child: Text(
+                                      "${widget.contact.last_name} ${widget.contact.first_name}",
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                        fontSize: MediaQuery.of(context).size.height * 0.06,
+                                        color: Colors.blue,
+                                        fontWeight: FontWeight.w600,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ],
                             ),
-                          ],
-                        ),
+                          ),
 
-                            // Buttons at the right
-                            Container(
-                              margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.012),
-                              child: Column(
-                                children: [
-                                  // Help Button
-                                  AnimatedScale(
-                                    scale: _buttonAnimations["HELP"]! ? 1.1 : 1.0,
-                                    duration: const Duration(milliseconds: 100),
-                                    curve: Curves.bounceOut,
-                                    child: GestureDetector(
-                                      // Animation management
-                                      onTapDown: (_) {
-                                        setState(() {
-                                          _buttonAnimations["HELP"] = true;
-                                        });
-                                      },
-                                      onTapUp: (_) {
-                                        setState(() {
-                                          _buttonAnimations["HELP"] = false;
-                                        });
-                                        // Button Code
-                                        print("HELLLLLLLLLLP");
-                                        emergencyRequest.sendEmergencyRequest(context);
-                                      },
-                                      onTapCancel: () {
-                                        setState(() {
-                                          _buttonAnimations["HELP"] = false;
-                                        });
-                                      },
+                          // Buttons at the right
+                          Container(
+                            margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.012),
+                            child: Column(
+                              children: [
+                                // Help Button
+                                AnimatedScale(
+                                  scale: _buttonAnimations["HELP"]! ? 1.1 : 1.0,
+                                  duration: const Duration(milliseconds: 100),
+                                  curve: Curves.bounceOut,
+                                  child: GestureDetector(
+                                    // Animation management
+                                    onTapDown: (_) {
+                                      setState(() {
+                                        _buttonAnimations["HELP"] = true;
+                                      });
+                                    },
+                                    onTapUp: (_) {
+                                      setState(() {
+                                        _buttonAnimations["HELP"] = false;
+                                      });
+                                      // Button Code
+                                      print("HELLLLLLLLLLP");
+                                      emergencyRequest.sendEmergencyRequest(context);
+                                    },
+                                    onTapCancel: () {
+                                      setState(() {
+                                        _buttonAnimations["HELP"] = false;
+                                      });
+                                    },
 
-                                      child: Container(
-                                        margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.03, 0, MediaQuery.of(context).size.height * 0.03),
-                                        child: Image.asset(
-                                          "assets/helping_icon.png",
-                                          height: MediaQuery.of(context).size.width * 0.06,
-                                          width: MediaQuery.of(context).size.width * 0.06,
-                                        ),
+                                    child: Container(
+                                      margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height * 0.03, 0, MediaQuery.of(context).size.height * 0.03),
+                                      child: Image.asset(
+                                        "assets/helping_icon.png",
+                                        height: MediaQuery.of(context).size.width * 0.06,
+                                        width: MediaQuery.of(context).size.width * 0.06,
                                       ),
                                     ),
                                   ),
+                                ),
 
-                                  // Home Button
-                                  AnimatedScale(
-                                    scale: _buttonAnimations["HOME"]! ? 1.1 : 1.0,
-                                    duration: const Duration(milliseconds: 100),
-                                    curve: Curves.bounceOut,
-                                    child: GestureDetector(
-                                      onTapDown: (_) {
-                                        setState(() {
-                                          _buttonAnimations["HOME"] = true;
-                                        });
-                                      },
-                                      onTapUp: (_) {
-                                        setState(() {
-                                          _buttonAnimations["HOME"] = false;
-                                        });
-                                        // Button Code
-                                        Navigator.popUntil(
-                                          context,
-                                              (route) => route.isFirst,
-                                        );
-                                      },
-                                      onTapCancel: () {
-                                        setState(() {
-                                          _buttonAnimations["HOME"] = false;
-                                        });
-                                      },
-                                      child: Container(
-                                        margin: EdgeInsets.fromLTRB(0, 0, 0, MediaQuery.of(context).size.height * 0.03),
-                                        child: Image.asset(
-                                          "assets/home.png",
-                                          height: MediaQuery.of(context).size.width * 0.06,
-                                          width: MediaQuery.of(context).size.width * 0.06,
-                                        ),
+                                // Home Button
+                                AnimatedScale(
+                                  scale: _buttonAnimations["HOME"]! ? 1.1 : 1.0,
+                                  duration: const Duration(milliseconds: 100),
+                                  curve: Curves.bounceOut,
+                                  child: GestureDetector(
+                                    onTapDown: (_) {
+                                      setState(() {
+                                        _buttonAnimations["HOME"] = true;
+                                      });
+                                    },
+                                    onTapUp: (_) {
+                                      setState(() {
+                                        _buttonAnimations["HOME"] = false;
+                                      });
+                                      // Button Code
+                                      Navigator.popUntil(
+                                        context,
+                                            (route) => route.isFirst,
+                                      );
+                                    },
+                                    onTapCancel: () {
+                                      setState(() {
+                                        _buttonAnimations["HOME"] = false;
+                                      });
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.fromLTRB(0, 0, 0, MediaQuery.of(context).size.height * 0.03),
+                                      child: Image.asset(
+                                        "assets/home.png",
+                                        height: MediaQuery.of(context).size.width * 0.06,
+                                        width: MediaQuery.of(context).size.width * 0.06,
                                       ),
                                     ),
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
+                      ),
+                    ),
 
                     // List of messages
                     Expanded(
@@ -301,7 +331,6 @@ class _ConversationPageState extends State<ConversationPage> {
                         child: Row(
                           children: [
                             // List of contacts
-
                             Expanded(
                               child: ListView.builder(
                                   key: const PageStorageKey<String>('conversationScrollKey'),
@@ -689,7 +718,7 @@ class _ConversationPageState extends State<ConversationPage> {
                                 });
                               },
                               child: Container(
-                                height: MediaQuery.of(context).size.width * 0.060,
+                                height: isThisDeviceATablet ? MediaQuery.of(context).size.width * 0.060 : MediaQuery.of(context).size.width * 0.056,
                                 width: MediaQuery.of(context).size.width * 0.060,
                                 padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.009, MediaQuery.of(context).size.width * 0.014, MediaQuery.of(context).size.width * 0.013,
                                     MediaQuery.of(context).size.width * 0.008),
@@ -730,7 +759,7 @@ class _ConversationPageState extends State<ConversationPage> {
                                 });
                               },
                               child: Container(
-                                height: MediaQuery.of(context).size.width * 0.060,
+                                height: isThisDeviceATablet ? MediaQuery.of(context).size.width * 0.060 : MediaQuery.of(context).size.width * 0.056,
                                 width: MediaQuery.of(context).size.width * 0.060,
                                 padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.012),
                                 margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.008),
