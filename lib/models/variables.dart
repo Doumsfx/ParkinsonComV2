@@ -14,6 +14,7 @@ import 'ttsHandler.dart';
 import 'database/databaseManager.dart';
 
 SharedPreferencesWithCache? preferences;
+
 // Global variables
 late bool azerty; // true: azerty | false: abcde
 late String language; // "fr" | "nl"
@@ -30,6 +31,7 @@ ValueNotifier<bool> newContactPageState = ValueNotifier<bool>(false); // true: k
 ValueNotifier<bool> loginPageState = ValueNotifier<bool>(false); // true: keyboard page | false: page without keyboard
 ValueNotifier<bool> verificationPopUpState = ValueNotifier<bool>(false); // true: keyboard page | false: page without keyboard
 ValueNotifier<bool> conversationPageState = ValueNotifier<bool>(false); // true: keyboard page | false: page without keyboard
+ValueNotifier<bool> userSettingsPageState = ValueNotifier<bool>(false); // true: keyboard page | false: page without keyboard
 
 Map<String,dynamic> unreadMessages = <String,dynamic>{}; // Map  {"id_contact" : number_of_unread_sms}
 
