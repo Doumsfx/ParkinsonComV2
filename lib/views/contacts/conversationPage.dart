@@ -105,10 +105,22 @@ class _ConversationPageState extends State<ConversationPage> {
 
             smsReceiver.setCallBack(() async {
               if(mounted) {
-                _listSMS = await databaseManager.retrieveSmsFromContact(widget.contact.id_contact);
-                setState(() {
-                  _scrollToBottom();
-                });
+                List<Sms> tempo = await databaseManager.retrieveSmsFromContact(widget.contact.id_contact);
+                // Check if the new received sms is from the contact that we are discussing with
+                if(tempo.length != _listSMS.length) {
+                  // it's a sms by the current contact -> refresh the list and scroll down
+                  _listSMS = tempo;
+                  setState(() {
+                    _scrollToBottom();
+                  });
+                }
+                else {
+                  // it's from another contact -> just refresh
+                  _listSMS = tempo;
+                  setState(() {
+                  });
+                }
+
 
                 // Automatically Clear the unreadMessages for this contact
                 if(unreadMessages.containsKey("${widget.contact.id_contact}")) {
