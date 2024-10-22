@@ -18,7 +18,7 @@ SharedPreferencesWithCache? preferences;
 late bool azerty; // true: azerty | false: abcde
 late String language; // "fr" | "nl"
 late bool hasSimCard; // true: the device has a sim card | false: it doesn't have one
-late bool wantPhoneFonctionnality; // true: user want to send SMS | false: user don't want to send SMS
+late bool wantPhoneFunctionality; // true: user want to send SMS | false: user don't want to send SMS
 late bool isFirstLaunch; // true: before user registers | false: after registration
 bool isThisDeviceATablet = true; // true: tablet | false: phone
 double screenRatio = 0;

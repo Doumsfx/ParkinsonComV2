@@ -88,6 +88,7 @@ class EmailHandler {
     //Generate and send the code
     int newCode = Random(DateTime.now().millisecondsSinceEpoch).nextInt(100000);
     String contentMail = "${languagesTextsFile.texts["mail_code_check"]} $newCode";
+    print(newCode);
     int resultSendMail = await sendMessage(userMail, contentMail);
     //Close the previous popup
     Navigator.of(context).pop();

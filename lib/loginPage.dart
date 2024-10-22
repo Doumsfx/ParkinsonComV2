@@ -117,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.of(context).pop(false);
       }
     }
-    return await Popups.showPopupOk(context, text: languagesTextsFile.texts["ask_permissions"], textOk: languagesTextsFile.texts["pop_up_ok"], functionOk: askPermissions).then((value) {
+    return await Popups.showPopupOk(context, text: languagesTextsFile.texts["ask_permissions_phone"], textOk: languagesTextsFile.texts["pop_up_ok"], functionOk: askPermissions).then((value) {
         return value ?? false;
     },);
   }
@@ -479,30 +479,10 @@ class _LoginPageState extends State<LoginPage> {
 
                                         // All checks succeeded
                                         if(checks) {
-                                          isFirstLaunch = false;
-                                          wantPhoneFonctionnality = phone;
+                                          wantPhoneFunctionality = phone;
 
                                           // Initialization of the database manager when launching the app (create or open the database)
                                           await databaseManager.initDB();
-
-                                          //todo popup permissions for receiver
-
-                                          // SMS Receiver initialization
-                                          if(hasSimCard && wantPhoneFonctionnality) {
-                                            smsReceiver.setCallBack(() {
-                                              setState(() {
-                                              });
-                                            },);
-                                            await smsReceiver.initReceiver();
-                                          }
-
-                                          // Save the preferences
-                                          await preferences?.setBool("isFirstLaunch", isFirstLaunch);
-                                          await preferences?.setBool("wantPhoneFonctionnality", wantPhoneFonctionnality);
-                                          await preferences?.setBool("hasSimCard", hasSimCard); // hasSimCard modified within startChecks()
-
-                                          // Redirection to the main page
-                                          widget.onLoginSuccess();
 
                                           // Adding in the database
                                           await databaseManager.insertContact(Contact(
@@ -513,6 +493,32 @@ class _LoginPageState extends State<LoginPage> {
                                             priority: 0,
                                             id_contact: 0,
                                           ));
+
+                                          // SMS Receiver initialization
+                                          if(hasSimCard && wantPhoneFunctionality) {
+                                            smsReceiver.setCallBack(() {
+                                              setState(() {
+                                              });
+                                            },);
+
+                                            // Ask for the SMS permissions
+                                            if(await smsReceiver.askPermissions(context)) {
+                                              smsReceiver.initReceiver();
+                                            }
+                                            else {
+                                              // We don't have the permissions -> disable the phone functionalities 
+                                              wantPhoneFunctionality = false;
+                                            }
+
+                                          }
+
+                                          // Save the preferences
+                                          await preferences?.setBool("isFirstLaunch", false);
+                                          await preferences?.setBool("wantPhoneFunctionality", wantPhoneFunctionality);
+                                          await preferences?.setBool("hasSimCard", hasSimCard); // hasSimCard modified within startChecks()
+
+                                          // Redirection to the main page
+                                          widget.onLoginSuccess();
 
                                         }
 

@@ -548,11 +548,11 @@ class _ListContactsPageState extends State<ListContactsPage> {
                                           Popups.showPopupOk(context, text: languagesTextsFile.texts["pop_up_conversation_cant_with_email"], textOk: languagesTextsFile.texts["pop_up_ok"], functionOk: Popups.functionToQuit);
 
                                         }
-                                        else if(_listContacts[index].phone != null && !wantPhoneFonctionnality){
+                                        else if(_listContacts[index].phone != null && !wantPhoneFunctionality){
                                           // Need to activate the phone functionalities
                                           Popups.showPopupOk(context, text: languagesTextsFile.texts["pop_up_conversation_need_phone_functions"], textOk: languagesTextsFile.texts["pop_up_ok"], functionOk: Popups.functionToQuit);
                                         }
-                                        else if(_listContacts[index].phone != null && wantPhoneFonctionnality){ //TODO enlever le commentaire une fois qu'on aura fini nos tests
+                                        else if(_listContacts[index].phone != null && wantPhoneFunctionality){ //TODO enlever le commentaire une fois qu'on aura fini nos tests
                                           Navigator.push(
                                               context,
                                               MaterialPageRoute(

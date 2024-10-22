@@ -65,7 +65,7 @@ Future<void> initSharedPreferences() async {
   preferences = await SharedPreferencesWithCache.create(
     cacheOptions: const SharedPreferencesWithCacheOptions(
       // When an allowlist is included, any keys that aren't included cannot be used.
-      allowList: <String>{'azerty', 'language', 'hasSimCard', 'wantPhoneFonctionnality', 'isFirstLaunch', 'unreadMessages'},
+      allowList: <String>{'azerty', 'language', 'hasSimCard', 'wantPhoneFunctionality', 'isFirstLaunch', 'unreadMessages'},
     ),
   );
 
@@ -74,7 +74,7 @@ Future<void> initSharedPreferences() async {
 
   //todo Remplacer en utilisant le contact 0
   hasSimCard = preferences?.getBool("hasSimCard") ?? false;
-  wantPhoneFonctionnality = preferences?.getBool("wantPhoneFonctionnality") ?? false;
+  wantPhoneFunctionality = preferences?.getBool("wantPhoneFunctionality") ?? false;
 
   // Pas nécessaire ?
   isFirstLaunch = preferences?.getBool("isFirstLaunch") ?? true;
@@ -200,10 +200,23 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
     VisibilityDetectorController.instance.updateInterval = Duration.zero;
 
     // SMS Receiver initialization
-    if(!isFirstLaunch && hasSimCard && wantPhoneFonctionnality) {
-      smsReceiver.initReceiver();
+    if(!isFirstLaunch && hasSimCard && wantPhoneFunctionality) {
+      initSmsReceiverAndPerms();
     }
 
+  }
+
+  /// Ask for the SMS Permissions and activate the SMS Receiver
+  void initSmsReceiverAndPerms() async {
+    // Ask for the SMS permissions
+    if(await smsReceiver.askPermissions(context)) {
+      smsReceiver.initReceiver();
+    }
+    else {
+      // We don't have the permissions -> disable the phone functionalities
+      wantPhoneFunctionality = false;
+      await preferences?.setBool("wantPhoneFunctionality", wantPhoneFunctionality);
+    }
   }
 
   @override

@@ -5,7 +5,9 @@
 import 'dart:convert';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:parkinson_com_v2/models/popupsHandler.dart';
 import 'package:parkinson_com_v2/models/variables.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:phone_numbers_parser/phone_numbers_parser.dart';
 import 'package:telephony/telephony.dart';
 import 'database/contact.dart';
@@ -46,7 +48,6 @@ class SmsReceiver {
   Future<void> initReceiver() async {
     // Ask for permissions
     bool? result = await _telephony.requestSmsPermissions;
-    // Permissions granted
     if(result != null && result == true) {
       // Start to listen for incoming SMS
       _telephony.listenIncomingSms(
@@ -109,6 +110,30 @@ class SmsReceiver {
       );
     }
   }
+
+  /// Ask for the SMS Permissions listed in the manifest.
+  Future<bool> askPermissions(BuildContext context) async {
+    PermissionStatus permissionStatus = await Permission.sms.status;
+
+    if (!permissionStatus.isGranted) {
+      return Popups.showPopupOk(context, text: languagesTextsFile.texts["ask_permissions_sms"], textOk: languagesTextsFile.texts["pop_up_ok"], functionOk: (p0) async {
+        PermissionStatus permissionStatus = await Permission.sms.request();
+        if(permissionStatus.isGranted) {
+          Navigator.of(p0).pop(true);
+        }
+        else {
+          Navigator.of(p0).pop(false);
+        }
+      },).then((value) {
+        return value ?? false;
+      },);
+    }
+    else {
+      return true;
+    }
+
+  }
+
 
   /// Function to format a [number] into a two format digit, for example '2' becomes '02'
   String formatWithTwoDigits(int number) {
