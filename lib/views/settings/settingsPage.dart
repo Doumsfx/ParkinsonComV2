@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:parkinson_com_v2/views/customWidgets/customMenuButton.dart';
 import 'package:parkinson_com_v2/views/customWidgets/customTitle.dart';
 import 'package:parkinson_com_v2/models/variables.dart';
+import 'package:parkinson_com_v2/views/settings/userSettingsPage.dart';
 
 
 class SettingsPage extends StatefulWidget {
@@ -105,7 +106,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               fontSize: MediaQuery.of(context).size.height * 0.1,
                               circleSize: MediaQuery.of(context).size.height * 0.1875,
                               circlePositionedLeft: MediaQuery.of(context).size.height * 0.0625 * -1,
-                              fontWeight: FontWeight.w700,
+                              fontWeight: FontWeight.w600,
                               alignment: const Alignment(0.07, 0),
 
                             ),
@@ -228,6 +229,12 @@ class _SettingsPageState extends State<SettingsPage> {
                             });
                             // Button Code
                             print("USERRRRRRRRRRRRRR");
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const UserSettingsPage(),
+                                )
+                            );
 
                           },
                           onTapCancel: () {
@@ -372,6 +379,7 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             
           ],
-        ));
+        )
+    );
   }
 }
