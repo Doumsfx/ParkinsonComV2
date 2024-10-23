@@ -26,7 +26,7 @@ double screenRatio = 0;
 late double ttsVolume; // Voice volume [0; 1]
 late double ttsRate; // Voice pitch [0.5; 2]
 late double ttsPitch; // Voice speed rate [0; 1]
-late String ttsGender;
+late String ttsGender; // Voice gender : male or female
 
 ValueNotifier<bool> dialogPageState = ValueNotifier<bool>(false); // true: keyboard page | false: page without keyboard
 ValueNotifier<bool> newThemePageState = ValueNotifier<bool>(false); // true: keyboard page | false: page without keyboard

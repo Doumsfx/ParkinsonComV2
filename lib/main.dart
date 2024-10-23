@@ -37,7 +37,13 @@ void main() async {
   isFirstLaunch = !(await databaseManager.doesExist()); // first time <=> no database existing
 
   // Initialization of the TTS handler when launching the app
-  ttsHandler.initTts();
+  await ttsHandler.initTts();
+
+  // Update the TTS settings with the loaded values
+  ttsHandler.setVolume(ttsVolume);
+  ttsHandler.setPitch(ttsPitch);
+  ttsHandler.setRate(ttsRate);
+  ttsHandler.setPreselectedVoice(language, ttsGender);
 
   if(!isFirstLaunch) {
     // Initialization of the database manager when launching the app (create or open the database)
@@ -82,12 +88,6 @@ Future<void> initSharedPreferences() async {
   ttsPitch = preferences?.getDouble("ttsPitch") ?? 1.0;
   ttsRate = preferences?.getDouble("ttsRate") ?? 0.5;
   ttsGender = preferences?.getString("ttsGender") ?? "female";
-
-  // Update the TTS settings with the loaded values
-  ttsHandler.setVolume(ttsVolume);
-  ttsHandler.setPitch(ttsPitch);
-  ttsHandler.setRate(ttsRate);
-  ttsHandler.setPreselectedVoice(language, ttsGender);
 
 }
 
