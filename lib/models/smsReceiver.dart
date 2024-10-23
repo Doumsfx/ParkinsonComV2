@@ -17,6 +17,7 @@ import 'database/sms.dart';
 class SmsReceiver {
   final Telephony _telephony = Telephony.instance; // Instance to detect when a SMS is received
   VoidCallback? onReceiveSMS; // Callback (-> update a state) executed when SMS is received
+  bool isAlreadyActive = false;
 
   //Map<int,int> unreadMessages = {}; // Map  {id_contact : number_of_unread_sms}
 
@@ -108,6 +109,7 @@ class SmsReceiver {
         },
         listenInBackground: false,
       );
+      isAlreadyActive = true;
     }
   }
 

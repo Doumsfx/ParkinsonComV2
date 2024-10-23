@@ -3,12 +3,16 @@
 // ParkinsonCom V2
 
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:parkinson_com_v2/models/database/contact.dart';
+import 'package:parkinson_com_v2/models/popupsHandler.dart';
 import 'package:parkinson_com_v2/views/customWidgets/customTextField.dart';
 import 'package:parkinson_com_v2/views/customWidgets/customTitle.dart';
 import 'package:parkinson_com_v2/models/variables.dart';
 import 'package:parkinson_com_v2/views/keyboards/keyboard.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 
 class UserSettingsPage extends StatefulWidget {
@@ -33,9 +37,11 @@ class _UserSettingsPageState extends State<UserSettingsPage> {
   final FocusNode _focusNode = FocusNode();
   final FocusNode _focusNode2 = FocusNode();
   final FocusNode _focusNode3 = FocusNode();
-  bool phone = wantPhoneFonctionnality;
+  bool phone = wantPhoneFunctionality;
   late Contact currentInfo;
   bool isPhoneOK = true;
+  bool isFirstNameOk = true;
+  bool isEmailOk = true;
 
   /// Function to initialise our variables
   Future<void> initialisation() async {
@@ -69,6 +75,8 @@ class _UserSettingsPageState extends State<UserSettingsPage> {
       FocusScope.of(context).requestFocus(_focusNode3);
     });
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -624,7 +632,7 @@ class _UserSettingsPageState extends State<UserSettingsPage> {
                               _buttonAnimations["SAVE"] = true;
                             });
                           },
-                          onTapUp: (_) {
+                          onTapUp: (_) async {
                             setState(() {
                               _buttonAnimations["SAVE"] = false;
                             });
@@ -634,28 +642,141 @@ class _UserSettingsPageState extends State<UserSettingsPage> {
                             // D AILLEURS JE CROIS QUE CES POP UP ONT LES A DEJA POUR LA LOGIN PAGE (tu peux effacer ce commentaire)
                             
                             if(_firstController.text.isEmpty){
-                              // TODO pop up qui dis qu'on ne peux pas laisser le nom vide
+                              Popups.showPopupOk(context, text: languagesTextsFile.texts["login_page_error_first_name"], textOk: languagesTextsFile.texts["pop_up_ok"], functionOk: Popups.functionToQuit);
+                              isFirstNameOk = false;
                             }
                             else if(_thirdController.text.isEmpty){
-                              // TODO pop up qui dis qu'on ne peux pas laisser l'adresse mail vide
+                              Popups.showPopupOk(context, text: languagesTextsFile.texts["login_page_error_mail"], textOk: languagesTextsFile.texts["pop_up_ok"], functionOk: Popups.functionToQuit);
+                              isEmailOk = false;
                             }
                             else if(_thirdController.text.isNotEmpty && !_thirdController.text.contains("@")){
-                              // TODO pop up qui dis qu'on doit rentrer une adresse email valide
+                              Popups.showPopupOk(context, text: languagesTextsFile.texts["login_page_error_form_mail"], textOk: languagesTextsFile.texts["pop_up_ok"], functionOk: Popups.functionToQuit);
+                              isEmailOk = false;
                             }
                             else if(_thirdController.text.isNotEmpty && _thirdController.text != currentInfo.email){
-                              // TODO pop up avec code verif qu'on envoie par mail
+
+                              // E-Mail Check
+                              isEmailOk = await emailHandler.checkCode(context, _thirdController.text);
+
                             }
-                            if(phone && !wantPhoneFonctionnality){
+
+                            // Check the phone checkbox
+                            if(phone && !wantPhoneFunctionality){
 
                               isPhoneOK = false;
 
-                              // TODO truc de verif de SIM + autorisations
+                              // SIM Check
+                              PermissionStatus permissionPhone = await Permission.phone.status;
+                              // Ask for the phone permissions in order to read the phone state
+                              if (permissionPhone.isDenied) {
+                                // Popup that will ask to give the permission
+                                await Popups.showPopupOk(context, text: languagesTextsFile.texts["ask_permissions_phone"], textOk: languagesTextsFile.texts["pop_up_ok"], functionOk: (p0) async {
+                                  // Request the permission
+                                  permissionPhone = await Permission.phone.request();
+                                  Navigator.of(context).pop();
+                                },);
 
-                              // If everything is ok
-                              isPhoneOK = true;
+                              }
+                              // Permission granted
+                              if (permissionPhone.isGranted) {
+                                // Check the sim card presence
+                                bool sim = await smsHandler.checkSim();
+                                if (!sim) {
+                                  phone = false; // Uncheck the phone checkbox
+                                  hasSimCard = false;
+                                  await Popups.showPopupOk(context, text: languagesTextsFile.texts["sim_card_absent"], textOk: languagesTextsFile.texts["pop_up_ok"], functionOk: Popups.functionToQuit);
+                                  isPhoneOK = false;
+                                }
+                                else {
+                                  // Presence of a SIM card
+                                  hasSimCard = true;
+                                  isPhoneOK = true;
+                                }
+                              }
+                              // Permission denied
+                              else {
+                                phone = false; // Uncheck the phone checkbox
+                                await Popups.showPopupOk(context, text: languagesTextsFile.texts["missing_permissions"], textOk: languagesTextsFile.texts["pop_up_ok"], functionOk: Popups.functionToQuit);
+                                isPhoneOK = false;
+                              }
+
+                              // If we correctly enable the phone -> Activate the SMS Receiver
+                              if(hasSimCard && phone && isPhoneOK) {
+
+
+                                // Check if the listener isn't already running
+                                if(!smsReceiver.isAlreadyActive) {
+                                  smsReceiver.setCallBack(() {
+                                  },);
+                                  // Ask for the SMS permissions
+                                  if(await smsReceiver.askPermissions(context)) {
+                                    smsReceiver.initReceiver();
+                                  }
+                                  else {
+                                    // We don't have the permissions -> disable the phone functionalities
+                                    phone = false;
+                                    isPhoneOK = false;
+                                  }
+                                }
+                              }
+
+
 
                             }
-                            if(isPhoneOK){
+
+                            // Uncheck the phone checkbox
+                            else if(!phone && wantPhoneFunctionality) {
+
+                              List<Contact> listContacts = await databaseManager.retrieveContacts();
+
+                              // We must count how many contact are saved using their phone number
+                              int count = 0;
+                              for(var c in listContacts) {
+                                if(c.phone != null) {
+                                  count++;
+                                }
+                              }
+
+                              // Then we will ask to remove them because we don't want to send SMS anymore
+                              bool result = await Popups.showPopupYesOrNo(context, text: languagesTextsFile.texts["pop_up_remove_phone_contacts"].replaceAll("...", "$count"),
+                                textYes: languagesTextsFile.texts["pop_up_yes"], textNo: languagesTextsFile.texts["pop_up_no"],
+                                  functionYes: (p0) {
+                                    Navigator.of(p0).pop(true);
+                                  },
+                                  functionNo: (p0) {
+                                    Navigator.of(p0).pop(false);
+                                  },).then((value) {
+                                    return value ?? false;
+                                  },);
+
+                              if(result) {
+                                // Remove the contacts that are saved using phone number
+                                for(var c in listContacts) {
+                                  if(c.phone != null) {
+                                    await databaseManager.deleteContact(c.id_contact);
+                                  }
+                                }
+
+                                // We reset some variables because we don't want to use them anymore
+                                wantPhoneFunctionality = false;
+                                hasSimCard = false;
+                                unreadMessages.clear();
+
+                                // Save the unread messages, the other variables will be saved later
+                                await preferences?.setString("unreadMessages", jsonEncode(unreadMessages));
+                              }
+                              else {
+                                // User refuses to remove its contacts -> we re-enable the phone
+                                phone = true;
+                                isPhoneOK = false;
+                              }
+
+                            }
+
+
+                            // If everything is valid
+                            // We update the user in the database
+                            if(isFirstNameOk && isEmailOk && isPhoneOK){
                               // Updating the info of the user
                               databaseManager.updateContact(
                                 Contact(
@@ -666,11 +787,16 @@ class _UserSettingsPageState extends State<UserSettingsPage> {
                                   priority: currentInfo.priority,
                                 )
                               );
-                              wantPhoneFonctionnality = phone;
+                              wantPhoneFunctionality = phone;
 
-                              // TODO pop up qui dis que les informations ont bien été enregistré
+                              // Save in the preferences concerning the phone in the cache
+                              await preferences?.setBool("wantPhoneFunctionality", wantPhoneFunctionality);
+                              await preferences?.setBool("hasSimCard", hasSimCard);
 
-                              Navigator.pop(context);
+                              // Popup to inform that the modifications have been saved
+                              await Popups.showPopupOk(context, text: languagesTextsFile.texts["pop_up_save_account_settings_success"], textOk: languagesTextsFile.texts["pop_up_ok"], functionOk: Popups.functionToQuit);
+
+                              Navigator.pop(context); // Quit the account settings page
 
                             }
 

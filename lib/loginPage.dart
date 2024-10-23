@@ -489,7 +489,7 @@ class _LoginPageState extends State<LoginPage> {
                                             first_name: _firstController.text,
                                             last_name: "",
                                             email: _secondController.text,
-                                            phone: phone ? null : "1",
+                                            phone: null,
                                             priority: 0,
                                             id_contact: 0,
                                           ));
@@ -509,7 +509,6 @@ class _LoginPageState extends State<LoginPage> {
                                               // We don't have the permissions -> disable the phone functionalities 
                                               wantPhoneFunctionality = false;
                                             }
-
                                           }
 
                                           // Save the preferences

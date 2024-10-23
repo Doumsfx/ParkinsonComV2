@@ -6,13 +6,13 @@ import 'package:flutter/material.dart';
 
 ///Class to handle the generic popups (popup with a single Ok button / popup with a Yes and a No buttons)
 class Popups {
-  static void showPopupYesOrNo(BuildContext context,
+  static Future<dynamic> showPopupYesOrNo(BuildContext context,
       {required String text, required String textYes, required textNo, required Function(BuildContext) functionYes, required Function(BuildContext context) functionNo, int numberOfExecutionsYes = 1, int numberOfExecutionsNo = 1}) {
     final Map<String, bool> _buttonAnimations = {
       "POPUP YES": false,
       "POPUP NO": false,
     };
-    showDialog(
+    return showDialog(
         context: context,
         builder: (BuildContext context) {
           double screenHeight = MediaQuery.of(context).size.height;

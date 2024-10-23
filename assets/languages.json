@@ -150,8 +150,9 @@
     "conversation_page_hint_text": "Cliquez-ici pour écrire un message...",
     "conversation_page_hint_text2": "Ecrire votre message ici...",
     "pop_up_conversation_cant_with_email" : "L'accès à la conversation n'est pas disponible via les adresses mails.\nVous pouvez uniquement envoyer des messages via les dialogues.",
-    "pop_up_conversation_need_phone_functions" : "L'option pour utiliser les fonctionnalités du téléphone doit être cochée.\nVous pourrez trouver cette option dans le menu \"Mes options\"."
-
+    "pop_up_conversation_need_phone_functions" : "L'option pour utiliser les fonctionnalités du téléphone doit être cochée.\nVous pourrez trouver cette option dans le menu \"Mes options\".",
+    "pop_up_save_account_settings_success" : "Informations enregistrées avec succès !",
+    "pop_up_remove_phone_contacts" : "Voulez-vous vraiment désactiver les fonctionnalités liées au téléphone ?\nAttention :\nVos ... contacts enregistrés\navec des numéros de téléphones seront supprimés."
   },
   "nl" : {
     "main_title" : "Hoofdmenu",
@@ -304,7 +305,10 @@
     "conversation_page_hint_text": "Klik hier om een bericht te schrijven...",
     "conversation_page_hint_text2": "Schrijf hier uw bericht...",
     "pop_up_conversation_cant_with_email" : "Toegang tot het gesprek is niet beschikbaar via e-mailadressen.\nU kunt alleen berichten verzenden via de dialoogvensters.",
-    "pop_up_conversation_need_phone_functions" : "De optie om telefoonfuncties te gebruiken, moet worden gecontroleerd.\nU kunt deze optie vinden in het menu \"Mijn opties\"."
+    "pop_up_conversation_need_phone_functions" : "De optie om telefoonfuncties te gebruiken, moet worden gecontroleerd.\nU kunt deze optie vinden in het menu \"Mijn opties\".",
+    "pop_up_save_account_settings_success" : "Informatie succesvol opgeslagen!",
+    "pop_up_remove_phone_contacts" : "Wil je echt telefoongerelateerde functies uitschakelen?\nWaarschuwing:\nUw ... contacten die\nmet telefoonnummers zijn opgeslagen, worden verwijderd."
+
   }
 
 }
