@@ -23,6 +23,10 @@ late bool wantPhoneFunctionality; // true: user want to send SMS | false: user d
 late bool isFirstLaunch; // true: before user registers | false: after registration
 bool isThisDeviceATablet = true; // true: tablet | false: phone
 double screenRatio = 0;
+late double ttsVolume; // Voice volume [0; 1]
+late double ttsRate; // Voice pitch [0.5; 2]
+late double ttsPitch; // Voice speed rate [0; 1]
+late String ttsGender;
 
 ValueNotifier<bool> dialogPageState = ValueNotifier<bool>(false); // true: keyboard page | false: page without keyboard
 ValueNotifier<bool> newThemePageState = ValueNotifier<bool>(false); // true: keyboard page | false: page without keyboard

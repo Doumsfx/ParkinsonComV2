@@ -78,6 +78,7 @@ class TtsHandler {
     }
   }
 
+
   ///Default Engine
   Future<void> _getDefaultEngine() async => await flutterTts.getDefaultEngine;
 
@@ -148,8 +149,8 @@ class TtsHandler {
     _rate = value;
   }
 
-  ///Set one of the four voices ('male' or 'female' [gender] for 'fr' or 'nl' [language])
-  void setVoiceFrOrNl(String language, String gender) async {
+  ///Set one of the preselected voices ('male' or 'female' as [gender] / country code in lower case as [language])
+  void setPreselectedVoice(String language, String gender) async {
     if (chosenVoices.containsKey(language) && chosenVoices[language]!.containsKey(gender)) {
       //Check if the voice is one of the voices that are on the device
       for (var v in (await _voicesList!)) {
@@ -160,7 +161,7 @@ class TtsHandler {
       }
       return;
     }
-    //Voice unknown or not available -> set the default
+    //Voice unknown or not available -> set the default voice of the device
     flutterTts.setVoice(await flutterTts.getDefaultVoice);
   }
 }

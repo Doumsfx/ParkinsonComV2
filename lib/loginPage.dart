@@ -512,7 +512,7 @@ class _LoginPageState extends State<LoginPage> {
                                           }
 
                                           // Save the preferences
-                                          await preferences?.setBool("isFirstLaunch", false);
+                                          //await preferences?.setBool("isFirstLaunch", false);
                                           await preferences?.setBool("wantPhoneFunctionality", wantPhoneFunctionality);
                                           await preferences?.setBool("hasSimCard", hasSimCard); // hasSimCard modified within startChecks()
 
@@ -588,7 +588,7 @@ class _LoginPageState extends State<LoginPage> {
 
                                     setState(() {
                                       language = "fr";
-                                      ttsHandler.setVoiceFrOrNl(language, 'female');
+                                      ttsHandler.setPreselectedVoice(language, 'female');
                                       languagesTextsFile.setNewLanguage(language);
                                     });
 
@@ -633,7 +633,7 @@ class _LoginPageState extends State<LoginPage> {
                                     print("NETHERLANDSSSSS");
                                     setState(() {
                                       language = "nl";
-                                      ttsHandler.setVoiceFrOrNl(language, 'female');
+                                      ttsHandler.setPreselectedVoice(language, 'female');
                                       languagesTextsFile.setNewLanguage(language);
                                     });
 

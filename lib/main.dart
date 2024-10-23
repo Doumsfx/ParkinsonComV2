@@ -65,21 +65,29 @@ Future<void> initSharedPreferences() async {
   preferences = await SharedPreferencesWithCache.create(
     cacheOptions: const SharedPreferencesWithCacheOptions(
       // When an allowlist is included, any keys that aren't included cannot be used.
-      allowList: <String>{'azerty', 'language', 'hasSimCard', 'wantPhoneFunctionality', 'isFirstLaunch', 'unreadMessages'},
+      allowList: <String>{'azerty', 'language', 'hasSimCard', 'wantPhoneFunctionality', 'unreadMessages', 'ttsVolume', 'ttsRate', 'ttsPitch', 'ttsGender'},
     ),
   );
 
   azerty = preferences?.getBool("azerty") ?? true;
   language = preferences?.getString("language") ?? "fr";
 
-  //todo Remplacer en utilisant le contact 0
+  // Phone Functionalities
   hasSimCard = preferences?.getBool("hasSimCard") ?? false;
   wantPhoneFunctionality = preferences?.getBool("wantPhoneFunctionality") ?? false;
-
-  // Pas nécessaire ?
-  isFirstLaunch = preferences?.getBool("isFirstLaunch") ?? true;
-
   unreadMessages = jsonDecode(preferences?.getString("unreadMessages") ?? "{}");
+
+  // TTS
+  ttsVolume = preferences?.getDouble("ttsVolume") ?? 1.0;
+  ttsPitch = preferences?.getDouble("ttsPitch") ?? 1.0;
+  ttsRate = preferences?.getDouble("ttsRate") ?? 0.5;
+  ttsGender = preferences?.getString("ttsGender") ?? "female";
+
+  // Update the TTS settings with the loaded values
+  ttsHandler.setVolume(ttsVolume);
+  ttsHandler.setPitch(ttsPitch);
+  ttsHandler.setRate(ttsRate);
+  ttsHandler.setPreselectedVoice(language, ttsGender);
 
 }
 
@@ -590,7 +598,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                     } else {
                                       language = "fr";
                                     }
-                                    ttsHandler.setVoiceFrOrNl(language, 'female');
+                                    ttsHandler.setPreselectedVoice(language, 'female');
                                     languagesTextsFile.setNewLanguage(language);
                                   });
 
