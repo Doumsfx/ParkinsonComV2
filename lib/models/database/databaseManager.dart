@@ -13,6 +13,8 @@ import 'theme.dart';
 import 'dialog.dart';
 import 'reminder.dart';
 import 'sms.dart';
+import 'image.dart';
+import 'music.dart';
 
 class DatabaseManager {
   static final DatabaseManager _databaseManager = DatabaseManager._();
@@ -94,6 +96,22 @@ class DatabaseManager {
             );
           """);
 
+    /*Creation of the Image table*/
+    await database.execute("""
+            CREATE TABLE IF NOT EXISTS Image(
+            id_image INTEGER PRIMARY KEY,
+            path TEXT
+            );
+          """);
+
+    /*Creation of the Music table*/
+    await database.execute("""
+            CREATE TABLE IF NOT EXISTS Music(
+            id_music INTEGER PRIMARY KEY,
+            path TEXT
+            );
+          """);
+
 
   }
 
@@ -114,14 +132,14 @@ class DatabaseManager {
   }
 
   /* CRUD Theme */
-  ///Insert a [theme] into the database
-  ///(the id_theme will be replaced by the autoincrement)
+  /// Insert a [theme] into the database
+  /// (the id_theme will be replaced by the autoincrement)
   Future<int> insertTheme(ThemeObject theme) async {
     int result = await db.insert('Theme', theme.toMap());
     return result;
   }
 
-  ///Update a [theme] of the database (updating requires the right id_theme)
+  /// Update a [theme] of the database (updating requires the right id_theme)
   Future<int> updateTheme(ThemeObject theme) async {
     int result = await db.update(
       'Theme',
@@ -132,26 +150,26 @@ class DatabaseManager {
     return result;
   }
 
-  ///Retrieve the list of ThemeObject from the database
+  /// Retrieve the list of ThemeObject from the database
   Future<List<ThemeObject>> retrieveThemes() async {
     final List<Map<String, Object?>> queryResult = await db.query('Theme');
     return queryResult.map((e) => ThemeObject.fromMap(e)).toList();
   }
 
-  ///Retrieve a specific ThemeObject from the database using its [id]
+  /// Retrieve a specific ThemeObject from the database using its [id]
   Future<ThemeObject> retrieveThemeFromId(int id) async {
     final List<Map<String, Object?>> queryResult = await db.query('Theme', where: "id_theme = ?", whereArgs: [id]);
     return ThemeObject.fromMap(queryResult[0]);
   }
 
-  ///Retrieve the list of ThemeObject for a specific [language] from the database
-  ///(fr / nl)
+  /// Retrieve the list of ThemeObject for a specific [language] from the database
+  /// (fr / nl)
   Future<List<ThemeObject>> retrieveThemesFromLanguage(String language) async {
     final List<Map<String, Object?>> queryResult = await db.query('Theme', where: "language = ?", whereArgs: [language]);
     return queryResult.map((e) => ThemeObject.fromMap(e)).toList();
   }
 
-  ///Delete the theme with the [id] from the database
+  /// Delete the theme with the [id] from the database
   Future<void> deleteTheme(int id) async {
     await db.delete(
       'Theme',
@@ -161,14 +179,14 @@ class DatabaseManager {
   }
 
   /* CRUD Dialog */
-  ///Insert a [dialog] into the database
-  ///(the id_dialog will be replaced by the autoincrement)
+  /// Insert a [dialog] into the database
+  /// (the id_dialog will be replaced by the autoincrement)
   Future<int> insertDialog(DialogObject dialog) async {
     int result = await db.insert('Dialog', dialog.toMap());
     return result;
   }
 
-  ///Update a [dialog] of the database (updating requires the right id_dialog)
+  /// Update a [dialog] of the database (updating requires the right id_dialog)
   Future<int> updateDialog(DialogObject dialog) async {
     int result = await db.update(
       'Dialog',
@@ -179,26 +197,26 @@ class DatabaseManager {
     return result;
   }
 
-  ///Retrieve the list of DialogObject from the database
+  /// Retrieve the list of DialogObject from the database
   Future<List<DialogObject>> retrieveDialogs() async {
     final List<Map<String, Object?>> queryResult = await db.query('Dialog');
     return queryResult.map((e) => DialogObject.fromMap(e)).toList();
   }
 
-  ///Retrieve the list of DialogObject for a specific language from the database
-  ///(fr / nl)
+  /// Retrieve the list of DialogObject for a specific language from the database
+  /// (fr / nl)
   Future<List<DialogObject>> retrieveDialogsFromLanguage(String language) async {
     final List<Map<String, Object?>> queryResult = await db.query('Dialog', where: "language = ?", whereArgs: [language]);
     return queryResult.map((e) => DialogObject.fromMap(e)).toList();
   }
 
-  ///Retrieve the list of DialogObject for a specific Theme from the database using the [themeId]
+  /// Retrieve the list of DialogObject for a specific Theme from the database using the [themeId]
   Future<List<DialogObject>> retrieveDialogsFromTheme(int themeId) async {
     final List<Map<String, Object?>> queryResult = await db.query('Dialog', where: "id_theme = ?", whereArgs: [themeId]);
     return queryResult.map((e) => DialogObject.fromMap(e)).toList();
   }
 
-  ///Delete the dialog with the [id] from the database
+  /// Delete the dialog with the [id] from the database
   Future<void> deleteDialog(int id) async {
     await db.delete(
       'Dialog',
@@ -207,7 +225,7 @@ class DatabaseManager {
     );
   }
 
-  ///Count the number of dialogs that belong to a theme
+  /// Count the number of dialogs that belong to a theme
   Future<int> countDialogsFromTheme(int idTheme) async {
     List<Map<String, Object?>> queryResult = await db.rawQuery('''
     SELECT COUNT(*) FROM Dialog
@@ -216,7 +234,7 @@ class DatabaseManager {
     return int.parse(queryResult[0]["COUNT(*)"].toString());
   }
 
-  ///Use the defaultThemesAndDialogs.json file to insert default values into Theme and Dialog tables
+  /// Use the defaultThemesAndDialogs.json file to insert default values into Theme and Dialog tables
   Future<void> insertDefaultThemesAndDialogs(Database database) async {
     Map<String, dynamic> file = jsonDecode(await rootBundle.loadString('assets/defaultThemesAndDialogs.json'));
     int idThemeCounter = 0;
@@ -240,14 +258,14 @@ class DatabaseManager {
 
 
   /* CRUD Reminder */
-  ///Insert a [Reminder] into the database
-  ///(the id_reminder  will be replaced by the autoincrement)
+  /// Insert a [Reminder] into the database
+  /// (the id_reminder  will be replaced by the autoincrement)
   Future<int> insertReminder(Reminder reminder) async {
     int result = await db.insert('Reminder', reminder.toMap());
     return result;
   }
 
-  ///Update a [reminder] of the database (updating requires the right id_reminder)
+  /// Update a [reminder] of the database (updating requires the right id_reminder)
   Future<int> updateReminder(Reminder reminder) async {
     int result = await db.update(
       'Reminder',
@@ -258,19 +276,19 @@ class DatabaseManager {
     return result;
   }
 
-  ///Retrieve the list of Reminder from the database
+  /// Retrieve the list of Reminder from the database
   Future<List<Reminder>> retrieveReminders() async {
     final List<Map<String, Object?>> queryResult = await db.query('Reminder');
     return queryResult.map((e) => Reminder.fromMap(e)).toList();
   }
 
-  ///Retrieve a specific Reminder from the database using its [id]
+  /// Retrieve a specific Reminder from the database using its [id]
   Future<Reminder> retrieveReminderFromId(int id) async {
     final List<Map<String, Object?>> queryResult = await db.query('Reminder', where: "id_reminder = ?", whereArgs: [id]);
     return Reminder.fromMap(queryResult[0]);
   }
 
-  ///Delete the Reminder with the [id] from the database
+  /// Delete the Reminder with the [id] from the database
   Future<void> deleteReminder(int id) async {
     await db.delete(
       'Reminder',
@@ -395,6 +413,76 @@ class DatabaseManager {
     await db.delete(
       'Sms',
       where: "id_sms = ?",
+      whereArgs: [id],
+    );
+  }
+
+
+  /* CRUD Image */
+  /// Insert a [image] into the database
+  /// (the id_image will be replaced by the autoincrement)
+  Future<int> insertImage(ImageObject image) async {
+    int result = await db.insert('Image', image.toMap());
+    return result;
+  }
+
+  /// Update a [image] of the database (updating requires the right id_image)
+  Future<int> updateImage(ImageObject image) async {
+    int result = await db.update(
+      'Image',
+      image.toMap(),
+      where: "id_image = ?",
+      whereArgs: [image.id_image],
+    );
+    return result;
+  }
+
+  /// Retrieve the list of ImageObject from the database
+  Future<List<ImageObject>> retrieveImages() async {
+    final List<Map<String, Object?>> queryResult = await db.query('Image');
+    return queryResult.map((e) => ImageObject.fromMap(e)).toList();
+  }
+
+  /// Delete the image with the [id] from the database
+  Future<void> deleteImage(int id) async {
+    await db.delete(
+      'Image',
+      where: "id_image = ?",
+      whereArgs: [id],
+    );
+  }
+
+
+  /* CRUD Music */
+  /// Insert a [music] into the database
+  /// (the id_music will be replaced by the autoincrement)
+  Future<int> insertMusic(MusicObject music) async {
+    int result = await db.insert('Music', music.toMap());
+    return result;
+  }
+
+  /// Update a [music] of the database (updating requires the right id_music)
+  Future<int> updateMusic(MusicObject music) async {
+    int result = await db.update(
+      'Music',
+      music.toMap(),
+      where: "id_music = ?",
+      whereArgs: [music.id_music],
+    );
+    return result;
+  }
+
+  /// Retrieve the list of MusicObject from the database
+  Future<List<MusicObject>> retrieveMusics() async {
+    final List<Map<String, Object?>> queryResult = await db.query('Music');
+    return queryResult.map((e) => MusicObject.fromMap(e)).toList();
+  }
+
+  /// Delete the music with the [id] from the database
+  Future<void> deleteMusic(int id) async {
+    await db.delete(
+      'Music',
+      where: "id_music = ?",
       whereArgs: [id],
     );
   }
