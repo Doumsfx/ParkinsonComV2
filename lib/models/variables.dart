@@ -27,6 +27,7 @@ late double ttsVolume; // Voice volume [0; 1]
 late double ttsRate; // Voice speed rate [0; 1]
 late double ttsPitch; // Voice pitch [0.5; 2]
 late String ttsGender; // Voice gender : male or female
+List<String> relaxActivities = ["radio","music","images","sentences","youtube"];
 
 ValueNotifier<bool> dialogPageState = ValueNotifier<bool>(false); // true: keyboard page | false: page without keyboard
 ValueNotifier<bool> newThemePageState = ValueNotifier<bool>(false); // true: keyboard page | false: page without keyboard

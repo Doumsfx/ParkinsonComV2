@@ -14,6 +14,7 @@ class InternetAlert {
   final GlobalKey _alertKey = GlobalKey();
   late StreamSubscription<InternetStatus> _listener;
   bool buttonAnimation = false;
+  bool _isAlreadyDisplayed = false;
 
   void startCheckInternet(BuildContext context) {
     //Instance to check internet (try to connect to https://www.google.com/, can be changed to other website(s) )
@@ -30,19 +31,23 @@ class InternetAlert {
         case InternetStatus.connected:
           // The internet is now connected
           isConnected.value = true;
+          _isAlreadyDisplayed = false;
           _closeAlert(context);
           break;
         case InternetStatus.disconnected:
           // The internet is now disconnected
           isConnected.value = false;
           //We don't replace this popup with the Popups Class because of the global key that it uses.
-          _showNoInternetAlert(context);
+          if(!_isAlreadyDisplayed) {
+            _showNoInternetAlert(context);
+          }
           break;
       }
     });
   }
 
   void _showNoInternetAlert(BuildContext context) {
+    _isAlreadyDisplayed = true;
     showDialog(
       context: context,
       builder: (context) {

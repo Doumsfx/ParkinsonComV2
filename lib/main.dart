@@ -14,6 +14,7 @@ import 'package:parkinson_com_v2/views/customWidgets/customHomePageTitle.dart';
 import 'package:parkinson_com_v2/views/customWidgets/customMenuButton.dart';
 import 'package:parkinson_com_v2/views/contacts/listContactsPage.dart';
 import 'package:parkinson_com_v2/views/dialogs/listDialogsPage.dart';
+import 'package:parkinson_com_v2/views/relaxation/relaxPage.dart';
 import 'package:parkinson_com_v2/views/reminders/listRemindersPage.dart';
 import 'package:parkinson_com_v2/loginPage.dart';
 import 'package:parkinson_com_v2/views/customWidgets/CustomShape.dart';
@@ -588,22 +589,13 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
                                   });
                                   // Button Code
                                   print("RELAAAAAAAAAAAAAX");
-                                  print("hauteur: ${MediaQuery.of(context).size.height}");
-                                  print("largeur: ${MediaQuery.of(context).size.width}");
-                                  print("screenRatio: $screenRatio");
 
-                                  setState(() {
-                                    if(language == "fr") {
-                                      language = "nl";
-                                    } else {
-                                      language = "fr";
-                                    }
-                                    ttsHandler.setPreselectedVoice(language, 'female');
-                                    languagesTextsFile.setNewLanguage(language);
-                                  });
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const RelaxationPage(),
+                                      )).then((_) => initialisation());
 
-                                  // Save preferences
-                                  await preferences?.setString("language", language);
 
                                 },
                                 onTapCancel: () {
