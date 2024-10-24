@@ -20,8 +20,10 @@ class CustomTitle extends StatelessWidget {
   final double circlePositionedLeft;
   final FontWeight fontWeight;
   final Alignment alignment;
+  final double sizedBoxHeight;
+  final double sizedBoxWidth;
 
-  const CustomTitle({super.key, required this.text, required this.image, required this.imageScale, required this.backgroundColor, required this.textColor, required this.fontWeight, this.alignment = const Alignment(0, 0), required this.fontSize, required this.containerWidth, required this.containerHeight, required this.containerPadding, required this.circleSize, required this.circlePositionedLeft});
+  const CustomTitle({super.key, required this.text, required this.image, required this.imageScale, required this.backgroundColor, required this.textColor, required this.fontWeight, this.alignment = const Alignment(0, 0), required this.fontSize, required this.containerWidth, required this.containerHeight, required this.containerPadding, required this.circleSize, required this.circlePositionedLeft, this.sizedBoxHeight = 0, this.sizedBoxWidth = 0});
 
   @override
   Widget build(BuildContext context) {
@@ -41,16 +43,21 @@ class CustomTitle extends StatelessWidget {
           padding: containerPadding,
           child: Align(
             alignment: alignment,
-            child: AutoSizeText(
-              text,
-              style: GoogleFonts.josefinSans(
-                color: textColor,
-                fontWeight: fontWeight,
-                fontSize: fontSize,
+            child: SizedBox(
+              width: sizedBoxWidth == 0 ? null : sizedBoxWidth,
+              height: sizedBoxHeight == 0 ? null : sizedBoxHeight,
+              child: AutoSizeText(
+                text,
+                style: GoogleFonts.josefinSans(
+                  color: textColor,
+                  fontWeight: fontWeight,
+                  fontSize: fontSize,
+                ),
+                maxLines: 1,
+                maxFontSize: 100,
+                minFontSize: 5,
+                textAlign: TextAlign.center,
               ),
-              maxLines: 1,
-              maxFontSize: 100,
-              minFontSize: 5,
             ),
           ),
         ),

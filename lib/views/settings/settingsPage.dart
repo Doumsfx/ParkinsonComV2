@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:parkinson_com_v2/views/customWidgets/customMenuButton.dart';
 import 'package:parkinson_com_v2/views/customWidgets/customTitle.dart';
 import 'package:parkinson_com_v2/models/variables.dart';
+import 'package:parkinson_com_v2/views/settings/appSettingsPage.dart';
 import 'package:parkinson_com_v2/views/settings/userSettingsPage.dart';
 
 
@@ -275,6 +276,13 @@ class _SettingsPageState extends State<SettingsPage> {
                             // Button Code
                             print("APPPPPPPPPPPPPPP");
 
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const AppSettingsPage(),
+                                )
+                            );
+
                           },
                           onTapCancel: () {
                             setState(() {
@@ -377,7 +385,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
               ),
             ),
-            
+
           ],
         )
     );

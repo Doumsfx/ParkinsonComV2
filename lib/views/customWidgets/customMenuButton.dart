@@ -14,15 +14,18 @@ class CustomMenuButton extends StatelessWidget {
   final double scale;
   final EdgeInsets padding;
   final double sizedBoxHeight;
+  final int type;
 
-  const CustomMenuButton({super.key, required this.text, required this.image, required this.backgroundColor, required this.textColor, required this.imageScale, required this.scale, this.padding = EdgeInsets.zero, required this.sizedBoxHeight});
+  const CustomMenuButton({super.key, required this.text, required this.image, required this.backgroundColor, required this.textColor, required this.imageScale, required this.scale, this.padding = EdgeInsets.zero, required this.sizedBoxHeight, this.type = 1});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         // Image
-        Container(
+        type == 3
+        ? const SizedBox()
+        : Container(
           height: MediaQuery.of(context).size.height * 0.28 * scale,
           width: MediaQuery.of(context).size.height * 0.28 * scale,
           decoration: BoxDecoration(color: backgroundColor, borderRadius: BorderRadius.circular(MediaQuery.of(context).size.height * 0.09 * scale)),
@@ -35,12 +38,16 @@ class CustomMenuButton extends StatelessWidget {
         ),
 
         // Spacing
-        SizedBox(
+        type == 2 || type == 3
+        ? const SizedBox()
+        : SizedBox(
           height: MediaQuery.of(context).size.height * 0.015 * scale,
         ),
 
         // Text
-        Container(
+        type == 2
+        ? const SizedBox()
+        : Container(
           height: MediaQuery.of(context).size.height * 0.09 * scale,
           width: MediaQuery.of(context).size.height * 0.28 * scale,
           decoration: BoxDecoration(color: backgroundColor, borderRadius: BorderRadius.circular(MediaQuery.of(context).size.height * 0.09 * scale)),
